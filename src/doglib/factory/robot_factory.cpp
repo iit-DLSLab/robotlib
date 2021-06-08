@@ -192,7 +192,7 @@ std::shared_ptr<Dog> buildHyQ()
 {
 	using namespace dls::dog::HyQ;
 	using namespace dls::dog::HyQ::dyn;
-	std::string robot_description = readFile("/usr/include/description/hyq.urdf"); //TODO 
+	std::string robot_description = readFile("../../src/description/hyq.urdf"); //TODO 
 	auto model = init_robot_description(robot_description);
 
 	pHyQDefaultParamsGetter  =  std::make_shared<DefaultParamsGetter>();
@@ -253,7 +253,7 @@ std::shared_ptr<Dog> buildHyQReal()
 {
 	using namespace dls::dog::HyQReal;
 	using namespace dls::dog::HyQReal::dyn;
-	std::string robot_description = readFile("/usr/include/description/hyqreal.urdf"); //TODO 
+	std::string robot_description = readFile("../../src/description/hyqreal.urdf"); //TODO
 	auto model = init_robot_description(robot_description);
 
 	pHyQRealDefaultParamsGetter  =  std::make_shared<DefaultParamsGetter>();
