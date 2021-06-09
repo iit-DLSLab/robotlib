@@ -1,0 +1,35 @@
+find_package(urdf REQUIRED)
+include_directories(SYSTEM ${roscpp_INCLUDE_DIRS})
+
+add_library(robotlib
+	# Factory
+	${CMAKE_CURRENT_SOURCE_DIR}/factory/robot_factory.cpp
+)
+
+target_link_libraries(robotlib
+	PRIVATE
+	${roscpp_LIBRARIES}
+	${urdf_LIBRARIES}
+)
+
+install(
+	DIRECTORY
+		${PROJECT_SOURCE_DIR}/include/robotlib/
+	DESTINATION
+		include/robotlib
+	COMPONENT
+		"robotlib"
+	FILES_MATCHING
+		PATTERN "*.h"
+		PATTERN "*.hpp"
+		PATTERN "*.tpp"
+)
+
+install(
+	TARGETS
+		robotlib
+	DESTINATION
+		/usr/local/lib
+	COMPONENT
+		"robotlib"
+)
