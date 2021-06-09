@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.1)
-project(doglib)
+project(robotlib)
 
 set(MAJOR 0)
 set(MINOR 0)
@@ -19,4 +19,3 @@ include_directories(
 )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
