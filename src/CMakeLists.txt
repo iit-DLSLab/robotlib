@@ -1,2 +1,1 @@
 add_subdirectory(robotlib)
-add_subdirectory(commons)
