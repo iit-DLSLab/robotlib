@@ -5,7 +5,7 @@
 #include "robotlib/base/leg_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * An interface for the Jacobian of the shin of quadrupeds.
@@ -33,6 +33,6 @@ public:
 
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_SHIN_JACOBIANS_HPP_

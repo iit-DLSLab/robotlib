@@ -23,7 +23,7 @@
 #include "robotlib/base/leg_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * @brief The LegBoolMap class specializes the LegDataMap with extended
@@ -47,7 +47,7 @@ public:
 	bool AND() const;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_LEG_BOOL_MAP_HPP_

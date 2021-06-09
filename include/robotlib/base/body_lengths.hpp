@@ -22,7 +22,7 @@
 
 namespace dls
 {
-namespace dog
+namespace robot
 {
 // =============================================================================
 // class Interface
@@ -42,7 +42,7 @@ public:
     virtual double getFoot_y() = 0;
     virtual double getFoot_z() = 0;
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_BODY_LENGTHS_HPP_

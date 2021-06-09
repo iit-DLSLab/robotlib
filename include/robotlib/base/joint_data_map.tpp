@@ -19,7 +19,7 @@
 *******************************************************************************/
 namespace dls
 {
-namespace dog
+namespace robot
 {
 
 template<typename T>
@@ -183,5 +183,5 @@ std::ostream& operator<<(std::ostream& out, const JointDataMap<T>& map) {
 	return out;
 }
 
-} // namespace dog
+} // namespace robot
 } // namespace dls

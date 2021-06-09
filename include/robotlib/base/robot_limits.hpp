@@ -23,7 +23,7 @@
 #include "robotlib/base/declarations.hpp"
 
 namespace dls{
-namespace dog {
+namespace robot {
 
 class LimitsBase
 {
@@ -32,7 +32,7 @@ public:
 	virtual JointState getTorqueLimits(const JointState & q) = 0;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_ROBOT_LIMITS_HPP_

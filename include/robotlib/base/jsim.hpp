@@ -26,13 +26,13 @@
 #include "robotlib/base/declarations.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 typedef dls::rbd::InertiaMatrixDense InertiaMatrix;
 /**
  * The type of the Joint Space Inertia Matrix (JSIM) of the robot HyQ.
  */
-class JSIMBase : public dls::rbd::StateDependentMatrix<dls::dog::JointState, 18, 18, JSIMBase>
+class JSIMBase : public dls::rbd::StateDependentMatrix<dls::robot::JointState, 18, 18, JSIMBase>
 {
 public:
 	typedef Eigen::Matrix<double,18,18> MatrixType;
@@ -42,7 +42,7 @@ public:
 	typedef const Eigen::Block<const MatrixType,12,12> BlockFixedBase_t;
 
 public:
-	virtual const JSIMBase& update(const dls::dog::JointState&) = 0;
+	virtual const JSIMBase& update(const dls::robot::JointState&) = 0;
 
 	/**
 		 * Computes and saves the matrix L of the L^T L factorization of this JSIM.
@@ -97,6 +97,6 @@ protected:
 	virtual void computeLInverse() = 0;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_JSIM_HPP_

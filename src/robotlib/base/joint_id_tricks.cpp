@@ -23,7 +23,7 @@
 #include "robotlib/base/joint_id_tricks.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 JointIdentifiers toJointID(LegID leg, LegJoints j)
 {
     return orderedJointIDs[ leg * 3 + j ];

@@ -1,7 +1,7 @@
 #include <iostream>
 namespace dls
 {
-namespace dog
+namespace robot
 {
 
 template<typename T> inline
@@ -100,6 +100,6 @@ LegDataMap<T> operator-(const LegDataMap<T>& lhs, const LegDataMap<T>& rhs) {
     out[RH] = lhs[RH] - rhs[RH];
     return out;
 }
-} // namespace dog
+} // namespace robot
 } // namespace dls
 

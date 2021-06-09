@@ -26,7 +26,7 @@
 #include <Eigen/Dense>
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * This class computes the ground reaction forces at the feet, according to the
@@ -189,9 +189,9 @@ public:
 	 * @param foot_x
 	 * @param foot_y
 	 */
-	virtual void setContactPoint(dog::LegID leg, double foot_x, double foot_y) = 0;
+	virtual void setContactPoint(robot::LegID leg, double foot_x, double foot_y) = 0;
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 

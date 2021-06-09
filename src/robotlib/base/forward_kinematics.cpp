@@ -18,14 +18,14 @@
 * Maintainer email:  hendrik.debruin@iit.it                                    *
 *******************************************************************************/
 #include "robotlib/base/forward_kinematics.hpp"
-using namespace dls::dog;
+using namespace dls::robot;
 
 LegDataMap<Vector3d> ForwardKinematicsBase::getFeetPos(const JointState &q)
 {
-	dog::LegDataMap<dog::Vector3d> feetPos(Vector3d::Zero());
-	feetPos[dog::LF] = getFootPosLF(q);
-	feetPos[dog::RF] = getFootPosRF(q);
-	feetPos[dog::LH] = getFootPosLH(q);
-	feetPos[dog::RH] = getFootPosRH(q);
+	robot::LegDataMap<robot::Vector3d> feetPos(Vector3d::Zero());
+	feetPos[robot::LF] = getFootPosLF(q);
+	feetPos[robot::RF] = getFootPosRF(q);
+	feetPos[robot::LH] = getFootPosLH(q);
+	feetPos[robot::RH] = getFootPosRH(q);
 	return feetPos;
 }

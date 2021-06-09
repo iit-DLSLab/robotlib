@@ -27,7 +27,7 @@
 #include "robotlib/base/link_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * The Inverse Dynamics routine for quadruped robots
@@ -151,6 +151,6 @@ protected:
 	/** Updates all the kinematics transforms used by the inverse dynamics routine. */
 	virtual void setJointStatus(const JointState& q) const = 0;
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_INVERSE_DYNAMICS_HPP_

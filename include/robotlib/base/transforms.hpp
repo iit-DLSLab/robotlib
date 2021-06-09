@@ -26,7 +26,7 @@
 #include "robotlib/base/declarations.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 // =============================================================================
 // Typedefs
@@ -147,7 +147,7 @@ public:
 	) = 0;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_TRANSFORMS_HPP_

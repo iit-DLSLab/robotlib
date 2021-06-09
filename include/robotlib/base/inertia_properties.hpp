@@ -26,7 +26,7 @@
 
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 class InertiaPropertiesBase {
 public:
@@ -52,7 +52,7 @@ public:
 	virtual Vector3d getWholeBodyCOM(const JointState& q) = 0;
 
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_INERTIA_PROPERTIES_HPP_

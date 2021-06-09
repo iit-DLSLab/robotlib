@@ -17,19 +17,24 @@
 * Maintainer:        Hendrik de Bruin                                          *
 * Maintainer email:  hendrik.debruin@iit.it                                    *
 *******************************************************************************/
+/*
+
+
+
+
 #ifndef _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
 #define _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
 // =============================================================================
 // Includes
 // =============================================================================
 #include <memory>
-#include "robotlib/base/dog.hpp"
+#include "robotlib/base/robot.hpp"
 
 // =============================================================================
 // Namespace
 // =============================================================================
 namespace dls {
-namespace dog {
+namespace robot {
 
 // =============================================================================
 // Class Description
@@ -50,9 +55,13 @@ public:
 		HyQReal
 	};
 
-	static std::shared_ptr<Dog> buildRobot(RobotType);
+	static std::shared_ptr<Robot> buildRobot(RobotType);
 };
 // =============================================================================
-} // dog
+} // robot
 } // dls
 #endif // _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
+
+
+
+*/

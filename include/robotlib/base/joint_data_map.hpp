@@ -24,7 +24,7 @@
 
 namespace dls
 {
-namespace dog
+namespace robot
 {
 
 /**
@@ -47,7 +47,7 @@ private:
 	void copydata(const JointDataMap& rhs);
 	void assigndata(const T& rhs);
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #include "robotlib/base/joint_data_map.tpp"
 #endif // _ROBOTLIB_BASE_JOINT_DATA_MAP_HPP_

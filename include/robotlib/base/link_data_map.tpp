@@ -1,6 +1,6 @@
 namespace dls
 {
-namespace dog
+namespace robot
 {
 
 template<typename T> inline
@@ -107,5 +107,5 @@ std::ostream& operator<<(std::ostream& out, const LinkDataMap<T>& map) {
 	return out;
 }
 
-} // namespace dog
+} // namespace robot
 } // namespace dls

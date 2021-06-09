@@ -21,6 +21,11 @@
 // Includes
 // =============================================================================
 // stdlib
+/*
+
+
+
+
 #include <stdexcept>
 #include <fstream>
 #include <string>
@@ -80,15 +85,15 @@
 // =============================================================================
 // Using declarations
 // =============================================================================
-using dls::dog::Dog;
-using dls::dog::RobotFactory;
+using dls::robot::Robot;
+using dls::robot::RobotFactory;
 
 // =============================================================================
 // Prototypes
 // =============================================================================
 urdf::Model          init_robot_description(std::string robot_description);
-std::shared_ptr<Dog> buildHyQ();
-std::shared_ptr<Dog> buildHyQReal();
+std::shared_ptr<Robot> buildHyQ();
+std::shared_ptr<Robot> buildHyQReal();
 std::string readFile(const char *filename);
 
 // =============================================================================
@@ -100,48 +105,48 @@ std::string readFile(const char *filename);
 // -----------------------------------------------------------------------------
 // HyQ
 // -----------------------------------------------------------------------------
-static std::shared_ptr<dls::dog::KinDynParamsBase>       pHyQDefaultParamsGetter;
-static std::shared_ptr<dls::dog::FeetContactForcesBase>  pHyQFeetContactForces;
-static std::shared_ptr<dls::dog::FeetJacobiansBase>      pHyQFeetJacobians;
-static std::shared_ptr<dls::dog::ForwardKinematicsBase>  pHyQForwardKinematics;
-static std::shared_ptr<dls::dog::InertiaPropertiesBase>  pHyQInertiaProperties;
-static std::shared_ptr<dls::dog::InverseDynamicsBase>    pHyQInverseDynamics;
-static std::shared_ptr<dls::dog::InverseKinematicsBase>  pHyQInverseKinematics;
-static std::shared_ptr<dls::dog::HyQ::Jacobians>         pHyQJacobians;
-static std::shared_ptr<dls::dog::JSIMBase>               pHyQJSIM;
-static std::shared_ptr<dls::dog::RobotLengthsBase>       pHyQLengths;
-static std::shared_ptr<dls::dog::LimitsBase>             pHyQLimits;
-static std::shared_ptr<dls::dog::MotionTransformsBase>   pHyQMotionTransforms;
-static std::shared_ptr<dls::dog::ShinJacobiansBase>      pHyQShinJacobians;
-static std::shared_ptr<dls::dog::ForceTransformsBase>    pHyQTransformForce;
+static std::shared_ptr<dls::robot::KinDynParamsBase>       pHyQDefaultParamsGetter;
+static std::shared_ptr<dls::robot::FeetContactForcesBase>  pHyQFeetContactForces;
+static std::shared_ptr<dls::robot::FeetJacobiansBase>      pHyQFeetJacobians;
+static std::shared_ptr<dls::robot::ForwardKinematicsBase>  pHyQForwardKinematics;
+static std::shared_ptr<dls::robot::InertiaPropertiesBase>  pHyQInertiaProperties;
+static std::shared_ptr<dls::robot::InverseDynamicsBase>    pHyQInverseDynamics;
+static std::shared_ptr<dls::robot::InverseKinematicsBase>  pHyQInverseKinematics;
+static std::shared_ptr<dls::robot::HyQ::Jacobians>         pHyQJacobians;
+static std::shared_ptr<dls::robot::JSIMBase>               pHyQJSIM;
+static std::shared_ptr<dls::robot::RobotLengthsBase>       pHyQLengths;
+static std::shared_ptr<dls::robot::LimitsBase>             pHyQLimits;
+static std::shared_ptr<dls::robot::MotionTransformsBase>   pHyQMotionTransforms;
+static std::shared_ptr<dls::robot::ShinJacobiansBase>      pHyQShinJacobians;
+static std::shared_ptr<dls::robot::ForceTransformsBase>    pHyQTransformForce;
 
 // NEW
-static std::shared_ptr<dls::dog::HomogeneousTransformsBase>  pHyQHomogeneousTransforms;
+static std::shared_ptr<dls::robot::HomogeneousTransformsBase>  pHyQHomogeneousTransforms;
 // -----------------------------------------------------------------------------
 // HyQReal
 // -----------------------------------------------------------------------------
-static std::shared_ptr<dls::dog::KinDynParamsBase>       pHyQRealDefaultParamsGetter;
-static std::shared_ptr<dls::dog::FeetContactForcesBase>  pHyQRealFeetContactForces;
-static std::shared_ptr<dls::dog::FeetJacobiansBase>      pHyQRealFeetJacobians;
-static std::shared_ptr<dls::dog::ForwardKinematicsBase>  pHyQRealForwardKinematics;
-static std::shared_ptr<dls::dog::InertiaPropertiesBase>  pHyQRealInertiaProperties;
-static std::shared_ptr<dls::dog::InverseDynamicsBase>    pHyQRealInverseDynamics;
-static std::shared_ptr<dls::dog::InverseKinematicsBase>  pHyQRealInverseKinematics;
-static std::shared_ptr<dls::dog::HyQReal::Jacobians>     pHyQRealJacobians;
-static std::shared_ptr<dls::dog::JSIMBase>               pHyQRealJSIM;
-static std::shared_ptr<dls::dog::RobotLengthsBase>       pHyQRealLengths;
-static std::shared_ptr<dls::dog::LimitsBase>             pHyQRealLimits;
-static std::shared_ptr<dls::dog::MotionTransformsBase>   pHyQRealMotionTransforms;
-static std::shared_ptr<dls::dog::ShinJacobiansBase>      pHyQRealShinJacobians;
-static std::shared_ptr<dls::dog::ForceTransformsBase>    pHyQRealTransformForce;
+static std::shared_ptr<dls::robot::KinDynParamsBase>       pHyQRealDefaultParamsGetter;
+static std::shared_ptr<dls::robot::FeetContactForcesBase>  pHyQRealFeetContactForces;
+static std::shared_ptr<dls::robot::FeetJacobiansBase>      pHyQRealFeetJacobians;
+static std::shared_ptr<dls::robot::ForwardKinematicsBase>  pHyQRealForwardKinematics;
+static std::shared_ptr<dls::robot::InertiaPropertiesBase>  pHyQRealInertiaProperties;
+static std::shared_ptr<dls::robot::InverseDynamicsBase>    pHyQRealInverseDynamics;
+static std::shared_ptr<dls::robot::InverseKinematicsBase>  pHyQRealInverseKinematics;
+static std::shared_ptr<dls::robot::HyQReal::Jacobians>     pHyQRealJacobians;
+static std::shared_ptr<dls::robot::JSIMBase>               pHyQRealJSIM;
+static std::shared_ptr<dls::robot::RobotLengthsBase>       pHyQRealLengths;
+static std::shared_ptr<dls::robot::LimitsBase>             pHyQRealLimits;
+static std::shared_ptr<dls::robot::MotionTransformsBase>   pHyQRealMotionTransforms;
+static std::shared_ptr<dls::robot::ShinJacobiansBase>      pHyQRealShinJacobians;
+static std::shared_ptr<dls::robot::ForceTransformsBase>    pHyQRealTransformForce;
 
 // NEW
-static std::shared_ptr<dls::dog::HomogeneousTransformsBase>  pHyQRealHomogeneousTransforms;
+static std::shared_ptr<dls::robot::HomogeneousTransformsBase>  pHyQRealHomogeneousTransforms;
 
 // =============================================================================
 // Implementiaton
 // =============================================================================
-std::shared_ptr<Dog> RobotFactory::buildRobot(RobotType robot)
+std::shared_ptr<Robot> RobotFactory::buildRobot(RobotType robot)
 {
 	switch(robot)
 	{
@@ -186,10 +191,10 @@ urdf::Model init_robot_description(std::string robot_description)
 	return robot_model;
 }
 
-std::shared_ptr<Dog> buildHyQ()
+std::shared_ptr<Robot> buildHyQ()
 {
-	using namespace dls::dog::HyQ;
-	using namespace dls::dog::HyQ::dyn;
+	using namespace dls::robot::HyQ;
+	using namespace dls::robot::HyQ::dyn;
 	std::string robot_description = readFile("../../src/description/hyq.urdf"); //TODO 
 	auto model = init_robot_description(robot_description);
 
@@ -223,7 +228,7 @@ std::shared_ptr<Dog> buildHyQ()
 	);
 
 	// NEW
-	pHyQHomogeneousTransforms = std::make_shared<dls::dog::HyQ::HomogeneousTransforms>(*pHyQDefaultParamsGetter.get());
+	pHyQHomogeneousTransforms = std::make_shared<dls::robot::HyQ::HomogeneousTransforms>(*pHyQDefaultParamsGetter.get());
 
 	return std::make_shared<hyq>
 	(
@@ -247,10 +252,10 @@ std::shared_ptr<Dog> buildHyQ()
 	);
 }
 
-std::shared_ptr<Dog> buildHyQReal()
+std::shared_ptr<Robot> buildHyQReal()
 {
-	using namespace dls::dog::HyQReal;
-	using namespace dls::dog::HyQReal::dyn;
+	using namespace dls::robot::HyQReal;
+	using namespace dls::robot::HyQReal::dyn;
 	std::string robot_description = readFile("../../src/description/hyqreal.urdf"); //TODO
 	auto model = init_robot_description(robot_description);
 
@@ -281,7 +286,7 @@ std::shared_ptr<Dog> buildHyQReal()
 	);
 
 	// NEW
-	pHyQRealHomogeneousTransforms = std::make_shared<dls::dog::HyQReal::HomogeneousTransforms>(*pHyQRealDefaultParamsGetter.get());
+	pHyQRealHomogeneousTransforms = std::make_shared<dls::robot::HyQReal::HomogeneousTransforms>(*pHyQRealDefaultParamsGetter.get());
 
 
 	return std::make_shared<hyqreal>
@@ -305,3 +310,9 @@ std::shared_ptr<Dog> buildHyQReal()
 		model
 	);
 }
+
+
+
+
+
+*/

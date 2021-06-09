@@ -29,7 +29,7 @@
 #include "robotlib/base/leg_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 
 class TestK
@@ -55,7 +55,7 @@ private:
 };
 
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_TEST_K_HPP_

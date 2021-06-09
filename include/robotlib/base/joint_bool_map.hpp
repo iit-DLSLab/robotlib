@@ -23,7 +23,7 @@
 #include "robotlib/base/joint_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * @brief The JointBoolMap class specializes the JointDataMap with extended
@@ -46,7 +46,7 @@ public:
     static inline bool AND(const JointDataMap<bool>& rhs);
     bool AND() const;
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_BASE_JOINT_BOOL_MAP_HPP_

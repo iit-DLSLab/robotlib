@@ -23,7 +23,7 @@
 #include "robotlib/rbd/rbd.h"
 
 namespace dls {
-namespace dog {
+namespace robot {
 // =============================================================================
 // Enums
 // =============================================================================
@@ -120,6 +120,6 @@ typedef dls::rbd::Matrix33d Matrix3d;
 typedef dls::rbd::PlainMatrix<double, 3, 3 > FootJac;
 typedef Eigen::Vector3d LegJointState;
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_DECLARATIONS_HPP_

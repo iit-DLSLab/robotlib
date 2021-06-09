@@ -23,7 +23,7 @@
 #include "robotlib/base/declarations.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * A very simple container to associate a generic data item to each link
@@ -46,7 +46,7 @@ private:
 	void assigndata(const T& commonValue);
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 #include "robotlib/base/link_data_map.tpp"

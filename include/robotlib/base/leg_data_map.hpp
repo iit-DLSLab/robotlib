@@ -29,7 +29,7 @@ namespace dls {
  * More or less everything is based on the assumption of having four legs and
  * three joints per leg.
  */
-namespace dog {
+namespace robot {
 
 static const int _LEGS_COUNT = 4;
 enum LegID{LF=0, RF, LH, RH};
@@ -61,7 +61,7 @@ private:
 	void copydata(const LegDataMap& rhs);
 	void assignAll(const T& value);
 };
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #include "robotlib/base/leg_data_map.tpp"
 

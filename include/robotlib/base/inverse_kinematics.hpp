@@ -8,7 +8,7 @@
 
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 using FootPositions     = LegDataMap<dls::rbd::Vector3d>;
 using FootVelocities    = LegDataMap<dls::rbd::Vector3d>;
@@ -42,7 +42,7 @@ public:
 	 * @brief getJointPosition computes the position of the joints for one leg
 	 * given the foot position
 	 * @param[in] foot_position position of the foot, expressed in the base frame
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[in] clamp optional parameter to indicate whether the values returned
@@ -64,7 +64,7 @@ public:
 								  bool clamp) but with an additional parameter
 								  to indicate if the joint limits are hit
 	 * @param[in] foot_position position of the foot, expressed in the base frame
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[in] clamp  parameter to indicate whether the values returned
@@ -93,7 +93,7 @@ public:
 								  LegJointState& q,
 								  bool clamp) but for all legs
 	 * @param[in] foot_positions positions of the feet, expressed in the base frame
-	 * @param[out] q a dog::JointState vector expressing the joint positions
+	 * @param[out] q a robot::JointState vector expressing the joint positions
 	 * @param[in] clamp optional parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
 	 * @return a boolean indicating if the position is correctly computed
@@ -116,10 +116,10 @@ public:
 								  bool clamp,
 								  LegJointBool& q_violation) but for all legs
 	 * @param[in] foot_positions positions of the feet, expressed in the base frame
-	 * @param[out] q a dog::JointState vector expressing the joint positions
+	 * @param[out] q a robot::JointState vector expressing the joint positions
 	 * @param[in] clamp parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
-	 * @param[out] q_violation  a dog::JointState vector of booleans indicating
+	 * @param[out] q_violation  a robot::JointState vector of booleans indicating
 	 * which indicate whether a specific joint violated the
 	 * kinematic limits, regardless of the clamp option
 	 * @return a boolean indicating if all the joint positions are correctly
@@ -143,7 +143,7 @@ public:
 	 * given the foot velocity for the same leg
 	 * @param[in] foot_velocity velocity of the foot with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[in] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[out] qd  three-dimensional vector expressing the joint velocities
@@ -162,8 +162,8 @@ public:
 	 * @brief same as getJointVelocity(), but for all legs
 	 * @param[in] foot_velocities velocities of the feet with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[in] q a dog::JointState vector expressing the joint positions
-	 * @param[out] qd a dog::JointState vector expressing the joint velocities
+	 * @param[in] q a robot::JointState vector expressing the joint positions
+	 * @param[out] qd a robot::JointState vector expressing the joint velocities
 	 * @return true if the velocities of all legs are correctly computed,
 	 * false otherwise
 	 * @sa getJointVelocityconst FootVelocity& foot_velocity,
@@ -184,7 +184,7 @@ public:
 	 * @param[in] foot_position foot position expressed in the base frame
 	 * @param[in] foot_velocity velocity of the foot with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[out] qd three-dimensional vector expressing the joint velocities
@@ -215,7 +215,7 @@ public:
 							   saturated to the joint limits
 	 * @param[in] foot_position foot position expressed in the base frame
 	 * @param[in] foot_velocity velocity of the foot with respect to the base
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[out] qd three-dimensional vector expressing the joint velocities
@@ -255,7 +255,7 @@ public:
 	 * @param[in] foot_position foot position expressed in the base frame
 	 * @param[in] foot_velocity velocity of the foot with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[out] qd three-dimensional vector expressing the joint velocities
@@ -290,7 +290,7 @@ public:
 	 * @brief same as
 	 * @param[in] foot_position foot position expressed in the base frame
 	 * @param[in] foot_velocity velocity of the foot with respect to the base
-	 * @param[in] leg_id leg identifier (e.g., dog::LF)
+	 * @param[in] leg_id leg identifier (e.g., robot::LF)
 	 * @param[out] q three-dimensional vector expressing the joint positions of
 	 * the three joints of a leg
 	 * @param[out] qd three-dimensional vector expressing the joint velocities
@@ -333,8 +333,8 @@ public:
 	 * @param[in] foot_positions positions of the feet, expressed in the base frame
 	 * @param[in] foot_velocities velocities of the feet with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[out] q a dog::JointState vector expressing the joint positions
-	 * @param[out] qd a dog::JointState vector expressing the joint velocities
+	 * @param[out] q a robot::JointState vector expressing the joint positions
+	 * @param[out] qd a robot::JointState vector expressing the joint velocities
 	 * @param[in] clamp parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
 	 * @param[in] q_violation a 12-dimensional data structure storing
@@ -373,9 +373,9 @@ public:
 	 * frame, espressed in the base frame
 	 * @param[in] foot_accelerations accelerations of the feet with respect to
 	 * the base frame, espressed in the base frame
-	 * @param[out] q a dog::JointState vector expressing the joint positions
-	 * @param[out] qd a dog::JointState vector expressing the joint velocities
-	 * @param[out] qdd a dog::JointState vector expressing the joint accelerations
+	 * @param[out] q a robot::JointState vector expressing the joint positions
+	 * @param[out] qd a robot::JointState vector expressing the joint velocities
+	 * @param[out] qdd a robot::JointState vector expressing the joint accelerations
 	 * @param[in] clamp optional parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
 	 * @return true if position, velocity and acceleration are computed
@@ -411,8 +411,8 @@ public:
 	 * @param[in] foot_positions positions of the feet, expressed in the base frame
 	 * @param[in] foot_velocities velocities of the feet with respect to the base
 	 * frame, espressed in the base frame
-	 * @param[out] q a dog::JointState vector expressing the joint positions
-	 * @param[out] qd a dog::JointState vector expressing the joint velocities
+	 * @param[out] q a robot::JointState vector expressing the joint positions
+	 * @param[out] qd a robot::JointState vector expressing the joint velocities
 	 * @param clamp optional parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
 	 * @return true if position, velocity and acceleration are computed
@@ -448,8 +448,8 @@ public:
 	 * @param[in] foot_velocities velocities of the feet with respect to the base
 	 * frame, espressed in the base frame
 	 * @param[in] foot_accelerations
-	 * @param[out] q a dog::JointState vector expressing the joint positions
-	 * @param[out] qd a dog::JointState vector expressing the joint velocities
+	 * @param[out] q a robot::JointState vector expressing the joint positions
+	 * @param[out] qd a robot::JointState vector expressing the joint velocities
 	 * @param[in] clamp parameter to indicate whether the values returned
 	 * for the joints should be saturated to the joint limits
 	 * @param[in] q_violation a 12-dimensional data structure storing
@@ -494,7 +494,7 @@ public:
 	virtual void setTimePeriod(const double& dt) = 0;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 

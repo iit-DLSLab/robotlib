@@ -21,7 +21,7 @@
 #define _ROBOTLIB_BASE_KIN_DYN_PARAMS_HPP_
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 
 class KinDynParamsBase
@@ -74,6 +74,6 @@ public:
 	virtual void setValue_lower_leg(double val) = 0;
 };
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_KIN_DYN_PARAMS_HPP_

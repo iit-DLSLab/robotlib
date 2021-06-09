@@ -21,17 +21,17 @@
 // Includes
 // =============================================================================
 #include <memory>
-#include "robotlib/base/dog.hpp"
+#include "robotlib/base/robot.hpp"
 
 // =============================================================================
 // Using Declarations
 // =============================================================================
-using namespace dls::dog;
+using namespace dls::robot;
 
 // =============================================================================
 // Constructors
 // =============================================================================
-Dog::Dog
+Robot::Robot
 (
 	std::shared_ptr<RobotLengthsBase>       pRobotLengths_,
 	std::shared_ptr<FeetContactForcesBase>  pFeetContactForces_,
@@ -46,9 +46,9 @@ Dog::Dog
 	std::shared_ptr<ShinJacobiansBase>      pShinJacobians_,
 
 	// NEW
-	std::shared_ptr<dls::dog::HomogeneousTransformsBase>  pHomogeneousTransforms_,
-	std::shared_ptr<dls::dog::MotionTransformsBase>      pMotionTransforms_,
-	std::shared_ptr<dls::dog::ForceTransformsBase>       pForceTransforms_,
+	std::shared_ptr<dls::robot::HomogeneousTransformsBase>  pHomogeneousTransforms_,
+	std::shared_ptr<dls::robot::MotionTransformsBase>      pMotionTransforms_,
+	std::shared_ptr<dls::robot::ForceTransformsBase>       pForceTransforms_,
 		const urdf::Model                                &model_
 ) :
 	pRobotLengths       (pRobotLengths_       ),
@@ -73,20 +73,20 @@ Dog::Dog
 // =============================================================================
 // Implementation
 // =============================================================================
-std::shared_ptr<RobotLengthsBase>       Dog::getRobotLengths()       {  return  this->pRobotLengths;  }
-std::shared_ptr<FeetContactForcesBase>  Dog::getFeetContactforces()  {  return  this->pFeetContactForces;  }
-std::shared_ptr<FeetJacobiansBase>      Dog::getFeetJacobians()      {  return  this->pFeetJacobians;  }
-std::shared_ptr<ForwardKinematicsBase>  Dog::getForwardKinematics()  {  return  this->pForwardKinematics;  }
-std::shared_ptr<InertiaPropertiesBase>  Dog::getInertiaProperties()  {  return  this->pInertiaProperties;  }
-std::shared_ptr<InverseDynamicsBase>    Dog::getInverseDynamics()    {  return  this->pInverseDynamics;  }
-std::shared_ptr<InverseKinematicsBase>  Dog::getInverseKinematics()  {  return  this->pInverseKinematics;  }
-std::shared_ptr<JSIMBase>               Dog::getJSIM()               {  return  this->pJSIM;  }
-std::shared_ptr<KinDynParamsBase>       Dog::getKinDynParams()       {  return  this->pKinDynParams;  }
-std::shared_ptr<LimitsBase>             Dog::getLimits()             {  return  this->pLimits;  }
-std::shared_ptr<ShinJacobiansBase>      Dog::getShinJacobians()      {  return  this->pShinJacobians;  }
+std::shared_ptr<RobotLengthsBase>       Robot::getRobotLengths()       {  return  this->pRobotLengths;  }
+std::shared_ptr<FeetContactForcesBase>  Robot::getFeetContactforces()  {  return  this->pFeetContactForces;  }
+std::shared_ptr<FeetJacobiansBase>      Robot::getFeetJacobians()      {  return  this->pFeetJacobians;  }
+std::shared_ptr<ForwardKinematicsBase>  Robot::getForwardKinematics()  {  return  this->pForwardKinematics;  }
+std::shared_ptr<InertiaPropertiesBase>  Robot::getInertiaProperties()  {  return  this->pInertiaProperties;  }
+std::shared_ptr<InverseDynamicsBase>    Robot::getInverseDynamics()    {  return  this->pInverseDynamics;  }
+std::shared_ptr<InverseKinematicsBase>  Robot::getInverseKinematics()  {  return  this->pInverseKinematics;  }
+std::shared_ptr<JSIMBase>               Robot::getJSIM()               {  return  this->pJSIM;  }
+std::shared_ptr<KinDynParamsBase>       Robot::getKinDynParams()       {  return  this->pKinDynParams;  }
+std::shared_ptr<LimitsBase>             Robot::getLimits()             {  return  this->pLimits;  }
+std::shared_ptr<ShinJacobiansBase>      Robot::getShinJacobians()      {  return  this->pShinJacobians;  }
 
 // NEW
-std::shared_ptr<HomogeneousTransformsBase>  Dog::getHomogeneousTransforms()  {  return  this->pHomogeneousTransforms;  }
-std::shared_ptr<MotionTransformsBase>       Dog::getMotionTransforms()       {  return  this->pMotionTransforms;       }
-std::shared_ptr<ForceTransformsBase>        Dog::getForceTransforms()        {  return  this->pForceTransforms;        }
-urdf::Model                                 Dog::getModel()                  {  return  this->robot_model;             }
+std::shared_ptr<HomogeneousTransformsBase>  Robot::getHomogeneousTransforms()  {  return  this->pHomogeneousTransforms;  }
+std::shared_ptr<MotionTransformsBase>       Robot::getMotionTransforms()       {  return  this->pMotionTransforms;       }
+std::shared_ptr<ForceTransformsBase>        Robot::getForceTransforms()        {  return  this->pForceTransforms;        }
+urdf::Model                                 Robot::getModel()                  {  return  this->robot_model;             }

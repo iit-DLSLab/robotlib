@@ -24,7 +24,7 @@
 #include "robotlib/base/leg_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * A forward kinematics interface for quadrupeds.
@@ -44,11 +44,11 @@ public:
 	virtual Vector3d getShinPos(const JointState& q, const double& contact_pos, const LegID& leg) = 0;
 
 	// virtual
-	virtual dog::LegDataMap<Vector3d> getFeetPos  (const JointState& q);
+	virtual robot::LegDataMap<Vector3d> getFeetPos  (const JointState& q);
 };
 
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 
 

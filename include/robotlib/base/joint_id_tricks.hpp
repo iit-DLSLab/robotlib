@@ -27,7 +27,7 @@
 
 namespace dls
 {
-namespace dog
+namespace robot
 {
 
 JointIdentifiers toJointID(LegID leg, LegJoints j);
@@ -46,6 +46,6 @@ bool belongsTo(LegID leg, const JointIdentifiers jointID);
  */
 void setLegJointState(LegID leg, const dls::rbd::Vector3d& vecin,  JointState& jstate);
 
-} // namespace dog
+} // namespace robot
 } // namespace dls
 #endif // _ROBOTLIB_BASE_JOINT_ID_TRICKS_HPP_

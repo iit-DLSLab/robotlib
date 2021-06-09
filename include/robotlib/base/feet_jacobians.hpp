@@ -24,7 +24,7 @@
 #include "robotlib/base/leg_data_map.hpp"
 
 namespace dls {
-namespace dog {
+namespace robot {
 
 /**
  * An interface for the Jacobian of the feet of quadrupeds.
@@ -60,8 +60,8 @@ public:
 	 */
 	virtual FootJac getFootJacobian
 	(
-		const dog::JointState& q,
-		const dog::LegID& leg,
+		const robot::JointState& q,
+		const robot::LegID& leg,
 		const double& foot_x,
 		const double& foot_y
 	) = 0;
@@ -84,7 +84,7 @@ public:
 	virtual FootJac getAngularFootJacobian(const JointState& q, const LegID& leg) = 0;
 	///@}
 };
-} //namespace dog
+} //namespace robot
 } //namespace dls
 
 #endif // _ROBOTLIB_BASE_FEET_JACOBIANS_HPP_
