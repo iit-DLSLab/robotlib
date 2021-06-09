@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.1)
-project(doglib)
+project(robotlib)
 
 set(MAJOR 0)
 set(MINOR 0)

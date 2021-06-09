@@ -1,5 +1,5 @@
-#ifndef DOGLIB_COMMONS_GEOMETRY_ALGEBRA_ALFKJ_HPP
-#define DOGLIB_COMMONS_GEOMETRY_ALGEBRA_ALFKJ_HPP
+#ifndef _ROBOTLIB_COMMONS_GEOMETRY_ALGEBRA_HPP_
+#define _ROBOTLIB_COMMONS_GEOMETRY_ALGEBRA_HPP_
 
 #include <Eigen/Dense>
 #include <iostream>
@@ -290,5 +290,5 @@ inline void computeQR(const MatrixXR & A,
 }
 
 } // namespace commons
-} // namespace iit
-#endif
+} // namespace dls
+#endif // _ROBOTLIB_COMMONS_GEOMETRY_ALGEBRA_HPP_

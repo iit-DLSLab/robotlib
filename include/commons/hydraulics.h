@@ -1,5 +1,5 @@
-#ifndef DOGLIB_COMMONS_HYDRAULICS_SDLFJEWER_HPP
-#define DOGLIB_COMMONS_HYDRAULICS_SDLFJEWER_HPP
+#ifndef _ROBOTLIB_COMMONS_HYDRAULICS_HPP_
+#define _ROBOTLIB_COMMONS_HYDRAULICS_HPP_
 
 #include <iostream>
 #include <math.h>
@@ -309,4 +309,4 @@ void feedback_linearization_cylinder(
 
 
 
-#endif /* IIT_HYD_COMMONS_H */
+#endif // _ROBOTLIB_COMMONS_HYDRAULICS_HPP_

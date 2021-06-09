@@ -9,7 +9,7 @@ install(
 	DESTINATION
 		include/description
 	COMPONENT
-		"doglib"
+		"robotlib"
 	FILES_MATCHING
 		PATTERN "*.urdf"
 )

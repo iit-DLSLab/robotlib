@@ -1,5 +1,5 @@
-#ifndef DOGLIB_COMMONS_GEOMETRY_ROTATIONS_SDFLREW_HPP
-#define DOGLIB_COMMONS_GEOMETRY_ROTATIONS_SDFLREW_HPP
+#ifndef _ROBOTLIB_COMMONS_GEOMETRY_ROTATIONS_HPP_
+#define _ROBOTLIB_COMMONS_GEOMETRY_ROTATIONS_HPP_
 
 #include <Eigen/Dense>
 #include "commons/geometry/algebra.h"
@@ -721,4 +721,4 @@ inline Quaternion  quatMult(const Quaternion & q2, const Quaternion & q1)
 }
 }
 
-#endif
+#endif // _ROBOTLIB_COMMONS_GEOMETRY_ROTATIONS_HPP_

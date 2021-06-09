@@ -5,8 +5,8 @@
  *      Author: mfrigerio
  */
 
-#ifndef DOGLIB_COMMONS_CONTROL_ASFMZ_HPP
-#define DOGLIB_COMMONS_CONTROL_ASFMZ_HPP
+#ifndef _ROBOTLIB_COMMONS_CONTROL_HPP_
+#define _ROBOTLIB_COMMONS_CONTROL_HPP_
 
 #include <iostream>
 
@@ -148,4 +148,4 @@ inline std::ostream& operator<< (std::ostream& out, const pid_gains& g) {
 }
 
 
-#endif /* IIT_COMMONS_CONTROL_H_ */
+#endif // _ROBOTLIB_COMMONS_CONTROL_HPP_

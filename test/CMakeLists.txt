@@ -7,6 +7,6 @@ add_executable(compile_test
 
 target_link_libraries(compile_test
 	PRIVATE
-	doglib
+	robotlib
 )
 

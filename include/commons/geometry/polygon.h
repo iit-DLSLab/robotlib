@@ -1,5 +1,5 @@
-#ifndef DOGLIB_COMMONS_GEOMETRY_POLYGON_QEWUP_HPP
-#define DOGLIB_COMMONS_GEOMETRY_POLYGON_QEWUP_HPP
+#ifndef _ROBOTLIB_COMMONS_GEOMETRY_POLYGON_HPP_
+#define _ROBOTLIB_COMMONS_GEOMETRY_POLYGON_HPP_
 
 #include <Eigen/Dense>
 #include <iostream>
@@ -30,4 +30,4 @@ typedef struct Polygon
 };
 
 
-#endif // POLYGON_H
+#endif // _ROBOTLIB_COMMONS_GEOMETRY_POLYGON_HPP_

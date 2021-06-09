@@ -1,6 +1,6 @@
-#include "doglib/hyqreal/HyQReal.hpp"
+#include "robotlib/hyqreal/HyQReal.hpp"
 
-#include "doglib/factory/robot_factory.hpp"
+#include "robotlib/factory/robot_factory.hpp"
 
 using namespace dls::dog;
 void testRobot                  (std::shared_ptr<Dog>);
