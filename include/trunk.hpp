@@ -13,39 +13,42 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Marco Marchitto                                           *
+* Author:            Legacy Code                                               *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_LEGBASE_HPP
-#define ROBOTLIB_LEGBASE_HPP
+#ifndef ROBOTLIB_TRUNK_HPP
+#define ROBOTLIB_TRUNK_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-
-#include "robotlib/limb.hpp"
+#include "pose.hpp"
+#include "dyn_params.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A leg interface for robots.
+ * A trunk class for robots.
  */
-
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class LegBase : public Limb<NJOINTS, NLINKS>
+class Trunk
 {
 public:
-    LegBase (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :Limb<NJOINTS,NLINKS>(name, joints, links) {};
-    
-	~LegBase(){};
 
-    // Functions for legs (and not for arms) TO DO
+	Trunk (const Pose& origin, const DynParams& dparams ): origin_(origin), dyn_params_(dparams) {};
+	
+	~Trunk(){};
 
+	// Get functions
+	const Pose& getOrigin(){return origin_;}
+	const DynParams& getDynParams(){return dyn_params_;}
+
+private:
+	const Pose origin_;				//! Pose of the trunk
+	const DynParams dyn_params_; 		//! Dynamic parameter of the trunk
 };
 
+} // namespace dog
 } // namespace robot
-} // namespace dls
 
 #endif

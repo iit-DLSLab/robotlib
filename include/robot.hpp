@@ -30,13 +30,13 @@
 #include <fstream>
 
 #include <memory>
-#include "robotlib/limb_base.hpp"
-#include "robotlib/trunk.hpp"
-#include "robotlib/leg.hpp"
-#include "robotlib/limb.hpp"
-#include "robotlib/joint.hpp"
+#include "limb_base.hpp"
+#include "trunk.hpp"
+#include "leg.hpp"
+#include "limb.hpp"
+#include "joint.hpp"
 
-//#include "robotlib/forward_kinematics.hpp"
+//#include "forward_kinematics.hpp"
 
 
 namespace dls

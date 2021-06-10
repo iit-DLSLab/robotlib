@@ -17,29 +17,31 @@
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_ARM_HPP
-#define ROBOTLIB_ARM_HPP
+#ifndef ROBOTLIB_LEGBASE_HPP
+#define ROBOTLIB_LEGBASE_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
 
-#include "robotlib/arm_base.hpp"
+#include "limb.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * An arm class for robots.
+ * A leg interface for robots.
  */
-template<unsigned int NJOINTS, unsigned int NLINKS>
-class Arm : public ArmBase<NJOINTS, NLINKS>
+
+template <unsigned int NJOINTS, unsigned int NLINKS>
+class LegBase : public Limb<NJOINTS, NLINKS>
 {
 public:
+    LegBase (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
+            :Limb<NJOINTS,NLINKS>(name, joints, links) {};
+    
+	~LegBase(){};
 
-	Arm(const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :ArmBase<NJOINTS,NLINKS>(name, joints, links) {};
-
-	~Arm();
+    // Functions for legs (and not for arms) TO DO
 
 };
 
@@ -47,4 +49,3 @@ public:
 } // namespace dls
 
 #endif
-
