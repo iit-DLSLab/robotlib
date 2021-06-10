@@ -1,24 +1,5 @@
-/*******************************************************************************
-*                                                       ,----,                 *
-*                                                     .'   .' \                *
-*                                                   ,----,'    |               *
-*               ________  ___       ________        |    :  .  ;               *
-*              |\   ___ \|\  \     |\   ____\       ;    |.'  /                *
-*              \ \  \_|\ \ \  \    \ \  \___|_      `----'/  ;                 *
-*               \ \  \ \\ \ \  \    \ \_____  \       /  ;  /                  *
-*                \ \  \_\\ \ \  \____\|____|\  \     ;  /  /-,                 *
-*                 \ \_______\ \_______\____\_\  \   /  /  /.`|                 *
-*                  \|_______|\|_______|\_________\./__;      :                 *
-*                                     \|_________||   :    .'                  *
-*                                                 ;   | .'                     *
-*                                                 `---'                        *
-********************************************************************************
-* Author:            Legacy Code                                               *
-* Maintainer:        Hendrik de Bruin                                          *
-* Maintainer email:  hendrik.debruin@iit.it                                    *
-*******************************************************************************/
-// #ifndef ROBOTLIB_BASE_LEG_DATA_MAP_HPP
-// #define ROBOTLIB_BASE_LEG_DATA_MAP_HPP
+// #ifndef _ROBOTLIB_LEG_DATA_MAP_HPP_
+// #define _ROBOTLIB_LEG_DATA_MAP_HPP_
 // #include <stdexcept>
 
 // #include "robot.hpp"
@@ -60,5 +41,5 @@
 // } // namespace dls
 // #include "leg_data_map.tpp"
 
-// #endif
+// #endif // _ROBOTLIB_LEG_DATA_MAP_HPP_
 
