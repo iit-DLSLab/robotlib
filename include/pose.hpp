@@ -13,39 +13,41 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Marco Marchitto                                           *
+* Author:            Legacy Code                                               *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_ARMBASE_HPP
-#define ROBOTLIB_ARMBASE_HPP
+#ifndef ROBOTLIB_POSE_HPP
+#define ROBOTLIB_POSE_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-
-#include "robotlib/limb.hpp"
+#include <Eigen/Dense>
 
 namespace dls{
 namespace robot {
 /**
- * An arm interface for robots.
+ * A pose class for robots.
  */
-
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class ArmBase : public Limb<NJOINTS, NLINKS>
+class Pose
 {
 public:
-    ArmBase (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :Limb<NJOINTS,NLINKS>(name, joints, links) {};
-    
-	~ArmBase(){};
 
-    // Functions for arms (and not for legs) TO DO
+	Pose(const Eigen::Vector3d& p, const Eigen::Vector3d& ori) : p_(p), ori_(ori){};
 
+	~Pose(){};
+
+	// Get Function
+	const Eigen::Vector3d& getPos(){return p_;}
+	const Eigen::Vector3d& getOri(){return ori_;}
+
+private: 
+	const Eigen::Vector3d p_;						//! 3D position
+	const Eigen::Vector3d ori_;					//! 3D orientation
 };
 
+} // namespace dog
 } // namespace robot
-} // namespace dls
 
 #endif

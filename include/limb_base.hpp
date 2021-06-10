@@ -13,44 +13,45 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Legacy Code                                               *
+* Author:            Marco Marchitto                                           *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_JOINT_HPP
-#define ROBOTLIB_JOINT_HPP
+#ifndef ROBOTLIB_LIMBBASE_HPP
+#define ROBOTLIB_LIMBBASE_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-#include "robotlib/dyn_params.hpp"
+#include "link.hpp"
+#include "joint.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A joint class for robots.
+ * A limb interface for robots.
  */
-class Joint
+
+class LimbBase
 {
 public:
+    LimbBase (const std::string& name): name_(name) {};
+    
+	~LimbBase(){};
 
-    Joint (const std::string& name): name_(name){};
-	//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
-
-	~Joint (){};
-
-	// Get functions
-	const std::string getName(){return name_;}
-	//const DynParams& getDynParams(){return dyn_params_;}
+    // Get functions
+    const std::string getName() {return name_;};
+    virtual const int getNumLinks() = 0;
+    virtual const int getNumJoints() = 0;
+    virtual const std::shared_ptr<Link>& getLink(const int linkId) = 0;
+    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) = 0;    
 
 private:
-	const std::string name_;               //! Name of the joint
-	//const DynParams dyn_params_;	        //! Dynamic parameter of the joint
+    const std::string name_;                                   //! Limb name
 
-	//joint limits TODO
 };
 
-} // namespace dog
 } // namespace robot
+} // namespace dls
 
 #endif

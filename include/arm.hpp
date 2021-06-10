@@ -17,50 +17,34 @@
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_LIMB_HPP
-#define ROBOTLIB_LIMB_HPP
+#ifndef ROBOTLIB_ARM_HPP
+#define ROBOTLIB_ARM_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
 
-#include "robotlib/limb_base.hpp"
-#include "robotlib/joint.hpp"
-#include "robotlib/link.hpp"
+#include "arm_base.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A limb class for robots. 
+ * An arm class for robots.
  */
-
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class Limb : public LimbBase
+template<unsigned int NJOINTS, unsigned int NLINKS>
+class Arm : public ArmBase<NJOINTS, NLINKS>
 {
 public:
-    Limb (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links) 
-        : LimbBase(name), joints_(joints), links_(links) {};
 
-	~Limb(){};
+	Arm(const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
+            :ArmBase<NJOINTS,NLINKS>(name, joints, links) {};
 
-    // Get functions
-    //std::array<std::shared_ptr<Link>, NLINKS> getLinks(){return links_;};
-    //std::array<std::shared_ptr<Joint>, NJOINTS> getJoints(){return joints_;};
+	~Arm();
 
-    virtual const std::shared_ptr<Link>& getLink(const int linkId)  override {return links_[linkId];};
-    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) override {return joints_[jointId];};    
-    virtual const int getNumLinks() override {return links_.size();};
-    virtual const int getNumJoints() override {return joints_.size();};
-
-    //forward kinematics
-
-private:   
-
-    const std::array<std::shared_ptr<Joint>, NJOINTS> joints_;        //! Array of joints
-    const std::array<std::shared_ptr<Link>, NLINKS> links_;           //! Array of links
 };
 
 } // namespace robot
 } // namespace dls
 
 #endif
+
