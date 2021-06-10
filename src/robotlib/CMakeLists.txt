@@ -1,9 +1,8 @@
 find_package(urdf REQUIRED)
-include_directories(SYSTEM ${roscpp_INCLUDE_DIRS})
+include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
 
-add_library(robotlib
-	# Factory
-	${CMAKE_CURRENT_SOURCE_DIR}/factory/robot_factory.cpp
+add_library(robotlib	
+	${CMAKE_CURRENT_SOURCE_DIR}/robot.cpp
 )
 
 target_link_libraries(robotlib
