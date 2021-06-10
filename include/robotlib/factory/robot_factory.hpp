@@ -1,38 +1,21 @@
-/*******************************************************************************
-*                                                       ,----,                 *
-*                                                     .'   .' \                *
-*                                                   ,----,'    |               *
-*               ________  ___       ________        |    :  .  ;               *
-*              |\   ___ \|\  \     |\   ____\       ;    |.'  /                *
-*              \ \  \_|\ \ \  \    \ \  \___|_      `----'/  ;                 *
-*               \ \  \ \\ \ \  \    \ \_____  \       /  ;  /                  *
-*                \ \  \_\\ \ \  \____\|____|\  \     ;  /  /-,                 *
-*                 \ \_______\ \_______\____\_\  \   /  /  /.`|                 *
-*                  \|_______|\|_______|\_________\./__;      :                 *
-*                                     \|_________||   :    .'                  *
-*                                                 ;   | .'                     *
-*                                                 `---'                        *
-********************************************************************************
-* Author:            Legacy Code                                               *
-* Maintainer:        Hendrik de Bruin                                          *
-* Maintainer email:  hendrik.debruin@iit.it                                    *
-*******************************************************************************/
-#ifndef DOGLIB_ROBOT_FACTORY_HPP_2FI34LM8
-#define DOGLIB_ROBOT_FACTORY_HPP_2FI34LM8
+/*
+
+
+
+
+#ifndef _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
+#define _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
 // =============================================================================
 // Includes
 // =============================================================================
 #include <memory>
-#include "doglib/base/dog.hpp"
-
-/// dlopen library for shared libraries
-#include <dlfcn.h>
+#include "robotlib/base/robot.hpp"
 
 // =============================================================================
 // Namespace
 // =============================================================================
 namespace dls {
-namespace dog {
+namespace robot {
 
 // =============================================================================
 // Class Description
@@ -53,10 +36,13 @@ public:
 		HyQReal
 	};
 
-	static std::shared_ptr<Dog> buildRobot(RobotType);
-	static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
+	static std::shared_ptr<Robot> buildRobot(RobotType);
 };
 // =============================================================================
-} // dog
+} // robot
 } // dls
-#endif /* end of include guard: ROBOT_FACTORY_HPP_2FI34LM8 */
+#endif // _ROBOTLIB_FACTORY_ROBOT_FACTORY_HPP_
+
+
+
+*/

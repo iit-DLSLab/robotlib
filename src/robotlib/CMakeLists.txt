@@ -7,19 +7,8 @@ add_library(robotlib
 
 target_link_libraries(robotlib
 	PRIVATE
-	temp_common
 	${roscpp_LIBRARIES}
 	${urdf_LIBRARIES}
-)
-
-# TODO this
-message(
-	WARNING
-	"This library installs also some parts to /usr/include/commons and\
-	/usr/include/rbd. This is due to the fact that the original libraries were\
-	very entangled. When doglib no longer needs to supply the sources of these\
-	libraries, then the install of the headers should also be removed from\
-	here."
 )
 
 install(
@@ -33,4 +22,13 @@ install(
 		PATTERN "*.h"
 		PATTERN "*.hpp"
 		PATTERN "*.tpp"
+)
+
+install(
+	TARGETS
+		robotlib
+	DESTINATION
+		/usr/local/lib
+	COMPONENT
+		"robotlib"
 )
