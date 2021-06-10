@@ -13,37 +13,44 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Marco Marchitto                                           *
+* Author:            Legacy Code                                               *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_LEG_HPP
-#define ROBOTLIB_LEG_HPP
+#ifndef ROBOTLIB_JOINT_HPP
+#define ROBOTLIB_JOINT_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-
-#include "robotlib/leg_base.hpp"
+#include "dyn_params.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A leg class for robots.
+ * A joint class for robots.
  */
-template<unsigned int NJOINTS, unsigned int NLINKS>
-class Leg : public LegBase<NJOINTS, NLINKS>
+class Joint
 {
 public:
 
-	Leg(const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :LegBase<NJOINTS,NLINKS>(name, joints, links) {};
+    Joint (const std::string& name): name_(name){};
+	//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
 
-	~Leg(){};
+	~Joint (){};
 
+	// Get functions
+	const std::string getName(){return name_;}
+	//const DynParams& getDynParams(){return dyn_params_;}
+
+private:
+	const std::string name_;               //! Name of the joint
+	//const DynParams dyn_params_;	        //! Dynamic parameter of the joint
+
+	//joint limits TODO
 };
 
+} // namespace dog
 } // namespace robot
-} // namespace dls
 
 #endif

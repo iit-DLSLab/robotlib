@@ -13,45 +13,43 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Marco Marchitto                                           *
+* Author:            Legacy Code                                               *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_LIMBBASE_HPP
-#define ROBOTLIB_LIMBBASE_HPP
+#ifndef ROBOTLIB_DYN_PARAMS_HPP
+#define ROBOTLIB_DYN_PARAMS_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-#include "robotlib/link.hpp"
-#include "robotlib/joint.hpp"
+#include <Eigen/Dense>
+
 
 namespace dls{
 namespace robot {
 /**
- * A limb interface for robots.
+ * A class for robot dynamic parameters (com, mass, inertia).
  */
-
-class LimbBase
+class DynParams
 {
-public:
-    LimbBase (const std::string& name): name_(name) {};
-    
-	~LimbBase(){};
+public: 
+    DynParams (const Eigen::Vector3d& com, const double m, const Eigen::Matrix3d& I) : com_(com), m_(m), I_(I) {};
 
-    // Get functions
-    const std::string getName() {return name_;};
-    virtual const int getNumLinks() = 0;
-    virtual const int getNumJoints() = 0;
-    virtual const std::shared_ptr<Link>& getLink(const int linkId) = 0;
-    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) = 0;    
-
+	~DynParams(){};
+	
+	// Get functions
+	inline const Eigen::Vector3d& getCom(){return com_;};
+	inline const double getM(){return m_;};
+	inline const Eigen::Matrix3d& getI(){I_;};
+	
 private:
-    const std::string name_;                                   //! Limb name
-
+	const Eigen::Vector3d com_;					//! Center of mass
+	const double m_;							//! Mass
+	const Eigen::Matrix3d I_;					//! Inertia
 };
 
+} // namespace dog
 } // namespace robot
-} // namespace dls
 
 #endif

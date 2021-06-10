@@ -1,5 +1,5 @@
-#include "robotlib/robot.hpp"
-#include "robotlib/leg_data_map.hpp"
+#include "robot.hpp"
+#include "leg_data_map.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;

@@ -13,41 +13,37 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Legacy Code                                               *
+* Author:            Marco Marchitto                                           *
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_POSE_HPP
-#define ROBOTLIB_POSE_HPP
+#ifndef ROBOTLIB_LEG_HPP
+#define ROBOTLIB_LEG_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-#include "robotlib/rbd/rbd.h"
+
+#include "leg_base.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A pose class for robots.
+ * A leg class for robots.
  */
-class Pose
+template<unsigned int NJOINTS, unsigned int NLINKS>
+class Leg : public LegBase<NJOINTS, NLINKS>
 {
 public:
 
-	Pose(const Eigen::Vector3d& p, const Eigen::Vector3d& ori) : p_(p), ori_(ori){};
+	Leg(const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
+            :LegBase<NJOINTS,NLINKS>(name, joints, links) {};
 
-	~Pose(){};
+	~Leg(){};
 
-	// Get Function
-	const Eigen::Vector3d& getPos(){return p_;}
-	const Eigen::Vector3d& getOri(){return ori_;}
-
-private: 
-	const Eigen::Vector3d p_;						//! 3D position
-	const Eigen::Vector3d ori_;					//! 3D orientation
 };
 
-} // namespace dog
 } // namespace robot
+} // namespace dls
 
 #endif

@@ -17,35 +17,41 @@
 * Maintainer:        Marco Marchitto                                           *
 * Maintainer email:  marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_TRUNK_HPP
-#define ROBOTLIB_TRUNK_HPP
+#ifndef ROBOTLIB_LINK_HPP
+#define ROBOTLIB_LINK_HPP
 
 // =============================================================================
 // Includes
 // =============================================================================
-#include "robotlib/pose.hpp"
-#include "robotlib/dyn_params.hpp"
+
+#include "pose.hpp"
+#include "dyn_params.hpp"
 
 namespace dls{
 namespace robot {
 /**
- * A trunk class for robots.
+ * A link class for robots.
  */
-class Trunk
+class Link
 {
 public:
 
-	Trunk (const Pose& origin, const DynParams& dparams ): origin_(origin), dyn_params_(dparams) {};
-	
-	~Trunk(){};
+    Link (const std::string& name): name_(name){};
+	//Link (const std::string& name, const Pose& pose, const DynParams& dparams ): name_(name), pose_(pose), dyn_params_(dparams) {};
 
+	~Link(){};
+	
 	// Get functions
-	const Pose& getOrigin(){return origin_;}
-	const DynParams& getDynParams(){return dyn_params_;}
+	const std::string getName(){return name_;}
+    
+	//const Pose& getPose(){return pose_;}
+	//const DynParams& getDynParams(){return dyn_params_;}
 
 private:
-	const Pose origin_;				//! Pose of the trunk
-	const DynParams dyn_params_; 		//! Dynamic parameter of the trunk
+
+	const std::string name_; 		             //! Name of the link
+	// const Pose pose_;		                //! Pose of the link w.r.t. parent link
+	// const DynParams dyn_params_; 		    //! Dynamic parameter of the link
 };
 
 } // namespace dog
