@@ -35,9 +35,10 @@
 #include "leg.hpp"
 #include "limb.hpp"
 #include "joint.hpp"
+#include "leg_data_map_base.hpp"
+#include "robot_base.hpp"
 
 //#include "forward_kinematics.hpp"
-
 
 namespace dls
 {
@@ -49,7 +50,7 @@ namespace robot
 // =============================================================================
 
 template<unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS=0>
-class Robot {
+class Robot : public RobotBase {
 public:
 	// Constructor
 	Robot(const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): legs_(legs){}; 
@@ -61,14 +62,20 @@ public:
 	virtual ~Robot() = default;
 
 	template <class Data>
-    class LegDataMap : public std::array<Data,NLEGS> {};
+    class LegDataMap : public LegDataMapBase<Data>{    
+    public:
+        virtual Iterator<Data> begin() override { return Iterator<Data>(&legData_[0]); }
+        virtual Iterator<Data> end() override { return Iterator<Data>(&legData_[NLEGS]); }
+    
+    private: 
+        std::array<Data,NLEGS> legData_;
+    };
 
     template <class Data>
     class LinkDataMap : public std::array<Data, NLINKS_TOT> { };
 
     template <class Data>
     class JointDataMap : public std::array<Data, NJOINTS_TOT> { };
-
 
     template <class Data>
     class LegDataMapPair : public std::array<std::pair<std::shared_ptr<LimbBase>, std::shared_ptr<Data>>, NLEGS> {
@@ -116,6 +123,10 @@ public:
     private:
         Data jointData[NJOINTS_TOT];
     }; 
+
+    // Function to create data map objects
+    virtual template< class T> LegDataMapBase<T> legDataMap() override {return LegDataMap<T>();};
+
 
 	//*************************************************************************
 	// Maybe to be added to robotFactory

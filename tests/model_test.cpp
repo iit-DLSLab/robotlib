@@ -67,7 +67,9 @@ TEST(robotLib, legs){
         std::cout << l->getName() << std::endl;
     }
     
-    Hyq::LegDataMap<int> leg_data_map;
+    //Hyq::LegDataMap<int> leg_data_map;
+    auto leg_data_map = hyq.legDataMap<int>();
+    
     std::cout << "For each value in leg data map" << std::endl;
     for (auto x : leg_data_map) {
         x=i++;
@@ -114,6 +116,7 @@ TEST(robotLib, legs){
         std::cout << x.first->getName() << "=" << *x.second << std::endl;
     }
 
+    
 
     // // Create a set of legs
     // std::array<std::shared_ptr<LimbBase>, NLEGS> legs;

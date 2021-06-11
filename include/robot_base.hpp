@@ -13,45 +13,47 @@
 *                                                 ;   | .'                     *
 *                                                 `---'                        *
 ********************************************************************************
-* Author:            Legacy Code                                               *
+* Author:            Marco Marchitto                                           *
 * Maintainer:        Marco Marchitto                                           *
-* Maintainer email:  marco.marchitto@iit.it                                    *
+* author email:      marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_ARM_HPP
-#define ROBOTLIB_ARM_HPP
+#ifndef _ROBOTLIB_ROBOT_BASE_HPP_
+#define _ROBOTLIB_ROBOT_BASE_HPP_
 
 // =============================================================================
 // Includes
 // =============================================================================
+// ros
+#include <urdf/model.h>
 
-namespace dls{
-namespace robot {
-/**
- * Useful functions or data structures
- */
+// stdlib
+#include <fstream>
 
-template <class Data>
-struct Iterator 
+#include <memory>
+#include "limb_base.hpp"
+#include "trunk.hpp"
+#include "leg.hpp"
+#include "limb.hpp"
+#include "joint.hpp"
+
+//#include "forward_kinematics.hpp"
+
+namespace dls
 {
+namespace robot
+{
+
+// =============================================================================
+// Class Interface
+// =============================================================================
+
+class MapBase {
 public:
-    using iterator_category = std::forward_iterator_tag;
-    using difference_type   = std::ptrdiff_t;
-    using value_type        = Data;
-    using pointer           = Data*;
-    using reference         = Data&;
-    Iterator(pointer ptr) : m_ptr(ptr) {}
-    reference operator*() const { return *m_ptr; }
-    pointer operator->() { return m_ptr; }
-    Iterator& operator++() { m_ptr++; return *this; } 
-    Iterator operator++(int) { Iterator tmp = *this; ++(*this); return tmp; }
-    friend bool operator== (const Iterator& a, const Iterator& b) { return a.m_ptr == b.m_ptr; };
-    friend bool operator!= (const Iterator& a, const Iterator& b) { return a.m_ptr != b.m_ptr; };     
-protected:
-    pointer m_ptr;
+	
+    template<class T> LegDataMapBase<T> legDataMap() {};
+    
 };
-
-
+} // namespace dog
 } // namespace robot
-} // namespace dls
 
 #endif

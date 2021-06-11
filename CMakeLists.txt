@@ -19,4 +19,18 @@ include_directories(
 )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
+# GTest
+enable_testing()
+
+add_executable(main_tests 
+	tests/main_tests.cpp
+	tests/model_test.cpp
+)
+
+target_link_libraries(main_tests
+	PRIVATE
+	robotlib
+	gtest
+)
+
