@@ -23,9 +23,14 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 # GTest
 enable_testing()
 
-add_executable(custom_test tests/custom_test.cpp)
+add_executable(main_tests 
+	tests/main_tests.cpp
+	#tests/model_test.cpp
+	tests/LegDataMap_test.cpp
+	#tests/temporary_test.cpp
+)
 
-target_link_libraries(custom_test
+target_link_libraries(main_tests
 	PRIVATE
 	robotlib
 	gtest

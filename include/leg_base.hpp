@@ -5,7 +5,9 @@
 // Includes
 // =============================================================================
 
-#include "limb.hpp"
+#include "limb_base.hpp"
+#include "link.hpp"
+#include "joint.hpp"
 
 namespace dls{
 namespace robot {
@@ -13,12 +15,10 @@ namespace robot {
  * A leg interface for robots.
  */
 
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class LegBase : public Limb<NJOINTS, NLINKS>
+class LegBase : public LimbBase
 {
 public:
-    LegBase (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :Limb<NJOINTS,NLINKS>(name, joints, links) {};
+    LegBase (const std::string& name):LimbBase(name) {};
     
 	~LegBase(){};
 
