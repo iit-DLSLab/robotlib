@@ -23,8 +23,9 @@
 // =============================================================================
 // Includes
 // =============================================================================
-#include "link.hpp"
-#include "joint.hpp"
+
+//#include "link.hpp"
+//#include "joint.hpp"
 
 namespace dls{
 namespace robot {
@@ -38,13 +39,13 @@ public:
     LimbBase (const std::string& name): name_(name) {};
     
 	~LimbBase(){};
-
+    
     // Get functions
-    const std::string getName() {return name_;};
+    const std::string getName() const {return name_;};
     virtual const int getNumLinks() = 0;
     virtual const int getNumJoints() = 0;
-    virtual const std::shared_ptr<Link>& getLink(const int linkId) = 0;
-    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) = 0;    
+    virtual std::shared_ptr<void> getLink(const int linkId) = 0;
+    virtual std::shared_ptr<void> getJoint(const int jointId) = 0;    
 
 private:
     const std::string name_;                                   //! Limb name

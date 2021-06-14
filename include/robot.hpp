@@ -50,7 +50,7 @@ namespace robot
 // =============================================================================
 
 template<unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS=0>
-class Robot : public RobotBase {
+class Robot {   //: public RobotBase {
 public:
 	// Constructor
 	Robot(const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): legs_(legs){}; 
@@ -60,17 +60,20 @@ public:
     it end() { return it(&legs_[NLEGS]); }
 
 	virtual ~Robot() = default;
-
-	template <class Data>
-    class LegDataMap : public LegDataMapBase<Data>{    
-    public:
-        virtual Iterator<Data> begin() override { return Iterator<Data>(&legData_[0]); }
-        virtual Iterator<Data> end() override { return Iterator<Data>(&legData_[NLEGS]); }
+ 
+	// template <class Data>
+    // class LegDataMap : public LegDataMapBase<Data>{    TO DO
+    // public:
+    //     virtual Iterator<Data> begin() override { return Iterator<Data>(&legData_[0]); }
+    //     virtual Iterator<Data> end() override { return Iterator<Data>(&legData_[NLEGS]); }
     
-    private: 
-        std::array<Data,NLEGS> legData_;
-    };
+    // private: 
+    //     std::array<Data,NLEGS> legData_;
+    // };
 
+    template <class Data>
+    class LegDataMap : public std::array<Data, NLEGS> { };
+    
     template <class Data>
     class LinkDataMap : public std::array<Data, NLINKS_TOT> { };
 
@@ -97,7 +100,7 @@ public:
                 auto leg = robot.legs_[i];
 				int nLinks = leg->getNumLinks();
 				for (int j=0;j<nLinks;j++) {
-                    auto link = leg->getLink(j); 
+                    auto link = std::static_pointer_cast<Link>(leg->getLink(j)); 
                     this->data()[i*nLinks+j] = std::make_pair(link, std::make_shared<Data>(linkData[i*nLinks+j]));
                 }
             }
@@ -115,7 +118,7 @@ public:
                 auto leg = robot.legs_[i];
 				int nJoints = leg->getNumJoints();
                 for (int j=0;j<nJoints;j++) {
-                    auto joint = leg->getJoint(j);
+                    auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
                     this->data()[i*nJoints+j] = std::make_pair(joint,std::make_shared<Data>(jointData[i*nJoints+j]));
                 }
             }
@@ -124,8 +127,8 @@ public:
         Data jointData[NJOINTS_TOT];
     }; 
 
-    // Function to create data map objects
-    virtual template< class T> LegDataMapBase<T> legDataMap() override {return LegDataMap<T>();};
+    // Function to create data map objects TO DO or TO REMOVE
+    template< class T> LegDataMapBase<T> legDataMap() {return LegDataMap<T>();};
 
 
 	//*************************************************************************

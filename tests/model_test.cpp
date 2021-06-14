@@ -12,19 +12,19 @@ using namespace dls::robot;
 #define NJOINTS_TOT NLEGS*NJOINTS
 
 
-// Define dummy robot for testing
+// Define hyq robot for testing
 class HyqLeg : public Leg<NJOINTS,NLINKS> {
 public:
     HyqLeg(std::string name) : Leg<NJOINTS,NLINKS>(
         name,
         std::array<std::shared_ptr<Joint>,NJOINTS>({
-            std::make_shared<Joint>("HAA"),
-            std::make_shared<Joint>("HFE"),
-            std::make_shared<Joint>("KFE")
+            std::make_shared<Joint>(this, "HAA"),
+            std::make_shared<Joint>(this, "HFE"),
+            std::make_shared<Joint>(this, "KFE")
             }),
         std::array<std::shared_ptr<Link>,NLINKS>({
-            std::make_shared<Link>( "Upper leg"),
-            std::make_shared<Link>( "Lower leg")
+            std::make_shared<Link>(this, "Upper leg"),
+            std::make_shared<Link>(this,  "Lower leg")
             })
         ) { }
 };
@@ -58,7 +58,7 @@ public:
 TEST(robotLib, legs){
     int i=0;
     
-    // Create dummy robot
+    // Create hyq robot robot
     Hyq hyq;
 
     std::cout << "For each leg in robot" << std::endl;
@@ -67,8 +67,7 @@ TEST(robotLib, legs){
         std::cout << l->getName() << std::endl;
     }
     
-    //Hyq::LegDataMap<int> leg_data_map;
-    auto leg_data_map = hyq.legDataMap<int>();
+    Hyq::LegDataMap<int> leg_data_map;
     
     std::cout << "For each value in leg data map" << std::endl;
     for (auto x : leg_data_map) {
@@ -105,7 +104,7 @@ TEST(robotLib, legs){
     i=0;
     for (auto x : link_data_map_pair) {
         *x.second=i++;
-        std::cout << x.first->getName() << "=" << *x.second << std::endl;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << *x.second << std::endl;
     }
 
     Hyq::JointDataMapPair<int> joint_data_map_pair(hyq);
@@ -113,7 +112,7 @@ TEST(robotLib, legs){
     i=0;
     for (auto x : joint_data_map_pair) {
         *x.second=i++;
-        std::cout << x.first->getName() << "=" << *x.second << std::endl;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << *x.second << std::endl;
     }
 
     

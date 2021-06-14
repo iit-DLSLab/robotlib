@@ -6,19 +6,26 @@ class A{
 public:
     A(){std::cout << "Type A\n";};
     ~A(){};
+
     class AIN{
     public:
         AIN(){std::cout << "Type AIN\n";};
         ~AIN(){};
         virtual void print() = 0;
     };
-    void print(){std::cout << "I'm A\n";}
+    void print(){std::cout << "I'm A\n";};
+
+    auto getDefaultInt(){return 3;};
 };
 class B{
 public:
     B(){std::cout << "Type B\n";};
     ~B(){};
+
+    using intB =  int;
+
     void print(){std::cout << "I'm B\n";}
+    void print2(){std::cout << "I'm B2\n";}
 };
 
 // class C: public A,B{
@@ -49,7 +56,8 @@ public:
 template<class T> 
 class Temp {
 public:
-    Temp(){std::cout << "Type Temp\n";};
+    Temp(){std::cout << "Type Temp\n";};//auto leg_data_map = hyq.legDataMap<int>();
+    
     ~Temp(){};
     void print(){std::cout << "I'm Temp\n";}
 };
@@ -62,27 +70,27 @@ public:
     void print(){std::cout << "I'm TempTemp\n";}
 };
 
-
-//: C10:InnerClassIdiom.cpp
-// Example of the "inner class" idiom.
 #include <iostream>
 #include <string>
 using namespace std;
-
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     // A* c = new C();
     // c->print();
     
-    std::shared_ptr<A> a = std::make_shared<D>();
+   // std::shared_ptr<A> a = std::make_shared<D>();
     
-    //Temp<int> t;
-    //TempTemp<Temp> tt;
-    
-    //D::AIN ain;
+    //auto leg_data_map = hyq.legDataMap<int>();
+    //A a;
 
+    //std::cout << "AUTO " << a.getDefaultInt() <<std::endl;
+
+    //Temp<int> t;
+    //TempTemp<Temp> tt;    
+    //D::AIN ain;
     //ain.print();
+
 
 
     return RUN_ALL_TESTS();

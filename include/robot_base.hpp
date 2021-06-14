@@ -34,8 +34,6 @@
 #include "trunk.hpp"
 #include "leg.hpp"
 #include "limb.hpp"
-#include "joint.hpp"
-
 //#include "forward_kinematics.hpp"
 
 namespace dls
@@ -47,13 +45,13 @@ namespace robot
 // Class Interface
 // =============================================================================
 
-class MapBase {
+class RobotBase {
 public:
 	
-    template<class T> LegDataMapBase<T> legDataMap() {};
+    //template<class T> LegDataMapBase<T> legDataMap() {};
     
 };
-} // namespace dog
 } // namespace robot
+} // namespace dls
 
 #endif

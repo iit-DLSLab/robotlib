@@ -42,13 +42,13 @@ public:
         : LimbBase(name), joints_(joints), links_(links) {};
 
 	~Limb(){};
-
+    
     // Get functions
     //std::array<std::shared_ptr<Link>, NLINKS> getLinks(){return links_;};
     //std::array<std::shared_ptr<Joint>, NJOINTS> getJoints(){return joints_;};
 
-    virtual const std::shared_ptr<Link>& getLink(const int linkId)  override {return links_[linkId];};
-    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) override {return joints_[jointId];};    
+    virtual std::shared_ptr<void> getLink(const int linkId)  override {return links_[linkId];};
+    virtual std::shared_ptr<void> getJoint(const int jointId) override {return joints_[jointId];};    
     virtual const int getNumLinks() override {return links_.size();};
     virtual const int getNumJoints() override {return joints_.size();};
 
