@@ -15,51 +15,46 @@
 ********************************************************************************
 * Author:            Marco Marchitto                                           *
 * Maintainer:        Marco Marchitto                                           *
-* Maintainer email:  marco.marchitto@iit.it                                    *
+* author email:      marco.marchitto@iit.it                                    *
 *******************************************************************************/
-#ifndef ROBOTLIB_LIMB_HPP
-#define ROBOTLIB_LIMB_HPP
+#ifndef _ROBOTLIB_ROBOT_BASE_HPP_
+#define _ROBOTLIB_ROBOT_BASE_HPP_
 
 // =============================================================================
 // Includes
 // =============================================================================
+// ros
+#include <urdf/model.h>
 
+// stdlib
+#include <fstream>
+
+#include <memory>
 #include "limb_base.hpp"
-#include "joint.hpp"
-#include "link.hpp"
+#include "trunk.hpp"
+#include "leg.hpp"
+#include "utils.hpp"
 
-namespace dls{
-namespace robot {
-/**
- * A limb class for robots. 
- */
+//#include "forward_kinematics.hpp"
 
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class Limb : public LimbBase
+namespace dls
 {
+namespace robot
+{
+
+// =============================================================================
+// Class Interface
+// =============================================================================
+
+class RobotBase {
 public:
-    Limb (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links) 
-        : LimbBase(name), joints_(joints), links_(links) {};
 
-	~Limb(){};
-
-    // Get functions
-    //std::array<std::shared_ptr<Link>, NLINKS> getLinks(){return links_;};
-    //std::array<std::shared_ptr<Joint>, NJOINTS> getJoints(){return joints_;};
-
-    virtual const std::shared_ptr<Link>& getLink(const int linkId)  override {return links_[linkId];};
-    virtual const std::shared_ptr<Joint>& getJoint(const int jointId) override {return joints_[jointId];};    
-    virtual const int getNumLinks() override {return links_.size();};
-    virtual const int getNumJoints() override {return joints_.size();};
-
-    //forward kinematics
-
-private:   
-
-    const std::array<std::shared_ptr<Joint>, NJOINTS> joints_;        //! Array of joints
-    const std::array<std::shared_ptr<Link>, NLINKS> links_;           //! Array of links
+    virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
+    virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
+    
+    virtual int getNLEGS() = 0;
+    
 };
-
 } // namespace robot
 } // namespace dls
 

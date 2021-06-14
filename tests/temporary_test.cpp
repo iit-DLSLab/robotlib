@@ -12,7 +12,6 @@ private:
 };
 
  
-
 class Joint {
 public:
     Joint(LegBase *parent, std::string name) : parent_(parent), name_(name) { }
