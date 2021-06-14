@@ -1,30 +1,13 @@
-/*******************************************************************************
-*                                                       ,----,                 *
-*                                                     .'   .' \                *
-*                                                   ,----,'    |               *
-*               ________  ___       ________        |    :  .  ;               *
-*              |\   ___ \|\  \     |\   ____\       ;    |.'  /                *
-*              \ \  \_|\ \ \  \    \ \  \___|_      `----'/  ;                 *
-*               \ \  \ \\ \ \  \    \ \_____  \       /  ;  /                  *
-*                \ \  \_\\ \ \  \____\|____|\  \     ;  /  /-,                 *
-*                 \ \_______\ \_______\____\_\  \   /  /  /.`|                 *
-*                  \|_______|\|_______|\_________\./__;      :                 *
-*                                     \|_________||   :    .'                  *
-*                                                 ;   | .'                     *
-*                                                 `---'                        *
-********************************************************************************
-* Author:            Marco Marchitto                                           *
-* Maintainer:        Marco Marchitto                                           *
-* Maintainer email:  marco.marchitto@iit.it                                    *
-*******************************************************************************/
-#ifndef ROBOTLIB_ARMBASE_HPP
-#define ROBOTLIB_ARMBASE_HPP
+#ifndef _ROBOTLIB_ARM_BASE_HPP_
+#define _ROBOTLIB_ARM_BASE_HPP_
 
 // =============================================================================
 // Includes
 // =============================================================================
 
-#include "limb.hpp"
+#include "limb_base.hpp"
+#include "link.hpp"
+#include "joint.hpp"
 
 namespace dls{
 namespace robot {
@@ -32,12 +15,10 @@ namespace robot {
  * An arm interface for robots.
  */
 
-template <unsigned int NJOINTS, unsigned int NLINKS>
-class ArmBase : public Limb<NJOINTS, NLINKS>
+class ArmBase : public LimbBase
 {
 public:
-    ArmBase (const std::string& name, const std::array<std::shared_ptr<Joint>, NJOINTS>& joints, const std::array<std::shared_ptr<Link>, NLINKS>& links)
-            :Limb<NJOINTS,NLINKS>(name, joints, links) {};
+    ArmBase (const std::string& name) :LimbBase(name){};
     
 	~ArmBase(){};
 
@@ -48,4 +29,4 @@ public:
 } // namespace robot
 } // namespace dls
 
-#endif
+#endif // _ROBOTLIB_ARM_BASE_HPP_
