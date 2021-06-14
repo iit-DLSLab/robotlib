@@ -33,7 +33,6 @@
 #include "limb_base.hpp"
 #include "trunk.hpp"
 #include "leg.hpp"
-#include "limb.hpp"
 //#include "forward_kinematics.hpp"
 
 namespace dls

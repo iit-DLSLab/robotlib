@@ -31,9 +31,10 @@
 
 #include <memory>
 #include "limb_base.hpp"
+#include "leg_base.hpp"
+#include "arm_base.hpp"
 #include "trunk.hpp"
 #include "leg.hpp"
-#include "limb.hpp"
 #include "joint.hpp"
 #include "leg_data_map_base.hpp"
 #include "robot_base.hpp"

@@ -76,20 +76,21 @@ using namespace std;
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
+    
     // A* c = new C();
     // c->print();
     
-   // std::shared_ptr<A> a = std::make_shared<D>();
+    // std::shared_ptr<A> a = std::make_shared<D>();
     
-    //auto leg_data_map = hyq.legDataMap<int>();
-    //A a;
+    // auto leg_data_map = hyq.legDataMap<int>();
+    // A a;
 
-    //std::cout << "AUTO " << a.getDefaultInt() <<std::endl;
+    // std::cout << "AUTO " << a.getDefaultInt() <<std::endl;
 
-    //Temp<int> t;
-    //TempTemp<Temp> tt;    
-    //D::AIN ain;
-    //ain.print();
+    // Temp<int> t;
+    // TempTemp<Temp> tt;    
+    // D::AIN ain;
+    // ain.print();
 
 
 
