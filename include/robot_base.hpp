@@ -33,6 +33,8 @@
 #include "limb_base.hpp"
 #include "trunk.hpp"
 #include "leg.hpp"
+#include "utils.hpp"
+
 //#include "forward_kinematics.hpp"
 
 namespace dls
@@ -46,8 +48,11 @@ namespace robot
 
 class RobotBase {
 public:
-	
-    //template<class T> LegDataMapBase<T> legDataMap() {};
+
+    virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
+    virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
+    
+    virtual int getNLEGS() = 0;
     
 };
 } // namespace robot

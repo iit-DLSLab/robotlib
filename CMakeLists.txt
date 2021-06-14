@@ -25,7 +25,8 @@ enable_testing()
 
 add_executable(main_tests 
 	tests/main_tests.cpp
-	tests/model_test.cpp
+	#tests/model_test.cpp
+	tests/LegDataMap_test.cpp
 	#tests/temporary_test.cpp
 )
 

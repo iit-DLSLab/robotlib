@@ -51,14 +51,17 @@ namespace robot
 // =============================================================================
 
 template<unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS=0>
-class Robot {   //: public RobotBase {
+class Robot : public RobotBase {
 public:
 	// Constructor
 	Robot(const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): legs_(legs){}; 
     using it = typename std::array<std::shared_ptr<LimbBase>,NLEGS>::iterator;
 	
-    it begin() { return it(&legs_[0]); }
-    it end() { return it(&legs_[NLEGS]); }
+    virtual Iterator<const std::shared_ptr<LimbBase>> begin() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[0]); };
+    virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
+    
+    //it begin()  { return it(&legs_[0]); };
+    //it end()  { return it(&legs_[NLEGS]); };
 
 	virtual ~Robot() = default;
  
@@ -149,6 +152,9 @@ public:
 	// Get functions
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs(){return legs_;};
 	const std::shared_ptr<LimbBase> getLeg(const int id){return legs_[id];};
+
+    virtual int getNLEGS() override {return legs_.size();};
+
 	// get leg with LEGID TO DO
 
 protected:
