@@ -62,10 +62,11 @@ public:
 template<class T>
 class LegDataMap{
 public:
-    LegDataMap(RobotBase* robot): nLegs_(robot->getNLEGS()){    
+    LegDataMap(const int nLegs): nLegs_(nLegs){    
         T *p = new T[nLegs_];
         std::shared_ptr<T> pshrd(p);
         data_ = pshrd;
+        //data_ = std::make_shared<T*>(new T[nLegs_]);
     }
     ~LegDataMap(){};
     
@@ -73,6 +74,8 @@ public:
     Iterator<T> end() { return Iterator<T>(&data_.get()[nLegs_]); }
 private:
     std::shared_ptr<T> data_;
+    //std::shared_ptr<T*> data_;
+    
     const int nLegs_;
 };
 
@@ -85,7 +88,7 @@ TEST(robotLib, legDataMap){
         std::cout << (*l).getName() << std::endl;
     }
 
-    LegDataMap<int> leg_data_map(robot);
+    LegDataMap<int> leg_data_map(robot->getNLEGS());
     
     std::cout << "For each value in leg data map" << std::endl;
     int i=0;
@@ -93,5 +96,5 @@ TEST(robotLib, legDataMap){
         x=i++;
         std::cout << x << std::endl;
     }
- 
+    
 }
