@@ -10,8 +10,6 @@
 // stdlib
 #include <fstream>
 
-#include <memory>
-
 #include "robot_base.hpp"
 
 namespace dls
@@ -106,6 +104,7 @@ public:
 	const std::shared_ptr<LimbBase> getLeg(const int id){return legs_[id];};
 
     virtual int getNLEGS() override {return legs_.size();};
+
 
 protected:
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_;				//! Legs of the robot
