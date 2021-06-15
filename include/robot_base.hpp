@@ -11,12 +11,15 @@
 #include <fstream>
 
 #include <memory>
-#include "limb_base.hpp"
-#include "trunk.hpp"
-#include "leg.hpp"
-#include "utils.hpp"
 
-//#include "forward_kinematics.hpp"
+#include "limb_base.hpp"
+#include "leg.hpp"
+#include "link.hpp"
+#include "joint.hpp"
+#include "trunk.hpp"
+#include "leg_data_map.hpp"
+
+#include "utils.hpp"
 
 namespace dls
 {
