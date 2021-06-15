@@ -6,14 +6,11 @@ using namespace std;
 using namespace dls;
 using namespace dls::robot;
 
-
-
 #define NLEGS 4
 #define NLINKS 2
 #define NJOINTS 3
 #define NLINKS_TOT NLEGS*NLINKS
 #define NJOINTS_TOT NLEGS*NJOINTS
-
 
 // Define hyq robot for testing
 class HyqLeg : public Leg<NJOINTS,NLINKS> {
@@ -43,41 +40,9 @@ public:
         std::make_shared<HyqLeg>("RH"),    
          })
     ) 
-    { 
-        // std::cout << "-----------------------------------" << std::endl;
-        // for (int i=0;i<4;i++) {
-        //     std::cout << legs_[i]->getName() << std::endl;
-        //     for (int j=0;j<3;j++)
-        //         std::cout << legs_[i]->joints_[j]->getName() << ",";
-        //     for (int j=0;j<2;j++)
-        //         std::cout << legs_[i]->links_[j]->getName() << ",";
-        //     std::cout << std::endl;
-        // }
-        // std::cout << "-----------------------------------" << std::endl;
-    
-    }
+    { }
 };
 
-
-template<class T>
-class LegDataMap{
-public:
-    LegDataMap(const int nLegs): nLegs_(nLegs){    
-        T *p = new T[nLegs_];
-        std::shared_ptr<T> pshrd(p);
-        data_ = pshrd;
-        //data_ = std::make_shared<T*>(new T[nLegs_]);
-    }
-    ~LegDataMap(){};
-    
-    Iterator<T> begin() { return Iterator<T>(&data_.get()[0]); }
-    Iterator<T> end() { return Iterator<T>(&data_.get()[nLegs_]); }
-private:
-    std::shared_ptr<T> data_;
-    //std::shared_ptr<T*> data_;
-    
-    const int nLegs_;
-};
 
 TEST(robotLib, legDataMap){
     RobotBase *robot = new Hyq;
