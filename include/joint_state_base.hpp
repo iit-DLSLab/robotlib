@@ -27,4 +27,4 @@ public:
 } // namespace dog
 } // namespace robot
 
-#endif
+#endif //_ROBOTLIB_JOINT_STATE_BASE_HPP_

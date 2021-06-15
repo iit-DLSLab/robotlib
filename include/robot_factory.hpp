@@ -5,7 +5,7 @@
 // Includes
 // =============================================================================
 #include <memory>
-#include "robot.hpp"
+#include "robot_base.hpp"
 
 // dlopen library for shared libraries
 #include <dlfcn.h>
@@ -27,15 +27,8 @@ namespace robot {
 class RobotFactory
 {
 public:
-	/// Which robot to construct
-	///
-	enum class RobotType
-	{
-		HyQ,
-		HyQReal
-	};
 
-	static std::shared_ptr<Robot> buildRobot(RobotType);
+	static std::shared_ptr<RobotBase> openRobot(const std::string& robotType);
 	//static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
 };
 

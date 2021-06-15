@@ -3,7 +3,7 @@
 #define _ROBOTLIB_LEG_DATA_MAP_HPP_
 
 #include <stdexcept>
-#include <utils.hpp>
+#include "utils.hpp"
 
 namespace dls {
 namespace robot {
@@ -34,5 +34,5 @@ private:
 } // namespace robot
 } // namespace dls
 
-#endif
+#endif //_ROBOTLIB_LEG_DATA_MAP_HPP_
 
