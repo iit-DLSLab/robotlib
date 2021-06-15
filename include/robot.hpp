@@ -11,16 +11,8 @@
 #include <fstream>
 
 #include <memory>
-#include "limb_base.hpp"
-#include "leg_base.hpp"
-#include "arm_base.hpp"
-#include "trunk.hpp"
-#include "leg.hpp"
-#include "joint.hpp"
-#include "leg_data_map_base.hpp"
-#include "robot_base.hpp"
 
-//#include "forward_kinematics.hpp"
+#include "robot_base.hpp"
 
 namespace dls
 {
@@ -36,28 +28,11 @@ class Robot : public RobotBase {
 public:
 	// Constructor
 	Robot(const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): legs_(legs){}; 
-    using it = typename std::array<std::shared_ptr<LimbBase>,NLEGS>::iterator;
-	
+    
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[0]); };
     virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
     
-    //it begin()  { return it(&legs_[0]); };
-    //it end()  { return it(&legs_[NLEGS]); };
-
 	virtual ~Robot() = default;
- 
-	// template <class Data>
-    // class LegDataMap : public LegDataMapBase<Data>{    TO DO
-    // public:
-    //     virtual Iterator<Data> begin() override { return Iterator<Data>(&legData_[0]); }
-    //     virtual Iterator<Data> end() override { return Iterator<Data>(&legData_[NLEGS]); }
-    
-    // private: 
-    //     std::array<Data,NLEGS> legData_;
-    // };
-
-    template <class Data>
-    class LegDataMap : public std::array<Data, NLEGS> { };
     
     template <class Data>
     class LinkDataMap : public std::array<Data, NLINKS_TOT> { };
@@ -112,10 +87,6 @@ public:
         Data jointData[NJOINTS_TOT];
     }; 
 
-    // Function to create data map objects TO DO or TO REMOVE
-    template< class T> LegDataMapBase<T> legDataMap() {return LegDataMap<T>();};
-
-
 	//*************************************************************************
 	// Maybe to be added to robotFactory
 	/** Read function
@@ -135,8 +106,6 @@ public:
 	const std::shared_ptr<LimbBase> getLeg(const int id){return legs_[id];};
 
     virtual int getNLEGS() override {return legs_.size();};
-
-	// get leg with LEGID TO DO
 
 protected:
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_;				//! Legs of the robot

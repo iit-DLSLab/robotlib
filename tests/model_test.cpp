@@ -1,4 +1,5 @@
 #include "robot.hpp"
+
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -37,19 +38,7 @@ public:
         std::make_shared<HyqLeg>("LH"),
         std::make_shared<HyqLeg>("RH"),
         
-    })) { 
-        // std::cout << "-----------------------------------" << std::endl;
-        // for (int i=0;i<4;i++) {
-        //     std::cout << legs_[i]->getName() << std::endl;
-        //     for (int j=0;j<3;j++)
-        //         std::cout << legs_[i]->joints_[j]->getName() << ",";
-        //     for (int j=0;j<2;j++)
-        //         std::cout << legs_[i]->links_[j]->getName() << ",";
-        //     std::cout << std::endl;
-        // }
-        // std::cout << "-----------------------------------" << std::endl;
-    
-    }
+    })) { }
 };
 
 
@@ -65,8 +54,8 @@ TEST(robotLib, legs){
         std::cout << l->getName() << std::endl;
     }
     
-    Hyq::LegDataMap<int> leg_data_map;
-    
+    LegDataMap<int> leg_data_map(hyq.getNLEGS());
+
     std::cout << "For each value in leg data map" << std::endl;
     for (auto x : leg_data_map) {
         x=i++;
@@ -112,47 +101,4 @@ TEST(robotLib, legs){
         *x.second=i++;
         std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << *x.second << std::endl;
     }
-
-    
-
-    // // Create a set of legs
-    // std::array<std::shared_ptr<LimbBase>, NLEGS> legs;
-
-    // legs[0] = std::make_shared<Leg<3,3>>("FL");
-    // legs[1] = std::make_shared<Leg<2,2>>("FR");
-    // legs[2] = std::make_shared<Leg<1,2>>("RL");
-    // legs[3] = std::make_shared<Leg<3,2>>("RR");
-
-    // // Create a link and joint
-    // Joint joint = Joint ("haa");
-    // Link link = Link ("l1");
-    
-    // // Test get and set functions on legs
-    // int i=3;
-    // r.setLeg(legs[i],i); //or all at once with r->setLegs(legs)
-
-    // std::cout << "LEG " << legs[i]->getName() << '\n';
-    
-    // int nLinks = legs[i]->getNumLinks();
-    // int nJoints = legs[i]->getNumJoints();
-
-    // std::cout << "\tLINKS " << '\n';
-    // for (int idL = 0; idL<nLinks; ++idL){
-    //     legs[i]->setLink(link, idL);
-    //     std::cout << "\t" << legs[i]->getLink(idL).getName() <<  "\n";
-    // }
-
-    // std::cout << "\tJOINTS " << '\n';
-    // for (int idJ = 0; idJ<nJoints; ++idJ){
-    //     legs[i]->setJoint(joint, idJ);
-    //     std::cout << "\t" << legs[i]->getJoint(idJ).getName() <<  "\n";
-    // }
-    
-
-    //legs[0].getLinks();    
-    // for (int i=0;i<4;++i){
-    //    std::shared_ptr<LimbBase> leg = r.getLeg(i);
-
-    //     std::cout << leg->getName() << "n. links " << leg->getLinks().size << "n. joints " << leg->getJoints().size <<'\n';
-    // }
 }
