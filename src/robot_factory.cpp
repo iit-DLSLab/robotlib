@@ -7,23 +7,22 @@
 // current class
 #include "robot_factory.hpp"
 
-using dls::robot;
-using dls::robot::RobotFactory;
+using namespace dls::robot;
 
 std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string& robotType){
 	
 	std::string libPath;
 
 	// Get the library path
-	if (robotType.compare("hyq")){
-		libPath = "../src/doglib/libhyqlib.so"
+	if (robotType.compare("hyq")==0){
+		libPath = "./src/hyqlib/libhyqlib.so";
 	}
-	else if (robotType.compare("hyqreal")){
-		libPath = "../src/doglib/libhyqReallib.so")
+	else if (robotType.compare("hyqreal")==0){
+		libPath = "TO DO";
 	}
 
 	// Load the robot library
-	void* robot = dlopen(libPath,RTLD_LAZY);
+	void* robot = dlopen(libPath.c_str(), RTLD_LAZY);
 	if (!robot) {
 		std::cerr << "Cannot load library: " << dlerror() << '\n';
 	}

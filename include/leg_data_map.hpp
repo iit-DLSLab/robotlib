@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include "utils.hpp"
+#include <memory>
 
 namespace dls {
 namespace robot {

@@ -10,8 +10,6 @@
 // stdlib
 #include <fstream>
 
-#include <memory>
-
 #include "robot_base.hpp"
 
 namespace dls
