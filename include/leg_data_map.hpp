@@ -3,7 +3,8 @@
 #define _ROBOTLIB_LEG_DATA_MAP_HPP_
 
 #include <stdexcept>
-#include <utils.hpp>
+#include "utils.hpp"
+#include <memory>
 
 namespace dls {
 namespace robot {

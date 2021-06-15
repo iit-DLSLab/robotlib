@@ -24,7 +24,7 @@ public:
 	//iterator begin() 
 };
 
-} // namespace dog
 } // namespace robot
+} // namespace dls
 
 #endif // _ROBOTLIB_JOINT_STATE_BASE_HPP_
