@@ -37,6 +37,10 @@ public:
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
     
     virtual int getNLEGS() = 0;
+
+	// Plugin typedefs
+	typedef std::shared_ptr<RobotBase> createRobot_t();
+	typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
     
 };
 } // namespace robot

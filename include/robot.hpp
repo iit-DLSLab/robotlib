@@ -107,6 +107,7 @@ public:
 
     virtual int getNLEGS() override {return legs_.size();};
 
+
 protected:
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_;				//! Legs of the robot
 	//const Trunk trunk_;													//! Trunk of the robot

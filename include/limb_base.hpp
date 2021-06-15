@@ -8,6 +8,9 @@
 //#include "link.hpp"
 //#include "joint.hpp"
 
+#include <string>
+#include <memory>
+
 namespace dls{
 namespace robot {
 /**
