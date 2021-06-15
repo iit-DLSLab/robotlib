@@ -22,7 +22,7 @@ class LimbBase
 public:
     LimbBase (const std::string& name): name_(name) {};
     
-	~LimbBase(){};
+	virtual ~LimbBase(){};
     
     // Get functions
     const std::string getName() const {return name_;};

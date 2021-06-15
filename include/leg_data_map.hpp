@@ -35,5 +35,5 @@ private:
 } // namespace robot
 } // namespace dls
 
-#endif //_ROBOTLIB_LEG_DATA_MAP_HPP_
+#endif // _ROBOTLIB_LEG_DATA_MAP_HPP_
 
