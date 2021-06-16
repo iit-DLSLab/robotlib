@@ -3,7 +3,6 @@
 
 #include "leg_data_map.hpp"
 #include <Eigen/Dense>
-#include <iostream>
 
 namespace dls{
 namespace robot {
