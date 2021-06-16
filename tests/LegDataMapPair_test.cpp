@@ -1,5 +1,4 @@
 #include "robot.hpp"
-#include "leg_data_map_pair.hpp"
 #include "joint_data_map_pair.hpp"
 #include "link_data_map_pair.hpp"
 
@@ -51,7 +50,7 @@ public:
 TEST(robotLib, legDataMapPair){
     auto robot = std::make_shared<Hyq>();
     
-    LegDataMapPair<int> leg_data_map_pair(robot);
+    auto leg_data_map_pair = robot->makeLegDataMapPair<int>();
 
     int i = 0;
     std::cout << "For each pair in leg data map" << std::endl;
@@ -79,7 +78,7 @@ TEST(robotLib, jointDataMapPair){
 TEST(robotLib, linkDataMapPair){
     auto robot = std::make_shared<Hyq>();
  
-    LinkDataMapPair<int> link_data_map_pair(robot);
+    auto link_data_map_pair = robot->makeLinkDataMapPair<int>();
 
     std::cout << "For each value in link data map" << std::endl;
     int i=0;
