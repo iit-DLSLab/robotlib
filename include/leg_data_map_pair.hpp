@@ -32,7 +32,6 @@ public:
 private:
     const int nLegs_;
     std::vector<PairType> data_;
-
 };
 
 } // namespace robot

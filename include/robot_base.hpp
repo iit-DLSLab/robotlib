@@ -17,7 +17,6 @@
 #include "link.hpp"
 #include "joint.hpp"
 #include "trunk.hpp"
-#include "leg_data_map.hpp"
 
 #include "utils.hpp"
 
@@ -32,11 +31,32 @@ namespace robot
 // =============================================================================
 
 class RobotBase {
+private:
+    template<class Data>
+    class LegDataMap{
+    public:
+        LegDataMap(const int nLegs): nLegs_(nLegs){    
+            Data *p = new Data[nLegs_];
+            std::shared_ptr<Data> pshrd(p);
+            data_ = pshrd;
+        }
+        ~LegDataMap(){};
+        
+        Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
+        Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
+    private:
+        std::shared_ptr<Data> data_;
+        
+        const int nLegs_;
+    };
+
+
+
 public:
 
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
-    
+
     // Get functions
     virtual const int getNLEGS() = 0;
     virtual const int getNJOINTS() = 0;
@@ -48,6 +68,7 @@ public:
 	typedef std::shared_ptr<RobotBase> createRobot_t();
 	typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
+    
     // Create a leg data map
     template<class Data> LegDataMap<Data> makeLegDataMap(){return LegDataMap<Data>(this->getNLEGS());}
 
@@ -56,8 +77,9 @@ public:
 
     // Create a link data map
     template<class Data> LegDataMap<Data> makeLinkDataMap(){return LegDataMap<Data>(this->getNLINKS());}
-    
+
 };
+
 } // namespace robot
 } // namespace dls
 

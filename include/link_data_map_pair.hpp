@@ -38,7 +38,6 @@ public:
 private:
     const int nLinks_;
     std::vector<PairType> data_;
-
 };
 
 } // namespace robot
