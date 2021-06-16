@@ -1,4 +1,7 @@
 #include "robot.hpp"
+#include "leg_data_map_pair.hpp"
+#include "joint_data_map_pair.hpp"
+#include "link_data_map_pair.hpp"
 
 #include <gtest/gtest.h>
 
@@ -46,15 +49,15 @@ TEST(robotLib, legs){
     int i=0;
     
     // Create hyq robot robot
-    Hyq hyq;
+    auto hyq = std::make_shared<Hyq>();
 
     std::cout << "For each leg in robot" << std::endl;
     
-    for (auto l : hyq) {
+    for (auto l : *hyq) {
         std::cout << l->getName() << std::endl;
     }
     
-    LegDataMap<int> leg_data_map(hyq.getNLEGS());
+    LegDataMap<int> leg_data_map(hyq->getNLEGS());
 
     std::cout << "For each value in leg data map" << std::endl;
     for (auto x : leg_data_map) {
@@ -62,7 +65,7 @@ TEST(robotLib, legs){
         std::cout << x << std::endl;
     }
 
-    LegDataMap<int> link_data_map(hyq.getNLINKS());
+    LegDataMap<int> link_data_map(hyq->getNLINKS());
 
     i=0;
     std::cout << "For each value in a link data map" << std::endl;
@@ -71,7 +74,7 @@ TEST(robotLib, legs){
         std::cout << x << std::endl;
     }
 
-    LegDataMap<int> joint_data_map(hyq.getNJOINTS());
+    LegDataMap<int> joint_data_map(hyq->getNJOINTS());
     
     std::cout << "For each value in joint data map" << std::endl;
     i=0;
@@ -80,27 +83,27 @@ TEST(robotLib, legs){
         std::cout << x << std::endl;
     }
 
-    Hyq::LegDataMapPair<int> leg_data_map_pair(hyq);
+    LegDataMapPair<int> leg_data_map_pair(hyq);
     std::cout << "For each pair in leg data map" << std::endl;
     i=0;
     for (auto x : leg_data_map_pair) {
-        *x.second=i++;
-        std::cout << x.first->getName() << "=" << *x.second << std::endl;
+        x.second=i++;
+        std::cout << x.first->getName() << "=" << x.second << std::endl;
     }
     
-    Hyq::LinkDataMapPair<int> link_data_map_pair(hyq);
+    LinkDataMapPair<int> link_data_map_pair(hyq);
     std::cout << "For each pair in link data map" << std::endl;
     i=0;
     for (auto x : link_data_map_pair) {
-        *x.second=i++;
-        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << *x.second << std::endl;
+        x.second=i++;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
     }
 
-    Hyq::JointDataMapPair<int> joint_data_map_pair(hyq);
+    JointDataMapPair<int> joint_data_map_pair(hyq);
     std::cout << "For each pair in joint data map" << std::endl;
     i=0;
     for (auto x : joint_data_map_pair) {
-        *x.second=i++;
-        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << *x.second << std::endl;
+        x.second=i++;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
     }
 }

@@ -38,9 +38,11 @@ public:
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
     
     // Get functions
-    virtual int getNLEGS() = 0;
-    virtual int getNJOINTS() = 0;
-    virtual int getNLINKS() = 0;
+    virtual const int getNLEGS() = 0;
+    virtual const int getNJOINTS() = 0;
+    virtual const int getNLINKS() = 0;
+
+    virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
 
 	// Plugin typedefs
 	typedef std::shared_ptr<RobotBase> createRobot_t();

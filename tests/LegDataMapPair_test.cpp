@@ -1,4 +1,8 @@
 #include "robot.hpp"
+#include "leg_data_map_pair.hpp"
+#include "joint_data_map_pair.hpp"
+#include "link_data_map_pair.hpp"
+
 #include <gtest/gtest.h>
 #include <utils.hpp>
 
@@ -44,48 +48,43 @@ public:
 };
 
 
-TEST(robotLib, legDataMap){
-    RobotBase *robot = new Hyq;
-
-    std::cout << "For each leg in robot" << std::endl;
+TEST(robotLib, legDataMapPair){
+    auto robot = std::make_shared<Hyq>();
     
-    for (auto l : *robot) {
-        std::cout << l->getName() << std::endl;
+    LegDataMapPair<int> leg_data_map_pair(robot);
+
+    int i = 0;
+    std::cout << "For each pair in leg data map" << std::endl;
+    i=0;
+    for (auto x : leg_data_map_pair) {
+        x.second=i++;
+        std::cout << x.first->getName() << "=" << x.second << std::endl;
     }
 
-    //LegDataMap<int> leg_data_map(robot->getNLEGS());
-    auto leg_data_map = robot->makeLegDataMap<int>();
-    
-    std::cout << "For each value in leg data map" << std::endl;
-    int i=0;
-    for (auto x : leg_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
-    }
 }
 
-TEST(robotLib, jointDataMap){
-    RobotBase *robot = new Hyq;
+TEST(robotLib, jointDataMapPair){
+    auto robot = std::make_shared<Hyq>();
+ 
+    JointDataMapPair<int> joint_data_map_pair(robot);
 
-    auto joint_data_map = robot->makeJointDataMap<int>();
-    
     std::cout << "For each value in joint data map" << std::endl;
     int i=0;
-    for (auto x : joint_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
+    for (auto x : joint_data_map_pair) {
+        x.second=i++;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
     }
 }
 
-TEST(robotLib, linkDataMap){
-    RobotBase *robot = new Hyq;
+TEST(robotLib, linkDataMapPair){
+    auto robot = std::make_shared<Hyq>();
+ 
+    LinkDataMapPair<int> link_data_map_pair(robot);
 
-    auto link_data_map = robot->makeLinkDataMap<int>();
-    
     std::cout << "For each value in link data map" << std::endl;
     int i=0;
-    for (auto x : link_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
+    for (auto x : link_data_map_pair) {
+        x.second=i++;
+        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
     }
 }

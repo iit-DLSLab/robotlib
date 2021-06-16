@@ -14,20 +14,20 @@ namespace robot {
  * (or anything related to a leg, e.g. a hip)
  */
 
-template<class T>
+template<class Data>
 class LegDataMap{
 public:
     LegDataMap(const int nLegs): nLegs_(nLegs){    
-        T *p = new T[nLegs_];
-        std::shared_ptr<T> pshrd(p);
+        Data *p = new Data[nLegs_];
+        std::shared_ptr<Data> pshrd(p);
         data_ = pshrd;
     }
     ~LegDataMap(){};
     
-    Iterator<T> begin() { return Iterator<T>(&data_.get()[0]); }
-    Iterator<T> end() { return Iterator<T>(&data_.get()[nLegs_]); }
+    Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
+    Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
 private:
-    std::shared_ptr<T> data_;
+    std::shared_ptr<Data> data_;
     
     const int nLegs_;
 };
