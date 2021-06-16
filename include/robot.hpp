@@ -31,12 +31,6 @@ public:
     virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
     
 	virtual ~Robot() = default;
-    
-    template <class Data>
-    class LinkDataMap : public std::array<Data, NLINKS_TOT> { };
-
-    template <class Data>
-    class JointDataMap : public std::array<Data, NJOINTS_TOT> { };
 
     template <class Data>
     class LegDataMapPair : public std::array<std::pair<std::shared_ptr<LimbBase>, std::shared_ptr<Data>>, NLEGS> {
@@ -103,7 +97,9 @@ public:
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs(){return legs_;};
 	const std::shared_ptr<LimbBase> getLeg(const int id){return legs_[id];};
 
-    virtual int getNLEGS() override {return legs_.size();};
+    virtual int getNLEGS() override {return NLEGS;};
+    virtual int getNJOINTS() override {return NJOINTS_TOT;};
+    virtual int getNLINKS() override {return NLINKS_TOT;};
 
 
 protected:

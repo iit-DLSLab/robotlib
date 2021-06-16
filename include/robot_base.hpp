@@ -37,11 +37,23 @@ public:
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
     
+    // Get functions
     virtual int getNLEGS() = 0;
+    virtual int getNJOINTS() = 0;
+    virtual int getNLINKS() = 0;
 
 	// Plugin typedefs
 	typedef std::shared_ptr<RobotBase> createRobot_t();
 	typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+
+    // Create a leg data map
+    template<class Data> LegDataMap<Data> makeLegDataMap(){return LegDataMap<Data>(this->getNLEGS());}
+
+    // Create a joint data map
+    template<class Data> LegDataMap<Data> makeJointDataMap(){return LegDataMap<Data>(this->getNJOINTS());}
+
+    // Create a link data map
+    template<class Data> LegDataMap<Data> makeLinkDataMap(){return LegDataMap<Data>(this->getNLINKS());}
     
 };
 } // namespace robot

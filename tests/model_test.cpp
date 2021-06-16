@@ -61,16 +61,18 @@ TEST(robotLib, legs){
         x=i++;
         std::cout << x << std::endl;
     }
-    
-    Hyq::LinkDataMap<int> link_data_map;
+
+    LegDataMap<int> link_data_map(hyq.getNLINKS());
+
     i=0;
     std::cout << "For each value in a link data map" << std::endl;
     for (auto x : link_data_map) {
         x=i++;
         std::cout << x << std::endl;
     }
+
+    LegDataMap<int> joint_data_map(hyq.getNJOINTS());
     
-    Hyq::JointDataMap<int> joint_data_map;
     std::cout << "For each value in joint data map" << std::endl;
     i=0;
     for (auto x : joint_data_map) {

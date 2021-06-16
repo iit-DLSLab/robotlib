@@ -53,7 +53,8 @@ TEST(robotLib, legDataMap){
         std::cout << (*l).getName() << std::endl;
     }
 
-    LegDataMap<int> leg_data_map(robot->getNLEGS());
+    //LegDataMap<int> leg_data_map(robot->getNLEGS());
+    auto leg_data_map = robot->makeLegDataMap<int>();
     
     std::cout << "For each value in leg data map" << std::endl;
     int i=0;
@@ -61,5 +62,30 @@ TEST(robotLib, legDataMap){
         x=i++;
         std::cout << x << std::endl;
     }
+}
+
+TEST(robotLib, jointDataMap){
+    RobotBase *robot = new Hyq;
+
+    auto joint_data_map = robot->makeJointDataMap<int>();
     
+    std::cout << "For each value in joint data map" << std::endl;
+    int i=0;
+    for (auto x : joint_data_map) {
+        x=i++;
+        std::cout << x << std::endl;
+    }
+}
+
+TEST(robotLib, linkDataMap){
+    RobotBase *robot = new Hyq;
+
+    auto link_data_map = robot->makeLinkDataMap<int>();
+    
+    std::cout << "For each value in link data map" << std::endl;
+    int i=0;
+    for (auto x : link_data_map) {
+        x=i++;
+        std::cout << x << std::endl;
+    }
 }
