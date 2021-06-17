@@ -31,59 +31,6 @@ public:
     virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
     
 	virtual ~Robot() = default;
-    
-    template <class Data>
-    class LinkDataMap : public std::array<Data, NLINKS_TOT> { };
-
-    template <class Data>
-    class JointDataMap : public std::array<Data, NJOINTS_TOT> { };
-
-    template <class Data>
-    class LegDataMapPair : public std::array<std::pair<std::shared_ptr<LimbBase>, std::shared_ptr<Data>>, NLEGS> {
-    public:
-        LegDataMapPair(Robot &robot) {
-            for (int i=0;i<NLEGS;i++){
-                this->data()[i] = std::make_pair(robot.legs_[i], std::make_shared<Data>(legData[i]));
-            }
-        }
-    private:
-        Data legData[NLEGS];
-    };
-
-	template <class Data>
-    class LinkDataMapPair : public std::array<std::pair<std::shared_ptr<Link>, std::shared_ptr<Data>>, NLINKS_TOT> {
-    public:
-        LinkDataMapPair(Robot &robot) {
-            for (int i=0;i<NLEGS;i++) {
-                auto leg = robot.legs_[i];
-				int nLinks = leg->getNumLinks();
-				for (int j=0;j<nLinks;j++) {
-                    auto link = std::static_pointer_cast<Link>(leg->getLink(j)); 
-                    this->data()[i*nLinks+j] = std::make_pair(link, std::make_shared<Data>(linkData[i*nLinks+j]));
-                }
-            }
-        }
-    private:
-        Data linkData[NLINKS_TOT];
-    };
-
-
-    template <class Data>
-    class JointDataMapPair : public std::array<std::pair<std::shared_ptr<Joint>, std::shared_ptr<Data>>,NJOINTS_TOT> {
-    public:
-        JointDataMapPair(Robot &robot) {
-            for (int i=0;i<NLEGS;i++) {
-                auto leg = robot.legs_[i];
-				int nJoints = leg->getNumJoints();
-                for (int j=0;j<nJoints;j++) {
-                    auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
-                    this->data()[i*nJoints+j] = std::make_pair(joint,std::make_shared<Data>(jointData[i*nJoints+j]));
-                }
-            }
-        }
-    private:
-        Data jointData[NJOINTS_TOT];
-    }; 
 
 	//*************************************************************************
 	// Maybe to be added to robotFactory
@@ -101,10 +48,11 @@ public:
 
 	// Get functions
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs(){return legs_;};
-	const std::shared_ptr<LimbBase> getLeg(const int id){return legs_[id];};
+	const std::shared_ptr<LimbBase> getLeg(const int id) override {return legs_[id];};
 
-    virtual int getNLEGS() override {return legs_.size();};
-
+    virtual const int getNLEGS() override {return NLEGS;};
+    virtual const int getNJOINTS() override {return NJOINTS_TOT;};
+    virtual const int getNLINKS() override {return NLINKS_TOT;};
 
 protected:
 	const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_;				//! Legs of the robot
