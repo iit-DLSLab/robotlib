@@ -6,7 +6,6 @@ using namespace std;
 using namespace dls;
 using namespace dls::robot;
 
-#define ROBOT_TYPE "hyq"
 TEST(ModelTest, robotLegs)
 {
     /// Ground truth
@@ -18,7 +17,7 @@ TEST(ModelTest, robotLegs)
     }};
     
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
 
     int i{0};
     for (auto l : *hyq) {
@@ -31,7 +30,7 @@ TEST(ModelTest, legDataMap)
     /// Ground truth
     std::array<int, 4> hyq_leg_data_map{{0,1,2,3}};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto leg_data_map = hyq->makeLegDataMap<int>();
 
     int i{0};
@@ -46,7 +45,7 @@ TEST(ModelTest, linkDataMap)
     /// Ground truth
     std::array<int, 8> hyq_link_data_map{{0,1,2,3,4,5,6,7}};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto link_data_map = hyq->makeLinkDataMap<int>();
     
     int i{0};
@@ -61,7 +60,7 @@ TEST(ModelTest, jointDataMap)
     /// Ground truth
     std::array<int, 12> hyq_joint_data_map{{0,1,2,3,4,5,6,7,8,9,10,11}};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto joint_data_map = hyq->makeJointDataMap<int>();
 
     int i{0};
@@ -82,7 +81,7 @@ TEST(ModelTest, legDataMapPair)
         }};
     std::array<int, 4> hyq_ldmp_ids{0,1,2,3};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto leg_data_map_pair = hyq->makeLegDataMapPair<int>();
 
     ASSERT_EQ(leg_data_map_pair.getSize(), hyq_leg_data_map_pair.size());
@@ -110,7 +109,7 @@ TEST(ModelTest, linkDataMapPair)
     }};
     std::array<int, 8> hyq_ldmp_ids{0,1,2,3,4,5,6,7};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto link_data_map_pair = hyq->makeLinkDataMapPair<int>();
     
     ASSERT_EQ(link_data_map_pair.getSize(), hyq_link_data_map_pair.size());
@@ -143,7 +142,7 @@ TEST(ModelTest, jointDataMapPair)
     }};
     std::array<int, 12> hyq_jdmp_ids{0,1,2,3,4,5,6,7,8,9,10,11};
     /// HyQ
-    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
+    auto hyq = RobotFactory::openRobot("hyq"); 
     auto joint_data_map_pair = hyq->makeJointDataMapPair<int>();
     
     ASSERT_EQ(joint_data_map_pair.getSize(), hyq_joint_data_map_pair.size());
