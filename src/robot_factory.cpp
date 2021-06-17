@@ -15,7 +15,7 @@ std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string& robotType)
 
 	// Get the library path
 	if (robotType.compare("hyq")==0){
-		libPath = "./src/hyqlib/libhyqlib.so";
+		libPath = "../../hyq-commons/build/src/hyqlib/libhyqlib.so";
 	}
 	else if (robotType.compare("hyqreal")==0){
 		libPath = "TO DO";
