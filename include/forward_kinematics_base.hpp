@@ -1,7 +1,6 @@
 #ifndef _ROBOTLIB_FORWARD_KINEMATICS_BASE_HPP_
 #define _ROBOTLIB_FORWARD_KINEMATICS_BASE_HPP_
 
-#include "leg_data_map.hpp"
 #include <Eigen/Dense>
 
 namespace dls{
