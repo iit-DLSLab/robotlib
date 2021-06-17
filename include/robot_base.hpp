@@ -37,7 +37,7 @@ private:
     template<class Data>
     class LegDataMap{
     public:
-        LegDataMap(const int nLegs): nLegs_(nLegs){    
+        LegDataMap(RobotBase* robot): nLegs_(robot->getNLEGS()){    
             Data *p = new Data[nLegs_];
             std::shared_ptr<Data> pshrd(p);
             data_ = pshrd;
@@ -47,8 +47,7 @@ private:
         Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
         Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
     private:
-        std::shared_ptr<Data> data_;
-        
+        std::shared_ptr<Data> data_;        
         const int nLegs_;
     };
 
@@ -153,13 +152,13 @@ public:
 
     
     // Create a leg data map
-    template<class Data> LegDataMap<Data> makeLegDataMap(){return LegDataMap<Data>(this->getNLEGS());}
+    template<class Data> LegDataMap<Data> makeLegDataMap(){return LegDataMap<Data>(this);}
 
     // Create a joint data map
-    template<class Data> LegDataMap<Data> makeJointDataMap(){return LegDataMap<Data>(this->getNJOINTS());}
+    template<class Data> LegDataMap<Data> makeJointDataMap(){return LegDataMap<Data>(this);}
 
     // Create a link data map
-    template<class Data> LegDataMap<Data> makeLinkDataMap(){return LegDataMap<Data>(this->getNLINKS());}
+    template<class Data> LegDataMap<Data> makeLinkDataMap(){return LegDataMap<Data>(this);}
 
     // Create a leg data map pair 
     template<class Data> LegDataMapPair<Data> makeLegDataMapPair(){return LegDataMapPair<Data>(this);}
