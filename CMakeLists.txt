@@ -31,5 +31,6 @@ add_executable(main_tests
 target_link_libraries(main_tests
 	PRIVATE
 	robotlib
+	${CMAKE_DL_LIBS}
 	gtest
 )
