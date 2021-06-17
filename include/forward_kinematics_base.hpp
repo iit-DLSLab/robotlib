@@ -7,13 +7,19 @@
 namespace dls{
 namespace robot {
 
+/// --> TODO: Remove
+typedef Eigen::Matrix<double, 12, 1> Column12d;
+typedef Column12d JointState;
+/// <--
+
 class ForwardKinematicsBase
 {
     public:
-        virtual ~ForwardKinematicsBase(){}
+        ForwardKinematicsBase(){};
+        virtual ~ForwardKinematicsBase(){};
 
         // TODO: Consider the possibility of using an enum for the LegID
-        virtual Eigen::Vector3d getFootPos(const JointState& q, const int LegID& leg) = 0;
+        virtual Eigen::Vector3d getFootPos(const JointState& q, const int leg) = 0;
 };
 
 }

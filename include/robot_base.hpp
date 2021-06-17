@@ -68,6 +68,9 @@ private:
         Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
         Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]);}
 
+        // Get functions
+        int getSize(){return data_.size();};
+
         ~LegDataMapPair(){};
         
     private:
@@ -97,6 +100,9 @@ private:
         Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
         Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]);}
 
+        // Get functions
+        int getSize(){return data_.size();};
+
         ~LinkDataMapPair(){};      
     private:
         const int nLinks_;
@@ -125,6 +131,9 @@ private:
         
         Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
         Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]);}
+
+        // Get functions
+        int getSize(){return data_.size();};
 
         ~JointDataMapPair(){};
         
