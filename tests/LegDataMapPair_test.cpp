@@ -65,7 +65,7 @@ TEST(robotLib, legDataMapPair){
 TEST(robotLib, jointDataMapPair){
     auto robot = std::make_shared<Hyq>();
  
-    JointDataMapPair<int> joint_data_map_pair(robot);
+    auto joint_data_map_pair = robot->makeJointDataMapPair<int>();
 
     std::cout << "For each value in joint data map" << std::endl;
     int i=0;

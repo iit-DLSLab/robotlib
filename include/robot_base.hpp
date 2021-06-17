@@ -105,6 +105,35 @@ private:
     };
 
     // JOINT DATA MAP PAIR CLASS
+    template<class Data>
+    class JointDataMapPair{
+
+    using PairType = std::pair<std::shared_ptr<Joint>, Data>;
+
+    public:
+        JointDataMapPair(RobotBase* robot) : nJoints_(robot->getNJOINTS()){    
+            const int nLegs = robot->getNLEGS();
+            for (int i=0;i<nLegs;i++) {
+                auto leg = robot->getLeg(i);
+                int nJoints = leg->getNumJoints();
+                for (int j=0;j<nJoints;j++) {
+                    auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
+                    PairType pair (joint,Data());
+                    data_.push_back(pair);
+                }
+            }
+        }
+        
+        Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
+        Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]);}
+
+        ~JointDataMapPair(){};
+        
+    private:
+        const int nJoints_;
+        std::vector<PairType> data_;
+
+    };
 
 public:
 
@@ -137,6 +166,9 @@ public:
 
     // Create a link data map pair 
     template<class Data> LinkDataMapPair<Data> makeLinkDataMapPair(){return LinkDataMapPair<Data>(this);}
+
+    // Create a joint data map pair 
+    template<class Data> JointDataMapPair<Data> makeJointDataMapPair(){return JointDataMapPair<Data>(this);}
 
 };
 
