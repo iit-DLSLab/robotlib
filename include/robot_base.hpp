@@ -143,7 +143,10 @@ private:
 
     };
 
+    const std::string name_;
+
 public:
+    RobotBase(const std::string& name) : name_(name){};
 
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
@@ -177,6 +180,39 @@ public:
 
     // Create a joint data map pair 
     template<class Data> JointDataMapPair<Data> makeJointDataMapPair(){return JointDataMapPair<Data>(this);}
+
+    // Functions for getting info from the robot
+    // Names of the Legs
+    void getLegsName(){    
+        std::cout << "\n*** LEGS OF "<< name_ << " ***" << std::endl;
+        for (auto leg : *this) {
+            std::cout << leg->getName() << std::endl;
+        }
+    }
+    // Names of the Links for each leg
+    void getLinksName(){    
+        std::cout << "\n*** LINKS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
+        for (auto leg : *this) {
+            std::cout << leg->getName() << ":  ";
+            int nLinks = leg->getNumLinks();
+            for(int link=0;link<nLinks; ++link ){
+                std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
+            }
+            std::cout << '\n';
+        }
+    }
+    // Names of the Joints for each leg
+    void getJointsName(){    
+        std::cout << "\n*** JOINTS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
+        for (auto leg : *this) {
+            std::cout << leg->getName() << ":  ";
+            int nJoints = leg->getNumJoints();
+            for(int joint=0;joint<nJoints; ++joint ){
+                std::cout << std::static_pointer_cast<Joint>(leg->getJoint(joint))->getName() << ", ";
+            }
+            std::cout << '\n';
+        }
+    }
 
 };
 
