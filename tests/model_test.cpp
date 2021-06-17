@@ -44,74 +44,73 @@ public:
 TEST(ModelTest, robotLegs)
 {
     /// Ground truth
-    std::array<std::string, 4> hyq_legs{
+    std::array<std::string, 4> hyq_legs{{
         std::string{"LF"},
         std::string{"RF"},
         std::string{"LH"},
         std::string{"RH"}
-    };
+    }};
     /// HyQ
     Hyq hyq;
+    
     int i{0};
-
     for (auto l : hyq) {
-        ASSERT_EQ(l->getName(), hyq_legs.at(i));
-        i++;
+        ASSERT_EQ(l->getName(), hyq_legs.at(i++));
     }
 }
 
 TEST(ModelTest, legDataMap)
 {
     /// Ground truth
-    std::array<int, 4> hyq_leg_data_map{0,1,2,3};
+    std::array<int, 4> hyq_leg_data_map{{0,1,2,3}};
     /// HyQ
     Hyq hyq;
     LegDataMap<int> leg_data_map(hyq.getNLEGS());
 
-    int i{0}, j{0};
+    int i{0};
     for (auto leg_dm : leg_data_map) {
-        leg_dm=i++; 
-        ASSERT_EQ(leg_dm, hyq_leg_data_map.at(j++));
+        leg_dm=i; 
+        ASSERT_EQ(leg_dm, hyq_leg_data_map.at(i++));
     }
 }
 
 TEST(ModelTest, linkDataMap)
 {
     /// Ground truth
-    std::array<int, 8> hyq_link_data_map{0,1,2,3,4,5,6,7};
+    std::array<int, 8> hyq_link_data_map{{0,1,2,3,4,5,6,7}};
     /// HyQ
     Hyq::LinkDataMap<int> link_data_map;
     
-    int i{0}, j{0};
+    int i{0};
     for (auto link_dm : link_data_map) {
-        link_dm=i++;
-        ASSERT_EQ(link_dm, hyq_link_data_map.at(j++));
+        link_dm=i;
+        ASSERT_EQ(link_dm, hyq_link_data_map.at(i++));
     }
 }
 
 TEST(ModelTest, jointDataMap)
 {
     /// Ground truth
-    std::array<int, 12> hyq_joint_data_map{0,1,2,3,4,5,6,7,8,9,10,11};
+    std::array<int, 12> hyq_joint_data_map{{0,1,2,3,4,5,6,7,8,9,10,11}};
     /// HyQ
     Hyq::JointDataMap<int> joint_data_map;
 
-    int i{0}, j{0};
+    int i{0};
     for (auto joint_dm : joint_data_map) {
-        joint_dm=i++;
-        ASSERT_EQ(joint_dm, hyq_joint_data_map.at(j++));
+        joint_dm=i;
+        ASSERT_EQ(joint_dm, hyq_joint_data_map.at(i++));
     }
 }
 
 TEST(ModelTest, legDataMapPair)
 {
     /// Ground truth
-    std::array<std::string, 4> hyq_leg_data_map_pair{
+    std::array<std::string, 4> hyq_leg_data_map_pair{{
         std::string{"LF"},
         std::string{"RF"},
         std::string{"LH"},
         std::string{"RH"}
-    };
+        }};
     std::array<int, 4> hyq_ldmp_ids{0,1,2,3};
     /// HyQ
     Hyq hyq;
@@ -119,18 +118,18 @@ TEST(ModelTest, legDataMapPair)
 
     ASSERT_EQ(leg_data_map_pair.size(), hyq_leg_data_map_pair.size());
 
-    int i{0}, j{0};
+    int i{0};
     for (auto leg_dmp : leg_data_map_pair) {
-        *leg_dmp.second=i++;
-        ASSERT_EQ(leg_dmp.first->getName(), hyq_leg_data_map_pair.at(j));
-        ASSERT_EQ(*leg_dmp.second, hyq_ldmp_ids.at(j++));
+        *leg_dmp.second=i;
+        ASSERT_EQ(leg_dmp.first->getName(), hyq_leg_data_map_pair.at(i));
+        ASSERT_EQ(*leg_dmp.second, hyq_ldmp_ids.at(i++));
     }
 }
 
 TEST(ModelTest, linkDataMapPair)
 {
     /// Ground truth
-    std::array<std::array<std::string, 2>, 8> hyq_link_data_map_pair{{
+    std::array<std::pair<std::string, std::string>, 8> hyq_link_data_map_pair{{
         {std::string{"LF"}, std::string{"Upper leg"}},
         {std::string{"LF"}, std::string{"Lower leg"}},
         {std::string{"RF"}, std::string{"Upper leg"}},
@@ -147,19 +146,19 @@ TEST(ModelTest, linkDataMapPair)
     
     ASSERT_EQ(link_data_map_pair.size(), hyq_link_data_map_pair.size());
 
-    int i{0}, j{0};
+    int i{0};
     for (auto link_dmp : link_data_map_pair) {
-        *link_dmp.second=i++;
-        ASSERT_EQ(link_dmp.first->getParent()->getName(), hyq_link_data_map_pair.at(j).at(0));
-        ASSERT_EQ(link_dmp.first->getName(), hyq_link_data_map_pair.at(j).at(1));
-        ASSERT_EQ(*link_dmp.second, hyq_ldmp_ids.at(j++));
+        *link_dmp.second=i;
+        ASSERT_EQ(link_dmp.first->getParent()->getName(), hyq_link_data_map_pair.at(i).first);
+        ASSERT_EQ(link_dmp.first->getName(), hyq_link_data_map_pair.at(i).second);
+        ASSERT_EQ(*link_dmp.second, hyq_ldmp_ids.at(i++));
     }
 }
 
 TEST(ModelTest, jointDataMapPair)
 {
     /// Ground truth
-    std::array<std::array<std::string, 2>, 12> hyq_joint_data_map_pair{{
+    std::array<std::pair<std::string, std::string>, 12> hyq_joint_data_map_pair{{
         {std::string{"LF"}, std::string{"HAA"}},
         {std::string{"LF"}, std::string{"HFE"}},
         {std::string{"LF"}, std::string{"KFE"}},
@@ -180,11 +179,11 @@ TEST(ModelTest, jointDataMapPair)
     
     ASSERT_EQ(joint_data_map_pair.size(), hyq_joint_data_map_pair.size());
 
-    int i{0}, j{0};
+    int i{0};
     for (auto joint_dmp : joint_data_map_pair) {
-        *joint_dmp.second=i++;
-        ASSERT_EQ(joint_dmp.first->getParent()->getName(), hyq_joint_data_map_pair.at(j).at(0));
-        ASSERT_EQ(joint_dmp.first->getName(), hyq_joint_data_map_pair.at(j).at(1));
-        ASSERT_EQ(*joint_dmp.second, hyq_jdmp_ids.at(j++));
+        *joint_dmp.second=i;
+        ASSERT_EQ(joint_dmp.first->getParent()->getName(), hyq_joint_data_map_pair.at(i).first);
+        ASSERT_EQ(joint_dmp.first->getName(), hyq_joint_data_map_pair.at(i).second);
+        ASSERT_EQ(*joint_dmp.second, hyq_jdmp_ids.at(i++));
     }
 }
