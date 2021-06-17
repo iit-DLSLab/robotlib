@@ -1,0 +1,31 @@
+image: server-harbor:80/dls/dls-env:latest
+
+stages:
+   - build
+   - test
+
+build:
+  stage: build
+  tags:
+    - dls
+  script:
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make -j$(nproc)
+  #artifacts:
+  #  paths:
+  #    - build/*
+  #    - bin/*
+  #  expire_in: 3 hrs
+
+test:
+  stage: test
+  tags: 
+    - dls
+  script:
+    - cd build
+    - make -j$(nproc) main_tests
+    - ./main_tests
+  dependencies:
+    - build
