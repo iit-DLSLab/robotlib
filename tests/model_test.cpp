@@ -1,44 +1,12 @@
 #include "robot.hpp"
+#include "robot_factory.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
 using namespace dls;
 using namespace dls::robot;
 
-#define NLEGS 4
-#define NLINKS 2
-#define NJOINTS 3
-#define NLINKS_TOT NLEGS*NLINKS
-#define NJOINTS_TOT NLEGS*NJOINTS
-
-// Define hyq robot for testing
-class HyqLeg : public Leg<NJOINTS,NLINKS> {
-public:
-    HyqLeg(std::string name) : Leg<NJOINTS,NLINKS>(
-        name,
-        std::array<std::shared_ptr<Joint>,NJOINTS>({
-            std::make_shared<Joint>(this, "HAA"),
-            std::make_shared<Joint>(this, "HFE"),
-            std::make_shared<Joint>(this, "KFE")
-            }),
-        std::array<std::shared_ptr<Link>,NLINKS>({
-            std::make_shared<Link>(this, "Upper leg"),
-            std::make_shared<Link>(this,  "Lower leg")
-            })
-        ) { }
-};
-
-class Hyq : public Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT> {
-public:
-    Hyq() :Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT>(std::array<std::shared_ptr<LimbBase>,NLEGS>({
-        std::make_shared<HyqLeg>("LF"),
-        std::make_shared<HyqLeg>("RF"),
-        std::make_shared<HyqLeg>("LH"),
-        std::make_shared<HyqLeg>("RH"),
-        
-    })) { }
-};
-
+#define ROBOT_TYPE "hyq"
 TEST(ModelTest, robotLegs)
 {
     /// Ground truth
@@ -50,7 +18,7 @@ TEST(ModelTest, robotLegs)
     }};
     
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
 
     int i{0};
     for (auto l : *hyq) {
@@ -63,7 +31,7 @@ TEST(ModelTest, legDataMap)
     /// Ground truth
     std::array<int, 4> hyq_leg_data_map{{0,1,2,3}};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto leg_data_map = hyq->makeLegDataMap<int>();
 
     int i{0};
@@ -78,7 +46,7 @@ TEST(ModelTest, linkDataMap)
     /// Ground truth
     std::array<int, 8> hyq_link_data_map{{0,1,2,3,4,5,6,7}};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto link_data_map = hyq->makeLinkDataMap<int>();
     
     int i{0};
@@ -93,7 +61,7 @@ TEST(ModelTest, jointDataMap)
     /// Ground truth
     std::array<int, 12> hyq_joint_data_map{{0,1,2,3,4,5,6,7,8,9,10,11}};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto joint_data_map = hyq->makeJointDataMap<int>();
 
     int i{0};
@@ -114,7 +82,7 @@ TEST(ModelTest, legDataMapPair)
         }};
     std::array<int, 4> hyq_ldmp_ids{0,1,2,3};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto leg_data_map_pair = hyq->makeLegDataMapPair<int>();
 
     ASSERT_EQ(leg_data_map_pair.getSize(), hyq_leg_data_map_pair.size());
@@ -142,7 +110,7 @@ TEST(ModelTest, linkDataMapPair)
     }};
     std::array<int, 8> hyq_ldmp_ids{0,1,2,3,4,5,6,7};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto link_data_map_pair = hyq->makeLinkDataMapPair<int>();
     
     ASSERT_EQ(link_data_map_pair.getSize(), hyq_link_data_map_pair.size());
@@ -175,7 +143,7 @@ TEST(ModelTest, jointDataMapPair)
     }};
     std::array<int, 12> hyq_jdmp_ids{0,1,2,3,4,5,6,7,8,9,10,11};
     /// HyQ
-    RobotBase *hyq = new Hyq;
+    auto hyq = RobotFactory::openRobot(ROBOT_TYPE); 
     auto joint_data_map_pair = hyq->makeJointDataMapPair<int>();
     
     ASSERT_EQ(joint_data_map_pair.getSize(), hyq_joint_data_map_pair.size());
