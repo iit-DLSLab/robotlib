@@ -146,7 +146,7 @@ private:
     const std::string name_;
 
 public:
-    //RobotBase(const std::string& name) : name_(name){};
+    RobotBase(const std::string& name) : name_(name){};
 
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
     virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
@@ -184,14 +184,14 @@ public:
     // Functions for getting info from the robot
     // Names of the Legs
     void getLegsName(){    
-        std::cout << "\n*** LEGS OF THE ROBOT ***" << std::endl;
+        std::cout << "\n*** LEGS OF "<< name_ << " ***" << std::endl;
         for (auto leg : *this) {
             std::cout << leg->getName() << std::endl;
         }
     }
     // Names of the Links for each leg
     void getLinksName(){    
-        std::cout << "\n*** LINKS OF THE ROBOT FOR EACH LEG***" << std::endl;
+        std::cout << "\n*** LINKS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
         for (auto leg : *this) {
             std::cout << leg->getName() << ":  ";
             int nLinks = leg->getNumLinks();
@@ -203,7 +203,7 @@ public:
     }
     // Names of the Joints for each leg
     void getJointsName(){    
-        std::cout << "\n*** JOINTS OF THE ROBOT FOR EACH LEG***" << std::endl;
+        std::cout << "\n*** JOINTS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
         for (auto leg : *this) {
             std::cout << leg->getName() << ":  ";
             int nJoints = leg->getNumJoints();
