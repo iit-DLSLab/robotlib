@@ -34,3 +34,13 @@ target_link_libraries(main_tests
 	${CMAKE_DL_LIBS}
 	gtest
 )
+
+add_executable(robotinfo
+	tests/robotinfo.cpp
+)
+
+target_link_libraries(robotinfo
+	PRIVATE
+	robotlib
+	${CMAKE_DL_LIBS}
+)
