@@ -5,7 +5,9 @@ set(MAJOR 0)
 set(MINOR 0)
 set(PATCH 0)
 
+find_package(urdf REQUIRED)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
 add_compile_options(
 	-std=c++14
 	-fPIC
