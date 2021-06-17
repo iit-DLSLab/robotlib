@@ -25,7 +25,7 @@ template<unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS
 class Robot : public RobotBase {
 public:
 	// Constructor
-	Robot(const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): legs_(legs){}; 
+	Robot(const std::string& name, const std::array<std::shared_ptr<LimbBase>, NLEGS>& legs): RobotBase(name), legs_(legs){}; 
     
     virtual Iterator<const std::shared_ptr<LimbBase>> begin() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[0]); };
     virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
