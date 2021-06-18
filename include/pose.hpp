@@ -1,18 +1,15 @@
 #ifndef _ROBOTLIB_POSE_HPP_
 #define _ROBOTLIB_POSE_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
 #include <Eigen/Dense>
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
- * A pose class for robots.
- */
+ 		* A pose class for robots.
+ 		*/
 		class Pose
 		{
 		public:
@@ -28,8 +25,7 @@ namespace dls
 			const Eigen::Vector3d p_;	//! 3D position
 			const Eigen::Vector3d ori_; //! 3D orientation
 		};
-
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_POSE_HPP_

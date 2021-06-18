@@ -5,9 +5,8 @@
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
-
         /// --> TODO: Remove
         typedef Eigen::Matrix<double, 12, 1> Column12d;
         typedef Column12d JointState;
@@ -26,8 +25,7 @@ namespace dls
             virtual Eigen::Vector3d getLinkPosition(const JointState &q, const int leg) = 0;
             virtual Eigen::Matrix3d getLinkOrientation(const JointState &q, const int leg) = 0;
         };
-
-    }
-}
+    } // namespace robotlib
+} // namespace dls
 
 #endif // _ROBOTLIB_FORWARD_KINEMATICS_BASE_HPP_

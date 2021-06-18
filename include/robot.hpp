@@ -1,22 +1,15 @@
 #ifndef _ROBOTLIB_ROBOT_HPP_
 #define _ROBOTLIB_ROBOT_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-// ros
-#include <urdf/model.h>
-
-// stdlib
-#include <fstream>
-
 #include "robot_base.hpp"
+
+#include <urdf/model.h>
+#include <fstream>
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
-
 		// =============================================================================
 		// Class Interface
 		// =============================================================================
@@ -58,7 +51,7 @@ namespace dls
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
 																	  //const Trunk trunk_;													//! Trunk of the robot
 		};
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_ROBOT_HPP_

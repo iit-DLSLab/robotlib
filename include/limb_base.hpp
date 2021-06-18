@@ -13,12 +13,11 @@
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
         /**
- * A limb interface for robots.
- */
-
+        * A limb interface for robots.
+        */
         class LimbBase
         {
         public:
@@ -36,8 +35,7 @@ namespace dls
         private:
             const std::string name_; //! Limb name
         };
-
-    } // namespace robot
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_LIMB_BASE_HPP_

@@ -1,18 +1,15 @@
 #ifndef _ROBOTLIB_JOINT_HPP_
 #define _ROBOTLIB_JOINT_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
 #include "dyn_params.hpp"
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
- * A joint class for robots.
- */
+		 * A joint class for robots.
+		 */
 		class Joint
 		{
 		public:
@@ -30,11 +27,9 @@ namespace dls
 			const std::string name_; //! Name of the joint
 			const LimbBase *parent_; //! Pointer to parent limb
 									 //const DynParams dyn_params_;	        //! Dynamic parameter of the joint
-
-			//joint limits TODO
+									 //joint limits TODO
 		};
-
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_JOINT_HPP_

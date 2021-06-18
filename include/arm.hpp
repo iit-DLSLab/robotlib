@@ -1,19 +1,15 @@
 #ifndef _ROBOTLIB_ARM_HPP_
 #define _ROBOTLIB_ARM_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
 #include "arm_base.hpp"
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
         /**
- * An arm class for robots.
- */
+        * An arm class for robots.
+        */
         template <unsigned int NJOINTS, unsigned int NLINKS>
         class Arm : public ArmBase
         {
@@ -33,8 +29,8 @@ namespace dls
         private:
             const std::array<std::shared_ptr<Joint>, NJOINTS> joints_; //! Array of joints
             const std::array<std::shared_ptr<Link>, NLINKS> links_;    //! Array of links
-
-        } // namespace robot
-    }     // namespace dls
+        }
+    } // namespace robotlib
+} // namespace dls
 
 #endif // _ROBOTLIB_ARM_HPP_

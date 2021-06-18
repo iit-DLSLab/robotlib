@@ -1,18 +1,13 @@
 #ifndef _ROBOTLIB_UTILS_HPP_
 #define _ROBOTLIB_UTILS_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
         /**
- * Useful functions or data structures
- */
-
+        * Useful functions or data structures
+        */
         template <class Data>
         struct Iterator
         {
@@ -42,8 +37,7 @@ namespace dls
         protected:
             pointer m_ptr;
         };
-
-    } // namespace robot
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_UTILS_HPP_

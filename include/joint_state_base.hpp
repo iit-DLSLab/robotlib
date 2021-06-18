@@ -1,19 +1,15 @@
 #ifndef _ROBOTLIB_JOINT_STATE_BASE_HPP_
 #define _ROBOTLIB_JOINT_STATE_BASE_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
 #include "utils.hpp"
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
- * A joint class for robots.
- */
+		 * A joint class for robots.
+		 */
 		class JointStateBase
 		{
 		public:
@@ -24,8 +20,7 @@ namespace dls
 
 			//iterator begin()
 		};
-
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_JOINT_STATE_BASE_HPP_
