@@ -7,6 +7,7 @@
 #include "joint.hpp"
 #include "trunk.hpp"
 #include "utils.hpp"
+#include "forward_kinematics_base.hpp"
 
 #include <iostream>
 #include <memory>
@@ -229,7 +230,10 @@ namespace dls
             }
 
             std::string getName() { return name_; };
+
+            virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics() = 0;
         };
+        / _ROBOTLIB_LIMB_HPP_P_ / _ROBOTLIB_LIMB_HPP_P_
     } // namespace robotlib
 } // namespace dls
 
