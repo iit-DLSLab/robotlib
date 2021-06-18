@@ -67,15 +67,5 @@ namespace dls
 
         // 	throw(errno);
         // }
-
-        // urdf::Model Robot::init_robot_description(std::string robot_description)
-        // {
-        // 	urdf::Model robot_model;
-        // 	if (!robot_model.initString(robot_description))
-        // 	{
-        // 		throw std::runtime_error("Failed to parse urdf file");
-        // 	}
-        // 	return robot_model;
-        // }
     } // namespace robotlib
 } // namespace dls
