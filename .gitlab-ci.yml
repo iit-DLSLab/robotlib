@@ -13,11 +13,11 @@ build:
     - cd build
     - cmake ..
     - make -j$(nproc)
-  #artifacts:
-  #  paths:
-  #    - build/*
-  #    - bin/*
-  #  expire_in: 3 hrs
+  artifacts:
+    paths:
+      - build/*
+      - bin/*
+    expire_in: 3 hrs
 
 test:
   stage: test
