@@ -7,29 +7,30 @@
 #include "pose.hpp"
 #include "dyn_params.hpp"
 
-namespace dls{
-namespace robot {
-/**
+namespace dls
+{
+	namespace robot
+	{
+		/**
  * A trunk class for robots.
  */
-class Trunk
-{
-public:
+		class Trunk
+		{
+		public:
+			Trunk(const Pose &origin, const DynParams &dparams) : origin_(origin), dyn_params_(dparams){};
 
-	Trunk (const Pose& origin, const DynParams& dparams ): origin_(origin), dyn_params_(dparams) {};
-	
-	~Trunk(){};
+			~Trunk(){};
 
-	// Get functions
-	const Pose& getOrigin(){return origin_;}
-	const DynParams& getDynParams(){return dyn_params_;}
+			// Get functions
+			const Pose &getOrigin() { return origin_; }
+			const DynParams &getDynParams() { return dyn_params_; }
 
-private:
-	const Pose origin_;				//! Pose of the trunk
-	const DynParams dyn_params_; 		//! Dynamic parameter of the trunk
-};
+		private:
+			const Pose origin_;			 //! Pose of the trunk
+			const DynParams dyn_params_; //! Dynamic parameter of the trunk
+		};
 
-} // namespace robot
+	} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_TRUNK_HPP_
