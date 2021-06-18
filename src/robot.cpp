@@ -12,19 +12,19 @@ using namespace dls::robot;
 // =============================================================================
 // Constructors
 // =============================================================================
-// Robot::Robot(	const std::string& 								name, 
+// Robot::Robot(	const std::string& 								name,
 // 				const std::array<std::shared_ptr<Leg>, NLEGS>   legs) :
 // 				name(name),
 // 				legs(legs)
 // 				{};
 
 // std::string Robot::readFile(const char *filename){
-	
+
 // 	//std::cout << "Reading " << filename << std::endl;
 
 // 	//std::ifstream in(filename, std::ios::in | std::ios::binary);
-// 	std::ifstream in(filename, std::ifstream::in);	
-	
+// 	std::ifstream in(filename, std::ifstream::in);
+
 // 	if (in) {
 // 		std::string contents;
 // 		in.seekg(0,std::ios::end);

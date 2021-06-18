@@ -13,26 +13,27 @@
 // =============================================================================
 // Namespace
 // =============================================================================
-namespace dls {
-namespace robot {
-
-// =============================================================================
-// Class Description
-// =============================================================================
-/// Factory class
-///
-/// The robot class is really convoluted inside of supervisor. Internal
-/// components depend on each other, therefore it's not simple to just construct
-/// a robot from a constructor. This factory class simplifies that process.
-class RobotFactory
+namespace dls
 {
-public:
+	namespace robot
+	{
 
-	static std::shared_ptr<RobotBase> openRobot(const std::string& robotType);
-	//static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
-};
+		// =============================================================================
+		// Class Description
+		// =============================================================================
+		/// Factory class
+		///
+		/// The robot class is really convoluted inside of supervisor. Internal
+		/// components depend on each other, therefore it's not simple to just construct
+		/// a robot from a constructor. This factory class simplifies that process.
+		class RobotFactory
+		{
+		public:
+			static std::shared_ptr<RobotBase> openRobot(const std::string &robotType);
+			//static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
+		};
 
-} // robot
+	} // robot
 } // dls
 
 #endif // _ROBOTLIB_ROBOT_FACTORY_HPP_

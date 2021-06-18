@@ -7,24 +7,25 @@
 
 #include "utils.hpp"
 
-namespace dls{
-namespace robot {
-/**
+namespace dls
+{
+	namespace robot
+	{
+		/**
  * A joint class for robots.
  */
-class JointStateBase
-{
-public:
+		class JointStateBase
+		{
+		public:
+			JointStateBase(){};
+			//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
 
-    JointStateBase (){};
-	//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
+			~JointStateBase(){};
 
-	~JointStateBase (){};
+			//iterator begin()
+		};
 
-	//iterator begin() 
-};
-
-} // namespace robot
+	} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_JOINT_STATE_BASE_HPP_
