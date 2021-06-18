@@ -216,6 +216,9 @@ public:
         }
     }
 
+
+    std::string getName(){return name_;};
+
 };
 
 } // namespace robot

@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
         std::cout << "failure\n";
         exit (EXIT_FAILURE);
     }
+
     // ROBOT ARGUMENTS
     const string robotType = argv[1];
     std::shared_ptr<RobotBase> robot;
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
         display_help(argv[0]); 
         exit (EXIT_SUCCESS);    
     }
+
     // OPTION ARGUMENTS
     if (strcmp(argv[2],"--info")==0){
         info(robot);
@@ -56,6 +58,7 @@ int main(int argc, char *argv[])
         display_help(argv[0]);     
         exit (EXIT_FAILURE);   
     }
+
 
     // int i=0;
     // auto leg_data_map = robot->makeLegDataMap<int>();
