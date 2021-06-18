@@ -1,4 +1,3 @@
-find_package(urdf REQUIRED)
 include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
 
 add_library(robotlib	
@@ -33,10 +32,3 @@ install(
 	COMPONENT
 		"robotlib"
 )
-
-#install(TARGETS robotlib
-#  EXPORT robotlib
-#  RUNTIME DESTINATION bin
-#  LIBRARY DESTINATION lib
-#  ARCHIVE DESTINATION lib)
-#install(EXPORT robotlib DESTINATION lib)
