@@ -1,5 +1,4 @@
 #include "robot.hpp"
-#include <memory>
 
 namespace dls
 {
