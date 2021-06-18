@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     }
     const string robotType = argv[1];
     std::cout << "INFO ON ROBOT " << robotType << '\n';
+    std::cout << "Be sure to have build hyqlib.so first!" << '\n';
 
 
     int i=0;
@@ -29,56 +30,56 @@ int main(int argc, char *argv[])
     robot->getLinksName();
     robot->getJointsName();
 
-    auto leg_data_map = robot->makeLegDataMap<int>();
+    // auto leg_data_map = robot->makeLegDataMap<int>();
 
-    std::cout << "For each value in leg data map" << std::endl;
-    for (auto x : leg_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
-    }
+    // std::cout << "For each value in leg data map" << std::endl;
+    // for (auto x : leg_data_map) {
+    //     x=i++;
+    //     std::cout << x << std::endl;
+    // }
 
-    auto link_data_map = robot->makeLinkDataMap<int>();
+    // auto link_data_map = robot->makeLinkDataMap<int>();
 
-    i=0;
-    std::cout << "For each value in a link data map" << std::endl;
-    for (auto x : link_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
-    }
+    // i=0;
+    // std::cout << "For each value in a link data map" << std::endl;
+    // for (auto x : link_data_map) {
+    //     x=i++;
+    //     std::cout << x << std::endl;
+    // }
 
-    auto joint_data_map = robot->makeJointDataMap<int>();
+    // auto joint_data_map = robot->makeJointDataMap<int>();
     
-    std::cout << "For each value in joint data map" << std::endl;
-    i=0;
-    for (auto x : joint_data_map) {
-        x=i++;
-        std::cout << x << std::endl;
-    }
+    // std::cout << "For each value in joint data map" << std::endl;
+    // i=0;
+    // for (auto x : joint_data_map) {
+    //     x=i++;
+    //     std::cout << x << std::endl;
+    // }
 
-    auto leg_data_map_pair = robot->makeLegDataMapPair<int>();
+    // auto leg_data_map_pair = robot->makeLegDataMapPair<int>();
     
-    std::cout << "For each pair in leg data map" << std::endl;
-    i=0;
-    for (auto x : leg_data_map_pair) {
-        x.second=i++;
-        std::cout << x.first->getName() << "=" << x.second << std::endl;
-    }
+    // std::cout << "For each pair in leg data map" << std::endl;
+    // i=0;
+    // for (auto x : leg_data_map_pair) {
+    //     x.second=i++;
+    //     std::cout << x.first->getName() << "=" << x.second << std::endl;
+    // }
     
-    auto link_data_map_pair = robot->makeLinkDataMapPair<int>();
+    // auto link_data_map_pair = robot->makeLinkDataMapPair<int>();
 
-    std::cout << "For each pair in link data map" << std::endl;
-    i=0;
-    for (auto x : link_data_map_pair) {
-        x.second=i++;
-        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
-    }
+    // std::cout << "For each pair in link data map" << std::endl;
+    // i=0;
+    // for (auto x : link_data_map_pair) {
+    //     x.second=i++;
+    //     std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
+    // }
     
-    auto joint_data_map_pair = robot->makeJointDataMapPair<int>();
+    // auto joint_data_map_pair = robot->makeJointDataMapPair<int>();
     
-    std::cout << "For each pair in joint data map" << std::endl;
-    i=0;
-    for (auto x : joint_data_map_pair) {
-        x.second=i++;
-        std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
-    }
+    // std::cout << "For each pair in joint data map" << std::endl;
+    // i=0;
+    // for (auto x : joint_data_map_pair) {
+    //     x.second=i++;
+    //     std::cout << x.first->getParent()->getName() << "," << x.first->getName() << "=" << x.second << std::endl;
+    // }
 }

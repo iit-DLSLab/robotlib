@@ -196,9 +196,11 @@ public:
             std::cout << leg->getName() << ":  ";
             int nLinks = leg->getNumLinks();
             for(int link=0;link<nLinks; ++link ){
-                std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
+                if (link==nLinks-1)
+                    std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << '\n';
+                else
+                   std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
             }
-            std::cout << '\n';
         }
     }
     // Names of the Joints for each leg
