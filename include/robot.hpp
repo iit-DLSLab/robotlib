@@ -26,12 +26,11 @@ namespace dls
 		{
 		public:
 			// Constructor
-			Robot(const std::string &name, const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs) : RobotBase(name), legs_(legs){};
+			Robot(const std::string &name, const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs);
+			virtual ~Robot();
 
-			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[0]); };
-			virtual Iterator<const std::shared_ptr<LimbBase>> end() override { return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]); };
-
-			virtual ~Robot() = default;
+			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
+			virtual Iterator<const std::shared_ptr<LimbBase>> end() override;
 
 			//*************************************************************************
 			// Maybe to be added to robotFactory
@@ -48,12 +47,12 @@ namespace dls
 			//*************************************************************************
 
 			// Get functions
-			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs() { return legs_; };
-			const std::shared_ptr<LimbBase> getLeg(const int id) override { return legs_[id]; };
+			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs();
+			const std::shared_ptr<LimbBase> getLeg(const int id) override;
 
-			virtual const int getNLEGS() override { return NLEGS; };
-			virtual const int getNJOINTS() override { return NJOINTS_TOT; };
-			virtual const int getNLINKS() override { return NLINKS_TOT; };
+			virtual const int getNLEGS() override;
+			virtual const int getNJOINTS() override;
+			virtual const int getNLINKS() override;
 
 		protected:
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot

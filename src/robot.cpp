@@ -7,7 +7,40 @@
 // =============================================================================
 // Using Declarations
 // =============================================================================
-using namespace dls::robot;
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::Robot(const std::string &name, const std::array<std::shared_ptr<dls::robot::LimbBase>, NLEGS> &legs)
+    : RobotBase(name), legs_(legs){};
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::~Robot(){};
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+dls::robot::Iterator<const std::shared_ptr<dls::robot::LimbBase>> dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::begin()
+{
+    return Iterator<const std::shared_ptr<dls::robot::LimbBase>>(&legs_[0]);
+};
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+dls::robot::Iterator<const std::shared_ptr<dls::robot::LimbBase>> dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::end()
+{
+    return Iterator<const std::shared_ptr<dls::robot::LimbBase>>(&legs_[NLEGS]);
+};
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+const std::array<std::shared_ptr<dls::robot::LimbBase>, NLEGS> dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getLegs() { return legs_; };
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+const std::shared_ptr<dls::robot::LimbBase> dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getLeg(const int id) { return legs_[id]; };
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+const int dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLEGS() { return NLEGS; };
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+const int dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNJOINTS() { return NJOINTS_TOT; };
+
+template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+const int dls::robot::Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLINKS() { return NLINKS_TOT; };
 
 // =============================================================================
 // Constructors
