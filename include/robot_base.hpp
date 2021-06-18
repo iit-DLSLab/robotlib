@@ -1,34 +1,21 @@
 #ifndef _ROBOTLIB_ROBOT_BASE_HPP_
 #define _ROBOTLIB_ROBOT_BASE_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-// ros
-#include <urdf/model.h>
-
-// stdlib
-#include <fstream>
-
-#include <memory>
-
 #include "limb_base.hpp"
 #include "leg.hpp"
 #include "link.hpp"
 #include "joint.hpp"
 #include "trunk.hpp"
-
 #include "utils.hpp"
+
+#include <urdf/model.h>
+#include <fstream>
+#include <memory>
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
-
-        // =============================================================================
-        // Class Interface
-        // =============================================================================
-
         class RobotBase
         {
         private:
@@ -244,8 +231,7 @@ namespace dls
 
             std::string getName() { return name_; };
         };
-
-    } // namespace robot
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_LIMB_HPP_

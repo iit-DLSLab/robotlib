@@ -15,7 +15,7 @@
 // =============================================================================
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 
 		// =============================================================================
@@ -32,8 +32,7 @@ namespace dls
 			static std::shared_ptr<RobotBase> openRobot(const std::string &robotType);
 			//static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
 		};
-
-	} // robot
-} // dls
+	} // namespace robot
+} // namespace dls
 
 #endif // _ROBOTLIB_ROBOT_FACTORY_HPP_

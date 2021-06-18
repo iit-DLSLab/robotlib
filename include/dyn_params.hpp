@@ -1,18 +1,15 @@
 #ifndef _ROBOTLIB_DYN_PARAMS_HPP_
 #define _ROBOTLIB_DYN_PARAMS_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
 #include <Eigen/Dense>
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
- * A class for robot dynamic parameters (com, mass, inertia).
- */
+ 		* A class for robot dynamic parameters (com, mass, inertia).
+ 		*/
 		class DynParams
 		{
 		public:
@@ -31,7 +28,7 @@ namespace dls
 			const Eigen::Matrix3d I_;	//! Inertia
 		};
 
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_DYN_PARAMS_HPP_

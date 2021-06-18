@@ -1,15 +1,12 @@
 #ifndef _ROBOTLIB_TRUNK_HPP_
 #define _ROBOTLIB_TRUNK_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
 #include "pose.hpp"
 #include "dyn_params.hpp"
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
  * A trunk class for robots.
@@ -29,8 +26,7 @@ namespace dls
 			const Pose origin_;			 //! Pose of the trunk
 			const DynParams dyn_params_; //! Dynamic parameter of the trunk
 		};
-
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_TRUNK_HPP_

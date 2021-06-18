@@ -1,21 +1,17 @@
 #ifndef _ROBOTLIB_LEG_BASE_HPP_
 #define _ROBOTLIB_LEG_BASE_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
 #include "limb_base.hpp"
 #include "link.hpp"
 #include "joint.hpp"
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
         /**
- * A leg interface for robots.
- */
+        * A leg interface for robots.
+        */
 
         class LegBase : public LimbBase
         {
@@ -26,8 +22,7 @@ namespace dls
 
             // Functions for legs (and not for arms) TO DO
         };
-
-    } // namespace robot
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_LEG_BASE_HPP_

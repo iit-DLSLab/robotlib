@@ -1,19 +1,15 @@
 #ifndef _ROBOTLIB_LEG_HPP_
 #define _ROBOTLIB_LEG_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
 #include "leg_base.hpp"
 
 namespace dls
 {
-    namespace robot
+    namespace robotlib
     {
         /**
- * A leg class for robots.
- */
+        * A leg class for robots.
+        */
         template <unsigned int NJOINTS, unsigned int NLINKS>
         class Leg : public LegBase
         {
@@ -34,8 +30,7 @@ namespace dls
             const std::array<std::shared_ptr<Joint>, NJOINTS> joints_; //! Array of joints
             const std::array<std::shared_ptr<Link>, NLINKS> links_;    //! Array of links
         };
-
-    } // namespace robot
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_LEG_HPP_

@@ -1,49 +1,81 @@
-// =============================================================================
-// Includes
-// =============================================================================
-#include <memory>
 #include "robot.hpp"
+#include <memory>
 
-// =============================================================================
-// Using Declarations
-// =============================================================================
-using namespace dls::robot;
+namespace dls
+{
+    namespace robotlib
+    {
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::Robot(const std::string &name, const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs)
+            : RobotBase(name), legs_(legs){};
 
-// =============================================================================
-// Constructors
-// =============================================================================
-// Robot::Robot(	const std::string& 								name,
-// 				const std::array<std::shared_ptr<Leg>, NLEGS>   legs) :
-// 				name(name),
-// 				legs(legs)
-// 				{};
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::~Robot(){};
 
-// std::string Robot::readFile(const char *filename){
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        Iterator<const std::shared_ptr<LimbBase>> Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::begin()
+        {
+            return Iterator<const std::shared_ptr<LimbBase>>(&legs_[0]);
+        };
 
-// 	//std::cout << "Reading " << filename << std::endl;
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        Iterator<const std::shared_ptr<LimbBase>> Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::end()
+        {
+            return Iterator<const std::shared_ptr<LimbBase>>(&legs_[NLEGS]);
+        };
 
-// 	//std::ifstream in(filename, std::ios::in | std::ios::binary);
-// 	std::ifstream in(filename, std::ifstream::in);
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        const std::array<std::shared_ptr<LimbBase>, NLEGS> Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getLegs() { return legs_; };
 
-// 	if (in) {
-// 		std::string contents;
-// 		in.seekg(0,std::ios::end);
-// 		contents.resize(in.tellg());
-// 		in.seekg(0,std::ios::beg);
-// 		in.read(&contents[0],contents.size());
-// 		in.close();
-// 		return contents;
-// 	}
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        const std::shared_ptr<LimbBase> Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getLeg(const int id) { return legs_[id]; };
 
-// 	throw(errno);
-// }
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        const int Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLEGS() { return NLEGS; };
 
-// urdf::Model Robot::init_robot_description(std::string robot_description)
-// {
-// 	urdf::Model robot_model;
-// 	if (!robot_model.initString(robot_description))
-// 	{
-// 		throw std::runtime_error("Failed to parse urdf file");
-// 	}
-// 	return robot_model;
-// }
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        const int Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNJOINTS() { return NJOINTS_TOT; };
+
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        const int Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLINKS() { return NLINKS_TOT; };
+
+        // =============================================================================
+        // Constructors
+        // =============================================================================
+        // Robot::Robot(	const std::string& 								name,
+        // 				const std::array<std::shared_ptr<Leg>, NLEGS>   legs) :
+        // 				name(name),
+        // 				legs(legs)
+        // 				{};
+
+        // std::string Robot::readFile(const char *filename){
+
+        // 	//std::cout << "Reading " << filename << std::endl;
+
+        // 	//std::ifstream in(filename, std::ios::in | std::ios::binary);
+        // 	std::ifstream in(filename, std::ifstream::in);
+
+        // 	if (in) {
+        // 		std::string contents;
+        // 		in.seekg(0,std::ios::end);
+        // 		contents.resize(in.tellg());
+        // 		in.seekg(0,std::ios::beg);
+        // 		in.read(&contents[0],contents.size());
+        // 		in.close();
+        // 		return contents;
+        // 	}
+
+        // 	throw(errno);
+        // }
+
+        // urdf::Model Robot::init_robot_description(std::string robot_description)
+        // {
+        // 	urdf::Model robot_model;
+        // 	if (!robot_model.initString(robot_description))
+        // 	{
+        // 		throw std::runtime_error("Failed to parse urdf file");
+        // 	}
+        // 	return robot_model;
+        // }
+    } // namespace robotlib
+} // namespace dls
