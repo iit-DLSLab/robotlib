@@ -1,10 +1,5 @@
 #include "robot_factory.hpp"
 
-#include <stdexcept>
-#include <fstream>
-#include <string>
-#include <cerrno>
-
 namespace dls
 {
 	namespace robotlib
