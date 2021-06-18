@@ -5,7 +5,9 @@ set(MAJOR 0)
 set(MINOR 0)
 set(PATCH 0)
 
-find_package(urdf REQUIRED)
+# TODO: Understand the command below
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_compile_options(

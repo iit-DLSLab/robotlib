@@ -2,18 +2,12 @@
 #define _ROBOTLIB_ROBOT_HPP_
 
 #include "robot_base.hpp"
-
-#include <urdf/model.h>
 #include <fstream>
 
 namespace dls
 {
 	namespace robotlib
 	{
-		// =============================================================================
-		// Class Interface
-		// =============================================================================
-
 		template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS = 0>
 		class Robot : public RobotBase
 		{
@@ -24,20 +18,6 @@ namespace dls
 
 			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
 			virtual Iterator<const std::shared_ptr<LimbBase>> end() override;
-
-			//*************************************************************************
-			// Maybe to be added to robotFactory
-			/** Read function
-	* @brief: Function for reading (urdf) files
-	* @param filename: name of the file to be read
-	*/
-			static std::string ReadFile(const char *filename);
-			/** Check function
-	* @brief: Check if the urdf file was correctly parsed
-	* @param robot_description: output of the readFile function
-	*/
-			static urdf::Model init_robot_description(std::string robot_description);
-			//*************************************************************************
 
 			// Get functions
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs();
