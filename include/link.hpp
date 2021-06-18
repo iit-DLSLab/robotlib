@@ -1,19 +1,16 @@
 #ifndef _ROBOTLIB_LINK_HPP_
 #define _ROBOTLIB_LINK_HPP_
-// =============================================================================
-// Includes
-// =============================================================================
 
 #include "pose.hpp"
 #include "dyn_params.hpp"
 
 namespace dls
 {
-	namespace robot
+	namespace robotlib
 	{
 		/**
- * A link class for robots.
- */
+ 		* A link class for robots.
+ 		*/
 		class Link
 		{
 		public:
@@ -36,8 +33,7 @@ namespace dls
 									 // const Pose pose_;		                //! Pose of the link w.r.t. parent link
 									 // const DynParams dyn_params_; 		    //! Dynamic parameter of the link
 		};
-
-	} // namespace robot
+	} // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_LINK_HPP_

@@ -1,12 +1,7 @@
-#include <stdlib.h>
-
 #include "robot.hpp"
 #include "robot_factory.hpp"
 #include <gtest/gtest.h>
-
-using namespace std;
-using namespace dls;
-using namespace dls::robot;
+#include <stdlib.h>
 
 static void display_help(std::string name)
 {
@@ -20,7 +15,7 @@ static void display_help(std::string name)
               << "\t--info\t\tShow info of the robot\n"
               << std::endl;
 }
-static void info(const std::shared_ptr<RobotBase> &robot)
+static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
 {
     std::cout << "INFO ON ROBOT " << robot->getName() << '\n';
     robot->getLegsName();
@@ -37,10 +32,10 @@ int main(int argc, char *argv[])
     }
 
     // ROBOT ARGUMENTS
-    const string robotType = argv[1];
-    std::shared_ptr<RobotBase> robot;
+    const std::string robotType = argv[1];
+    std::shared_ptr<dls::robotlib::RobotBase> robot;
     if (strcmp(argv[1], "hyq") == 0)
-        robot = RobotFactory::openRobot("hyq");
+        robot = dls::robotlib::RobotFactory::openRobot("hyq");
     else if (strcmp(argv[1], "hyqreal") == 0)
     {
         std::cout << "Hyqreal robot has not been implemented yet\n";
