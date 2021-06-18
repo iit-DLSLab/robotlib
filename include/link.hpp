@@ -1,8 +1,7 @@
 #ifndef _ROBOTLIB_LINK_HPP_
 #define _ROBOTLIB_LINK_HPP_
 
-#include "pose.hpp"
-#include "dyn_params.hpp"
+#include "limb_base.hpp"
 
 namespace dls
 {

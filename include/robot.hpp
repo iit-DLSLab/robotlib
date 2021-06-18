@@ -2,7 +2,6 @@
 #define _ROBOTLIB_ROBOT_HPP_
 
 #include "robot_base.hpp"
-#include <fstream>
 
 namespace dls
 {

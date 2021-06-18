@@ -1,8 +1,6 @@
 #ifndef _ROBOTLIB_JOINT_STATE_BASE_HPP_
 #define _ROBOTLIB_JOINT_STATE_BASE_HPP_
 
-#include "utils.hpp"
-
 namespace dls
 {
 	namespace robotlib

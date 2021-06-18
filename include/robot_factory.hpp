@@ -1,18 +1,9 @@
 #ifndef _ROBOTLIB_ROBOT_FACTORY_HPP_
 #define _ROBOTLIB_ROBOT_FACTORY_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-#include <memory>
 #include "robot_base.hpp"
-
-// dlopen library for shared libraries
+#include <memory>
 #include <dlfcn.h>
-
-// =============================================================================
-// Namespace
-// =============================================================================
 namespace dls
 {
 	namespace robotlib

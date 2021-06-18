@@ -1,14 +1,6 @@
 #ifndef _ROBOTLIB_LIMB_BASE_HPP_
 #define _ROBOTLIB_LIMB_BASE_HPP_
 
-// =============================================================================
-// Includes
-// =============================================================================
-
-//#include "link.hpp"
-//#include "joint.hpp"
-
-#include <string>
 #include <memory>
 
 namespace dls

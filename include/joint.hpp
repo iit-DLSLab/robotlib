@@ -1,7 +1,7 @@
 #ifndef _ROBOTLIB_JOINT_HPP_
 #define _ROBOTLIB_JOINT_HPP_
 
-#include "dyn_params.hpp"
+#include "limb_base.hpp"
 
 namespace dls
 {
