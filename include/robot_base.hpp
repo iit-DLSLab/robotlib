@@ -233,7 +233,6 @@ namespace dls
 
             virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics() = 0;
         };
-        / _ROBOTLIB_LIMB_HPP_P_ / _ROBOTLIB_LIMB_HPP_P_
     } // namespace robotlib
 } // namespace dls
 
