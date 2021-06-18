@@ -8,7 +8,6 @@ add_library(robotlib
 target_link_libraries(robotlib
 	PRIVATE
 	${roscpp_LIBRARIES}
-	${urdf_LIBRARIES}
 )
 
 install(

@@ -8,8 +8,7 @@
 #include "trunk.hpp"
 #include "utils.hpp"
 
-#include <urdf/model.h>
-#include <fstream>
+#include <iostream>
 #include <memory>
 
 namespace dls
