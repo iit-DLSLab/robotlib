@@ -6,34 +6,35 @@
 // =============================================================================
 #include "dyn_params.hpp"
 
-namespace dls{
-namespace robot {
-/**
+namespace dls
+{
+	namespace robot
+	{
+		/**
  * A joint class for robots.
  */
-class Joint
-{
-public:
+		class Joint
+		{
+		public:
+			Joint(LimbBase *parent, const std::string &name) : parent_(parent), name_(name){};
+			//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
 
-    Joint (LimbBase* parent, const std::string& name): parent_(parent), name_(name){};
-	//Joint (const std::string& name, const DynParams& dparams ): name_(name), dyn_params_(dparams) {};
+			~Joint(){};
 
-	~Joint (){};
+			// Get functions
+			const std::string getName() { return name_; }
+			const LimbBase *getParent() const { return parent_; };
+			//const DynParams& getDynParams(){return dyn_params_;}
 
-	// Get functions
-	const std::string getName(){return name_;}
-	const LimbBase* getParent() const {return parent_;};
-	//const DynParams& getDynParams(){return dyn_params_;}
+		private:
+			const std::string name_; //! Name of the joint
+			const LimbBase *parent_; //! Pointer to parent limb
+									 //const DynParams dyn_params_;	        //! Dynamic parameter of the joint
 
-private:
-	const std::string name_;               //! Name of the joint
-	const LimbBase *parent_;				//! Pointer to parent limb
-	//const DynParams dyn_params_;	        //! Dynamic parameter of the joint
+			//joint limits TODO
+		};
 
-	//joint limits TODO
-};
-
-} // namespace robot
+	} // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_JOINT_HPP_

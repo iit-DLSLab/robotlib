@@ -9,24 +9,25 @@
 #include "link.hpp"
 #include "joint.hpp"
 
-namespace dls{
-namespace robot {
-/**
+namespace dls
+{
+    namespace robot
+    {
+        /**
  * A leg interface for robots.
  */
 
-class LegBase : public LimbBase
-{
-public:
-    LegBase (const std::string& name):LimbBase(name) {};
-    
-	~LegBase(){};
+        class LegBase : public LimbBase
+        {
+        public:
+            LegBase(const std::string &name) : LimbBase(name){};
 
-    // Functions for legs (and not for arms) TO DO
+            ~LegBase(){};
 
-};
+            // Functions for legs (and not for arms) TO DO
+        };
 
-} // namespace robot
+    } // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_LEG_BASE_HPP_

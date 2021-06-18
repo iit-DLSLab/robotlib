@@ -20,208 +20,232 @@
 
 #include "utils.hpp"
 
-
 namespace dls
 {
-namespace robot
-{
+    namespace robot
+    {
 
-// =============================================================================
-// Class Interface
-// =============================================================================
+        // =============================================================================
+        // Class Interface
+        // =============================================================================
 
-class RobotBase {
-private:
+        class RobotBase
+        {
+        private:
+            // LEG DATA MAP CLASS
+            template <class Data>
+            class LegDataMap
+            {
+            public:
+                LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
+                {
+                    Data *p = new Data[nLegs_];
+                    std::shared_ptr<Data> pshrd(p);
+                    data_ = pshrd;
+                }
+                ~LegDataMap(){};
 
-    // LEG DATA MAP CLASS
-    template<class Data>
-    class LegDataMap{
-    public:
-        LegDataMap(RobotBase* robot): nLegs_(robot->getNLEGS()){    
-            Data *p = new Data[nLegs_];
-            std::shared_ptr<Data> pshrd(p);
-            data_ = pshrd;
-        }
-        ~LegDataMap(){};
-        
-        Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
-        Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
-    private:
-        std::shared_ptr<Data> data_;        
-        const int nLegs_;
-    };
+                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
 
-    // LEG DATA MAP PAIR CLASS
-    template<class Data>
-    class LegDataMapPair{
+            private:
+                std::shared_ptr<Data> data_;
+                const int nLegs_;
+            };
 
-    using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
+            // LEG DATA MAP PAIR CLASS
+            template <class Data>
+            class LegDataMapPair
+            {
 
-    public:
-        LegDataMapPair(RobotBase* robot) : nLegs_(robot->getNLEGS()){    
-            for (int i = 0; i<nLegs_ ; ++i){
-                PairType pair(robot->getLeg(i),Data());
-                data_.push_back(pair);
-            }
-        }
-        
-        Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
-        Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]);}
+                using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
 
-        // Get functions
-        int getSize(){return data_.size();};
+            public:
+                LegDataMapPair(RobotBase *robot) : nLegs_(robot->getNLEGS())
+                {
+                    for (int i = 0; i < nLegs_; ++i)
+                    {
+                        PairType pair(robot->getLeg(i), Data());
+                        data_.push_back(pair);
+                    }
+                }
 
-        ~LegDataMapPair(){};
-        
-    private:
-        const int nLegs_;
-        std::vector<PairType> data_;
-    };
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
 
-    // LINK DATA MAP PAIR CLASS
-    template<class Data>
-    class LinkDataMapPair{
+                // Get functions
+                int getSize() { return data_.size(); };
 
-    using PairType = std::pair<std::shared_ptr<Link>, Data>;
+                ~LegDataMapPair(){};
 
-    public:
-        LinkDataMapPair(RobotBase* robot) : nLinks_(robot->getNLINKS()){    
-            const int nLegs = robot->getNLEGS();
-            for (int i=0;i<nLegs;i++) {
-                auto leg = robot->getLeg(i);
-                int nLinks = leg->getNumLinks();
-                for (int j=0;j<nLinks;j++) {
-                    auto link = std::static_pointer_cast<Link>(leg->getLink(j));
-                    PairType pair (link,Data());
-                    data_.push_back(pair);
+            private:
+                const int nLegs_;
+                std::vector<PairType> data_;
+            };
+
+            // LINK DATA MAP PAIR CLASS
+            template <class Data>
+            class LinkDataMapPair
+            {
+
+                using PairType = std::pair<std::shared_ptr<Link>, Data>;
+
+            public:
+                LinkDataMapPair(RobotBase *robot) : nLinks_(robot->getNLINKS())
+                {
+                    const int nLegs = robot->getNLEGS();
+                    for (int i = 0; i < nLegs; i++)
+                    {
+                        auto leg = robot->getLeg(i);
+                        int nLinks = leg->getNumLinks();
+                        for (int j = 0; j < nLinks; j++)
+                        {
+                            auto link = std::static_pointer_cast<Link>(leg->getLink(j));
+                            PairType pair(link, Data());
+                            data_.push_back(pair);
+                        }
+                    }
+                }
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
+
+                // Get functions
+                int getSize() { return data_.size(); };
+
+                ~LinkDataMapPair(){};
+
+            private:
+                const int nLinks_;
+                std::vector<PairType> data_;
+            };
+
+            // JOINT DATA MAP PAIR CLASS
+            template <class Data>
+            class JointDataMapPair
+            {
+
+                using PairType = std::pair<std::shared_ptr<Joint>, Data>;
+
+            public:
+                JointDataMapPair(RobotBase *robot) : nJoints_(robot->getNJOINTS())
+                {
+                    const int nLegs = robot->getNLEGS();
+                    for (int i = 0; i < nLegs; i++)
+                    {
+                        auto leg = robot->getLeg(i);
+                        int nJoints = leg->getNumJoints();
+                        for (int j = 0; j < nJoints; j++)
+                        {
+                            auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
+                            PairType pair(joint, Data());
+                            data_.push_back(pair);
+                        }
+                    }
+                }
+
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
+
+                // Get functions
+                int getSize() { return data_.size(); };
+
+                ~JointDataMapPair(){};
+
+            private:
+                const int nJoints_;
+                std::vector<PairType> data_;
+            };
+
+            const std::string name_;
+
+        public:
+            RobotBase(const std::string &name) : name_(name){};
+
+            virtual Iterator<const std::shared_ptr<LimbBase>> begin(){};
+            virtual Iterator<const std::shared_ptr<LimbBase>> end(){};
+
+            // Get functions
+            virtual const int getNLEGS() = 0;
+            virtual const int getNJOINTS() = 0;
+            virtual const int getNLINKS() = 0;
+
+            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
+
+            // Plugin typedefs
+            typedef std::shared_ptr<RobotBase> createRobot_t();
+            typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+
+            // Create a leg data map
+            template <class Data>
+            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); }
+
+            // Create a joint data map
+            template <class Data>
+            LegDataMap<Data> makeJointDataMap() { return LegDataMap<Data>(this); }
+
+            // Create a link data map
+            template <class Data>
+            LegDataMap<Data> makeLinkDataMap() { return LegDataMap<Data>(this); }
+
+            // Create a leg data map pair
+            template <class Data>
+            LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); }
+
+            // Create a link data map pair
+            template <class Data>
+            LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); }
+
+            // Create a joint data map pair
+            template <class Data>
+            JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); }
+
+            // Functions for getting info from the robot
+            // Names of the Legs
+            void getLegsName()
+            {
+                std::cout << "\n*** LEGS OF " << name_ << " ***" << std::endl;
+                for (auto leg : *this)
+                {
+                    std::cout << leg->getName() << std::endl;
                 }
             }
-        }
-        Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
-        Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]);}
-
-        // Get functions
-        int getSize(){return data_.size();};
-
-        ~LinkDataMapPair(){};      
-    private:
-        const int nLinks_;
-        std::vector<PairType> data_;
-    };
-
-    // JOINT DATA MAP PAIR CLASS
-    template<class Data>
-    class JointDataMapPair{
-
-    using PairType = std::pair<std::shared_ptr<Joint>, Data>;
-
-    public:
-        JointDataMapPair(RobotBase* robot) : nJoints_(robot->getNJOINTS()){    
-            const int nLegs = robot->getNLEGS();
-            for (int i=0;i<nLegs;i++) {
-                auto leg = robot->getLeg(i);
-                int nJoints = leg->getNumJoints();
-                for (int j=0;j<nJoints;j++) {
-                    auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
-                    PairType pair (joint,Data());
-                    data_.push_back(pair);
+            // Names of the Links for each leg
+            void getLinksName()
+            {
+                std::cout << "\n*** LINKS FOR EACH LEG OF " << name_ << " ***" << std::endl;
+                for (auto leg : *this)
+                {
+                    std::cout << leg->getName() << ":  ";
+                    int nLinks = leg->getNumLinks();
+                    for (int link = 0; link < nLinks; ++link)
+                    {
+                        if (link == nLinks - 1)
+                            std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << '\n';
+                        else
+                            std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
+                    }
                 }
             }
-        }
-        
-        Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]);}
-        Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]);}
-
-        // Get functions
-        int getSize(){return data_.size();};
-
-        ~JointDataMapPair(){};
-        
-    private:
-        const int nJoints_;
-        std::vector<PairType> data_;
-
-    };
-
-    const std::string name_;
-
-public:
-    RobotBase(const std::string& name) : name_(name){};
-
-    virtual Iterator<const std::shared_ptr<LimbBase>> begin() {};
-    virtual Iterator<const std::shared_ptr<LimbBase>> end() {}; 
-
-    // Get functions
-    virtual const int getNLEGS() = 0;
-    virtual const int getNJOINTS() = 0;
-    virtual const int getNLINKS() = 0;
-
-    virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
-
-	// Plugin typedefs
-	typedef std::shared_ptr<RobotBase> createRobot_t();
-	typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
-
-    
-    // Create a leg data map
-    template<class Data> LegDataMap<Data> makeLegDataMap(){return LegDataMap<Data>(this);}
-
-    // Create a joint data map
-    template<class Data> LegDataMap<Data> makeJointDataMap(){return LegDataMap<Data>(this);}
-
-    // Create a link data map
-    template<class Data> LegDataMap<Data> makeLinkDataMap(){return LegDataMap<Data>(this);}
-
-    // Create a leg data map pair 
-    template<class Data> LegDataMapPair<Data> makeLegDataMapPair(){return LegDataMapPair<Data>(this);}
-
-    // Create a link data map pair 
-    template<class Data> LinkDataMapPair<Data> makeLinkDataMapPair(){return LinkDataMapPair<Data>(this);}
-
-    // Create a joint data map pair 
-    template<class Data> JointDataMapPair<Data> makeJointDataMapPair(){return JointDataMapPair<Data>(this);}
-
-    // Functions for getting info from the robot
-    // Names of the Legs
-    void getLegsName(){    
-        std::cout << "\n*** LEGS OF "<< name_ << " ***" << std::endl;
-        for (auto leg : *this) {
-            std::cout << leg->getName() << std::endl;
-        }
-    }
-    // Names of the Links for each leg
-    void getLinksName(){    
-        std::cout << "\n*** LINKS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
-        for (auto leg : *this) {
-            std::cout << leg->getName() << ":  ";
-            int nLinks = leg->getNumLinks();
-            for(int link=0;link<nLinks; ++link ){
-                if (link==nLinks-1)
-                    std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << '\n';
-                else
-                   std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
+            // Names of the Joints for each leg
+            void getJointsName()
+            {
+                std::cout << "\n*** JOINTS FOR EACH LEG OF " << name_ << " ***" << std::endl;
+                for (auto leg : *this)
+                {
+                    std::cout << leg->getName() << ":  ";
+                    int nJoints = leg->getNumJoints();
+                    for (int joint = 0; joint < nJoints; ++joint)
+                    {
+                        std::cout << std::static_pointer_cast<Joint>(leg->getJoint(joint))->getName() << ", ";
+                    }
+                    std::cout << '\n';
+                }
             }
-        }
-    }
-    // Names of the Joints for each leg
-    void getJointsName(){    
-        std::cout << "\n*** JOINTS FOR EACH LEG OF "<< name_ << " ***" << std::endl;
-        for (auto leg : *this) {
-            std::cout << leg->getName() << ":  ";
-            int nJoints = leg->getNumJoints();
-            for(int joint=0;joint<nJoints; ++joint ){
-                std::cout << std::static_pointer_cast<Joint>(leg->getJoint(joint))->getName() << ", ";
-            }
-            std::cout << '\n';
-        }
-    }
 
+            std::string getName() { return name_; };
+        };
 
-    std::string getName(){return name_;};
-
-};
-
-} // namespace robot
+    } // namespace robot
 } // namespace dls
 
 #endif // _ROBOTLIB_LIMB_HPP_
