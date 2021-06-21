@@ -29,7 +29,7 @@ namespace dls
         private:
             const std::array<std::shared_ptr<Joint>, NJOINTS> joints_; //! Array of joints
             const std::array<std::shared_ptr<Link>, NLINKS> links_;    //! Array of links
-        }
+        };
     } // namespace robotlib
 } // namespace dls
 

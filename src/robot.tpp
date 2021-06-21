@@ -37,34 +37,5 @@ namespace dls
 
         template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
         const int Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLINKS() { return NLINKS_TOT; };
-
-        // =============================================================================
-        // Constructors
-        // =============================================================================
-        // Robot::Robot(	const std::string& 								name,
-        // 				const std::array<std::shared_ptr<Leg>, NLEGS>   legs) :
-        // 				name(name),
-        // 				legs(legs)
-        // 				{};
-
-        // std::string Robot::readFile(const char *filename){
-
-        // 	//std::cout << "Reading " << filename << std::endl;
-
-        // 	//std::ifstream in(filename, std::ios::in | std::ios::binary);
-        // 	std::ifstream in(filename, std::ifstream::in);
-
-        // 	if (in) {
-        // 		std::string contents;
-        // 		in.seekg(0,std::ios::end);
-        // 		contents.resize(in.tellg());
-        // 		in.seekg(0,std::ios::beg);
-        // 		in.read(&contents[0],contents.size());
-        // 		in.close();
-        // 		return contents;
-        // 	}
-
-        // 	throw(errno);
-        // }
     } // namespace robotlib
 } // namespace dls
