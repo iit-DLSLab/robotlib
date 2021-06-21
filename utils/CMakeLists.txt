@@ -1,10 +1,10 @@
 include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
 
-add_library(robotlib	
+add_library(dummyRobot	
 	${CMAKE_CURRENT_SOURCE_DIR}/dummy_robots.cpp
 )
 
-target_link_libraries(robotlib
+target_link_libraries(dummyRobot
 	PRIVATE
 	${roscpp_LIBRARIES}
 )
@@ -15,7 +15,7 @@ install(
 	DESTINATION
 		include
 	COMPONENT
-		"robotlib"
+		"dummyRobot"
 	FILES_MATCHING
 		PATTERN "*.h"
 		PATTERN "*.hpp"
@@ -24,9 +24,9 @@ install(
 
 install(
 	TARGETS
-		robotlib
+	dummyRobot
 	DESTINATION
 		/usr/local/lib
 	COMPONENT
-		"robotlib"
+		"dummyRobot"
 )
