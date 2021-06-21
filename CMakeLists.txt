@@ -30,7 +30,6 @@ enable_testing()
 add_executable(main_tests
 	tests/main_tests.cpp
 	tests/model_test.cpp
-	#tests/forward_kinematics_test.cpp
 )
 
 target_link_libraries(main_tests
