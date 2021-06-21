@@ -2,6 +2,8 @@
 #define _ROBOTLIB_LEG_HPP_
 
 #include "leg_base.hpp"
+#include "link.hpp"
+#include "joint.hpp"
 
 namespace dls
 {

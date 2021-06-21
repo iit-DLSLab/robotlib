@@ -2,7 +2,6 @@
 #define _ROBOTLIB_ROBOT_HPP_
 
 #include "robot_base.hpp"
-#include <fstream>
 
 namespace dls
 {
@@ -39,5 +38,7 @@ namespace dls
 		};
 	} // namespace robotlib
 } // namespace dls
+
+#include "../src/robot.tpp"
 
 #endif // _ROBOTLIB_ROBOT_HPP_

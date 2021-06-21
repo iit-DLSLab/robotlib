@@ -2,10 +2,9 @@
 #define _ROBOTLIB_ROBOT_BASE_HPP_
 
 #include "limb_base.hpp"
-#include "leg.hpp"
 #include "link.hpp"
 #include "joint.hpp"
-#include "trunk.hpp"
+#include "dyn_params.hpp"
 #include "utils.hpp"
 #include "forward_kinematics_base.hpp"
 
