@@ -2,16 +2,12 @@
 #define _ROBOTLIB_FORWARD_KINEMATICS_BASE_HPP_
 
 #include <Eigen/Dense>
+#include "declarations.hpp"
 
 namespace dls
 {
     namespace robotlib
     {
-        /// --> TODO: Remove
-        typedef Eigen::Matrix<double, 12, 1> Column12d;
-        typedef Column12d JointState;
-        /// <--
-
         class ForwardKinematicsBase
         {
         public:
