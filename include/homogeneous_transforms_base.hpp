@@ -12,13 +12,6 @@ namespace dls
         public:
             HomogeneousTransformsBase(){};
             virtual ~HomogeneousTransformsBase(){};
-
-            virtual HomogeneousTransformPlain getTransform(const JointState &q,
-                                                           int origin,
-                                                           int destination) = 0;
-            // TODO: Review values below
-            //const OriginFrame &orig,
-            //const DestFrame &dest) = 0;
         };
     } // namespace robotlib
 } // namespace dls
