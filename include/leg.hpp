@@ -8,7 +8,7 @@ namespace dls
     namespace robotlib
     {
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        class Leg : public Limb
+        class Leg : public Limb<NJOINTS, NLINKS>
         {
         public:
             Leg(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links);
