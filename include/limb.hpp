@@ -15,7 +15,7 @@ namespace dls
         public:
             Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links);
 
-            virtual ~Limb(){};
+            virtual ~Limb();
 
             virtual std::shared_ptr<void> getLink(const int linkId) override;
             virtual std::shared_ptr<void> getJoint(const int jointId) override;

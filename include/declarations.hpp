@@ -10,11 +10,6 @@ namespace dls
         // TODO: Parametric JointState
         typedef Eigen::Matrix<double, 12, 1> Column12d;
         typedef Column12d JointState;
-
-        template <typename Scalar, int R, int C>
-        using PlainMatrix = Eigen::Matrix<Scalar, R, C>;
-
-        typedef PlainMatrix<double, 4, 4> HomogeneousTransformPlain;
     } // namespace hyqlib
 } // namespace dls
 
