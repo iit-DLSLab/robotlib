@@ -4,6 +4,7 @@ add_library(robotlib
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_factory.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/joint.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/link.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/limb_base.cpp
 )
 
 target_link_libraries(robotlib
