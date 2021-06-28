@@ -15,8 +15,14 @@ namespace dls
 
         private:
             virtual HomogeneousTransformPlain getTransform(const JointState &q,
-                                                           const int &orig,
-                                                           const int &dest) = 0;
+                                                           std::string &orig,
+                                                           std::string &dest) = 0;
+            virtual HomogeneousTransformPlain getTransformFromJointToLink(const JointState &q,
+                                                                          std::string &orig,
+                                                                          std::string &dest) = 0;
+            virtual HomogeneousTransformPlain getTransformFromLinkToLink(const JointState &q,
+                                                                         std::string &orig,
+                                                                         std::string &dest) = 0;
         };
     } // namespace robotlib
 } // namespace dls
