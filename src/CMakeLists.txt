@@ -7,6 +7,8 @@ add_library(robotlib
 	${CMAKE_CURRENT_SOURCE_DIR}/joint.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/link.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/limb_base.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/pose.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/trunk.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/dyn_params.cpp
 )
 

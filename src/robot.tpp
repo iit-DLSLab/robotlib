@@ -39,5 +39,8 @@ namespace dls
 
         template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
         const int Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getNLINKS() { return NLINKS_TOT; };
+
+        template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS>
+        std::shared_ptr<ForwardKinematicsBase> Robot<NLEGS, NJOINTS_TOT, NLINKS_TOT, NARMS>::getForwardKinematics() { return fk_; };
     } // namespace robotlib
 } // namespace dls

@@ -11,7 +11,6 @@ namespace dls
 		class Robot : public RobotBase
 		{
 		public:
-			// Constructor
 			Robot(const std::string &name,
 				  const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs,
 				  const std::shared_ptr<ForwardKinematicsBase> &fk);
@@ -20,7 +19,6 @@ namespace dls
 			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
 			virtual Iterator<const std::shared_ptr<LimbBase>> end() override;
 
-			// Get functions
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs();
 			const std::shared_ptr<LimbBase> getLeg(const int id) override;
 
@@ -28,7 +26,7 @@ namespace dls
 			virtual const int getNJOINTS() override;
 			virtual const int getNLINKS() override;
 
-			virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics() { return fk_; };
+			virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics();
 
 		protected:
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
