@@ -39,11 +39,11 @@ target_link_libraries(main_tests
 	gtest
 )
 
-add_executable(robotinfo
-	tests/robotinfo.cpp
+add_executable(robot_info
+	${CMAKE_CURRENT_SOURCE_DIR}/src/robot_info.cpp
 )
 
-target_link_libraries(robotinfo
+target_link_libraries(robot_info
 	PRIVATE
 	robotlib
 	${CMAKE_DL_LIBS}
