@@ -3,6 +3,7 @@ include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
 add_library(robotlib
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_factory.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/joint_state.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/joint.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/link.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/limb_base.cpp
