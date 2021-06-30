@@ -38,6 +38,6 @@ namespace dls
 	} // namespace robotlib
 } // namespace dls
 
-#include "../src/robot.tpp"
+#include "robot.tpp"
 
 #endif // _ROBOTLIB_ROBOT_HPP_
