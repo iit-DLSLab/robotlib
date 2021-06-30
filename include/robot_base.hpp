@@ -18,7 +18,6 @@ namespace dls
         class RobotBase
         {
         private:
-            // LEG DATA MAP CLASS
             template <class Data>
             class LegDataMap
             {
@@ -39,7 +38,46 @@ namespace dls
                 const int nLegs_;
             };
 
-            // LEG DATA MAP PAIR CLASS
+            template <class Data>
+            class JointDataMap
+            {
+            public:
+                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
+                {
+                    Data *p = new Data[nJoints_];
+                    std::shared_ptr<Data> pshrd(p);
+                    data_ = pshrd;
+                }
+                ~JointDataMap(){};
+
+                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nJoints_]); }
+
+            private:
+                std::shared_ptr<Data> data_;
+                const int nJoints_;
+            };
+
+            template <class Data>
+            class LinkDataMap
+            {
+            public:
+                LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
+                {
+                    Data *p = new Data[nLinks_];
+                    std::shared_ptr<Data> pshrd(p);
+                    data_ = pshrd;
+                }
+                ~LinkDataMap(){};
+
+                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLinks_]); }
+
+            private:
+                std::shared_ptr<Data> data_;
+                const int nLinks_;
+            };
+
             template <class Data>
             class LegDataMapPair
             {
@@ -69,7 +107,6 @@ namespace dls
                 std::vector<PairType> data_;
             };
 
-            // LINK DATA MAP PAIR CLASS
             template <class Data>
             class LinkDataMapPair
             {
@@ -105,7 +142,6 @@ namespace dls
                 std::vector<PairType> data_;
             };
 
-            // JOINT DATA MAP PAIR CLASS
             template <class Data>
             class JointDataMapPair
             {
@@ -155,7 +191,25 @@ namespace dls
             virtual const int getNLEGS() = 0;
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
+            /*
+            getPose(JointState js, Frame1, Frame2){
+                F1.getPose(F2)
+                Frame
+                    -----> virtual getTransform HT = 0
+                    FK
+            }
 
+            getTransform(js, f1, f2)
+                f1pose = f1.getPose(js){
+                    // wrt trunk
+                    return pose = position + orientation
+                }
+                f2pose = f2.getPose(js){
+                    // wrt trunk
+                    return pose = position + orientation
+                }
+                getStaticTransform(f1, f2)
+            */
             virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
 
             // Plugin typedefs
