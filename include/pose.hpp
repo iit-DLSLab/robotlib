@@ -7,19 +7,15 @@ namespace dls
 {
 	namespace robotlib
 	{
-		/**
- 		* A pose class for robots.
- 		*/
 		class Pose
 		{
 		public:
-			Pose(const Eigen::Vector3d &p, const Eigen::Vector3d &ori) : p_(p), ori_(ori){};
+			Pose(const Eigen::Vector3d &p, const Eigen::Vector3d &ori);
 
-			~Pose(){};
+			~Pose();
 
-			// Get Function
-			const Eigen::Vector3d &getPos() { return p_; }
-			const Eigen::Vector3d &getOri() { return ori_; }
+			const Eigen::Vector3d &getPos();
+			const Eigen::Vector3d &getOri();
 
 		private:
 			const Eigen::Vector3d p_;	//! 3D position
