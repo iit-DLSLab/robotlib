@@ -191,25 +191,7 @@ namespace dls
             virtual const int getNLEGS() = 0;
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
-            /*
-            getPose(JointState js, Frame1, Frame2){
-                F1.getPose(F2)
-                Frame
-                    -----> virtual getTransform HT = 0
-                    FK
-            }
 
-            getTransform(js, f1, f2)
-                f1pose = f1.getPose(js){
-                    // wrt trunk
-                    return pose = position + orientation
-                }
-                f2pose = f2.getPose(js){
-                    // wrt trunk
-                    return pose = position + orientation
-                }
-                getStaticTransform(f1, f2)
-            */
             virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
 
             // Plugin typedefs
