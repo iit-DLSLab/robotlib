@@ -26,6 +26,6 @@ test:
   script:
     - cd build
     - make -j$(nproc) main_tests
-    - ./main_tests
+    - ./tests/main_tests
   dependencies:
     - build
