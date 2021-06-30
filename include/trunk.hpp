@@ -8,19 +8,15 @@ namespace dls
 {
 	namespace robotlib
 	{
-		/**
- * A trunk class for robots.
- */
 		class Trunk
 		{
 		public:
-			Trunk(const Pose &origin, const DynParams &dparams) : origin_(origin), dyn_params_(dparams){};
+			Trunk(const Pose &origin, const DynParams &dparams);
 
-			~Trunk(){};
+			~Trunk();
 
-			// Get functions
-			const Pose &getOrigin() { return origin_; }
-			const DynParams &getDynParams() { return dyn_params_; }
+			const Pose &getOrigin();
+			const DynParams &getDynParams();
 
 		private:
 			const Pose origin_;			 //! Pose of the trunk
