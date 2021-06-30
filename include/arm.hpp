@@ -18,6 +18,6 @@ namespace dls
     } // namespace robotlib
 } // namespace dls
 
-#include "../src/arm.tpp"
+#include "arm.tpp"
 
 #endif // _ROBOTLIB_ARM_HPP_

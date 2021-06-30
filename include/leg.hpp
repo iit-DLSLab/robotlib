@@ -18,6 +18,6 @@ namespace dls
     } // namespace robotlib
 } // namespace dls
 
-#include "../src/leg.tpp"
+#include "leg.tpp"
 
 #endif // _ROBOTLIB_LEG_HPP_
