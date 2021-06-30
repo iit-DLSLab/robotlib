@@ -26,11 +26,17 @@ target_link_libraries(robot_info
 	${CMAKE_DL_LIBS}
 )
 
+target_include_directories(robotlib PUBLIC
+	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include/robotlib> 
+	$<INSTALL_INTERFACE:lib> 
+)
+
 install(
 	DIRECTORY
 		${PROJECT_SOURCE_DIR}/include/
 	DESTINATION
-		include
+		include/robotlib
 	COMPONENT
 		"robotlib"
 	FILES_MATCHING
@@ -40,10 +46,28 @@ install(
 )
 
 install(
-	TARGETS
+	DIRECTORY
+		${PROJECT_SOURCE_DIR}/src/
+	DESTINATION
+		include/robotlib
+	COMPONENT
+		"robotlib"
+	FILES_MATCHING
+		PATTERN "*.tpp"
+)
+
+install(
+	TARGETS 
+		robotlib
+	EXPORT
 		robotlib
 	DESTINATION
 		/usr/local/lib
 	COMPONENT
 		"robotlib"
 )
+
+install(FILES ../robotlib-config.cmake DESTINATION /usr/lib/cmake/robotlib/)
+install(EXPORT robotlib DESTINATION /usr/lib/cmake/robotlib/)
+
+
