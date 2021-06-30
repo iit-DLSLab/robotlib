@@ -7,7 +7,8 @@ namespace dls
 {
 	namespace robotlib
 	{
-		template <unsigned int NLEGS, int NJOINTS_TOT, int NLINKS_TOT, unsigned int NARMS = 0>
+		/// NJOINTS: Robot joints. NLINKS: Robot links.
+		template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS = 0>
 		class Robot : public RobotBase
 		{
 		public:
