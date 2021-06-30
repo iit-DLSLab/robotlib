@@ -24,3 +24,10 @@ include_directories(
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
+set(CPACK_PACKAGE_NAME			"robotlib")
+set(CPACK_GENERATOR			"DEB")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY	"robotlib")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER	"dlslab")
+include(CPack)
+
