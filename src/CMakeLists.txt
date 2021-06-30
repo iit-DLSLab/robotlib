@@ -17,6 +17,16 @@ target_link_libraries(robotlib
 	${roscpp_LIBRARIES}
 )
 
+add_executable(robot_info
+	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
+)
+
+target_link_libraries(robot_info
+	PRIVATE
+	robotlib
+	${CMAKE_DL_LIBS}
+)
+
 install(
 	DIRECTORY
 		${PROJECT_SOURCE_DIR}/include/
