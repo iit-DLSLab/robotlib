@@ -29,6 +29,6 @@ namespace dls
     } // namespace robotlib
 } // namespace dls
 
-#include "../src/limb.tpp"
+#include "limb.tpp"
 
 #endif // _ROBOTLIB_LIMB_HPP_
