@@ -57,6 +57,13 @@ namespace dls
                 const int nJoints_;
             };
 
+            class JointState : public JointDataMap<double>
+            {
+            public:
+                JointState(RobotBase *robot) : JointDataMap(robot){};
+                ~JointState(){};
+            };
+
             template <class Data>
             class LinkDataMap
             {
@@ -203,11 +210,14 @@ namespace dls
 
             // Create a joint data map
             template <class Data>
-            LegDataMap<Data> makeJointDataMap() { return LegDataMap<Data>(this); }
+            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); }
 
             // Create a link data map
             template <class Data>
-            LegDataMap<Data> makeLinkDataMap() { return LegDataMap<Data>(this); }
+            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); }
+
+            // Create a joint state
+            JointState makeJointState() { return JointState(this); }
 
             // Create a leg data map pair
             template <class Data>
