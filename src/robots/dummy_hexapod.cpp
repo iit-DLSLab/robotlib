@@ -5,7 +5,6 @@ namespace dls
 {
 	namespace robotlib
 	{
-
 		class DummyLeg : public Limb<3, 2>
 		{
 		public:
@@ -33,13 +32,11 @@ namespace dls
 
 		extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
 		{
-
 			return std::make_shared<DummyHexapod>();
 		}
 
 		extern "C" void destroyRobot_t(std::shared_ptr<dls::robotlib::RobotBase> robot)
 		{
 		}
-
 	} //namespace robotlib
 } //namespace dls
