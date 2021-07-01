@@ -8,17 +8,7 @@ namespace dls
 		{
 
 			std::string libPath;
-
-			// Get the library path
-			if (robotType.compare("hyq") == 0)
-			{
-				libPath = "../../hyq-commons/hyqlib/build/src/libhyqlib.so";
-			}
-			else if (robotType.compare("hyqreal") == 0)
-			{
-				libPath = "TO DO";
-			}
-
+			libPath = "./lib" + robotType + ".so";
 			// Load the robot library
 			void *robot = dlopen(libPath.c_str(), RTLD_LAZY);
 			if (!robot)

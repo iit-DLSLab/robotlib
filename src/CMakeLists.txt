@@ -70,4 +70,4 @@ install(
 install(FILES ../robotlib-config.cmake DESTINATION /usr/lib/cmake/robotlib/)
 install(EXPORT robotlib DESTINATION /usr/lib/cmake/robotlib/)
 
-
+add_subdirectory(robots)
