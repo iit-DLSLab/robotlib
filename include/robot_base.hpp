@@ -6,7 +6,7 @@
 #include "joint.hpp"
 #include "dyn_params.hpp"
 #include "utils.hpp"
-#include "forward_kinematics_base.hpp"
+//#include "forward_kinematics_base.hpp"
 
 #include <iostream>
 #include <memory>
@@ -267,7 +267,7 @@ namespace dls
 
             std::string getName() { return name_; };
 
-            virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics() = 0;
+            //virtual std::shared_ptr<ForwardKinematicsBase> getForwardKinematics() = 0;
         };
     } // namespace robotlib
 } // namespace dls

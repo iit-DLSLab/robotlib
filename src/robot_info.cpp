@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
     // ROBOT ARGUMENTS
     const std::string robotType = argv[1];
     std::shared_ptr<dls::robotlib::RobotBase> robot;
-    if (strcmp(argv[1], "hyq") == 0)
+    robot = dls::robotlib::RobotFactory::openRobot(argv[1]);
+    /*if (strcmp(argv[1], "hyq") == 0)
         robot = dls::robotlib::RobotFactory::openRobot("hyq");
     else if (strcmp(argv[1], "hyqreal") == 0)
     {
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     {
         display_help(argv[0]);
         exit(EXIT_SUCCESS);
-    }
+    }*/
 
     // OPTION ARGUMENTS
     if (strcmp(argv[2], "--info") == 0)
