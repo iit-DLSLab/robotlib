@@ -29,7 +29,6 @@ namespace dls
 		protected:
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
 																	  //const Trunk trunk_;													//! Trunk of the robot
-		private:
 		};
 	} // namespace robotlib
 } // namespace dls
