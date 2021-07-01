@@ -16,7 +16,7 @@ namespace dls
     {
         class RobotBase
         {
-        private:
+        protected:
             template <class Data>
             class LegDataMap
             {
@@ -273,6 +273,12 @@ namespace dls
                     std::cout << '\n';
                 }
             }
+
+            virtual Eigen::Matrix4d getTransform(JointState &q, Frame &origin, Frame &destination) = 0;
+
+            virtual Link getLink(std::string &name) = 0;
+
+            virtual Joint getJoint(std::string &name) = 0;
 
             std::string getName() { return name_; };
         };
