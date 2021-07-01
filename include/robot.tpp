@@ -6,9 +6,8 @@ namespace dls
     {
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(const std::string &name,
-                                                    const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs,
-                                                    const std::shared_ptr<ForwardKinematicsBase> &fk)
-            : RobotBase(name), legs_(legs), fk_(fk){};
+                                                    const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs)
+            : RobotBase(name), legs_(legs){};
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
@@ -39,8 +38,5 @@ namespace dls
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() { return NLINKS; };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<ForwardKinematicsBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getForwardKinematics() { return fk_; };
     } // namespace robotlib
 } // namespace dls
