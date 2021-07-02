@@ -45,13 +45,39 @@ namespace dls
 										 const Frame &origin,
 										 const Frame &destination) override
 			{
-				Eigen::Matrix4d transform{};
+				Eigen::Matrix4d frame_pose{};
+				frame_pose.setZero();
 
-				transform.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
-				transform.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
-				transform.row(3) << 0, 0, 0, 1;
+				frame_pose.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
+				frame_pose.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
+				frame_pose.row(3) << 0, 0, 0, 1;
 
-				return transform;
+				return frame_pose;
+			};
+
+			Eigen::Vector3d getFootPosition(const JointState &q,
+											const Frame &foot) override
+			{
+				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
+			};
+
+			Eigen::Matrix3d getFootOrientation(const JointState &q,
+											   const Frame &foot) override
+			{
+				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
+			};
+
+			Eigen::Matrix4d getFootPose(const JointState &q,
+										const Frame &foot) override
+			{
+				Eigen::Matrix4d foot_pose{};
+				foot_pose.setZero();
+
+				foot_pose.block(0, 3, 3, 1) << getFootPosition(q, foot);
+				foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, foot);
+				foot_pose.row(3) << 0, 0, 0, 1;
+
+				return foot_pose;
 			};
 
 			Link getLink(const std::string &name) override
