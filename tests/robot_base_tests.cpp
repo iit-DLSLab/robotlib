@@ -53,32 +53,32 @@ TEST(RobotBaseUnitTests, getFramePose)
     ASSERT_EQ(typeid(frame_pose_dq).name(), typeid(frame_pose_gt).name());
 }
 
-TEST(RobotBaseUnitTests, getFramePose_getFeet)
-{
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
-
-    auto joint_state = dummy_quadruped->makeJointState();
-
-    auto feet_dq = dummy_quadruped->getFeet();
-
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt;
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
-
-    for (auto foot : feet_dq)
-    {
-        Eigen::Matrix4d foot_pose_dq;
-        foot_pose_dq.setZero();
-
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
-
-        /// Assert conditions
-        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
-    }
-}
+//TEST(RobotBaseUnitTests, getFramePose_getFeet)
+//{
+//    /// Dummy quadruped
+//    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+//
+//    auto joint_state = dummy_quadruped->makeJointState();
+//
+//    auto feet_dq = dummy_quadruped->getFeet();
+//
+//    /// Ground truth
+//    Eigen::Matrix4d foot_pose_gt;
+//    foot_pose_gt.setZero();
+//    foot_pose_gt(3, 3) = 1;
+//
+//    for (auto foot : feet_dq)
+//    {
+//        Eigen::Matrix4d foot_pose_dq;
+//        foot_pose_dq.setZero();
+//
+//        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
+//
+//        /// Assert conditions
+//        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
+//        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
+//    }
+//}
 
 TEST(RobotBaseUnitTests, getFootPosition)
 {
