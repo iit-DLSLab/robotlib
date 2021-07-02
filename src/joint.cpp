@@ -4,7 +4,7 @@ namespace dls
 {
 	namespace robotlib
 	{
-		Joint::Joint(LimbBase *parent, const std::string &name)
+		Joint::Joint(Link *parent, Link *child, const std::string &name)
 		{
 			parent_ = parent;
 			name_ = name;
@@ -13,6 +13,7 @@ namespace dls
 		Joint::~Joint(){};
 
 		const std::string Joint::getName() { return name_; }
-		const LimbBase *Joint::getParent() const { return parent_; };
+		const Link *Joint::getParent() const { return parent_; };
+		const Link *Joint::getChild() const { return child_; };
 	} // namespace robotlib
 } // namespace dls

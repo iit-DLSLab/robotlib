@@ -1,6 +1,5 @@
 #ifndef _ROBOTLIB_ROBOT_BASE_HPP_
 #define _ROBOTLIB_ROBOT_BASE_HPP_
-
 #include "limb_base.hpp"
 #include "link.hpp"
 #include "joint.hpp"
@@ -16,7 +15,7 @@ namespace dls
     {
         class RobotBase
         {
-        private:
+        protected:
             template <class Data>
             class LegDataMap
             {
@@ -273,6 +272,24 @@ namespace dls
                     std::cout << '\n';
                 }
             }
+
+            virtual Eigen::Vector3d getFramePosition(const JointState &q,
+                                                     const Frame &origin,
+                                                     const Frame &destination) = 0;
+
+            virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
+                                                        const Frame &origin,
+                                                        const Frame &destination) = 0;
+
+            virtual Eigen::Matrix4d getFramePose(const JointState &q,
+                                                 const Frame &origin,
+                                                 const Frame &destination) = 0;
+
+            virtual Link getLink(const std::string &name) = 0;
+
+            virtual Joint getJoint(const std::string &name) = 0;
+
+            virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
             std::string getName() { return name_; };
         };
