@@ -285,6 +285,15 @@ namespace dls
                                                  const Frame &origin,
                                                  const Frame &destination) = 0;
 
+            virtual Eigen::Vector3d getFootPosition(const JointState &q,
+                                                    const Frame &foot) = 0;
+
+            virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
+                                                       const Frame &foot) = 0;
+
+            virtual Eigen::Matrix4d getFootPose(const JointState &q,
+                                                const Frame &foot) = 0;
+
             virtual Link getLink(const std::string &name) = 0;
 
             virtual Joint getJoint(const std::string &name) = 0;
