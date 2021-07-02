@@ -2,6 +2,7 @@
 #define _ROBOTLIB_JOINT_HPP_
 
 #include "frame.hpp"
+#include "link.hpp"
 
 namespace dls
 {
@@ -10,12 +11,17 @@ namespace dls
 		class Joint : public Frame
 		{
 		public:
-			Joint(LimbBase *parent, const std::string &name);
+			Joint(Link *parent, Link *child, const std::string &name);
 
 			virtual ~Joint();
 
 			virtual const std::string getName() override;
-			virtual const LimbBase *getParent() const override;
+			const Link *getParent() const;
+			const Link *getChild() const;
+
+		protected:
+			const Link *parent_{};
+			const Link *child_{};
 		};
 	} // namespace robotlib
 } // namespace dls
