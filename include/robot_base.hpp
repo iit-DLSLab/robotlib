@@ -1,6 +1,5 @@
 #ifndef _ROBOTLIB_ROBOT_BASE_HPP_
 #define _ROBOTLIB_ROBOT_BASE_HPP_
-
 #include "limb_base.hpp"
 #include "link.hpp"
 #include "joint.hpp"
@@ -274,11 +273,23 @@ namespace dls
                 }
             }
 
-            virtual Eigen::Matrix4d getTransform(JointState &q, Frame &origin, Frame &destination) = 0;
+            virtual Eigen::Vector3d getFramePosition(const JointState &q,
+                                                     const Frame &origin,
+                                                     const Frame &destination) = 0;
 
-            virtual Link getLink(std::string &name) = 0;
+            virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
+                                                        const Frame &origin,
+                                                        const Frame &destination) = 0;
 
-            virtual Joint getJoint(std::string &name) = 0;
+            virtual Eigen::Matrix4d getFramePose(const JointState &q,
+                                                 const Frame &origin,
+                                                 const Frame &destination) = 0;
+
+            virtual Link getLink(const std::string &name) = 0;
+
+            virtual Joint getJoint(const std::string &name) = 0;
+
+            virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
             std::string getName() { return name_; };
         };

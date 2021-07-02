@@ -27,19 +27,46 @@ namespace dls
 																			 std::make_shared<DummyLeg>("leg3"),
 																			 std::make_shared<DummyLeg>("leg4")})){};
 
-			Eigen::Matrix4d getTransform(JointState &q, Frame &origin, Frame &destination) override
+			Eigen::Vector3d getFramePosition(const JointState &q,
+											 const Frame &origin,
+											 const Frame &destination) override
 			{
-				return Eigen::Matrix4d().setZero();
+				return Eigen::Vector3d().setZero();
 			};
 
-			Link getLink(std::string &name) override
+			Eigen::Matrix3d getFrameOrientation(const JointState &q,
+												const Frame &origin,
+												const Frame &destination) override
+			{
+				return Eigen::Matrix3d().setZero();
+			};
+
+			Eigen::Matrix4d getFramePose(const JointState &q,
+										 const Frame &origin,
+										 const Frame &destination) override
+			{
+				Eigen::Matrix4d transform{};
+
+				transform.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
+				transform.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
+				transform.row(3) << 0, 0, 0, 1;
+
+				return transform;
+			};
+
+			Link getLink(const std::string &name) override
 			{
 				return Link("link");
 			};
 
-			Joint getJoint(std::string &name) override
+			Joint getJoint(const std::string &name) override
 			{
 				return Joint(nullptr, nullptr, "joint");
+			};
+
+			LegDataMap<std::shared_ptr<Frame>> getFeet()
+			{
+				return this->makeLegDataMap<std::shared_ptr<Frame>>();
 			};
 		};
 
