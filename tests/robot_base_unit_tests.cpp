@@ -32,3 +32,10 @@ TEST(RobotBaseUnitTests, getFootPose)
 
     ASSERT_EQ(foot_pose, ground_truth);
 }
+
+TEST(RobotBaseUnitTests, getFeet)
+{
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto feet = dummy_quadruped->getFeet();
+}
