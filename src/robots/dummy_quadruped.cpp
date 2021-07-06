@@ -92,7 +92,12 @@ namespace dls
 
 			LegDataMap<std::shared_ptr<Frame>> getFeet()
 			{
-				return this->makeLegDataMap<std::shared_ptr<Frame>>();
+				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
+
+				for (auto &foot : feet)
+					foot = std::make_shared<Link>("link");
+
+				return feet;
 			};
 		};
 

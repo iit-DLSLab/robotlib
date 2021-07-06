@@ -17,10 +17,40 @@ static void display_help(std::string name)
 }
 static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
 {
-    std::cout << "INFO ON ROBOT " << robot->getName() << '\n';
-    robot->getLegsName();
-    robot->getLinksName();
-    robot->getJointsName();
+    std::cout << "\nINFO ON ROBOT " << robot->getName() << std::endl;
+
+    std::cout << "\n*** LEGS OF " << robot->getName() << " ***" << std::endl;
+    for (auto leg : *robot)
+    {
+        std::cout << leg->getName() << std::endl;
+    }
+
+    std::cout << "\n*** LINKS FOR EACH LEG OF " << robot->getName() << " ***" << std::endl;
+    for (auto leg : *robot)
+    {
+        std::cout << leg->getName() << ":  ";
+        int nLinks = leg->getNumLinks();
+        for (int link = 0; link < nLinks; ++link)
+        {
+            if (link == nLinks - 1)
+                std::cout << std::static_pointer_cast<dls::robotlib::Link>(leg->getLink(link))->getName() << std::endl;
+            else
+                std::cout << std::static_pointer_cast<dls::robotlib::Link>(leg->getLink(link))->getName() << ", ";
+        }
+    }
+
+    std::cout << "\n*** JOINTS FOR EACH LEG OF " << robot->getName() << " ***" << std::endl;
+    for (auto leg : *robot)
+    {
+        std::cout << leg->getName() << ":  ";
+        int nJoints = leg->getNumJoints();
+        for (int joint = 0; joint < nJoints; ++joint)
+        {
+            std::cout << std::static_pointer_cast<dls::robotlib::Joint>(leg->getJoint(joint))->getName() << ", ";
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
 }
 
 int main(int argc, char *argv[])
