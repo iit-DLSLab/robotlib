@@ -22,37 +22,38 @@ namespace dls
             public:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
-                    Data *p = new Data[nLegs_];
-                    std::shared_ptr<Data> pshrd(p);
-                    data_ = pshrd;
+                    data_ = new Data[nLegs_];
                 }
-                ~LegDataMap(){};
+                ~LegDataMap()
+                {
+                    delete[] data_;
+                };
 
-                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLegs_]); }
+                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_[nLegs_]); }
 
             private:
-                std::shared_ptr<Data> data_;
+                Data *data_;
                 const int nLegs_;
             };
-
             template <class Data>
             class JointDataMap
             {
             public:
                 JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
-                    Data *p = new Data[nJoints_];
-                    std::shared_ptr<Data> pshrd(p);
-                    data_ = pshrd;
+                    data_ = new Data[nJoints_];
                 }
-                ~JointDataMap(){};
+                ~JointDataMap()
+                {
+                    delete[] data_;
+                };
 
-                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nJoints_]); }
+                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_[nJoints_]); }
 
             private:
-                std::shared_ptr<Data> data_;
+                Data *data_;
                 const int nJoints_;
             };
 
@@ -69,17 +70,18 @@ namespace dls
             public:
                 LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
-                    Data *p = new Data[nLinks_];
-                    std::shared_ptr<Data> pshrd(p);
-                    data_ = pshrd;
+                    data_ = new Data[nLinks_];
                 }
-                ~LinkDataMap(){};
+                ~LinkDataMap()
+                {
+                    delete[] data_;
+                };
 
-                Iterator<Data> begin() { return Iterator<Data>(&data_.get()[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_.get()[nLinks_]); }
+                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
+                Iterator<Data> end() { return Iterator<Data>(&data_[nLinks_]); }
 
             private:
-                std::shared_ptr<Data> data_;
+                Data *data_;
                 const int nLinks_;
             };
 
@@ -230,49 +232,6 @@ namespace dls
             template <class Data>
             JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); }
 
-            // Functions for getting info from the robot
-            // Names of the Legs
-            void getLegsName()
-            {
-                std::cout << "\n*** LEGS OF " << name_ << " ***" << std::endl;
-                for (auto leg : *this)
-                {
-                    std::cout << leg->getName() << std::endl;
-                }
-            }
-            // Names of the Links for each leg
-            void getLinksName()
-            {
-                std::cout << "\n*** LINKS FOR EACH LEG OF " << name_ << " ***" << std::endl;
-                for (auto leg : *this)
-                {
-                    std::cout << leg->getName() << ":  ";
-                    int nLinks = leg->getNumLinks();
-                    for (int link = 0; link < nLinks; ++link)
-                    {
-                        if (link == nLinks - 1)
-                            std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << '\n';
-                        else
-                            std::cout << std::static_pointer_cast<Link>(leg->getLink(link))->getName() << ", ";
-                    }
-                }
-            }
-            // Names of the Joints for each leg
-            void getJointsName()
-            {
-                std::cout << "\n*** JOINTS FOR EACH LEG OF " << name_ << " ***" << std::endl;
-                for (auto leg : *this)
-                {
-                    std::cout << leg->getName() << ":  ";
-                    int nJoints = leg->getNumJoints();
-                    for (int joint = 0; joint < nJoints; ++joint)
-                    {
-                        std::cout << std::static_pointer_cast<Joint>(leg->getJoint(joint))->getName() << ", ";
-                    }
-                    std::cout << '\n';
-                }
-            }
-
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                      const Frame &origin,
                                                      const Frame &destination) = 0;
@@ -305,4 +264,4 @@ namespace dls
     } // namespace robotlib
 } // namespace dls
 
-#endif // _ROBOTLIB_LIMB_HPP_
+#endif // _ROBOTLIB_ROBOT_BASE_HPP_
