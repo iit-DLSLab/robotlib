@@ -1,4 +1,4 @@
-include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
+#include_directories(SYSTEM ${roscpp_INCLUDE_DIRS} )
 
 add_library(robotlib
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
@@ -35,7 +35,8 @@ install(
 	DIRECTORY
 		${PROJECT_SOURCE_DIR}/include/
 	DESTINATION
-		include/robotlib
+		#include/robotlib
+		${ROBOTLIB_INSTALL_HEADERS_DIR}
 	COMPONENT
 		"robotlib"
 	FILES_MATCHING
@@ -48,11 +49,12 @@ install(
 	DIRECTORY
 		${PROJECT_SOURCE_DIR}/src/
 	DESTINATION
-		include/robotlib
+		#include/robotlib
+		${ROBOTLIB_INSTALL_RUNTIME_DIR}
 	COMPONENT
 		"robotlib"
 	FILES_MATCHING
-		PATTERN "*.tpp"
+		PATTERN "*.cpp"
 )
 
 install(
@@ -61,7 +63,8 @@ install(
 	EXPORT
 		robotlib
 	DESTINATION
-		/usr/local/lib
+		#/usr/local/lib
+		${ROBOTLIB_INSTALL_LIBRARIES_DIR}
 	COMPONENT
 		"robotlib"
 )
