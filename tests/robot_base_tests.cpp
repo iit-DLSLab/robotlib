@@ -116,32 +116,6 @@ TEST(RobotBaseUnitTests, getFramePose)
     ASSERT_EQ(typeid(frame_pose_dq).name(), typeid(frame_pose_gt).name());
 }
 
-TEST(RobotBaseUnitTests, getFeet)
-{
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
-
-    auto joint_state = dummy_quadruped->makeJointState();
-
-    auto feet_dq = dummy_quadruped->getFeet();
-
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt{};
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
-
-    for (const auto foot : feet_dq)
-    {
-        Eigen::Matrix4d foot_pose_dq{};
-        foot_pose_dq.setZero();
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
-
-        /// Assert conditions
-        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
-    }
-}
-
 TEST(RobotBaseUnitTests, getFootPosition)
 {
     /// Dummy quadruped
@@ -219,6 +193,56 @@ TEST(RobotBaseUnitTests, getJoint)
     ASSERT_EQ(joint_dq.getName(), joint_gt.getName());
     ASSERT_EQ(typeid(joint_dq).name(), typeid(joint_gt).name());
 }
+
+TEST(RobotBaseUnitTests, getFeet)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto joint_state = dummy_quadruped->makeJointState();
+
+    auto feet_dq = dummy_quadruped->getFeet();
+
+    /// Ground truth
+    Eigen::Matrix4d foot_pose_gt{};
+    foot_pose_gt.setZero();
+    foot_pose_gt(3, 3) = 1;
+
+    for (const auto foot : feet_dq)
+    {
+        Eigen::Matrix4d foot_pose_dq{};
+        foot_pose_dq.setZero();
+        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
+
+        /// Assert conditions
+        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
+        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
+    }
+}
+
+//TEST(RobotBaseUnitTests, getJointsConfiguration)
+//{
+//    /// Dummy quadruped
+//    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
+//
+//TEST(RobotBaseUnitTests, getJointsVelocities)
+//{
+//    /// Dummy quadruped
+//    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
 
 TEST(RobotBaseUnitTests, getName)
 {
