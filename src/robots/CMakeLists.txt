@@ -4,7 +4,7 @@ add_library(dummy-quadruped SHARED dummy_quadruped.cpp)
 #add_library(dummy-octopod SHARED dummy_octopod.cpp)#
 
 #target_link_libraries(dummy-biped robotlib)
-target_link_libraries(dummy-quadruped robotlib)
+target_link_libraries(dummy-quadruped ${CMAKE_PROJECT_NAME})
 #target_link_libraries(dummy-hexapod robotlib)
 #target_link_libraries(dummy-octopod robotlib)
 
@@ -15,5 +15,5 @@ install(
 		#dummy-hexapod
 		#dummy-octopod
 	DESTINATION
-		/usr/lib/dls/robots/
+		${ROBOTLIB_INSTALL_ROBOTS_DIR}/${CMAKE_PROJECT_NAME}
 )
