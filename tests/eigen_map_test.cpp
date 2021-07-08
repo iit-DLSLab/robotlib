@@ -32,8 +32,6 @@ TEST(EigenMapTest, setMap)
     ASSERT_EQ(name_dq, name_gt);
     ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
 
-    const int n_dims = 5;
-
     double *array = new double[9];
     for (int i = 0; i < 9; i++)
     {
