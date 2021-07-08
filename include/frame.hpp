@@ -10,14 +10,14 @@ namespace dls
         class Frame
         {
         public:
-            Frame(){};
+            Frame(const std::string name) : name_(name){};
             //Frame(const Eigen::Vector3d &p, const Eigen::Vector3d &ori)
             virtual ~Frame(){};
 
             virtual const std::string getName() = 0;
 
         protected:
-            std::string name_{};
+            const std::string name_{};
         };
     } // namespace robotlib
 } // namespace dls

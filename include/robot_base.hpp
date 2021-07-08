@@ -127,7 +127,7 @@ namespace dls
                     for (int i = 0; i < nLegs; i++)
                     {
                         auto leg = robot->getLeg(i);
-                        int nLinks = leg->getNumLinks();
+                        int nLinks = leg->getNLinks();
                         for (int j = 0; j < nLinks; j++)
                         {
                             auto link = std::static_pointer_cast<Link>(leg->getLink(j));
@@ -162,7 +162,7 @@ namespace dls
                     for (int i = 0; i < nLegs; i++)
                     {
                         auto leg = robot->getLeg(i);
-                        int nJoints = leg->getNumJoints();
+                        int nJoints = leg->getNJoints();
                         for (int j = 0; j < nJoints; j++)
                         {
                             auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
@@ -183,6 +183,45 @@ namespace dls
             private:
                 const int nJoints_;
                 std::vector<PairType> data_;
+            };
+
+            using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
+            class Jacobian : public Map
+            {
+            public:
+                Jacobian(const int nJoints) : Map(NULL, 6, nJoints), nJoints_(nJoints)
+                {
+                    // Data initialization (6: linear and angular part of the jacobian)
+                    data_ = new double[6 * nJoints_];
+                    for (int i = 0; i < 6 * nJoints_; ++i)
+                    {
+                        data_[i] = 0;
+                    }
+
+                    new (this) Map(data_, 6, nJoints_);
+                }
+                ~Jacobian()
+                {
+                    delete[] data_;
+                }
+
+                Map getLinearJacobian() //RT
+                {
+                    auto linearMatrix{this->block(0, 0, 3, nJoints_)}; // Fixed size matrix!
+
+                    return Map(&linearMatrix(0, 0), 3, nJoints_);
+                };
+
+                Map getAngularJacobian() //RT
+                {
+                    auto linearMatrix{this->block(3, 0, 3, nJoints_)}; // Fixed size matrix!
+
+                    return Map(&linearMatrix(0, 0), 3, nJoints_);
+                };
+
+            private:
+                const int nJoints_;
+                double *data_; // Squashed matrix
             };
 
             const std::string name_;
@@ -207,30 +246,48 @@ namespace dls
 
             // Create a leg data map
             template <class Data>
-            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); }
+            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
 
             // Create a joint data map
             template <class Data>
-            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); }
+            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
 
             // Create a link data map
             template <class Data>
-            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); }
+            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
 
             // Create a joint state
-            JointState makeJointState() { return JointState(this); }
+            JointState makeJointState() { return JointState(this); } // NRT
 
             // Create a leg data map pair
             template <class Data>
-            LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); }
+            LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); } // NRT
 
             // Create a link data map pair
             template <class Data>
-            LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); }
+            LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); } // NRT
 
             // Create a joint data map pair
             template <class Data>
-            JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); }
+            JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
+
+            // TODO
+            Jacobian makeJacobian(const Frame &fOrigin, const Frame &fDest) // NRT
+            {
+                std::cout << "makeJacobian function: TODO\n";
+                return Jacobian(1);
+            };
+
+            // TODO: it should use makeJacobian
+            Jacobian makeFootJacobian(const Frame &frame) // NRT
+            {
+                Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
+
+                const LimbBase *l = foot.getParentLimb();
+                const int nJoints = l->getNJoints();
+
+                return Jacobian(nJoints);
+            };
 
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                      const Frame &origin,

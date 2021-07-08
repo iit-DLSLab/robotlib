@@ -4,11 +4,7 @@ namespace dls
 {
 	namespace robotlib
 	{
-		Joint::Joint(Link *parent, Link *child, const std::string &name)
-		{
-			parent_ = parent;
-			name_ = name;
-		};
+		Joint::Joint(Link *parent, Link *child, const std::string &name) : Frame(name), parent_(parent){};
 
 		Joint::~Joint(){};
 

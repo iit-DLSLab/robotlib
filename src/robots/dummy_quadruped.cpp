@@ -13,8 +13,8 @@ namespace dls
 											 std::array<std::shared_ptr<Joint>, 3>({std::make_shared<Joint>(nullptr, nullptr, name + "_joint1"),
 																					std::make_shared<Joint>(nullptr, nullptr, name + "_joint2"),
 																					std::make_shared<Joint>(nullptr, nullptr, name + "_joint3")}),
-											 std::array<std::shared_ptr<Link>, 2>({std::make_shared<Link>(name + "_link1"),
-																				   std::make_shared<Link>(name + "_link2")})) {}
+											 std::array<std::shared_ptr<Link>, 2>({std::make_shared<Link>(this, name + "_link1"),
+																				   std::make_shared<Link>(this, name + "_link2")})) {}
 		};
 
 		class DummyQuadruped : public Robot<12, 8, 4>
@@ -80,9 +80,10 @@ namespace dls
 				return foot_pose;
 			};
 
+			// TO DO: mapping between name and id
 			Link getLink(const std::string &name) override
 			{
-				return Link("link");
+				return *std::static_pointer_cast<Link>(this->getLeg(0)->getLink(0));
 			};
 
 			Joint getJoint(const std::string &name) override
@@ -94,8 +95,9 @@ namespace dls
 			{
 				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
 
+				const LimbBase *l;
 				for (auto &foot : feet)
-					foot = std::make_shared<Link>("link");
+					foot = std::make_shared<Link>(l, "link");
 
 				return feet;
 			};
