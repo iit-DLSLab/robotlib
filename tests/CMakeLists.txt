@@ -3,6 +3,7 @@ enable_testing()
 add_executable(main_tests
 	main_tests.cpp
 	robot_base_tests.cpp
+	#eigen_map_test.cpp
 )
 
 target_link_libraries(main_tests

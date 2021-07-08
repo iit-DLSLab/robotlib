@@ -4,7 +4,7 @@ namespace dls
 {
 	namespace robotlib
 	{
-		Trunk::Trunk(){};
+		Trunk::Trunk(const std::string &name) : Frame(name){};
 
 		Trunk::~Trunk(){};
 
