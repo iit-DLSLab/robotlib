@@ -260,6 +260,21 @@ TEST(RobotBaseUnitTests, getFeet)
 //    ASSERT_EQ(typeid(1).name(), typeid(1).name());
 //}
 
+TEST(RobotBaseUnitTests, getName)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto name_dq = dummy_quadruped->getName();
+
+    /// Ground truth
+    std::string name_gt{"Quadruped"};
+
+    /// Assert conditions
+    ASSERT_EQ(name_dq, name_gt);
+    ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
+}
+
 TEST(RobotBaseUnitTests, makeJacobian)
 {
     /// Dummy quadruped
