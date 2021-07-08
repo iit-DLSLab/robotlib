@@ -36,40 +36,6 @@ TEST(EigenMapTest, setMap)
 
     int r = 3;
     int c = 4;
-    // float data[r][c];
-    // for (int i = 0; i < r; ++i)
-    // {
-    //     for (int j = 0; j < c; ++j)
-    //     {
-    //         data[i][j] = 3;
-    //     }
-    // }
-
-    // float **data = new float *[r];
-
-    // for (int i = 0; i < r; ++i)
-    // {
-    //     data[i] = new float[c];
-    //     for (int j = 0; j < c; ++j)
-    //     {
-    //         data[i][j] = 3;
-    //     }
-    // }
-
-    // Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> m(r, c);
-    // m.setZero();
-
-    // //float *p = &data[0][0];
-    // float *p = &m(0, 0);
-
-    // Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> dataMap(p, r, c);
-
-    // std::cout << "Before SET MAP\n";
-    // std::cout << dataMap << std::endl;
-
-    // setMap(dataMap);
-    // std::cout << "After SET MAP\n";
-    // std::cout << dataMap << std::endl;
 
     double *array = new double[9];
     for (int i = 0; i < 9; i++)
