@@ -9,9 +9,9 @@ namespace dls
 	namespace robotlib
 	{
 
-		// =============================================================================
-		// Class Description
-		// =============================================================================
+		/// =============================================================================
+		/// Class Description
+		/// =============================================================================
 		/// Factory class
 		///
 		/// The robot class is really convoluted inside of supervisor. Internal
@@ -21,7 +21,6 @@ namespace dls
 		{
 		public:
 			static std::shared_ptr<RobotBase> openRobot(const std::string &robotType);
-			//static std::shared_ptr<dls::dog::JSSweeper> buildHyQJSSweeper(double pstep);
 		};
 	} // namespace robot
 } // namespace dls
