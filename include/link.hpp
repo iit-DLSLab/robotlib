@@ -2,7 +2,6 @@
 #define _ROBOTLIB_LINK_HPP_
 
 #include "frame.hpp"
-#include "link.hpp"
 #include "limb_base.hpp"
 
 namespace dls
