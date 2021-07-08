@@ -30,7 +30,7 @@ static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
     for (auto leg : *robot)
     {
         std::cout << leg->getName() << ":  ";
-        int nLinks = leg->getNumLinks();
+        int nLinks = leg->getNLinks();
         for (int link = 0; link < nLinks; ++link)
         {
             if (link == nLinks - 1)
@@ -44,7 +44,7 @@ static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
     for (auto leg : *robot)
     {
         std::cout << leg->getName() << ":  ";
-        int nJoints = leg->getNumJoints();
+        int nJoints = leg->getNJoints();
         for (int joint = 0; joint < nJoints; ++joint)
         {
             std::cout << std::static_pointer_cast<dls::robotlib::Joint>(leg->getJoint(joint))->getName() << ", ";

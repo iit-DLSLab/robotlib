@@ -10,7 +10,7 @@ namespace dls
 		class Trunk : public Frame
 		{
 		public:
-			Trunk();
+			Trunk(const std::string &name);
 
 			~Trunk();
 

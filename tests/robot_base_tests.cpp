@@ -172,7 +172,8 @@ TEST(RobotBaseUnitTests, getLink)
     auto link_dq = dummy_quadruped->getLink("link");
 
     /// Ground truth
-    dls::robotlib::Link link_gt("link");
+    const dls::robotlib::LimbBase *l;             //TODO: set right parentLimb
+    dls::robotlib::Link link_gt(l, "leg1_link1"); //TODO : generalize the test for all the links
 
     /// Assert conditions
     ASSERT_EQ(link_dq.getName(), link_gt.getName());
@@ -194,6 +195,21 @@ TEST(RobotBaseUnitTests, getJoint)
     ASSERT_EQ(typeid(joint_dq).name(), typeid(joint_gt).name());
 }
 
+TEST(RobotBaseUnitTests, getParentLimb)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto link_dq = dummy_quadruped->getLink("leg1_link1");
+
+    auto parentLimb_link_dq = link_dq.getParentLimb();
+    /// Ground truth
+    dls::robotlib::LimbBase *parentLimb_link_dq_gt(dummy_quadruped->getLeg(0).get()); //TODO: extend to all dummy structure
+
+    /// Assert conditions
+    ASSERT_EQ(parentLimb_link_dq->getName(), parentLimb_link_dq_gt->getName());
+    //ASSERT_EQ(typeid(parentLimb_link_dq).name(), typeid(parentLimb_link_dq_gt).name()); // they are raw pointers so you may not use this assert
+}
 TEST(RobotBaseUnitTests, getFeet)
 {
     /// Dummy quadruped
@@ -257,4 +273,63 @@ TEST(RobotBaseUnitTests, getName)
     /// Assert conditions
     ASSERT_EQ(name_dq, name_gt);
     ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
+}
+
+TEST(RobotBaseUnitTests, makeJacobian)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    dls::robotlib::Link foot = dummy_quadruped->getLink("Leg1_link1");
+
+    auto jacobian = dummy_quadruped->makeFootJacobian(foot);
+
+    const int nJoints = foot.getParentLimb()->getNJoints();
+
+    int count = 0;
+    for (int i = 0; i < jacobian.rows(); ++i)
+    {
+        for (int j = 0; j < jacobian.cols(); ++j)
+        {
+            jacobian(i, j) = count;
+            count++;
+        }
+    }
+
+    /// Ground truth
+    double *data_gt = new double[6 * nJoints];
+    for (int i = 0; i < 6 * nJoints; ++i)
+    {
+        data_gt[i] = 0;
+    }
+
+    Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> jacobian_gt(data_gt, 6, nJoints);
+    count = 0;
+    for (int i = 0; i < jacobian_gt.rows(); ++i)
+    {
+        for (int j = 0; j < jacobian_gt.cols(); ++j)
+        {
+            jacobian_gt(i, j) = count;
+            count++;
+        }
+    }
+
+    auto linearJacobian = jacobian.getLinearJacobian();
+    auto angularJacobian = jacobian.getAngularJacobian();
+
+    /// Assert conditions
+    ASSERT_EQ(jacobian, jacobian_gt);
+    ASSERT_EQ(jacobian.getLinearJacobian(), jacobian_gt.block(0, 0, 3, nJoints));
+    ASSERT_EQ(jacobian.getAngularJacobian(), jacobian_gt.block(3, 0, 3, nJoints));
+    //ASSERT_EQ(typeid(jacobian).name(), typeid(jacobian_gt).name());
+}
+
+TEST(RobotBaseUnitTests, makeFootJacobian)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    dls::robotlib::Link foot = dummy_quadruped->getLink("Leg1_link1");
+
+    dummy_quadruped->makeJacobian(foot, foot);
 }

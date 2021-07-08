@@ -16,8 +16,8 @@ namespace dls
         template <unsigned int NJOINTS, unsigned int NLINKS>
         std::shared_ptr<void> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) { return joints_[jointId]; };
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const int Limb<NJOINTS, NLINKS>::getNumLinks() { return links_.size(); };
+        const int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_.size(); };
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const int Limb<NJOINTS, NLINKS>::getNumJoints() { return joints_.size(); };
+        const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_.size(); };
     } // namespace robotlib
 } // namespace dls

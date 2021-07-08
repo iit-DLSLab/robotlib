@@ -3,6 +3,7 @@
 
 #include "frame.hpp"
 #include "link.hpp"
+#include "limb_base.hpp"
 
 namespace dls
 {
