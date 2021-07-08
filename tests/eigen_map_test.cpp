@@ -34,9 +34,6 @@ TEST(EigenMapTest, setMap)
 
     const int n_dims = 5;
 
-    int r = 3;
-    int c = 4;
-
     double *array = new double[9];
     for (int i = 0; i < 9; i++)
     {
