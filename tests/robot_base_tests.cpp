@@ -116,32 +116,6 @@ TEST(RobotBaseUnitTests, getFramePose)
     ASSERT_EQ(typeid(frame_pose_dq).name(), typeid(frame_pose_gt).name());
 }
 
-TEST(RobotBaseUnitTests, getFeet)
-{
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
-
-    auto joint_state = dummy_quadruped->makeJointState();
-
-    auto feet_dq = dummy_quadruped->getFeet();
-
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt{};
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
-
-    for (const auto foot : feet_dq)
-    {
-        Eigen::Matrix4d foot_pose_dq{};
-        foot_pose_dq.setZero();
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
-
-        /// Assert conditions
-        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
-    }
-}
-
 TEST(RobotBaseUnitTests, getFootPosition)
 {
     /// Dummy quadruped
@@ -229,7 +203,6 @@ TEST(RobotBaseUnitTests, getParentLimb)
     auto link_dq = dummy_quadruped->getLink("leg1_link1");
 
     auto parentLimb_link_dq = link_dq.getParentLimb();
-
     /// Ground truth
     dls::robotlib::LimbBase *parentLimb_link_dq_gt(dummy_quadruped->getLeg(0).get()); //TODO: extend to all dummy structure
 
@@ -237,21 +210,55 @@ TEST(RobotBaseUnitTests, getParentLimb)
     ASSERT_EQ(parentLimb_link_dq->getName(), parentLimb_link_dq_gt->getName());
     //ASSERT_EQ(typeid(parentLimb_link_dq).name(), typeid(parentLimb_link_dq_gt).name()); // they are raw pointers so you may not use this assert
 }
-
-TEST(RobotBaseUnitTests, getName)
+TEST(RobotBaseUnitTests, getFeet)
 {
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
 
-    auto name_dq = dummy_quadruped->getName();
+    auto joint_state = dummy_quadruped->makeJointState();
+
+    auto feet_dq = dummy_quadruped->getFeet();
 
     /// Ground truth
-    std::string name_gt{"Quadruped"};
+    Eigen::Matrix4d foot_pose_gt{};
+    foot_pose_gt.setZero();
+    foot_pose_gt(3, 3) = 1;
 
-    /// Assert conditions
-    ASSERT_EQ(name_dq, name_gt);
-    ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
+    for (const auto foot : feet_dq)
+    {
+        Eigen::Matrix4d foot_pose_dq{};
+        foot_pose_dq.setZero();
+        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
+
+        /// Assert conditions
+        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
+        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
+    }
 }
+
+//TEST(RobotBaseUnitTests, getJointsConfiguration)
+//{
+//    /// Dummy quadruped
+//    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
+//
+//TEST(RobotBaseUnitTests, getJointsVelocities)
+//{
+//    /// Dummy quadruped
+//    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
 
 TEST(RobotBaseUnitTests, makeJacobian)
 {

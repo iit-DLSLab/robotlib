@@ -101,6 +101,15 @@ namespace dls
 
 				return feet;
 			};
+
+			//JointState getJointsConfiguration(const Frame &end_effector,
+			//								  const Eigen::Matrix4d &end_effector_pose,
+			//								  JointState &q) override{};
+			//
+			//JointState getJointsVelocities(const Frame &end_effector,
+			//							   const Eigen::Matrix4d &end_effector_velocity,
+			//							   const JointState &q,
+			//							   JointState &q_d) override{};
 		};
 
 		extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()

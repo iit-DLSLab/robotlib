@@ -224,6 +224,13 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
+            //class JointState : public JointDataMapPair<double>
+            //{
+            //public:
+            //    JointState(RobotBase *robot) : JointDataMapPair(robot){};
+            //    ~JointState(){};
+            //};
+
             const std::string name_;
 
         public:
@@ -315,6 +322,17 @@ namespace dls
             virtual Joint getJoint(const std::string &name) = 0;
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
+
+            /// Inverse kinematics: Derive joint variables associated to a certain leg,
+            /// using the pose of the leg end-effector. Update the JointState values
+            //virtual JointState getJointsConfiguration(const Frame &end_effector,
+            //                                          const Eigen::Matrix4d &end_effector_pose,
+            //                                          JointState &q) = 0;
+            //
+            //virtual JointState getJointsVelocities(const Frame &end_effector,
+            //                                       const Eigen::Matrix4d &end_effector_velocity,
+            //                                       const JointState &q,
+            //                                       JointState &q_d) = 0;
 
             std::string getName() { return name_; };
         };

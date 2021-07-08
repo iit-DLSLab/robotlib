@@ -15,6 +15,7 @@ static void display_help(std::string name)
               << "\t--info\t\tShow info of the robot\n"
               << std::endl;
 }
+
 static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
 {
     std::cout << "\nINFO ON ROBOT " << robot->getName() << std::endl;
