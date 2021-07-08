@@ -59,22 +59,30 @@ int main(int argc, char *argv[])
     if (argc <= 1 || (argc == 2 && strcmp(argv[1], "--help") != 0))
     {
         display_help(argv[0]);
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
-    // ROBOT ARGUMENTS
+    /// ROBOT ARGUMENTS
     const std::string robotType = argv[1];
     std::shared_ptr<dls::robotlib::RobotBase> robot;
-    robot = dls::robotlib::RobotFactory::openRobot(argv[1]);
 
-    // OPTION ARGUMENTS
-    if (strcmp(argv[2], "--info") == 0)
+    try
     {
-        info(robot);
+        robot = dls::robotlib::RobotFactory::openRobot(argv[1]);
+
+        /// OPTION ARGUMENTS
+        if (strcmp(argv[2], "--info") == 0)
+        {
+            info(robot);
+        }
+        else
+        {
+            display_help(argv[0]);
+            return 1;
+        }
     }
-    else
-    { // if a wrong option is passed as input, the help message is showed
-        display_help(argv[0]);
-        exit(EXIT_FAILURE);
+    catch (const std::string &e)
+    {
+        std::cout << e << std::endl;
     }
 }
