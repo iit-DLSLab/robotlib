@@ -4,16 +4,35 @@ namespace dls
 {
 	namespace robotlib
 	{
-		std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string &robotType)
+		std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string &robot_type)
 		{
+			std::string library{"lib" + robot_type + ".so"};
+			void *robot{};
 
-			std::string libPath;
-			libPath = "./lib" + robotType + ".so";
-			// Load the robot library
-			void *robot = dlopen(libPath.c_str(), RTLD_LAZY);
-			if (!robot)
+			// Look for the robot library in the current directory and load it
+			try
 			{
-				std::cerr << "Cannot load library: " << dlerror() << '\n';
+				std::string lib_path{"./" + library};
+				robot = dlopen(lib_path.c_str(), RTLD_LAZY);
+				if (!robot)
+					throw dlerror();
+			}
+			catch (const std::exception &e)
+			{
+				std::cout << e.what();
+			}
+
+			// Look for the robot library in the robots directory and load it
+			try
+			{
+				std::string lib_path{"/usr/lib/robots/robotlib/" + library};
+				robot = dlopen(lib_path.c_str(), RTLD_LAZY);
+				if (!robot)
+					throw dlerror();
+			}
+			catch (const std::exception &e)
+			{
+				std::cout << e.what();
 			}
 
 			// Load the create symbol
@@ -24,14 +43,6 @@ namespace dls
 				std::cerr << "Cannot load symbol create: " << dlsym_error << '\n';
 			}
 
-			// // Load the destroy symbol
-			// destroyDog_t* destroy_dog = (destroyDog_t*) dlsym(triangle, "destroyDog_t");
-			// dlsym_error = dlerror();
-			// if (dlsym_error) {
-			//     cerr << "Cannot load symbol destroy: " << dlsym_error << '\n';
-			// }
-
-			// Create an instance of the class
 			return create_robot();
 		}
 	} // namespace robotlib
