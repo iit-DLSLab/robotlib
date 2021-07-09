@@ -4,6 +4,7 @@
 #include "robot_base.hpp"
 #include <memory>
 #include <dlfcn.h>
+
 namespace dls
 {
 	namespace robotlib
