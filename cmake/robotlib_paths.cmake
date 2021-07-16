@@ -1,12 +1,14 @@
-set(ROBOTLIB_INSTALL_HEADERS_DIR /usr/include
+set(CMAKE_INSTALL_PREFIX "/usr")
+
+set(ROBOTLIB_INSTALL_HEADERS_DIR ${CMAKE_INSTALL_PREFIX}/include
     CACHE STRING "Directory where the robotlib headers are stored"
 )
 
-set(ROBOTLIB_INSTALL_RUNTIME_DIR /usr/bin
+set(ROBOTLIB_INSTALL_RUNTIME_DIR ${CMAKE_INSTALL_PREFIX}/bin
 	CACHE STRING "Directory where the robotlib executables are stored"
 )
 
-set(ROBOTLIB_INSTALL_LIBRARIES_DIR /usr/lib
+set(ROBOTLIB_INSTALL_LIBRARIES_DIR ${CMAKE_INSTALL_PREFIX}/lib
 	CACHE STRING "Directory where the robotlib shared object libraries are stored"
 )
 
