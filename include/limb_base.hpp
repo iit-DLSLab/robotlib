@@ -2,6 +2,7 @@
 #define _ROBOTLIB_LIMB_BASE_HPP_
 
 #include <memory>
+#include "frame.hpp"
 
 namespace dls
 {
@@ -18,8 +19,8 @@ namespace dls
 
             virtual const int getNLinks() const = 0;
             virtual const int getNJoints() const = 0;
-            virtual std::shared_ptr<void> getLink(const int linkId) = 0;
-            virtual std::shared_ptr<void> getJoint(const int jointId) = 0;
+            virtual std::shared_ptr<Frame> getLink(const int linkId) = 0;
+            virtual std::shared_ptr<Frame> getJoint(const int jointId) = 0;
 
         private:
             const std::string name_;

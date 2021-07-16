@@ -17,8 +17,8 @@ namespace dls
 
             virtual ~Limb();
 
-            virtual std::shared_ptr<void> getLink(const int linkId) override;
-            virtual std::shared_ptr<void> getJoint(const int jointId) override;
+            virtual std::shared_ptr<Frame> getLink(const int linkId) override;
+            virtual std::shared_ptr<Frame> getJoint(const int jointId) override;
             virtual const int getNLinks() const override;
             virtual const int getNJoints() const override;
 
