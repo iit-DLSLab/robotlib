@@ -224,13 +224,6 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
-            //class JointState : public JointDataMapPair<double>
-            //{
-            //public:
-            //    JointState(RobotBase *robot) : JointDataMapPair(robot){};
-            //    ~JointState(){};
-            //};
-
             const std::string name_;
 
         public:
@@ -323,16 +316,20 @@ namespace dls
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
-            /// Inverse kinematics: Derive joint variables associated to a certain leg,
-            /// using the pose of the leg end-effector. Update the JointState values
-            //virtual JointState getJointsConfiguration(const Frame &end_effector,
-            //                                          const Eigen::Matrix4d &end_effector_pose,
-            //                                          JointState &q) = 0;
-            //
-            //virtual JointState getJointsVelocities(const Frame &end_effector,
-            //                                       const Eigen::Matrix4d &end_effector_velocity,
-            //                                       const JointState &q,
-            //                                       JointState &q_d) = 0;
+            virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
+                                           const Eigen::Vector3d &end_effector_velocity,
+                                           const Eigen::Vector3d &end_effector_acceleration,
+                                           Eigen::Vector3d &joint_position,
+                                           Eigen::Vector3d &joint_velocity,
+                                           Eigen::Vector3d &joint_acceleration,
+                                           const Frame &end_effector) = 0;
+
+            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                           JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
+                                           JointState &joint_velocity,
+                                           JointState &joint_acceleration) = 0;
 
             std::string getName() { return name_; };
         };
