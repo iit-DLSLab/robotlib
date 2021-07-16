@@ -235,8 +235,8 @@ TEST(RobotBaseUnitTests, getFeet)
         ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
     }
 }
-
-//TEST(RobotBaseUnitTests, getJointsConfiguration)
+// TODO
+//TEST(RobotBaseUnitTests, inverseKinematicsOne)
 //{
 //    /// Dummy quadruped
 //    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
@@ -247,8 +247,9 @@ TEST(RobotBaseUnitTests, getFeet)
 //    ASSERT_EQ(1, 1);
 //    ASSERT_EQ(typeid(1).name(), typeid(1).name());
 //}
-//
-//TEST(RobotBaseUnitTests, getJointsVelocities)
+
+// TODO
+//TEST(RobotBaseUnitTests, inverseKinematicsTwo)
 //{
 //    /// Dummy quadruped
 //    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
