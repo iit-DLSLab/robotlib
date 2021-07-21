@@ -8,27 +8,29 @@ namespace dls
 	namespace robotlib
 	{
 		/// NJOINTS: Robot joints. NLINKS: Robot links.
-		template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS = 0>
+		template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
 		class Robot : public RobotBase
 		{
 		public:
 			Robot(const std::string &name,
-				  const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs);
+				  const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs,
+				  const std::array<std::shared_ptr<LimbBase>, NARMS> &arms);
 			virtual ~Robot();
 
-			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
-			virtual Iterator<const std::shared_ptr<LimbBase>> end() override;
+			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs(); /// Not currently used
+			const std::array<std::shared_ptr<LimbBase>, NARMS> getArms(); /// Not currently used
 
-			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs();
-			const std::shared_ptr<LimbBase> getLeg(const int id) override;
+			const std::shared_ptr<LimbBase> &getLeg(const int id) override;
+			const std::shared_ptr<LimbBase> &getArm(const int id) override;
 
 			virtual const int getNLEGS() override;
+			virtual const int getNARMS() override;
 			virtual const int getNJOINTS() override;
 			virtual const int getNLINKS() override;
 
 		protected:
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
-																	  //const Trunk trunk_;													//! Trunk of the robot
+			const std::array<std::shared_ptr<LimbBase>, NARMS> arms_; //! Arms of the robot
 		};
 	} // namespace robotlib
 } // namespace dls

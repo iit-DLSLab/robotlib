@@ -36,6 +36,7 @@ namespace dls
                 Data *data_;
                 const int nLegs_;
             };
+
             template <class Data>
             class JointDataMap
             {
@@ -186,6 +187,7 @@ namespace dls
             };
 
             using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
+
             class Jacobian : public Map
             {
             public:
@@ -224,6 +226,46 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
+            class IteratorLegs
+            {
+            public:
+                IteratorLegs(RobotBase *robot) : first_leg_(&(robot->getLeg(0))),
+                                                 last_leg_(&(robot->getLeg(robot->getNLEGS()))){};
+                ~IteratorLegs(){};
+
+                const Iterator<const std::shared_ptr<LimbBase>> begin()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(first_leg_);
+                }
+                const Iterator<const std::shared_ptr<LimbBase>> end()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(last_leg_);
+                }
+
+            private:
+                const std::shared_ptr<LimbBase> *const first_leg_{}, *const last_leg_{};
+            };
+
+            class IteratorArms
+            {
+            public:
+                IteratorArms(RobotBase *robot) : first_arm_(&(robot->getArm(0))),
+                                                 last_arm_(&(robot->getArm(robot->getNARMS()))){};
+                ~IteratorArms(){};
+
+                const Iterator<const std::shared_ptr<LimbBase>> begin()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(first_arm_);
+                }
+                const Iterator<const std::shared_ptr<LimbBase>> end()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(last_arm_);
+                }
+
+            private:
+                const std::shared_ptr<LimbBase> *const first_arm_{}, *const last_arm_{};
+            };
+
             const std::string name_;
 
         public:
@@ -235,14 +277,19 @@ namespace dls
 
             // Get functions
             virtual const int getNLEGS() = 0;
+            virtual const int getNARMS() = 0;
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
 
-            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> &getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> &getArm(const int id) = 0;
 
             // Plugin typedefs
             typedef std::shared_ptr<RobotBase> createRobot_t();
             typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+
+            IteratorLegs getIteratorLegs() { return IteratorLegs(this); }
+            IteratorArms getIteratorArms() { return IteratorArms(this); }
 
             // Create a leg data map
             template <class Data>
