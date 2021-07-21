@@ -13,10 +13,13 @@ namespace dls
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
         std::shared_ptr<void> Limb<NJOINTS, NLINKS>::getLink(const int linkId) { return links_[linkId]; };
+
         template <unsigned int NJOINTS, unsigned int NLINKS>
         std::shared_ptr<void> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) { return joints_[jointId]; };
+
         template <unsigned int NJOINTS, unsigned int NLINKS>
         const int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_.size(); };
+
         template <unsigned int NJOINTS, unsigned int NLINKS>
         const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_.size(); };
     } // namespace robotlib
