@@ -271,10 +271,6 @@ namespace dls
         public:
             RobotBase(const std::string &name) : name_(name){};
 
-            // TODO: Is it correct that the iterators are defined with "{}"?
-            virtual Iterator<const std::shared_ptr<LimbBase>> begin(){};
-            virtual Iterator<const std::shared_ptr<LimbBase>> end(){};
-
             // Get functions
             virtual const int getNLEGS() = 0;
             virtual const int getNARMS() = 0;
