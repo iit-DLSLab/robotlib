@@ -17,15 +17,16 @@ namespace dls
 																				   std::make_shared<Link>(this, name + "_link2")})) {}
 		};
 
-		class DummyQuadruped : public Robot<12, 8, 4>
+		class DummyQuadruped : public Robot<12, 8, 4, 0>
 		{
 		public:
-			DummyQuadruped() : Robot<12, 8, 4>(
+			DummyQuadruped() : Robot<12, 8, 4, 0>(
 								   "Quadruped",
 								   std::array<std::shared_ptr<LimbBase>, 4>({std::make_shared<DummyLeg>("leg1"),
 																			 std::make_shared<DummyLeg>("leg2"),
 																			 std::make_shared<DummyLeg>("leg3"),
-																			 std::make_shared<DummyLeg>("leg4")})){};
+																			 std::make_shared<DummyLeg>("leg4")}),
+								   std::array<std::shared_ptr<LimbBase>, 0>()){};
 
 			Eigen::Vector3d getFramePosition(const JointState &q,
 											 const Frame &origin,
@@ -108,14 +109,20 @@ namespace dls
 								   Eigen::Vector3d &joint_position,
 								   Eigen::Vector3d &joint_velocity,
 								   Eigen::Vector3d &joint_acceleration,
-								   const Frame &end_effector) override{};
+								   const Frame &end_effector) override
+			{
+				std::cout << "Inverse Kinematics 1" << std::endl;
+			};
 
 			void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
 								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 								   JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
 								   JointState &joint_velocity,
-								   JointState &joint_acceleration) override{};
+								   JointState &joint_acceleration) override
+			{
+				std::cout << "Inverse Kinematics 2" << std::endl;
+			};
 		};
 
 		extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()

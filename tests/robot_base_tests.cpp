@@ -261,6 +261,32 @@ TEST(RobotBaseUnitTests, getFeet)
 //    ASSERT_EQ(typeid(1).name(), typeid(1).name());
 //}
 
+TEST(RobotBaseUnitTests, iteratorLegs)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto iterator_legs = dummy_quadruped->getIteratorLegs();
+
+    for (auto it_leg : iterator_legs)
+    {
+        std::cout << it_leg->getName() << std::endl;
+    };
+}
+
+TEST(RobotBaseUnitTests, iteratorArms)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+
+    auto iterator_arms = dummy_quadruped->getIteratorArms();
+
+    for (auto it_arm : iterator_arms)
+    {
+        std::cout << it_arm->getName() << std::endl;
+    };
+}
+
 TEST(RobotBaseUnitTests, getName)
 {
     /// Dummy quadruped
