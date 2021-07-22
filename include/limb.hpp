@@ -13,7 +13,7 @@ namespace dls
         class Limb : public LimbBase
         {
         public:
-            Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links);
+            Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> joints, const std::array<std::shared_ptr<Link>, NLINKS> links);
 
             virtual ~Limb();
 
@@ -25,6 +25,8 @@ namespace dls
         protected:
             const std::array<std::shared_ptr<Joint>, NJOINTS> joints_;
             const std::array<std::shared_ptr<Link>, NLINKS> links_;
+
+            virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
         };
     } // namespace robotlib
 } // namespace dls

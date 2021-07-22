@@ -1,7 +1,7 @@
 #ifndef _ROBOTLIB_TRUNK_HPP_
 #define _ROBOTLIB_TRUNK_HPP_
 
-#include "frame.hpp"
+#include "link.hpp"
 
 namespace dls
 {

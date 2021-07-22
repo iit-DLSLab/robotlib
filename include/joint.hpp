@@ -2,27 +2,37 @@
 #define _ROBOTLIB_JOINT_HPP_
 
 #include "frame.hpp"
-#include "link.hpp"
-#include "limb_base.hpp"
+#include <memory>
 
 namespace dls
 {
 	namespace robotlib
 	{
+
+		class Link;
+
+		template <unsigned int NJOINTS, unsigned int NLINKS>
+		class Limb;
 		class Joint : public Frame
 		{
 		public:
-			Joint(Link *parent, Link *child, const std::string &name);
+			Joint(const std::string &name, const std::shared_ptr<Link> parent);
 
 			virtual ~Joint();
 
 			virtual const std::string getName() override;
-			const Link *getParent() const;
-			const Link *getChild() const;
+			const std::shared_ptr<Link> getParent() const;
+			const std::shared_ptr<Link> getChild() const;
+
+			template <unsigned int NJOINTS, unsigned int NLINKS>
+			friend class Limb;
 
 		protected:
-			const Link *parent_{};
-			const Link *child_{};
+			std::shared_ptr<Link> parent_;
+			std::shared_ptr<Link> child_;
+
+		private:
+			void setChild(const std::shared_ptr<Link> child);
 		};
 	} // namespace robotlib
 } // namespace dls

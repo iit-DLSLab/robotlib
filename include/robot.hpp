@@ -12,8 +12,7 @@ namespace dls
 		class Robot : public RobotBase
 		{
 		public:
-			Robot(const std::string &name,
-				  const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs);
+			Robot(const std::string &name, const std::shared_ptr<Trunk> trunk, const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs);
 			virtual ~Robot();
 
 			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
@@ -28,7 +27,7 @@ namespace dls
 
 		protected:
 			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
-																	  //const Trunk trunk_;													//! Trunk of the robot
+			const std::shared_ptr<Trunk> trunk_;					  //! Trunk of the robot
 		};
 	} // namespace robotlib
 } // namespace dls

@@ -5,9 +5,9 @@ namespace dls
     namespace robotlib
     {
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(const std::string &name,
+        Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(const std::string &name, const std::shared_ptr<Trunk> trunk,
                                                     const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs)
-            : RobotBase(name), legs_(legs){};
+            : RobotBase(name), legs_(legs), trunk_(trunk){};
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};

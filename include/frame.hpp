@@ -10,7 +10,7 @@ namespace dls
         class Frame
         {
         public:
-            Frame(const std::string name) : name_(name){};
+            Frame(const std::string &name) : name_(name){};
             //Frame(const Eigen::Vector3d &p, const Eigen::Vector3d &ori)
             virtual ~Frame(){};
 

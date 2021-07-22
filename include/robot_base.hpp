@@ -1,5 +1,7 @@
 #ifndef _ROBOTLIB_ROBOT_BASE_HPP_
 #define _ROBOTLIB_ROBOT_BASE_HPP_
+
+#include "trunk.hpp"
 #include "limb_base.hpp"
 #include "link.hpp"
 #include "joint.hpp"
@@ -288,12 +290,14 @@ namespace dls
             // TODO: it should use makeJacobian
             Jacobian makeFootJacobian(const Frame &frame) // NRT
             {
-                Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
+                // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
 
-                const LimbBase *l = foot.getParentLimb();
-                const int nJoints = l->getNJoints();
+                // const LimbBase *l = foot.getParentLimb();
+                // const int nJoints = l->getNJoints();
 
-                return Jacobian(nJoints);
+                // return Jacobian(nJoints);
+                std::cout << "makeFootJacobian function: TODO\n";
+                return Jacobian(1);
             };
 
             virtual Eigen::Vector3d getFramePosition(const JointState &q,

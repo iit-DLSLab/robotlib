@@ -5,7 +5,7 @@ namespace dls
     namespace robotlib
     {
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        Limb<NJOINTS, NLINKS>::Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links)
+        Limb<NJOINTS, NLINKS>::Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> joints, const std::array<std::shared_ptr<Link>, NLINKS> links)
             : LimbBase(name), joints_(joints), links_(links){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
@@ -19,5 +19,10 @@ namespace dls
         const int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_.size(); };
         template <unsigned int NJOINTS, unsigned int NLINKS>
         const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_.size(); };
+        template <unsigned int NJOINTS, unsigned int NLINKS>
+        void Limb<NJOINTS, NLINKS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
+        {
+            joint->setChild(child);
+        }
     } // namespace robotlib
 } // namespace dls

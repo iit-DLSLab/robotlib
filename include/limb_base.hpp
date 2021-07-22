@@ -8,6 +8,8 @@ namespace dls
 {
     namespace robotlib
     {
+        class Link;
+        class Joint;
         class LimbBase
         {
         public:
@@ -21,6 +23,9 @@ namespace dls
             virtual const int getNJoints() const = 0;
             virtual std::shared_ptr<Frame> getLink(const int linkId) = 0;
             virtual std::shared_ptr<Frame> getJoint(const int jointId) = 0;
+            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) = 0;
+            virtual const std::shared_ptr<Link> getLinkFromName(const std::string &name) = 0;
+            virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name) = 0;
 
         private:
             const std::string name_;
