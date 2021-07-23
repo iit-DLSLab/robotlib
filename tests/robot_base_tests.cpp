@@ -323,19 +323,21 @@ TEST(RobotBaseUnitTests, joint_parent_child)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    // /// Groud truth
-    // const std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
-    //     //joint name, parent name, child name
-    //     {"haa", std::make_pair("trunk", "assembly")},
-    //     {"hfe", std::make_pair("assembly", "upper_leg")},
-    //     {"hke", std::make_pair("upper_leg", "lower_leg")},
-    // };
+    /// Groud truth
+    const std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
+        //joint name, parent name, child name
+        {"haa", std::make_pair("trunk", "assembly")},
+        {"hfe", std::make_pair("assembly", "upper_leg")},
+        {"hke", std::make_pair("upper_leg", "lower_leg")},
+    };
 
-    // for (auto leg : *dummy_quadruped)
-    // {
-
-    //     ASSERT_EQ(jacobian, jacobian_gt);
-    // }
+    for (auto leg : *dummy_quadruped)
+    {
+        for (auto joint : *(leg->getJoints()))
+        {
+            std::cout << joint->getName() << " " << joint->getChild()->getName() << std::endl;
+        }
+    }
 }
 
 // std::cout << "Leg: " << leg->getName() << std::endl;

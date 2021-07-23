@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "frame.hpp"
+#include "utils.hpp"
 
 namespace dls
 {
@@ -17,12 +18,30 @@ namespace dls
 
             virtual ~LimbBase();
 
+            class JointsBase
+            {
+            public:
+                JointsBase(){};
+                virtual ~JointsBase(){};
+
+                virtual Iterator<const std::shared_ptr<Joint>> begin() const = 0;
+                virtual Iterator<const std::shared_ptr<Joint>> end() const = 0;
+                virtual const std::shared_ptr<Joint> operator[](const int id) const = 0;
+                virtual const int size() const = 0;
+            };
+            class LinksBase
+            {
+            };
+
             const std::string getName() const;
 
             virtual const int getNLinks() const = 0;
             virtual const int getNJoints() const = 0;
             virtual std::shared_ptr<Frame> getLink(const int linkId) = 0;
-            virtual std::shared_ptr<Frame> getJoint(const int jointId) = 0;
+            virtual const std::shared_ptr<Frame> getJoint(const int jointId) const = 0;
+            //virtual const std::shared_ptr<JointsBase> getJoints() = 0;
+            virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() = 0;
+
             virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) = 0;
             virtual const std::shared_ptr<Link> getLinkFromName(const std::string &name) = 0;
             virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name) = 0;

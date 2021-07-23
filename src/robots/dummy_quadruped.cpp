@@ -6,16 +6,16 @@ namespace dls
 	namespace robotlib
 	{
 		const int NJOINTS = 3;
-		const int NLINKS = 2;
+		const int NLINKS = 3;
 
-		class DummyLeg : public Limb<3, 2>
+		class DummyLeg : public Limb<NJOINTS, NLINKS>
 		{
 		public:
 			DummyLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
-					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links) : Limb<3, 2>(name, joints, links)
+					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links) : Limb<NJOINTS, NLINKS>(name, joints, links)
 			{
 				// Iterate over the joints and set the corresponding child
-				for (auto joint : joints_)
+				for (auto joint : *joints_)
 				{
 					const std::string child_name = jointToChildName(joint);
 					setChildOfJoint(joint, getLinkFromName(child_name));
@@ -32,7 +32,7 @@ namespace dls
 				//Iterate over the array of links to find the link
 				for (auto link : links_)
 				{
-					if (link->getName().compare(name))
+					if (link->getName().compare(name) == 0)
 					{
 						return link;
 					}
@@ -44,7 +44,7 @@ namespace dls
 			virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name)
 			{
 				//Iterate over the array of links to find the link
-				for (auto joint : joints_)
+				for (auto joint : *joints_)
 				{
 					if (joint->getName().compare(name))
 					{
@@ -58,9 +58,18 @@ namespace dls
 
 			std::map<std::string, std::pair<std::string, std::string>> jointMap{
 				//joint name, parent name, child name
-				{"haa", std::make_pair("trunk", "assembly")},
-				{"hfe", std::make_pair("assembly", "upper_leg")},
-				{"hke", std::make_pair("upper_leg", "lower_leg")},
+				{"LF_haa", std::make_pair("trunk", "LF_assembly")},
+				{"LF_hfe", std::make_pair("LF_assembly", "LF_upperleg")},
+				{"LF_kfe", std::make_pair("LF_upperleg", "LF_lowerleg")},
+				{"RF_haa", std::make_pair("trunk", "RF_assembly")},
+				{"RF_hfe", std::make_pair("RF_assembly", "RF_upperleg")},
+				{"RF_kfe", std::make_pair("RF_upperleg", "RF_lowerleg")},
+				{"LH_haa", std::make_pair("trunk", "LH_assembly")},
+				{"LH_hfe", std::make_pair("LH_assembly", "LH_upperleg")},
+				{"LH_kfe", std::make_pair("LH_upperleg", "LH_lowerleg")},
+				{"RH_haa", std::make_pair("trunk", "RH_assembly")},
+				{"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
+				{"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")},
 			};
 		};
 
@@ -165,22 +174,17 @@ namespace dls
 
 std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 {
-	// std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_assembly", haa);
+	//std::shared_ptr<dls::robotlib::Joint> haa = std::make_shared<dls::robotlib::Joint>(legName + "_haa", trunk);
 	std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_assembly");
 	std::shared_ptr<dls::robotlib::Joint> hfe = std::make_shared<dls::robotlib::Joint>(legName + "_hfe", assembly);
 
-	// std::shared_ptr<dls::robotlib::Link> upperleg = std::make_shared<dls::robotlib::Link>(legName + "_upperleg", hfe);
-	// std::shared_ptr<dls::robotlib::Joint> kfe = std::make_shared<dls::robotlib::Joint>(legName + "_kfe", upperleg);
-	// std::shared_ptr<dls::robotlib::Link> lowerleg = std::make_shared<dls::robotlib::Link>(legName + "_lowerleg", kfe);
-	// std::shared_ptr<dls::robotlib::Link> foot = std::make_shared<dls::robotlib::Link>(legName + "_foot", lowerleg);
-
-	// return std::make_shared<CrexLeg>(legName,
-	//                                  std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS>({haa, hfe, kfe}),
-	//                                  std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS>({assembly, upperleg, lowerleg}));
+	std::shared_ptr<dls::robotlib::Link> upperleg = std::make_shared<dls::robotlib::Link>(legName + "_upperleg");
+	std::shared_ptr<dls::robotlib::Joint> kfe = std::make_shared<dls::robotlib::Joint>(legName + "_kfe", upperleg);
+	std::shared_ptr<dls::robotlib::Link> lowerleg = std::make_shared<dls::robotlib::Link>(legName + "_lowerleg");
 
 	return std::make_shared<dls::robotlib::DummyLeg>(legName,
-													 std::array<std::shared_ptr<dls::robotlib::Joint>, dls::robotlib::NJOINTS>({hfe, hfe, hfe}),
-													 std::array<std::shared_ptr<dls::robotlib::Link>, dls::robotlib::NLINKS>({assembly, assembly}));
+													 std::array<std::shared_ptr<dls::robotlib::Joint>, dls::robotlib::NJOINTS>({hfe, hfe, kfe}),
+													 std::array<std::shared_ptr<dls::robotlib::Link>, dls::robotlib::NLINKS>({assembly, upperleg, lowerleg}));
 }
 
 extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
