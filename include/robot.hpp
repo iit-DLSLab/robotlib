@@ -12,22 +12,20 @@ namespace dls
 		class Robot : public RobotBase
 		{
 		public:
-			Robot(const std::string &name, const std::shared_ptr<Trunk> trunk, const std::array<std::shared_ptr<LimbBase>, NLEGS> &legs);
+			Robot(const std::string &name, const std::shared_ptr<Trunk> trunk, const std::shared_ptr<Container<LimbBase, NLEGS>> &legs);
 			virtual ~Robot();
 
-			virtual Iterator<const std::shared_ptr<LimbBase>> begin() override;
-			virtual Iterator<const std::shared_ptr<LimbBase>> end() override;
-
-			const std::array<std::shared_ptr<LimbBase>, NLEGS> getLegs();
-			const std::shared_ptr<LimbBase> getLeg(const int id) override;
+			virtual const std::shared_ptr<LimbBase> getLeg(const int id) override;
+			virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() override;
 
 			virtual const int getNLEGS() override;
 			virtual const int getNJOINTS() override;
 			virtual const int getNLINKS() override;
 
 		protected:
-			const std::array<std::shared_ptr<LimbBase>, NLEGS> legs_; //! Legs of the robot
-			const std::shared_ptr<Trunk> trunk_;					  //! Trunk of the robot
+			const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
+
+			const std::shared_ptr<Container<LimbBase, NLEGS>> legs_; //! Legs of the robot
 		};
 	} // namespace robotlib
 } // namespace dls

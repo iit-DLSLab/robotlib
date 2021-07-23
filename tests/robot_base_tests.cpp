@@ -331,7 +331,7 @@ TEST(RobotBaseUnitTests, joint_parent_child)
         {"hke", std::make_pair("upper_leg", "lower_leg")},
     };
 
-    for (auto leg : *dummy_quadruped)
+    for (auto leg : *dummy_quadruped->getLegs())
     {
         for (auto joint : *(leg->getJoints()))
         {

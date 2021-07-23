@@ -79,11 +79,11 @@ namespace dls
 		class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS>
 		{
 		public:
-			DummyQuadruped(const std::array<std::shared_ptr<dls::robotlib::LimbBase>, NLEGS> legs)
+			DummyQuadruped(const std::array<std::shared_ptr<LimbBase>, NLEGS> legs)
 				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS>(
 					  "Quadruped",
 					  std::make_shared<dls::robotlib::Trunk>("trunk"),
-					  legs){};
+					  std::make_shared<Container<LimbBase, NLEGS>>(legs)){};
 
 			Eigen::Vector3d getFramePosition(const JointState &q,
 											 const Frame &origin,
