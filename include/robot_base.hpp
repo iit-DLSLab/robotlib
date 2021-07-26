@@ -239,135 +239,117 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
-            const Iterator<const std::shared_ptr<LimbBase>> begin()
+            // Get functions
+            virtual const int getNLEGS() = 0;
+            virtual const int getNARMS() = 0;
+            virtual const int getNJOINTS() = 0;
+            virtual const int getNLINKS() = 0;
+
+            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> getArm(const int id) = 0;
+
+            virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
+            virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() = 0;
+
+            // Plugin typedefs
+            typedef std::shared_ptr<RobotBase> createRobot_t();
+            typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+
+            // Create a leg data map
+            template <class Data>
+            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
+
+            // Create a joint data map
+            template <class Data>
+            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
+
+            // Create a link data map
+            template <class Data>
+            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
+
+            // Create a joint state
+            JointState makeJointState() { return JointState(this); } // NRT
+
+            // Create a leg data map pair
+            template <class Data>
+            LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); } // NRT
+
+            // Create a link data map pair
+            template <class Data>
+            LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); } // NRT
+
+            // Create a joint data map pair
+            template <class Data>
+            JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
+
+            // TODO
+            Jacobian makeJacobian(const Frame &fOrigin, const Frame &fDest) // NRT
             {
-                return Iterator<const std::shared_ptr<LimbBase>>(first_limb_);
-            }
-            const Iterator<const std::shared_ptr<LimbBase>> end()
+                std::cout << "makeJacobian function: TODO\n";
+                return Jacobian(1);
+            };
+
+            // TODO: it should use makeJacobian
+            Jacobian makeFootJacobian(const Frame &frame) // NRT
             {
-                return Iterator<const std::shared_ptr<LimbBase>>(last_limb_);
-            }
+                // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
 
-            ~IteratorLimbs(){};
+                // const LimbBase *l = foot.getParentLimb();
+                // const int nJoints = l->getNJoints();
 
-        private:
-            IteratorLimbs(RobotBase *robot) : first_limb_(&(robot->getLimb(0))),
-                                              last_limb_(&(robot->getLimb(robot->getNLEGS() + robot->getNARMS()))){};
+                // return Jacobian(nJoints);
+                std::cout << "makeFootJacobian function: TODO\n";
+                return Jacobian(1);
+            };
 
-            const std::shared_ptr<LimbBase> *const first_limb_{}, *const last_limb_{};
-        };
+            virtual Eigen::Vector3d getFramePosition(const JointState &q,
+                                                     const Frame &origin,
+                                                     const Frame &destination) = 0;
 
-        // Get functions
-        virtual const int getNLEGS() = 0;
-        virtual const int getNARMS() = 0;
-        virtual const int getNJOINTS() = 0;
-        virtual const int getNLINKS() = 0;
+            virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
+                                                        const Frame &origin,
+                                                        const Frame &destination) = 0;
 
-        virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
-        virtual const std::shared_ptr<LimbBase> getArm(const int id) = 0;
-
-        virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
-        virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() = 0;
-
-        // Plugin typedefs
-        typedef std::shared_ptr<RobotBase> createRobot_t();
-        typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
-
-        // Create a leg data map
-        template <class Data>
-        LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
-
-        // Create a joint data map
-        template <class Data>
-        JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
-
-        // Create a link data map
-        template <class Data>
-        LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
-
-        // Create a joint state
-        JointState makeJointState() { return JointState(this); } // NRT
-
-        // Create a leg data map pair
-        template <class Data>
-        LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); } // NRT
-
-        // Create a link data map pair
-        template <class Data>
-        LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); } // NRT
-
-        // Create a joint data map pair
-        template <class Data>
-        JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
-
-        // TODO
-        Jacobian makeJacobian(const Frame &fOrigin, const Frame &fDest) // NRT
-        {
-            std::cout << "makeJacobian function: TODO\n";
-            return Jacobian(1);
-        };
-
-        // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const Frame &frame) // NRT
-        {
-            // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
-
-            // const LimbBase *l = foot.getParentLimb();
-            // const int nJoints = l->getNJoints();
-
-            // return Jacobian(nJoints);
-            std::cout << "makeFootJacobian function: TODO\n";
-            return Jacobian(1);
-        };
-
-        virtual Eigen::Vector3d getFramePosition(const JointState &q,
+            virtual Eigen::Matrix4d getFramePose(const JointState &q,
                                                  const Frame &origin,
                                                  const Frame &destination) = 0;
 
-        virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
-                                                    const Frame &origin,
-                                                    const Frame &destination) = 0;
+            virtual Eigen::Vector3d getFootPosition(const JointState &q,
+                                                    const Frame &foot) = 0;
 
-        virtual Eigen::Matrix4d getFramePose(const JointState &q,
-                                             const Frame &origin,
-                                             const Frame &destination) = 0;
+            virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
+                                                       const Frame &foot) = 0;
 
-        virtual Eigen::Vector3d getFootPosition(const JointState &q,
+            virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                                 const Frame &foot) = 0;
 
-        virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                   const Frame &foot) = 0;
+            virtual Link getLink(const std::string &name) = 0;
 
-        virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                            const Frame &foot) = 0;
+            virtual Joint getJoint(const std::string &name) = 0;
 
-        virtual Link getLink(const std::string &name) = 0;
+            virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
-        virtual Joint getJoint(const std::string &name) = 0;
+            virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
+                                           const Eigen::Vector3d &end_effector_velocity,
+                                           const Eigen::Vector3d &end_effector_acceleration,
+                                           Eigen::Vector3d &joint_position,
+                                           Eigen::Vector3d &joint_velocity,
+                                           Eigen::Vector3d &joint_acceleration,
+                                           const Frame &end_effector) = 0;
 
-        virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
+            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                           JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
+                                           JointState &joint_velocity,
+                                           JointState &joint_acceleration) = 0;
 
-        virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
-                                       const Eigen::Vector3d &end_effector_velocity,
-                                       const Eigen::Vector3d &end_effector_acceleration,
-                                       Eigen::Vector3d &joint_position,
-                                       Eigen::Vector3d &joint_velocity,
-                                       Eigen::Vector3d &joint_acceleration,
-                                       const Frame &end_effector) = 0;
+            std::string getName() { return name_; };
 
-        virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                       JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
-                                       JointState &joint_velocity,
-                                       JointState &joint_acceleration) = 0;
-
-        std::string getName() { return name_; };
-
-    protected:
-        const std::string name_;
-    };
-} // namespace robotlib
+        protected:
+            const std::string name_;
+        };
+    } // namespace robotlib
 } // namespace dls
 
 #endif // _ROBOTLIB_ROBOT_BASE_HPP_

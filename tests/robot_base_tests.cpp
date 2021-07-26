@@ -219,6 +219,7 @@ TEST(RobotBaseUnitTests, getFeet)
         ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
     }
 }
+
 // TODO
 //TEST(RobotBaseUnitTests, inverseKinematicsOne)
 //{
@@ -340,8 +341,3 @@ TEST(RobotBaseUnitTests, joint_parent_child)
         }
     }
 }
-
-// std::cout << "Leg: " << leg->getName() << std::endl;
-// std::cout << "\tJoint: " << leg->getName();
-
-// std::cout << "Parent: " leg->getJointFromName("ls_haa")->getChild()->getName() << std::endl;
