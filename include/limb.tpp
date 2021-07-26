@@ -5,7 +5,7 @@ namespace dls
     namespace robotlib
     {
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        Limb<NJOINTS, NLINKS>::Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> joints, const std::array<std::shared_ptr<Link>, NLINKS> links)
+        Limb<NJOINTS, NLINKS>::Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links)
             : LimbBase(name),
               joints_(std::make_shared<Container<Joint, NJOINTS>>(joints)),
               links_(std::make_shared<Container<Link, NLINKS>>(links)){};
