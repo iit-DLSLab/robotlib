@@ -13,7 +13,7 @@ namespace dls
         class Limb : public LimbBase
         {
         public:
-            Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> joints, const std::array<std::shared_ptr<Link>, NLINKS> links);
+            Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links);
 
             virtual ~Limb();
 
@@ -43,6 +43,7 @@ namespace dls
 
             //virtual const std::shared_ptr<JointsBase> getJoints() { return joints_; };
             virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() { return joints_; };
+            virtual const std::shared_ptr<ContainerBase<Link>> getLinks() { return links_; };
 
         protected:
             const std::shared_ptr<Container<Joint, NJOINTS>> joints_;
