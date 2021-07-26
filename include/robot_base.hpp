@@ -1,5 +1,7 @@
 #ifndef _ROBOTLIB_ROBOT_BASE_HPP_
 #define _ROBOTLIB_ROBOT_BASE_HPP_
+
+#include "trunk.hpp"
 #include "limb_base.hpp"
 #include "link.hpp"
 #include "joint.hpp"
@@ -131,7 +133,7 @@ namespace dls
                         int nLinks = leg->getNLinks();
                         for (int j = 0; j < nLinks; j++)
                         {
-                            auto link = std::static_pointer_cast<Link>(leg->getLink(j));
+                            Link link = leg->getLink(j);
                             PairType pair(link, Data());
                             data_.push_back(pair);
                         }
@@ -166,7 +168,7 @@ namespace dls
                         int nJoints = leg->getNJoints();
                         for (int j = 0; j < nJoints; j++)
                         {
-                            auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
+                            Joint joint = leg->getJoint(j);
                             PairType pair(joint, Data());
                             data_.push_back(pair);
                         }
@@ -226,46 +228,6 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
-            class IteratorLegs
-            {
-            public:
-                IteratorLegs(RobotBase *robot) : first_leg_(&(robot->getLeg(0))),
-                                                 last_leg_(&(robot->getLeg(robot->getNLEGS()))){};
-                ~IteratorLegs(){};
-
-                const Iterator<const std::shared_ptr<LimbBase>> begin()
-                {
-                    return Iterator<const std::shared_ptr<LimbBase>>(first_leg_);
-                }
-                const Iterator<const std::shared_ptr<LimbBase>> end()
-                {
-                    return Iterator<const std::shared_ptr<LimbBase>>(last_leg_);
-                }
-
-            private:
-                const std::shared_ptr<LimbBase> *const first_leg_{}, *const last_leg_{};
-            };
-
-            class IteratorArms
-            {
-            public:
-                IteratorArms(RobotBase *robot) : first_arm_(&(robot->getArm(0))),
-                                                 last_arm_(&(robot->getArm(robot->getNARMS()))){};
-                ~IteratorArms(){};
-
-                const Iterator<const std::shared_ptr<LimbBase>> begin()
-                {
-                    return Iterator<const std::shared_ptr<LimbBase>>(first_arm_);
-                }
-                const Iterator<const std::shared_ptr<LimbBase>> end()
-                {
-                    return Iterator<const std::shared_ptr<LimbBase>>(last_arm_);
-                }
-
-            private:
-                const std::shared_ptr<LimbBase> *const first_arm_{}, *const last_arm_{};
-            };
-
             const std::string name_;
 
         public:
@@ -277,15 +239,15 @@ namespace dls
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
 
-            virtual const std::shared_ptr<LimbBase> &getLeg(const int id) = 0;
-            virtual const std::shared_ptr<LimbBase> &getArm(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> getArm(const int id) = 0;
+
+            virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
+            virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() = 0;
 
             // Plugin typedefs
             typedef std::shared_ptr<RobotBase> createRobot_t();
             typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
-
-            IteratorLegs getIteratorLegs() { return IteratorLegs(this); }
-            IteratorArms getIteratorArms() { return IteratorArms(this); }
 
             // Create a leg data map
             template <class Data>
@@ -324,12 +286,14 @@ namespace dls
             // TODO: it should use makeJacobian
             Jacobian makeFootJacobian(const Frame &frame) // NRT
             {
-                Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
+                // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
 
-                const LimbBase *l = foot.getParentLimb();
-                const int nJoints = l->getNJoints();
+                // const LimbBase *l = foot.getParentLimb();
+                // const int nJoints = l->getNJoints();
 
-                return Jacobian(nJoints);
+                // return Jacobian(nJoints);
+                std::cout << "makeFootJacobian function: TODO\n";
+                return Jacobian(1);
             };
 
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
