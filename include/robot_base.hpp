@@ -38,6 +38,7 @@ namespace dls
                 Data *data_;
                 const int nLegs_;
             };
+
             template <class Data>
             class JointDataMap
             {
@@ -188,6 +189,7 @@ namespace dls
             };
 
             using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
+
             class Jacobian : public Map
             {
             public:
@@ -226,12 +228,45 @@ namespace dls
                 double *data_; // Squashed matrix
             };
 
-            //class JointState : public JointDataMapPair<double>
-            //{
-            //public:
-            //    JointState(RobotBase *robot) : JointDataMapPair(robot){};
-            //    ~JointState(){};
-            //};
+            class IteratorLegs
+            {
+            public:
+                IteratorLegs(RobotBase *robot) : first_leg_(&(robot->getLeg(0))),
+                                                 last_leg_(&(robot->getLeg(robot->getNLEGS()))){};
+                ~IteratorLegs(){};
+
+                const Iterator<const std::shared_ptr<LimbBase>> begin()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(first_leg_);
+                }
+                const Iterator<const std::shared_ptr<LimbBase>> end()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(last_leg_);
+                }
+
+            private:
+                const std::shared_ptr<LimbBase> *const first_leg_{}, *const last_leg_{};
+            };
+
+            class IteratorArms
+            {
+            public:
+                IteratorArms(RobotBase *robot) : first_arm_(&(robot->getArm(0))),
+                                                 last_arm_(&(robot->getArm(robot->getNARMS()))){};
+                ~IteratorArms(){};
+
+                const Iterator<const std::shared_ptr<LimbBase>> begin()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(first_arm_);
+                }
+                const Iterator<const std::shared_ptr<LimbBase>> end()
+                {
+                    return Iterator<const std::shared_ptr<LimbBase>>(last_arm_);
+                }
+
+            private:
+                const std::shared_ptr<LimbBase> *const first_arm_{}, *const last_arm_{};
+            };
 
             const std::string name_;
 
@@ -240,16 +275,21 @@ namespace dls
 
             // Get functions
             virtual const int getNLEGS() = 0;
+            virtual const int getNARMS() = 0;
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
 
-            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> &getLeg(const int id) = 0;
+            virtual const std::shared_ptr<LimbBase> &getArm(const int id) = 0;
 
             virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
 
             // Plugin typedefs
             typedef std::shared_ptr<RobotBase> createRobot_t();
             typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+
+            IteratorLegs getIteratorLegs() { return IteratorLegs(this); }
+            IteratorArms getIteratorArms() { return IteratorArms(this); }
 
             // Create a leg data map
             template <class Data>
@@ -325,16 +365,20 @@ namespace dls
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
-            /// Inverse kinematics: Derive joint variables associated to a certain leg,
-            /// using the pose of the leg end-effector. Update the JointState values
-            //virtual JointState getJointsConfiguration(const Frame &end_effector,
-            //                                          const Eigen::Matrix4d &end_effector_pose,
-            //                                          JointState &q) = 0;
-            //
-            //virtual JointState getJointsVelocities(const Frame &end_effector,
-            //                                       const Eigen::Matrix4d &end_effector_velocity,
-            //                                       const JointState &q,
-            //                                       JointState &q_d) = 0;
+            virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
+                                           const Eigen::Vector3d &end_effector_velocity,
+                                           const Eigen::Vector3d &end_effector_acceleration,
+                                           Eigen::Vector3d &joint_position,
+                                           Eigen::Vector3d &joint_velocity,
+                                           Eigen::Vector3d &joint_acceleration,
+                                           const Frame &end_effector) = 0;
+
+            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                           JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
+                                           JointState &joint_velocity,
+                                           JointState &joint_acceleration) = 0;
 
             std::string getName() { return name_; };
         };

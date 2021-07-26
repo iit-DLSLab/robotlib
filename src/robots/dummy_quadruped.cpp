@@ -149,7 +149,7 @@ namespace dls
 				return Joint("joint", nullptr);
 			};
 
-			LegDataMap<std::shared_ptr<Frame>> getFeet()
+			LegDataMap<std::shared_ptr<Frame>> getFeet() override
 			{
 				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
 
@@ -159,14 +159,26 @@ namespace dls
 				return feet;
 			};
 
-			//JointState getJointsConfiguration(const Frame &end_effector,
-			//								  const Eigen::Matrix4d &end_effector_pose,
-			//								  JointState &q) override{};
-			//
-			//JointState getJointsVelocities(const Frame &end_effector,
-			//							   const Eigen::Matrix4d &end_effector_velocity,
-			//							   const JointState &q,
-			//							   JointState &q_d) override{};
+			void inverseKinematics(const Eigen::Vector3d &end_effector_position,
+								   const Eigen::Vector3d &end_effector_velocity,
+								   const Eigen::Vector3d &end_effector_acceleration,
+								   Eigen::Vector3d &joint_position,
+								   Eigen::Vector3d &joint_velocity,
+								   Eigen::Vector3d &joint_acceleration,
+								   const Frame &end_effector) override
+			{
+				std::cout << "Inverse Kinematics 1" << std::endl;
+			};
+
+			void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+								   JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
+								   JointState &joint_velocity,
+								   JointState &joint_acceleration) override
+			{
+				std::cout << "Inverse Kinematics 2" << std::endl;
+			};
 		};
 
 	} //namespace robotlib
