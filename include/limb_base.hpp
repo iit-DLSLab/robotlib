@@ -47,6 +47,9 @@ namespace dls
             virtual const std::shared_ptr<Link> getLinkFromName(const std::string &name) = 0;
             virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name) = 0;
 
+        protected:
+            virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child) = 0;
+
         private:
             const std::string name_;
         };

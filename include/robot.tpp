@@ -46,5 +46,11 @@ namespace dls
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() { return NLINKS; };
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<Joint>> children)
+                {
+                        trunk_->setChildren(children);
+                };
         } // namespace robotlib
 } // namespace dls

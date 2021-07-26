@@ -325,7 +325,7 @@ namespace dls
 
             virtual Link getLink(const std::string &name) = 0;
 
-            virtual Joint getJoint(const std::string &name) = 0;
+            virtual std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 

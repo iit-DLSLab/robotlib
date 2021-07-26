@@ -184,14 +184,14 @@ TEST(RobotBaseUnitTests, getJoint)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto joint_dq = dummy_quadruped->getJoint("joint");
+    auto joint_dq = dummy_quadruped->getJoint("LF_hfe");
 
     /// Ground truth
-    dls::robotlib::Joint joint_gt("joint", nullptr);
+    dls::robotlib::Joint joint_gt("LF_hfe", nullptr);
 
     /// Assert conditions
-    ASSERT_EQ(joint_dq.getName(), joint_gt.getName());
-    ASSERT_EQ(typeid(joint_dq).name(), typeid(joint_gt).name());
+    ASSERT_EQ(joint_dq->getName(), joint_gt.getName());
+    ASSERT_EQ(typeid(*joint_dq).name(), typeid(joint_gt).name());
 }
 
 TEST(RobotBaseUnitTests, getFeet)

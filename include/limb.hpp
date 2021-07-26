@@ -50,7 +50,7 @@ namespace dls
 
             const std::shared_ptr<Container<Link, NLINKS>> links_;
 
-            virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
+            virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child) override;
         };
     } // namespace robotlib
 } // namespace dls

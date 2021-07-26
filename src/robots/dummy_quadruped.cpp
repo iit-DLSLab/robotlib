@@ -1,5 +1,6 @@
 #include "robot.hpp"
 #include "limb.hpp"
+#include "trunk.hpp"
 #include <map>
 namespace dls
 {
@@ -38,7 +39,8 @@ namespace dls
 					}
 				}
 
-				std::cout << "LINK NOT FOUD FROM THE INPUT NAME " << name << std::endl;
+				std::cout << "LINK NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+				std::cout << "Returning a nullptr... " << std::endl;
 				return std::shared_ptr<Link>(nullptr);
 			};
 			virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name)
@@ -77,15 +79,28 @@ namespace dls
 		const int NLINKS_TOT = 8;
 		const int NLEGS = 4;
 		const int NARMS = 0;
+		const int NCHILDRENS = NLEGS;
 		class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 		{
 		public:
-			DummyQuadruped(const std::array<std::shared_ptr<LimbBase>, NLEGS> legs, const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
+			DummyQuadruped(const std::shared_ptr<Trunk> trunk,
+						   const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
+						   const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
 				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>(
 					  "Quadruped",
-					  std::make_shared<dls::robotlib::Trunk>("trunk"),
+					  trunk,
 					  std::make_shared<Container<LimbBase, NLEGS>>(legs),
-					  std::make_shared<Container<LimbBase, NARMS>>(arms)){};
+					  std::make_shared<Container<LimbBase, NARMS>>(arms))
+
+			{
+				std::array<std::shared_ptr<Joint>, NLEGS> children;
+				children[0] = getJoint("LF_hfe");
+				children[1] = getJoint("RF_hfe");
+				children[2] = getJoint("LH_hfe");
+				children[3] = getJoint("RH_hfe");
+
+				setChildrenOfTrunk(std::make_shared<Container<Joint, NLEGS>>(children));
+			};
 
 			Eigen::Vector3d getFramePosition(const JointState &q,
 											 const Frame &origin,
@@ -146,9 +161,21 @@ namespace dls
 				return *std::static_pointer_cast<Link>(this->getLeg(0)->getLink(0));
 			};
 
-			Joint getJoint(const std::string &name) override
+			std::shared_ptr<Joint> getJoint(const std::string &name) override
 			{
-				return Joint("joint", nullptr);
+				for (auto leg : *(this->getLegs()))
+				{
+					for (auto joint : *(leg->getJoints()))
+					{
+						if (joint->getName().compare(name) == 0)
+						{
+							return joint;
+						}
+					}
+				}
+				std::cout << "Joint NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+				std::cout << "Returning a nullptr... " << std::endl;
+				return std::shared_ptr<Joint>(nullptr);
 			};
 
 			LegDataMap<std::shared_ptr<Frame>> getFeet() override
@@ -203,10 +230,11 @@ std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 
 extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
 {
+	const std::shared_ptr<dls::robotlib::Trunk> trunk = std::make_shared<dls::robotlib::Trunk>("trunk");
 	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NLEGS> legs({makeLeg("LF"), makeLeg("RF"), makeLeg("LH"), makeLeg("RH")});
 	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NARMS> arms({});
 
-	return std::make_shared<dls::robotlib::DummyQuadruped>(legs, arms);
+	return std::make_shared<dls::robotlib::DummyQuadruped>(trunk, legs, arms);
 }
 
 extern "C" void destroyRobot_t(std::shared_ptr<dls::robotlib::RobotBase> robot)

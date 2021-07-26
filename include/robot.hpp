@@ -33,6 +33,8 @@ namespace dls
 
 			const std::shared_ptr<Container<LimbBase, NLEGS>> legs_; //! Legs of the robot
 			const std::shared_ptr<Container<LimbBase, NARMS>> arms_; //! Arms of the robot
+
+			void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<Joint>> children);
 		};
 	} // namespace robotlib
 } // namespace dls
