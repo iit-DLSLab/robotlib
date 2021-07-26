@@ -14,7 +14,7 @@ namespace dls
         Limb<NJOINTS, NLINKS>::~Limb(){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const int linkId)
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const int linkId) const
         {
             return (*links_)[linkId];
         };
