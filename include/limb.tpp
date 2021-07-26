@@ -14,12 +14,12 @@ namespace dls
         Limb<NJOINTS, NLINKS>::~Limb(){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        std::shared_ptr<Frame> Limb<NJOINTS, NLINKS>::getLink(const int linkId)
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const int linkId)
         {
             return (*links_)[linkId];
         };
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Frame> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) const
+        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) const
         {
             return (*joints_)[jointId];
         };

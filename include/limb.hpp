@@ -36,8 +36,8 @@ namespace dls
                 const std::array<std::shared_ptr<Joint>, NJOINTS> joints_;
             };
 
-            virtual std::shared_ptr<Frame> getLink(const int linkId) override;
-            virtual const std::shared_ptr<Frame> getJoint(const int jointId) const override;
+            virtual const std::shared_ptr<Link> getLink(const int linkId) override;
+            virtual const std::shared_ptr<Joint> getJoint(const int jointId) const override;
             virtual const int getNLinks() const override;
             virtual const int getNJoints() const override;
 

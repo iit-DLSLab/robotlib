@@ -10,9 +10,9 @@ namespace dls
 	{
 
 		class Link;
-
 		template <unsigned int NJOINTS, unsigned int NLINKS>
 		class Limb;
+
 		class Joint : public Frame
 		{
 		public:

@@ -133,7 +133,7 @@ namespace dls
                         int nLinks = leg->getNLinks();
                         for (int j = 0; j < nLinks; j++)
                         {
-                            auto link = std::static_pointer_cast<Link>(leg->getLink(j));
+                            Link link = leg->getLink(j);
                             PairType pair(link, Data());
                             data_.push_back(pair);
                         }
@@ -168,7 +168,7 @@ namespace dls
                         int nJoints = leg->getNJoints();
                         for (int j = 0; j < nJoints; j++)
                         {
-                            auto joint = std::static_pointer_cast<Joint>(leg->getJoint(j));
+                            Joint joint = leg->getJoint(j);
                             PairType pair(joint, Data());
                             data_.push_back(pair);
                         }
