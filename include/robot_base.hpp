@@ -17,15 +17,15 @@ namespace dls
     {
         class RobotBase
         {
-        protected:
+        public:
+            RobotBase(const std::string &name) : name_(name){};
+
             template <class Data>
             class LegDataMap
             {
             public:
-                LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
-                {
-                    data_ = new Data[nLegs_];
-                }
+                friend class RobotBase;
+
                 ~LegDataMap()
                 {
                     delete[] data_;
@@ -35,6 +35,11 @@ namespace dls
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLegs_]); }
 
             private:
+                LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
+                {
+                    data_ = new Data[nLegs_];
+                }
+
                 Data *data_;
                 const int nLegs_;
             };
@@ -43,10 +48,6 @@ namespace dls
             class JointDataMap
             {
             public:
-                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
-                {
-                    data_ = new Data[nJoints_];
-                }
                 ~JointDataMap()
                 {
                     delete[] data_;
@@ -55,7 +56,12 @@ namespace dls
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nJoints_]); }
 
-            private:
+            protected:
+                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
+                {
+                    data_ = new Data[nJoints_];
+                }
+
                 Data *data_;
                 const int nJoints_;
             };
@@ -63,18 +69,18 @@ namespace dls
             class JointState : public JointDataMap<double>
             {
             public:
-                JointState(RobotBase *robot) : JointDataMap(robot){};
+                friend class RobotBase;
+
                 ~JointState(){};
+
+            private:
+                JointState(RobotBase *robot) : JointDataMap(robot){};
             };
 
             template <class Data>
             class LinkDataMap
             {
             public:
-                LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
-                {
-                    data_ = new Data[nLinks_];
-                }
                 ~LinkDataMap()
                 {
                     delete[] data_;
@@ -84,6 +90,11 @@ namespace dls
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLinks_]); }
 
             private:
+                LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
+                {
+                    data_ = new Data[nLinks_];
+                }
+
                 Data *data_;
                 const int nLinks_;
             };
@@ -91,10 +102,17 @@ namespace dls
             template <class Data>
             class LegDataMapPair
             {
-
                 using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
 
             public:
+                ~LegDataMapPair(){};
+
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
+
+                int getSize() { return data_.size(); };
+
+            private:
                 LegDataMapPair(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
                     for (int i = 0; i < nLegs_; ++i)
@@ -104,15 +122,6 @@ namespace dls
                     }
                 }
 
-                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
-                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
-
-                // Get functions
-                int getSize() { return data_.size(); };
-
-                ~LegDataMapPair(){};
-
-            private:
                 const int nLegs_;
                 std::vector<PairType> data_;
             };
@@ -120,10 +129,18 @@ namespace dls
             template <class Data>
             class LinkDataMapPair
             {
-
                 using PairType = std::pair<std::shared_ptr<Link>, Data>;
 
             public:
+                ~LinkDataMapPair(){};
+
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
+
+                // Get functions
+                int getSize() { return data_.size(); };
+
+            private: // TODO: private
                 LinkDataMapPair(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
                     const int nLegs = robot->getNLEGS();
@@ -139,15 +156,7 @@ namespace dls
                         }
                     }
                 }
-                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
-                Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
 
-                // Get functions
-                int getSize() { return data_.size(); };
-
-                ~LinkDataMapPair(){};
-
-            private:
                 const int nLinks_;
                 std::vector<PairType> data_;
             };
@@ -155,10 +164,18 @@ namespace dls
             template <class Data>
             class JointDataMapPair
             {
-
                 using PairType = std::pair<std::shared_ptr<Joint>, Data>;
 
             public:
+                ~JointDataMapPair(){};
+
+                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
+
+                // Get functions
+                int getSize() { return data_.size(); };
+
+            private:
                 JointDataMapPair(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
                     const int nLegs = robot->getNLEGS();
@@ -175,15 +192,6 @@ namespace dls
                     }
                 }
 
-                Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
-                Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
-
-                // Get functions
-                int getSize() { return data_.size(); };
-
-                ~JointDataMapPair(){};
-
-            private:
                 const int nJoints_;
                 std::vector<PairType> data_;
             };
@@ -193,17 +201,8 @@ namespace dls
             class Jacobian : public Map
             {
             public:
-                Jacobian(const int nJoints) : Map(NULL, 6, nJoints), nJoints_(nJoints)
-                {
-                    // Data initialization (6: linear and angular part of the jacobian)
-                    data_ = new double[6 * nJoints_];
-                    for (int i = 0; i < 6 * nJoints_; ++i)
-                    {
-                        data_[i] = 0;
-                    }
+                friend class RobotBase;
 
-                    new (this) Map(data_, 6, nJoints_);
-                }
                 ~Jacobian()
                 {
                     delete[] data_;
@@ -224,14 +223,21 @@ namespace dls
                 };
 
             private:
+                Jacobian(const int nJoints) : Map(NULL, 6, nJoints), nJoints_(nJoints)
+                {
+                    // Data initialization (6: linear and angular part of the jacobian)
+                    data_ = new double[6 * nJoints_];
+                    for (int i = 0; i < 6 * nJoints_; ++i)
+                    {
+                        data_[i] = 0;
+                    }
+
+                    new (this) Map(data_, 6, nJoints_);
+                }
+
                 const int nJoints_;
                 double *data_; // Squashed matrix
             };
-
-            const std::string name_;
-
-        public:
-            RobotBase(const std::string &name) : name_(name){};
 
             // Get functions
             virtual const int getNLEGS() = 0;
@@ -339,6 +345,9 @@ namespace dls
                                            JointState &joint_acceleration) = 0;
 
             std::string getName() { return name_; };
+
+        protected:
+            const std::string name_;
         };
     } // namespace robotlib
 } // namespace dls
