@@ -47,7 +47,7 @@ namespace dls
         protected:
             const std::shared_ptr<Container<Joint, NJOINTS>> joints_;
 
-            const std::shared_ptr<Container<Joint, NJOINTS>> links_;
+            const std::shared_ptr<Container<Link, NLINKS>> links_;
 
             virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
         };

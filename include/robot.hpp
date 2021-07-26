@@ -13,8 +13,9 @@ namespace dls
 		{
 		public:
 			Robot(const std::string &name,
-				  const std::shared_ptr<Trunk> trunk, const std::shared_ptr<Container<LimbBase, NLEGS>> &legs,
-				  const std::shared_ptr<Container<LimbBase, NLEGS>> &arms);
+				  const std::shared_ptr<Trunk> trunk,
+				  const std::shared_ptr<Container<LimbBase, NLEGS>> &legs,
+				  const std::shared_ptr<Container<LimbBase, NARMS>> &arms);
 			virtual ~Robot();
 
 			virtual const std::shared_ptr<LimbBase> getLeg(const int id) override;
@@ -31,7 +32,7 @@ namespace dls
 			const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
 
 			const std::shared_ptr<Container<LimbBase, NLEGS>> legs_; //! Legs of the robot
-			const std::shared_ptr<Container<LimbBase, NLEGS>> arms_; //! Arms of the robot
+			const std::shared_ptr<Container<LimbBase, NARMS>> arms_; //! Arms of the robot
 		};
 	} // namespace robotlib
 } // namespace dls

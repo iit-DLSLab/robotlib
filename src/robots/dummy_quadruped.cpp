@@ -30,7 +30,7 @@ namespace dls
 			virtual const std::shared_ptr<Link> getLinkFromName(const std::string &name)
 			{
 				//Iterate over the array of links to find the link
-				for (auto link : links_)
+				for (auto link : *links_)
 				{
 					if (link->getName().compare(name) == 0)
 					{
@@ -76,14 +76,16 @@ namespace dls
 		const int NJOINTS_TOT = 12;
 		const int NLINKS_TOT = 8;
 		const int NLEGS = 4;
-		class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS>
+		const int NARMS = 0;
+		class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 		{
 		public:
-			DummyQuadruped(const std::array<std::shared_ptr<LimbBase>, NLEGS> legs)
-				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS>(
+			DummyQuadruped(const std::array<std::shared_ptr<LimbBase>, NLEGS> legs, const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
+				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>(
 					  "Quadruped",
 					  std::make_shared<dls::robotlib::Trunk>("trunk"),
-					  std::make_shared<Container<LimbBase, NLEGS>>(legs)){};
+					  std::make_shared<Container<LimbBase, NLEGS>>(legs),
+					  std::make_shared<Container<LimbBase, NARMS>>(arms)){};
 
 			Eigen::Vector3d getFramePosition(const JointState &q,
 											 const Frame &origin,
@@ -202,7 +204,9 @@ std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
 {
 	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NLEGS> legs({makeLeg("LF"), makeLeg("RF"), makeLeg("LH"), makeLeg("RH")});
-	return std::make_shared<dls::robotlib::DummyQuadruped>(legs);
+	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NARMS> arms({});
+
+	return std::make_shared<dls::robotlib::DummyQuadruped>(legs, arms);
 }
 
 extern "C" void destroyRobot_t(std::shared_ptr<dls::robotlib::RobotBase> robot)

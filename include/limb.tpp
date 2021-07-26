@@ -27,7 +27,7 @@ namespace dls
         template <unsigned int NJOINTS, unsigned int NLINKS>
         const int Limb<NJOINTS, NLINKS>::getNLinks() const
         {
-            return links_.size();
+            return links_->size();
         };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
