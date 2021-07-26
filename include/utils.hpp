@@ -37,6 +37,38 @@ namespace dls
         protected:
             pointer m_ptr;
         };
+
+        template <class Data>
+        class ContainerBase
+        {
+        public:
+            ContainerBase(){};
+            virtual ~ContainerBase(){};
+
+            virtual Iterator<const std::shared_ptr<Data>> begin() const = 0;
+            virtual Iterator<const std::shared_ptr<Data>> end() const = 0;
+            virtual const std::shared_ptr<Data> operator[](const int id) const = 0;
+            virtual const int size() const = 0;
+        };
+
+        template <class Data, unsigned int N>
+        class Container : public ContainerBase<Data>
+        {
+        public:
+            Container(const std::array<std::shared_ptr<Data>, N> data) : data_(data){};
+
+            virtual ~Container(){};
+
+            virtual Iterator<const std::shared_ptr<Data>> begin() const { return Iterator<const std::shared_ptr<Data>>(&data_[0]); };
+            virtual Iterator<const std::shared_ptr<Data>> end() const { return Iterator<const std::shared_ptr<Data>>(&data_[N]); };
+
+            virtual const std::shared_ptr<Data> operator[](const int id) const { return data_[id]; };
+
+            virtual const int size() const { return data_.size(); };
+
+        protected:
+            const std::array<std::shared_ptr<Data>, N> data_;
+        };
     } // namespace robotlib
 } // namespace dls
 
