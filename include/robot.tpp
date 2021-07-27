@@ -52,5 +52,69 @@ namespace dls
                 {
                         trunk_->setChildren(children);
                 };
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
+                {
+                        joint->setChild(child);
+                }
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent)
+                {
+                        joint->setParent(parent);
+                }
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child)
+                {
+                        link->setChild(child);
+                }
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent)
+                {
+                        link->setParent(parent);
+                }
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name)
+                {
+                        if (name.compare("") == 0)
+                                return nullptr;
+                        else if (trunk_->getName().compare(name) == 0)
+                                return trunk_;
+                        else
+                        {
+                                for (auto leg : *(this->getLegs()))
+                                {
+                                        std::shared_ptr<Link> link = leg->getLink(name);
+                                        if (link != nullptr)
+                                                return link;
+                                }
+                        }
+
+                        std::cout << "LINK NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+                        std::cout << "Returning a nullptr... " << std::endl;
+                        return std::shared_ptr<Link>(nullptr);
+                };
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                const std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name)
+                {
+
+                        if (name.compare("") == 0)
+                                return nullptr;
+                        for (auto leg : *(this->getLegs()))
+                        {
+                                std::shared_ptr<Joint> joint = leg->getJoint(name);
+                                if (joint != nullptr)
+                                        return joint;
+                        }
+                        std::cout << "JOINT NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+                        std::cout << "Returning a nullptr... " << std::endl;
+                        return std::shared_ptr<Joint>(nullptr);
+                }
+
         } // namespace robotlib
 } // namespace dls

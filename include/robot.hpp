@@ -28,6 +28,9 @@ namespace dls
 			virtual const int getNJOINTS() override;
 			virtual const int getNLINKS() override;
 
+			virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
+			virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
+
 		protected:
 			const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
 
@@ -35,6 +38,11 @@ namespace dls
 			const std::shared_ptr<Container<LimbBase, NARMS>> arms_; //! Arms of the robot
 
 			void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<Joint>> children);
+			void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
+			void setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child);
+
+			void setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent);
+			void setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent);
 		};
 	} // namespace robotlib
 } // namespace dls

@@ -32,11 +32,38 @@ namespace dls
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
         const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
+
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        void Limb<NJOINTS, NLINKS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name)
         {
-            joint->setChild(child);
-        }
+            //Iterate over the array of links to find the link
+            for (auto link : *links_)
+            {
+                if (link->getName().compare(name) == 0)
+                {
+                    return link;
+                }
+            }
+
+            //std::cout << "LINK " << name << " NOT FOUND IN LEG " << this->getName() << std::endl;
+            return std::shared_ptr<Link>(nullptr);
+        };
+
+        template <unsigned int NJOINTS, unsigned int NLINKS>
+        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name)
+        {
+            //Iterate over the array of links to find the link
+            for (auto joint : *joints_)
+            {
+                if (joint->getName().compare(name) == 0)
+                {
+                    return joint;
+                }
+            }
+
+            //std::cout << "JOINT NOT FOUD FROM THE INPUT NAME " << name << std::endl;
+            return std::shared_ptr<Joint>(nullptr);
+        };
 
     } // namespace robotlib
 } // namespace dls
