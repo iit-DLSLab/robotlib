@@ -1,5 +1,6 @@
 #include "robot.hpp"
 #include "limb.hpp"
+#include "trunk.hpp"
 #include <map>
 namespace dls
 {
@@ -12,48 +13,32 @@ namespace dls
 		{
 		public:
 			DummyLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
-					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links) : Limb<NJOINTS, NLINKS>(name, joints, links)
-			{
-				// Iterate over the joints and set the corresponding child
-				for (auto joint : *joints_)
-				{
-					const std::string child_name = jointToChildName(joint);
-					setChildOfJoint(joint, getLinkFromName(child_name));
-				}
-			}
+					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links) : Limb<NJOINTS, NLINKS>(name, joints, links){};
+
 			virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint)
 			{
-				const std::string jointName = joint->getName();
-				const std::string childName = jointMap[jointName].second;
-				return childName;
+				const std::string joint_name = joint->getName();
+				const std::string child_name = jointMap[joint_name].second;
+				return child_name;
 			};
-			virtual const std::shared_ptr<Link> getLinkFromName(const std::string &name)
+			virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint)
 			{
-				//Iterate over the array of links to find the link
-				for (auto link : *links_)
-				{
-					if (link->getName().compare(name) == 0)
-					{
-						return link;
-					}
-				}
-
-				std::cout << "LINK NOT FOUD FROM THE INPUT NAME " << name << std::endl;
-				return std::shared_ptr<Link>(nullptr);
+				const std::string joint_name = joint->getName();
+				const std::string parent_name = jointMap[joint_name].first;
+				return parent_name;
 			};
-			virtual const std::shared_ptr<Joint> getJointFromName(const std::string &name)
-			{
-				//Iterate over the array of links to find the link
-				for (auto joint : *joints_)
-				{
-					if (joint->getName().compare(name))
-					{
-						return joint;
-					}
-				}
 
-				std::cout << "JOINT NOT FOUD FROM THE INPUT NAME " << name << std::endl;
-				return std::shared_ptr<Joint>(nullptr);
+			virtual const std::string linkToChildName(const std::shared_ptr<Link> link)
+			{
+				const std::string link_name = link->getName();
+				const std::string child_name = linkMap[link_name].second;
+				return child_name;
+			};
+			virtual const std::string linkToParentName(const std::shared_ptr<Link> link)
+			{
+				const std::string link_name = link->getName();
+				const std::string parent_name = linkMap[link_name].first;
+				return parent_name;
 			};
 
 			std::map<std::string, std::pair<std::string, std::string>> jointMap{
@@ -71,39 +56,91 @@ namespace dls
 				{"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
 				{"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")},
 			};
+			std::map<std::string, std::pair<std::string, std::string>> linkMap{
+				//link name, parent name, child name
+				{"LF_assembly", std::make_pair("LF_haa", "LF_hfe")},
+				{"LF_upperleg", std::make_pair("LF_hfe", "LF_kfe")},
+				{"LF_lowerleg", std::make_pair("LF_kfe", "")},
+				{"RF_assembly", std::make_pair("RF_haa", "RF_hfe")},
+				{"RF_upperleg", std::make_pair("RF_hfe", "RF_kfe")},
+				{"RF_lowerleg", std::make_pair("RF_kfe", "")},
+				{"LH_assembly", std::make_pair("LH_haa", "LH_hfe")},
+				{"LH_upperleg", std::make_pair("LH_hfe", "LH_kfe")},
+				{"LH_lowerleg", std::make_pair("LH_kfe", "")},
+				{"RH_assembly", std::make_pair("RH_haa", "RH_hfe")},
+				{"RH_upperleg", std::make_pair("RH_hfe", "RH_kfe")},
+				{"RH_lowerleg", std::make_pair("RH_kfe", "")}};
 		};
 
 		const int NJOINTS_TOT = 12;
 		const int NLINKS_TOT = 8;
 		const int NLEGS = 4;
 		const int NARMS = 0;
+		const int NCHILDRENS = NLEGS;
 		class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 		{
 		public:
-			DummyQuadruped(const std::array<std::shared_ptr<LimbBase>, NLEGS> legs, const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
+			DummyQuadruped(const std::shared_ptr<Trunk> trunk,
+						   const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
+						   const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
 				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>(
 					  "Quadruped",
-					  std::make_shared<dls::robotlib::Trunk>("trunk"),
+					  trunk,
 					  std::make_shared<Container<LimbBase, NLEGS>>(legs),
-					  std::make_shared<Container<LimbBase, NARMS>>(arms)){};
+					  std::make_shared<Container<LimbBase, NARMS>>(arms))
+
+			{
+				std::array<std::shared_ptr<Joint>, NLEGS> children;
+				children[0] = getJoint("LF_hfe");
+				children[1] = getJoint("RF_hfe");
+				children[2] = getJoint("LH_hfe");
+				children[3] = getJoint("RH_hfe");
+
+				setChildrenOfTrunk(std::make_shared<Container<Joint, NLEGS>>(children));
+
+				setParentOfLink(trunk_, nullptr);
+
+				for (auto leg : *(this->getLegs()))
+				{
+					for (auto joint : *(leg->getJoints()))
+					{
+						const std::string child_name = leg->jointToChildName(joint);
+						setChildOfJoint(joint, getLink(child_name));
+						const std::string parent_name = leg->jointToParentName(joint);
+						setParentOfJoint(joint, getLink(parent_name));
+					}
+				}
+
+				for (auto leg : *(this->getLegs()))
+				{
+					for (auto link : *(leg->getLinks()))
+					{
+						const std::string child_name = leg->linkToChildName(link);
+						setChildOfLink(link, getJoint(child_name));
+
+						const std::string parent_name = leg->linkToParentName(link);
+						setParentOfLink(link, getJoint(parent_name));
+					}
+				}
+			};
 
 			Eigen::Vector3d getFramePosition(const JointState &q,
-											 const Frame &origin,
-											 const Frame &destination) override
+											 const std::shared_ptr<Frame> origin,
+											 const std::shared_ptr<Frame> destination) override
 			{
 				return Eigen::Vector3d().setZero();
 			};
 
 			Eigen::Matrix3d getFrameOrientation(const JointState &q,
-												const Frame &origin,
-												const Frame &destination) override
+												const std::shared_ptr<Frame> origin,
+												const std::shared_ptr<Frame> destination) override
 			{
 				return Eigen::Matrix3d().setZero();
 			};
 
 			Eigen::Matrix4d getFramePose(const JointState &q,
-										 const Frame &origin,
-										 const Frame &destination) override
+										 const std::shared_ptr<Frame> origin,
+										 const std::shared_ptr<Frame> destination) override
 			{
 				Eigen::Matrix4d frame_pose{};
 				frame_pose.setZero();
@@ -116,19 +153,19 @@ namespace dls
 			};
 
 			Eigen::Vector3d getFootPosition(const JointState &q,
-											const Frame &foot) override
+											const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
+				return this->getFramePosition(q, this->getLink("trunk"), foot);
 			};
 
 			Eigen::Matrix3d getFootOrientation(const JointState &q,
-											   const Frame &foot) override
+											   const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
+				return this->getFrameOrientation(q, this->getLink("trunk"), foot);
 			};
 
 			Eigen::Matrix4d getFootPose(const JointState &q,
-										const Frame &foot) override
+										const std::shared_ptr<Frame> foot) override
 			{
 				Eigen::Matrix4d foot_pose{};
 				foot_pose.setZero();
@@ -138,17 +175,6 @@ namespace dls
 				foot_pose.row(3) << 0, 0, 0, 1;
 
 				return foot_pose;
-			};
-
-			// TO DO: mapping between name and id
-			Link getLink(const std::string &name) override
-			{
-				return *std::static_pointer_cast<Link>(this->getLeg(0)->getLink(0));
-			};
-
-			Joint getJoint(const std::string &name) override
-			{
-				return Joint("joint", nullptr);
 			};
 
 			LegDataMap<std::shared_ptr<Frame>> getFeet() override
@@ -167,7 +193,7 @@ namespace dls
 								   Eigen::Vector3d &joint_position,
 								   Eigen::Vector3d &joint_velocity,
 								   Eigen::Vector3d &joint_acceleration,
-								   const Frame &end_effector) override
+								   const std::shared_ptr<Frame> end_effector) override
 			{
 				std::cout << "Inverse Kinematics 1" << std::endl;
 			};
@@ -186,27 +212,33 @@ namespace dls
 	} //namespace robotlib
 } //namespace dls
 
-std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
+std::shared_ptr<dls::robotlib::DummyLeg>
+makeLeg(const std::string &legName)
 {
-	//std::shared_ptr<dls::robotlib::Joint> haa = std::make_shared<dls::robotlib::Joint>(legName + "_haa", trunk);
+	std::shared_ptr<dls::robotlib::Joint> haa = std::make_shared<dls::robotlib::Joint>(legName + "_haa");
 	std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_assembly");
-	std::shared_ptr<dls::robotlib::Joint> hfe = std::make_shared<dls::robotlib::Joint>(legName + "_hfe", assembly);
+	std::shared_ptr<dls::robotlib::Joint> hfe = std::make_shared<dls::robotlib::Joint>(legName + "_hfe");
 
 	std::shared_ptr<dls::robotlib::Link> upperleg = std::make_shared<dls::robotlib::Link>(legName + "_upperleg");
-	std::shared_ptr<dls::robotlib::Joint> kfe = std::make_shared<dls::robotlib::Joint>(legName + "_kfe", upperleg);
+	std::shared_ptr<dls::robotlib::Joint> kfe = std::make_shared<dls::robotlib::Joint>(legName + "_kfe");
 	std::shared_ptr<dls::robotlib::Link> lowerleg = std::make_shared<dls::robotlib::Link>(legName + "_lowerleg");
 
 	return std::make_shared<dls::robotlib::DummyLeg>(legName,
-													 std::array<std::shared_ptr<dls::robotlib::Joint>, dls::robotlib::NJOINTS>({hfe, hfe, kfe}),
+													 std::array<std::shared_ptr<dls::robotlib::Joint>, dls::robotlib::NJOINTS>({haa, hfe, kfe}),
 													 std::array<std::shared_ptr<dls::robotlib::Link>, dls::robotlib::NLINKS>({assembly, upperleg, lowerleg}));
 }
 
 extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
 {
-	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NLEGS> legs({makeLeg("LF"), makeLeg("RF"), makeLeg("LH"), makeLeg("RH")});
+	const std::shared_ptr<dls::robotlib::Trunk> trunk = std::make_shared<dls::robotlib::Trunk>("trunk");
+	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NLEGS> legs(
+		{makeLeg("LF"),
+		 makeLeg("RF"),
+		 makeLeg("LH"),
+		 makeLeg("RH")});
 	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NARMS> arms({});
 
-	return std::make_shared<dls::robotlib::DummyQuadruped>(legs, arms);
+	return std::make_shared<dls::robotlib::DummyQuadruped>(trunk, legs, arms);
 }
 
 extern "C" void destroyRobot_t(std::shared_ptr<dls::robotlib::RobotBase> robot)

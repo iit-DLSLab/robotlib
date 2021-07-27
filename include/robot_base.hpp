@@ -283,14 +283,14 @@ namespace dls
             JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
 
             // TODO
-            Jacobian makeJacobian(const Frame &fOrigin, const Frame &fDest) // NRT
+            Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
             {
                 std::cout << "makeJacobian function: TODO\n";
                 return Jacobian(1);
             };
 
             // TODO: it should use makeJacobian
-            Jacobian makeFootJacobian(const Frame &frame) // NRT
+            Jacobian makeFootJacobian(const std::shared_ptr<Frame> frame) // NRT
             {
                 // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
 
@@ -303,29 +303,29 @@ namespace dls
             };
 
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
-                                                     const Frame &origin,
-                                                     const Frame &destination) = 0;
+                                                     const std::shared_ptr<Frame> origin,
+                                                     const std::shared_ptr<Frame> destination) = 0;
 
             virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
-                                                        const Frame &origin,
-                                                        const Frame &destination) = 0;
+                                                        const std::shared_ptr<Frame> origin,
+                                                        const std::shared_ptr<Frame> destination) = 0;
 
             virtual Eigen::Matrix4d getFramePose(const JointState &q,
-                                                 const Frame &origin,
-                                                 const Frame &destination) = 0;
+                                                 const std::shared_ptr<Frame> origin,
+                                                 const std::shared_ptr<Frame> destination) = 0;
 
             virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                    const Frame &foot) = 0;
+                                                    const std::shared_ptr<Frame> foot) = 0;
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const Frame &foot) = 0;
+                                                       const std::shared_ptr<Frame> foot) = 0;
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const Frame &foot) = 0;
+                                                const std::shared_ptr<Frame> foot) = 0;
 
-            virtual Link getLink(const std::string &name) = 0;
+            virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
 
-            virtual Joint getJoint(const std::string &name) = 0;
+            virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
@@ -335,7 +335,7 @@ namespace dls
                                            Eigen::Vector3d &joint_position,
                                            Eigen::Vector3d &joint_velocity,
                                            Eigen::Vector3d &joint_acceleration,
-                                           const Frame &end_effector) = 0;
+                                           const std::shared_ptr<Frame> end_effector) = 0;
 
             virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                            const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
