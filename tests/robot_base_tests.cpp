@@ -74,7 +74,7 @@ TEST(RobotBaseUnitTests, getFramePosition)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Vector3d frame_position = dummy_quadruped->getFramePosition(joint_state,
-                                                                       dummy_quadruped->getLink("TRUNK"),
+                                                                       dummy_quadruped->getLink("trunk"),
                                                                        dummy_quadruped->getLink("LF_FOOT"));
 
     /// Assert conditions
@@ -89,7 +89,7 @@ TEST(RobotBaseUnitTests, getFrameOrientation)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix3d frame_orientation = dummy_quadruped->getFrameOrientation(joint_state,
-                                                                             dummy_quadruped->getLink("TRUNK"),
+                                                                             dummy_quadruped->getLink("trunk"),
                                                                              dummy_quadruped->getLink("LF_FOOT"));
 
     /// Assert conditions
@@ -104,8 +104,8 @@ TEST(RobotBaseUnitTests, getFramePose)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix4d frame_pose_dq = dummy_quadruped->getFramePose(joint_state,
-                                                                  dummy_quadruped->getLink("TRUNK"),
-                                                                  dummy_quadruped->getLink("LF_HAA"));
+                                                                  dummy_quadruped->getLink("trunk"),
+                                                                  dummy_quadruped->getLink("LF_upperleg"));
     /// Ground truth
     Eigen::Matrix4d frame_pose_gt;
     frame_pose_gt.setZero();
@@ -169,14 +169,14 @@ TEST(RobotBaseUnitTests, getLink)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto link_dq = dummy_quadruped->getLink("link");
+    auto link_dq = dummy_quadruped->getLink("LF_assembly");
 
     /// Ground truth
     dls::robotlib::Link link_gt("LF_assembly"); //TODO : generalize the test for all the links
 
     /// Assert conditions
-    ASSERT_EQ(link_dq.getName(), link_gt.getName());
-    ASSERT_EQ(typeid(link_dq).name(), typeid(link_gt).name());
+    ASSERT_EQ(link_dq->getName(), link_gt.getName());
+    ASSERT_EQ(typeid(*link_dq).name(), typeid(link_gt).name());
 }
 
 TEST(RobotBaseUnitTests, getJoint)
@@ -184,14 +184,14 @@ TEST(RobotBaseUnitTests, getJoint)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto joint_dq = dummy_quadruped->getJoint("joint");
+    auto joint_dq = dummy_quadruped->getJoint("LF_hfe");
 
     /// Ground truth
-    dls::robotlib::Joint joint_gt("joint", nullptr);
+    dls::robotlib::Joint joint_gt("LF_hfe");
 
     /// Assert conditions
-    ASSERT_EQ(joint_dq.getName(), joint_gt.getName());
-    ASSERT_EQ(typeid(joint_dq).name(), typeid(joint_gt).name());
+    ASSERT_EQ(joint_dq->getName(), joint_gt.getName());
+    ASSERT_EQ(typeid(*joint_dq).name(), typeid(joint_gt).name());
 }
 
 TEST(RobotBaseUnitTests, getFeet)
@@ -212,7 +212,7 @@ TEST(RobotBaseUnitTests, getFeet)
     {
         Eigen::Matrix4d foot_pose_dq{};
         foot_pose_dq.setZero();
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, *foot);
+        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, foot);
 
         /// Assert conditions
         ASSERT_EQ(foot_pose_dq, foot_pose_gt);
@@ -266,7 +266,7 @@ TEST(RobotBaseUnitTests, makeFootJacobian)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    dls::robotlib::Link foot = dummy_quadruped->getLink("Leg1_link1");
+    auto foot = dummy_quadruped->getLink("LF_upperleg");
 
     auto jacobian = dummy_quadruped->makeFootJacobian(foot);
 
@@ -315,7 +315,7 @@ TEST(RobotBaseUnitTests, makeJacobian)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    dls::robotlib::Link foot = dummy_quadruped->getLink("Leg1_link1");
+    auto foot = dummy_quadruped->getLink("LF_upperleg");
 
     dummy_quadruped->makeJacobian(foot, foot);
 }
@@ -326,18 +326,29 @@ TEST(RobotBaseUnitTests, joint_parent_child)
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
     /// Groud truth
-    const std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
+    std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
         //joint name, parent name, child name
-        {"haa", std::make_pair("trunk", "assembly")},
-        {"hfe", std::make_pair("assembly", "upper_leg")},
-        {"hke", std::make_pair("upper_leg", "lower_leg")},
+        {"LF_haa", std::make_pair("trunk", "LF_assembly")},
+        {"LF_hfe", std::make_pair("LF_assembly", "LF_upperleg")},
+        {"LF_kfe", std::make_pair("LF_upperleg", "LF_lowerleg")},
+        {"RF_haa", std::make_pair("trunk", "RF_assembly")},
+        {"RF_hfe", std::make_pair("RF_assembly", "RF_upperleg")},
+        {"RF_kfe", std::make_pair("RF_upperleg", "RF_lowerleg")},
+        {"LH_haa", std::make_pair("trunk", "LH_assembly")},
+        {"LH_hfe", std::make_pair("LH_assembly", "LH_upperleg")},
+        {"LH_kfe", std::make_pair("LH_upperleg", "LH_lowerleg")},
+        {"RH_haa", std::make_pair("trunk", "RH_assembly")},
+        {"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
+        {"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")},
     };
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
         for (auto joint : *(leg->getJoints()))
         {
-            std::cout << joint->getName() << " " << joint->getChild()->getName() << std::endl;
+            //std::cout << joint->getName() << " " << joint->getParent()->getName() << " " << joint->getChild()->getName() << std::endl;
+            ASSERT_EQ(joint->getParent()->getName(), jointMap_gt[joint->getName()].first);
+            ASSERT_EQ(joint->getChild()->getName(), jointMap_gt[joint->getName()].second);
         }
     }
 }
@@ -348,18 +359,39 @@ TEST(RobotBaseUnitTests, link_parent_child)
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
     /// Groud truth
-    const std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
-        //joint name, parent name, child name
-        {"haa", std::make_pair("trunk", "assembly")},
-        {"hfe", std::make_pair("assembly", "upper_leg")},
-        {"hke", std::make_pair("upper_leg", "lower_leg")},
-    };
+    std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
+        //link name, parent name, child name
+        {"LF_assembly", std::make_pair("LF_haa", "LF_hfe")},
+        {"LF_upperleg", std::make_pair("LF_hfe", "LF_kfe")},
+        {"LF_lowerleg", std::make_pair("LF_kfe", "")},
+        {"RF_assembly", std::make_pair("RF_haa", "RF_hfe")},
+        {"RF_upperleg", std::make_pair("RF_hfe", "RF_kfe")},
+        {"RF_lowerleg", std::make_pair("RF_kfe", "")},
+        {"LH_assembly", std::make_pair("LH_haa", "LH_hfe")},
+        {"LH_upperleg", std::make_pair("LH_hfe", "LH_kfe")},
+        {"LH_lowerleg", std::make_pair("LH_kfe", "")},
+        {"RH_assembly", std::make_pair("RH_haa", "RH_hfe")},
+        {"RH_upperleg", std::make_pair("RH_hfe", "RH_kfe")},
+        {"RH_lowerleg", std::make_pair("RH_kfe", "")}};
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
         for (auto link : *(leg->getLinks()))
         {
-            std::cout << link->getName() << std::endl;
+
+            // std::cout << link->getName() << " " << link->getParent()->getName() << " ";
+            // if (link->getChild() != nullptr)
+            // {
+            //     std::cout << link->getChild()->getName() << std::endl;
+            // }
+            // else
+            //     std::cout << std::endl;
+
+            ASSERT_EQ(link->getParent()->getName(), linkMap_gt[link->getName()].first);
+            if (link->getChild() != nullptr)
+            {
+                ASSERT_EQ(link->getChild()->getName(), linkMap_gt[link->getName()].second);
+            }
         }
     }
 }

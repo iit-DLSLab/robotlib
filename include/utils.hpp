@@ -1,6 +1,7 @@
 #ifndef _ROBOTLIB_UTILS_HPP_
 #define _ROBOTLIB_UTILS_HPP_
 
+#include <memory>
 namespace dls
 {
     namespace robotlib

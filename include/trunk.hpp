@@ -2,12 +2,14 @@
 #define _ROBOTLIB_TRUNK_HPP_
 
 #include "link.hpp"
+#include "utils.hpp"
+#include "joint.hpp"
 
 namespace dls
 {
 	namespace robotlib
 	{
-		class Trunk : public Frame
+		class Trunk : public Link
 		{
 		public:
 			Trunk(const std::string &name);

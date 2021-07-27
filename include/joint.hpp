@@ -16,7 +16,7 @@ namespace dls
 		class Joint : public Frame
 		{
 		public:
-			Joint(const std::string &name, const std::shared_ptr<Link> parent);
+			Joint(const std::string &name);
 
 			virtual ~Joint();
 
@@ -24,14 +24,16 @@ namespace dls
 			const std::shared_ptr<Link> getParent() const;
 			const std::shared_ptr<Link> getChild() const;
 
-			template <unsigned int NJOINTS, unsigned int NLINKS>
-			friend class Limb;
+			template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+			friend class Robot;
 
 		protected:
-			std::shared_ptr<Link> parent_;
+			std::shared_ptr<Link>
+				parent_;
 			std::shared_ptr<Link> child_;
 
 		private:
+			void setParent(const std::shared_ptr<Link> parent);
 			void setChild(const std::shared_ptr<Link> child);
 		};
 	} // namespace robotlib
