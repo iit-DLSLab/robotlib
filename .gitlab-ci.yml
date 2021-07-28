@@ -22,7 +22,7 @@ build:
 test:
   stage: test
   tags: 
-    - dls
+    - ant-devel
   script:
     - cd build
     - make -j$(nproc) main_tests
