@@ -10,6 +10,6 @@ namespace dls
 
 		inline const Eigen::Vector3d &DynParams::getCom() { return com_; };
 		inline const double DynParams::getM() { return m_; };
-		inline const Eigen::Matrix3d &DynParams::getI() { I_; };
+		inline const Eigen::Matrix3d &DynParams::getI() { return I_; };
 	} // namespace robotlib
 } // namespace dls
