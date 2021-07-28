@@ -22,17 +22,18 @@ namespace dls
 
             virtual const int getNLinks() const = 0;
             virtual const int getNJoints() const = 0;
+
             virtual const std::shared_ptr<Link> getLink(const int linkId) const = 0;
             virtual const std::shared_ptr<Joint> getJoint(const int jointId) const = 0;
 
             virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() = 0;
             virtual const std::shared_ptr<ContainerBase<Link>> getLinks() = 0;
 
-            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) = 0;  //Overrided by Glue
-            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) = 0; //Overrided by Glue
+            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0;  //Overrided by Glue
+            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0; //Overrided by Glue
 
-            virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) = 0;  //Overrided by Glue
-            virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) = 0; //Overrided by Glue
+            virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) const = 0;  //Overrided by Glue
+            virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) const = 0; //Overrided by Glue
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
