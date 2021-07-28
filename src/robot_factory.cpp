@@ -1,5 +1,5 @@
 #include "robot_factory.hpp"
-#include <experimental/filesystem> /// TODO: Change it to <filesystem> once the docker image will use gcc/g++-8
+#include <filesystem>
 
 namespace dls
 {
@@ -9,11 +9,11 @@ namespace dls
 		{
 			std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-			if (std::experimental::filesystem::exists("/usr/lib/robots/robotlib/" + library)) /// TODO: Change it to std::filesystem once the docker image will use gcc/g++-8
+			if (std::filesystem::exists("/usr/lib/robots/robotlib/" + library))
 			{
 				lib_path = "/usr/lib/robots/robotlib/" + library;
 			}
-			else if (std::experimental::filesystem::exists("./" + library)) /// TODO: Change it to std::filesystem once the docker image will use gcc/g++-8
+			else if (std::filesystem::exists("./" + library))
 			{
 				lib_path = "./" + library;
 			}

@@ -18,7 +18,6 @@ target_link_libraries(robot_info
 	PRIVATE
 	${CMAKE_PROJECT_NAME}
 	${CMAKE_DL_LIBS}
-	stdc++fs	# TODO: Needed for experimental/filesystem library. Remove it once the docker image will use gcc/g++-8 (simple filesystem does not need it)
 )
 
 target_include_directories(robotlib PUBLIC
