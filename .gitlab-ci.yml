@@ -1,4 +1,4 @@
-image: server-harbor:80/dls/dls-env:latest
+image: server-harbor:80/ant/ant_iit:devel
 
 stages:
    - build
@@ -7,7 +7,7 @@ stages:
 build:
   stage: build
   tags:
-    - dls
+    - ant
   script:
     - mkdir build
     - cd build
