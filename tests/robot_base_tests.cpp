@@ -75,7 +75,7 @@ TEST(RobotBaseUnitTests, getFramePosition)
 
     Eigen::Vector3d frame_position = dummy_quadruped->getFramePosition(joint_state,
                                                                        dummy_quadruped->getLink("trunk"),
-                                                                       dummy_quadruped->getLink("LF_FOOT"));
+                                                                       dummy_quadruped->getLink("LF_loweleg"));
 
     /// Assert conditions
     ASSERT_EQ(frame_position, Eigen::Vector3d().setZero());
@@ -90,7 +90,7 @@ TEST(RobotBaseUnitTests, getFrameOrientation)
 
     Eigen::Matrix3d frame_orientation = dummy_quadruped->getFrameOrientation(joint_state,
                                                                              dummy_quadruped->getLink("trunk"),
-                                                                             dummy_quadruped->getLink("LF_FOOT"));
+                                                                             dummy_quadruped->getLink("LF_loweleg"));
 
     /// Assert conditions
     ASSERT_EQ(frame_orientation, Eigen::Matrix3d().setZero());
@@ -124,7 +124,7 @@ TEST(RobotBaseUnitTests, getFootPosition)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Vector3d foot_position = dummy_quadruped->getFootPosition(joint_state,
-                                                                     dummy_quadruped->getLink("LF_FOOT"));
+                                                                     dummy_quadruped->getLink("LF_loweleg"));
 
     /// Assert conditions
     ASSERT_EQ(foot_position, Eigen::Vector3d().setZero());
@@ -138,7 +138,7 @@ TEST(RobotBaseUnitTests, getFootOrientation)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix3d foot_orientation = dummy_quadruped->getFootOrientation(joint_state,
-                                                                           dummy_quadruped->getLink("LF_FOOT"));
+                                                                           dummy_quadruped->getLink("LF_loweleg"));
 
     /// Assert conditions
     ASSERT_EQ(foot_orientation, Eigen::Matrix3d().setZero());
@@ -152,7 +152,7 @@ TEST(RobotBaseUnitTests, getFootPose)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix4d foot_pose_dq = dummy_quadruped->getFootPose(joint_state,
-                                                                dummy_quadruped->getLink("LF_FOOT"));
+                                                                dummy_quadruped->getLink("LF_loweleg"));
 
     /// Ground truth
     Eigen::Matrix4d foot_pose_gt;

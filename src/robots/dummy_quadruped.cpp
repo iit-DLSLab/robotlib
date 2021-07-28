@@ -1,5 +1,5 @@
 #include "robot.hpp"
-#include "limb.hpp"
+#include "leg.hpp"
 #include "trunk.hpp"
 #include <map>
 namespace dls
@@ -9,69 +9,69 @@ namespace dls
 		const int NJOINTS = 3;
 		const int NLINKS = 3;
 
-		class DummyLeg : public Limb<NJOINTS, NLINKS>
+		class DummyLeg : public Leg<NJOINTS, NLINKS>
 		{
 		public:
 			DummyLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
-					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links) : Limb<NJOINTS, NLINKS>(name, joints, links){};
+					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
+				: Leg<NJOINTS, NLINKS>(name, joints, links),
+				  jointMap({//joint name, parent name, child name
+							{"LF_haa", std::make_pair("trunk", "LF_assembly")},
+							{"LF_hfe", std::make_pair("LF_assembly", "LF_upperleg")},
+							{"LF_kfe", std::make_pair("LF_upperleg", "LF_lowerleg")},
+							{"RF_haa", std::make_pair("trunk", "RF_assembly")},
+							{"RF_hfe", std::make_pair("RF_assembly", "RF_upperleg")},
+							{"RF_kfe", std::make_pair("RF_upperleg", "RF_lowerleg")},
+							{"LH_haa", std::make_pair("trunk", "LH_assembly")},
+							{"LH_hfe", std::make_pair("LH_assembly", "LH_upperleg")},
+							{"LH_kfe", std::make_pair("LH_upperleg", "LH_lowerleg")},
+							{"RH_haa", std::make_pair("trunk", "RH_assembly")},
+							{"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
+							{"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")}}),
+				  linkMap({//link name, parent name, child name
+						   {"LF_assembly", std::make_pair("LF_haa", "LF_hfe")},
+						   {"LF_upperleg", std::make_pair("LF_hfe", "LF_kfe")},
+						   {"LF_lowerleg", std::make_pair("LF_kfe", "")},
+						   {"RF_assembly", std::make_pair("RF_haa", "RF_hfe")},
+						   {"RF_upperleg", std::make_pair("RF_hfe", "RF_kfe")},
+						   {"RF_lowerleg", std::make_pair("RF_kfe", "")},
+						   {"LH_assembly", std::make_pair("LH_haa", "LH_hfe")},
+						   {"LH_upperleg", std::make_pair("LH_hfe", "LH_kfe")},
+						   {"LH_lowerleg", std::make_pair("LH_kfe", "")},
+						   {"RH_assembly", std::make_pair("RH_haa", "RH_hfe")},
+						   {"RH_upperleg", std::make_pair("RH_hfe", "RH_kfe")},
+						   {"RH_lowerleg", std::make_pair("RH_kfe", "")}}){};
 
-			virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint)
+			virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const
 			{
 				const std::string joint_name = joint->getName();
-				const std::string child_name = jointMap[joint_name].second;
+				const std::string child_name = jointMap.find(joint_name)->second.second; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
 				return child_name;
 			};
-			virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint)
+			virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const
 			{
 				const std::string joint_name = joint->getName();
-				const std::string parent_name = jointMap[joint_name].first;
+				const std::string parent_name = jointMap.find(joint_name)->second.first;
 				return parent_name;
 			};
 
-			virtual const std::string linkToChildName(const std::shared_ptr<Link> link)
+			virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const
 			{
 				const std::string link_name = link->getName();
-				const std::string child_name = linkMap[link_name].second;
+				const std::string child_name = linkMap.find(link_name)->second.second;
 				return child_name;
 			};
-			virtual const std::string linkToParentName(const std::shared_ptr<Link> link)
+			virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const
 			{
 				const std::string link_name = link->getName();
-				const std::string parent_name = linkMap[link_name].first;
+				const std::string parent_name = linkMap.find(link_name)->second.first;
 				return parent_name;
 			};
 
-			std::map<std::string, std::pair<std::string, std::string>> jointMap{
-				//joint name, parent name, child name
-				{"LF_haa", std::make_pair("trunk", "LF_assembly")},
-				{"LF_hfe", std::make_pair("LF_assembly", "LF_upperleg")},
-				{"LF_kfe", std::make_pair("LF_upperleg", "LF_lowerleg")},
-				{"RF_haa", std::make_pair("trunk", "RF_assembly")},
-				{"RF_hfe", std::make_pair("RF_assembly", "RF_upperleg")},
-				{"RF_kfe", std::make_pair("RF_upperleg", "RF_lowerleg")},
-				{"LH_haa", std::make_pair("trunk", "LH_assembly")},
-				{"LH_hfe", std::make_pair("LH_assembly", "LH_upperleg")},
-				{"LH_kfe", std::make_pair("LH_upperleg", "LH_lowerleg")},
-				{"RH_haa", std::make_pair("trunk", "RH_assembly")},
-				{"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
-				{"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")},
-			};
-			std::map<std::string, std::pair<std::string, std::string>> linkMap{
-				//link name, parent name, child name
-				{"LF_assembly", std::make_pair("LF_haa", "LF_hfe")},
-				{"LF_upperleg", std::make_pair("LF_hfe", "LF_kfe")},
-				{"LF_lowerleg", std::make_pair("LF_kfe", "")},
-				{"RF_assembly", std::make_pair("RF_haa", "RF_hfe")},
-				{"RF_upperleg", std::make_pair("RF_hfe", "RF_kfe")},
-				{"RF_lowerleg", std::make_pair("RF_kfe", "")},
-				{"LH_assembly", std::make_pair("LH_haa", "LH_hfe")},
-				{"LH_upperleg", std::make_pair("LH_hfe", "LH_kfe")},
-				{"LH_lowerleg", std::make_pair("LH_kfe", "")},
-				{"RH_assembly", std::make_pair("RH_haa", "RH_hfe")},
-				{"RH_upperleg", std::make_pair("RH_hfe", "RH_kfe")},
-				{"RH_lowerleg", std::make_pair("RH_kfe", "")}};
+		private:
+			const std::map<std::string, std::pair<std::string, std::string>> jointMap;
+			const std::map<std::string, std::pair<std::string, std::string>> linkMap;
 		};
-
 		const int NJOINTS_TOT = 12;
 		const int NLINKS_TOT = 8;
 		const int NLEGS = 4;
@@ -212,8 +212,7 @@ namespace dls
 	} //namespace robotlib
 } //namespace dls
 
-std::shared_ptr<dls::robotlib::DummyLeg>
-makeLeg(const std::string &legName)
+std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 {
 	std::shared_ptr<dls::robotlib::Joint> haa = std::make_shared<dls::robotlib::Joint>(legName + "_haa");
 	std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_assembly");
