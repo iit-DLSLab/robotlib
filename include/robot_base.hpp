@@ -34,6 +34,11 @@ namespace dls
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLegs_]); }
 
+                // std::shared_ptr<Data> operator[](const std::shared_ptr<LimbBase> leg)
+                // {
+                //     return data_[leg->toId()]; // leg->toId is overrided in the Glue
+                // };
+
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
@@ -48,6 +53,8 @@ namespace dls
             class JointDataMap
             {
             public:
+                friend class RobotBase;
+
                 ~JointDataMap()
                 {
                     delete[] data_;
@@ -81,6 +88,7 @@ namespace dls
             class LinkDataMap
             {
             public:
+                friend class RobotBase;
                 ~LinkDataMap()
                 {
                     delete[] data_;
@@ -105,10 +113,20 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
 
             public:
+                friend class RobotBase;
                 ~LegDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
+
+                Data &operator[](const std::shared_ptr<LimbBase> leg) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(leg->getName()) == 0)
+                            return pair.second;
+                    }
+                };
 
                 int getSize() { return data_.size(); };
 
@@ -117,7 +135,7 @@ namespace dls
                 {
                     for (int i = 0; i < nLegs_; ++i)
                     {
-                        PairType pair(robot->getLeg(i), Data());
+                        PairType pair(robot->getLeg(i), Data()); //shared_pointers?
                         data_.push_back(pair);
                     }
                 }
@@ -132,6 +150,7 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<Link>, Data>;
 
             public:
+                friend class RobotBase;
                 ~LinkDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
@@ -167,6 +186,7 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<Joint>, Data>;
 
             public:
+                friend class RobotBase;
                 ~JointDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
