@@ -15,5 +15,5 @@ install(
 		#dummy-hexapod
 		#dummy-octopod
 	DESTINATION
-		${ROBOTLIB_INSTALL_ROBOTS_DIR}/${CMAKE_PROJECT_NAME}
+		${ROBOTLIB_INSTALL_ROBOTS_DIR}
 )
