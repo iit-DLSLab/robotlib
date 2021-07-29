@@ -41,7 +41,7 @@ TEST(RobotBaseUnitTests, getNLinks)
     auto n_links_dq{dummy_quadruped->getNLINKS()};
 
     /// Ground truth
-    int n_links_gt{8};
+    int n_links_gt{12};
 
     /// Assert conditions
     ASSERT_EQ(n_links_dq, n_links_gt);
@@ -421,6 +421,66 @@ TEST(RobotBaseUnitTests, legDataMap)
         p[2]++;
     }
     for (auto pos : footPos)
+    {
+        std::cout << pos.second.transpose() << std::endl;
+    }
+}
+
+TEST(RobotBaseUnitTests, linkDataMap)
+{
+    std::cout << "TODO: LinkDataMap TEST" << std::endl;
+
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    /// Groud truth
+    //...
+
+    auto linkPos = dummy_quadruped->makeLinkDataMapPair<Eigen::Vector3d>();
+
+    Eigen::Vector3d p;
+    p.setZero();
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        for (auto link : *(leg->getLinks()))
+        {
+            linkPos[link] = p;
+            p[0]++;
+            p[1]++;
+            p[2]++;
+        }
+    }
+    for (auto pos : linkPos)
+    {
+        std::cout << pos.second.transpose() << std::endl;
+    }
+}
+
+TEST(RobotBaseUnitTests, jointDataMap)
+{
+    std::cout << "TODO: JointDataMap TEST" << std::endl;
+
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    /// Groud truth
+    //...
+
+    auto jointPos = dummy_quadruped->makeJointDataMapPair<Eigen::Vector3d>();
+
+    Eigen::Vector3d p;
+    p.setZero();
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        for (auto joint : *(leg->getJoints()))
+        {
+            jointPos[joint] = p;
+            p[0]++;
+            p[1]++;
+            p[2]++;
+        }
+    }
+    for (auto pos : jointPos)
     {
         std::cout << pos.second.transpose() << std::endl;
     }

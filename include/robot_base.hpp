@@ -156,6 +156,14 @@ namespace dls
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
 
+                Data &operator[](const std::shared_ptr<Link> link) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(link->getName()) == 0)
+                            return pair.second;
+                    }
+                };
                 // Get functions
                 int getSize() { return data_.size(); };
 
@@ -163,13 +171,10 @@ namespace dls
                 LinkDataMapPair(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
                     const int nLegs = robot->getNLEGS();
-                    for (int i = 0; i < nLegs; i++)
+                    for (auto leg : *(robot->getLegs()))
                     {
-                        auto leg = robot->getLeg(i);
-                        int nLinks = leg->getNLinks();
-                        for (int j = 0; j < nLinks; j++)
+                        for (auto link : *(leg->getLinks()))
                         {
-                            Link link = leg->getLink(j);
                             PairType pair(link, Data());
                             data_.push_back(pair);
                         }
@@ -192,6 +197,15 @@ namespace dls
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
 
+                Data &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(joint->getName()) == 0)
+                            return pair.second;
+                    }
+                };
+
                 // Get functions
                 int getSize() { return data_.size(); };
 
@@ -205,7 +219,7 @@ namespace dls
                         int nJoints = leg->getNJoints();
                         for (int j = 0; j < nJoints; j++)
                         {
-                            Joint joint = leg->getJoint(j);
+                            std::shared_ptr<Joint> joint = leg->getJoint(j);
                             PairType pair(joint, Data());
                             data_.push_back(pair);
                         }

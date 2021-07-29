@@ -73,7 +73,7 @@ namespace dls
 			const std::map<std::string, std::pair<std::string, std::string>> linkMap;
 		};
 		const int NJOINTS_TOT = 12;
-		const int NLINKS_TOT = 8;
+		const int NLINKS_TOT = 12;
 		const int NLEGS = 4;
 		const int NARMS = 0;
 		const int NCHILDRENS = NLEGS;
