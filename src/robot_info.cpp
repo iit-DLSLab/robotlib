@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
     }
 
     /// ROBOT ARGUMENTS
-    const std::string robotType = argv[1];
     std::shared_ptr<dls::robotlib::RobotBase> robot;
 
     try
     {
+        // argv[1] is the robot library used
         robot = dls::robotlib::RobotFactory::openRobot(argv[1]);
 
         /// OPTION ARGUMENTS
