@@ -34,6 +34,11 @@ namespace dls
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLegs_]); }
 
+                // std::shared_ptr<Data> operator[](const std::shared_ptr<LimbBase> leg)
+                // {
+                //     return data_[leg->toId()]; // leg->toId is overrided in the Glue
+                // };
+
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
@@ -48,6 +53,8 @@ namespace dls
             class JointDataMap
             {
             public:
+                friend class RobotBase;
+
                 ~JointDataMap()
                 {
                     delete[] data_;
@@ -81,6 +88,7 @@ namespace dls
             class LinkDataMap
             {
             public:
+                friend class RobotBase;
                 ~LinkDataMap()
                 {
                     delete[] data_;
@@ -105,10 +113,20 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
 
             public:
+                friend class RobotBase;
                 ~LegDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
+
+                Data &operator[](const std::shared_ptr<LimbBase> leg) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(leg->getName()) == 0)
+                            return pair.second;
+                    }
+                };
 
                 int getSize() { return data_.size(); };
 
@@ -117,11 +135,10 @@ namespace dls
                 {
                     for (int i = 0; i < nLegs_; ++i)
                     {
-                        PairType pair(robot->getLeg(i), Data());
+                        PairType pair(robot->getLeg(i), Data()); //shared_pointers?
                         data_.push_back(pair);
                     }
                 }
-
                 const int nLegs_;
                 std::vector<PairType> data_;
             };
@@ -132,11 +149,20 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<Link>, Data>;
 
             public:
+                friend class RobotBase;
                 ~LinkDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
 
+                Data &operator[](const std::shared_ptr<Link> link) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(link->getName()) == 0)
+                            return pair.second;
+                    }
+                };
                 // Get functions
                 int getSize() { return data_.size(); };
 
@@ -144,13 +170,10 @@ namespace dls
                 LinkDataMapPair(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
                     const int nLegs = robot->getNLEGS();
-                    for (int i = 0; i < nLegs; i++)
+                    for (auto leg : *(robot->getLegs()))
                     {
-                        auto leg = robot->getLeg(i);
-                        int nLinks = leg->getNLinks();
-                        for (int j = 0; j < nLinks; j++)
+                        for (auto link : *(leg->getLinks()))
                         {
-                            Link link = leg->getLink(j);
                             PairType pair(link, Data());
                             data_.push_back(pair);
                         }
@@ -167,10 +190,20 @@ namespace dls
                 using PairType = std::pair<std::shared_ptr<Joint>, Data>;
 
             public:
+                friend class RobotBase;
                 ~JointDataMapPair(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
+
+                Data &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(joint->getName()) == 0)
+                            return pair.second;
+                    }
+                };
 
                 // Get functions
                 int getSize() { return data_.size(); };
@@ -185,7 +218,7 @@ namespace dls
                         int nJoints = leg->getNJoints();
                         for (int j = 0; j < nJoints; j++)
                         {
-                            Joint joint = leg->getJoint(j);
+                            std::shared_ptr<Joint> joint = leg->getJoint(j);
                             PairType pair(joint, Data());
                             data_.push_back(pair);
                         }
@@ -205,7 +238,8 @@ namespace dls
 
                 ~Jacobian()
                 {
-                    delete[] data_;
+                    if (data_ != nullptr)
+                        delete[] data_;
                 }
 
                 Map getLinearJacobian() //RT
@@ -235,7 +269,31 @@ namespace dls
                     new (this) Map(data_, 6, nJoints_);
                 }
 
-                const int nJoints_;
+                Jacobian() : Map(NULL, 0, 0), data_(nullptr){};
+
+                void init(const Jacobian other)
+                {
+                    nJoints_ = other.getNJoints();
+
+                    data_ = new double[6 * nJoints_];
+                    for (int i = 0; i < 6 * nJoints_; ++i)
+                    {
+                        data_[i] = other.data_[i];
+                    }
+
+                    new (this) Map(data_, 6, nJoints_);
+                }
+                //TODO
+                // Jacobian &operator=(Jacobian &other)
+                // {
+                //     return other;
+                // }
+
+                int getNJoints() const { return nJoints_; };
+
+                double *getData() { return data_; };
+
+                int nJoints_;
                 double *data_; // Squashed matrix
             };
 
@@ -298,30 +356,68 @@ namespace dls
                 // const int nJoints = l->getNJoints();
 
                 // return Jacobian(nJoints);
-                std::cout << "makeFootJacobian function: TODO\n";
+                std::cout << "makeFootJacobian-Input: foot function: TODO\n";
                 return Jacobian(1);
             };
 
+            // TODO: it should use makeJacobian
+            Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg) // NRT
+            {
+                return Jacobian(leg->getNJoints());
+            };
+
+            LegDataMapPair<Jacobian> makeFeetJacobian() // NRT
+            {
+                auto feetJac = this->makeLegDataMapPair<Jacobian>();
+
+                for (auto leg : *(this->getLegs()))
+                {
+                    feetJac[leg].init(makeFootJacobian(leg));
+                }
+                return feetJac;
+            };
+
+            void initFeetJacobians(LegDataMapPair<Jacobian> footJac)
+            {
+                for (auto leg : *(this->getLegs()))
+                {
+                    footJac[leg].init(makeFootJacobian(leg));
+                }
+            }
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                      const std::shared_ptr<Frame> origin,
-                                                     const std::shared_ptr<Frame> destination) = 0;
+                                                     const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
 
             virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
                                                         const std::shared_ptr<Frame> origin,
-                                                        const std::shared_ptr<Frame> destination) = 0;
+                                                        const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
 
             virtual Eigen::Matrix4d getFramePose(const JointState &q,
                                                  const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) = 0;
+                                                 const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
 
             virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                    const std::shared_ptr<Frame> foot) = 0;
+                                                    const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const std::shared_ptr<Frame> foot) = 0;
+                                                       const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const std::shared_ptr<Frame> foot) = 0;
+                                                const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+
+            virtual void getFootPosition(const JointState &q,
+                                         const std::shared_ptr<LimbBase> leg,
+                                         Eigen::Vector3d &footPos) = 0; //Overrided by Glue
+
+            virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
+                                                       const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+
+            virtual Eigen::Matrix4d getFootPose(const JointState &q,
+                                                const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+
+            virtual void getFootJacobian(const JointState &q,
+                                         const std::shared_ptr<LimbBase> leg,
+                                         Jacobian &footJac) = 0; //Overrided by Glue
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
 

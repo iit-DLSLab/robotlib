@@ -73,7 +73,7 @@ namespace dls
 			const std::map<std::string, std::pair<std::string, std::string>> linkMap;
 		};
 		const int NJOINTS_TOT = 12;
-		const int NLINKS_TOT = 8;
+		const int NLINKS_TOT = 12;
 		const int NLEGS = 4;
 		const int NARMS = 0;
 		const int NCHILDRENS = NLEGS;
@@ -177,6 +177,35 @@ namespace dls
 				return foot_pose;
 			};
 
+			void getFootPosition(const JointState &q,
+								 const std::shared_ptr<LimbBase> leg,
+								 Eigen::Vector3d &footPos)
+			{
+				footPos = this->getFramePosition(q, this->getLink("trunk"), leg->getEndEffector());
+			};
+			Eigen::Matrix3d getFootOrientation(const JointState &q,
+											   const std::shared_ptr<LimbBase> leg) override
+			{
+				return this->getFrameOrientation(q, this->getLink("trunk"), leg->getEndEffector());
+			};
+			Eigen::Matrix4d getFootPose(const JointState &q,
+										const std::shared_ptr<LimbBase> leg) override
+			{
+				Eigen::Matrix4d foot_pose{};
+				foot_pose.setZero();
+
+				foot_pose.block(0, 3, 3, 1) << getFootPosition(q, leg->getEndEffector());
+				foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, leg->getEndEffector());
+				foot_pose.row(3) << 0, 0, 0, 1;
+
+				return foot_pose;
+			};
+			virtual void getFootJacobian(const JointState &q,
+										 const std::shared_ptr<LimbBase> leg,
+										 Jacobian &footJac)
+			{
+				footJac.setOnes();
+			}
 			LegDataMap<std::shared_ptr<Frame>> getFeet() override
 			{
 				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
