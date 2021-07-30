@@ -24,6 +24,7 @@ namespace dls
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
+            virtual const std::shared_ptr<Link> getEndEffector() override;
 
             //virtual const std::shared_ptr<JointsBase> getJoints() { return joints_; };
             virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() { return joints_; };

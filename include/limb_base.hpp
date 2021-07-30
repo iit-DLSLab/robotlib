@@ -11,6 +11,7 @@ namespace dls
     {
         class Link;
         class Joint;
+
         class LimbBase
         {
         public:
@@ -37,6 +38,8 @@ namespace dls
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
+
+            virtual const std::shared_ptr<Link> getEndEffector() = 0; //Overrided by Limb class
 
         private:
             const std::string name_;
