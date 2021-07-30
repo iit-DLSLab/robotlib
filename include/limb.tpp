@@ -5,7 +5,10 @@ namespace dls
     namespace robotlib
     {
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        Limb<NJOINTS, NLINKS>::Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links)
+        Limb<NJOINTS, NLINKS>::Limb(
+            const std::string &name,
+            const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
+            const std::array<std::shared_ptr<Link>, NLINKS> &links)
             : LimbBase(name),
               joints_(std::make_shared<Container<Joint, NJOINTS>>(joints)),
               links_(std::make_shared<Container<Link, NLINKS>>(links)){};
@@ -63,6 +66,12 @@ namespace dls
 
             //std::cout << "JOINT NOT FOUD FROM THE INPUT NAME " << name << std::endl;
             return std::shared_ptr<Joint>(nullptr);
+        };
+
+        template <unsigned int NJOINTS, unsigned int NLINKS>
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getEndEffector()
+        {
+            return *(--links_->end());
         };
 
     } // namespace robotlib
