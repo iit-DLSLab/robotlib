@@ -36,7 +36,7 @@ namespace dls
 
                 // std::shared_ptr<Data> operator[](const std::shared_ptr<LimbBase> leg)
                 // {
-                //     return data_[leg->toId()]; // leg->toId is overrided in the Glue
+                //     return data_[leg->toId()]; // leg->toId is overridden in the Glue
                 // };
 
             private:
@@ -128,7 +128,46 @@ namespace dls
                     }
                 };
 
+                void copydata(const LegDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        auto first_elem = &data_[i].first;
+                        *first_elem = rhs.data_[i].first;
+
+                        auto second_elem = &data_[i].second;
+                        *second_elem = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        auto second_elem = &data_[i].second;
+                        *second_elem = value;
+                    }
+                }
+
+                LegDataMapPair &operator=(const LegDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LegDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
                 int getSize() { return data_.size(); };
+                std::vector<PairType> getData() { return data_; };
 
             private:
                 LegDataMapPair(RobotBase *robot) : nLegs_(robot->getNLEGS())
@@ -386,38 +425,38 @@ namespace dls
             }
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                      const std::shared_ptr<Frame> origin,
-                                                     const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                     const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
                                                         const std::shared_ptr<Frame> origin,
-                                                        const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                        const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFramePose(const JointState &q,
                                                  const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                 const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                    const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                    const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                       const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual void getFootPosition(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
-                                         Eigen::Vector3d &footPos) = 0; //Overrided by Glue
+                                         Eigen::Vector3d &footPos) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+                                                       const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+                                                const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual void getFootJacobian(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
-                                         Jacobian &footJac) = 0; //Overrided by Glue
+                                         Jacobian &footJac) = 0; //overridden by Glue
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
 

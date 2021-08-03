@@ -30,16 +30,16 @@ namespace dls
             virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() = 0;
             virtual const std::shared_ptr<ContainerBase<Link>> getLinks() = 0;
 
-            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0;  //Overrided by Glue
-            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0; //Overrided by Glue
+            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0;  //overridden by Glue
+            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0; //overridden by Glue
 
-            virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) const = 0;  //Overrided by Glue
-            virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) const = 0; //Overrided by Glue
+            virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) const = 0;  //overridden by Glue
+            virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) const = 0; //overridden by Glue
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
-            virtual const std::shared_ptr<Link> getEndEffector() = 0; //Overrided by Limb class
+            virtual const std::shared_ptr<Link> getEndEffector() = 0; //overridden by Limb class
 
         private:
             const std::string name_;

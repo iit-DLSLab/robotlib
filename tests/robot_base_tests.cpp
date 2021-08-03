@@ -414,9 +414,66 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
     }
 }
 
+TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    auto footPos = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto q = dummy_quadruped->makeJointState();
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        dummy_quadruped->getFootPosition(q, leg, footPos[leg]);
+        Eigen::Vector3d pos(10, 20, 30);
+        footPos[leg] = pos;
+    }
+
+    std::cout << "Foot Position" << std::endl;
+
+    for (auto fp : footPos)
+    {
+        std::cout << fp.first->getName() << " " << fp.second.transpose() << std::endl;
+    }
+
+    /// LegDataMapPair Copy
+
+    auto footPosCopy = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto qCopy = dummy_quadruped->makeJointState();
+
+    for (auto legCopy : *(dummy_quadruped->getLegs()))
+    {
+        Eigen::Vector3d posCopy(5, 5, 5);
+        footPosCopy[legCopy] = posCopy;
+    }
+
+    footPosCopy = footPos;
+
+    std::cout << "Foot Position Copy" << std::endl;
+
+    for (auto fpCopy : footPosCopy)
+    {
+        std::cout << fpCopy.first->getName() << " " << fpCopy.second.transpose() << std::endl;
+    }
+
+    /// LegDataMapPair Copy AssignAll
+
+    auto footPosAssign = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto qAssign = dummy_quadruped->makeJointState();
+
+    footPosAssign = Eigen::Vector3d().setOnes();
+
+    std::cout << "Foot Position Copy AssignAll" << std::endl;
+
+    for (auto fpAssign : footPosAssign)
+    {
+        std::cout << fpAssign.first->getName() << " " << fpAssign.second.transpose() << std::endl;
+    }
+}
+
 TEST(RobotBaseUnitTests, legDataMapPair)
 {
-    std::cout << "TODO: LegDataMap TEST" << std::endl;
+    std::cout << "TODO: LegDataMapPair TEST" << std::endl;
 
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
@@ -442,10 +499,14 @@ TEST(RobotBaseUnitTests, legDataMapPair)
         dummy_quadruped->getFootJacobian(q, leg, footJac[leg]);
     }
 
+    std::cout << "Foot Position" << std::endl;
+
     for (auto pos : footPos)
     {
         std::cout << pos.second.transpose() << std::endl;
     }
+
+    std::cout << "Foot Jacobian" << std::endl;
 
     //TODO: overload = operator in Jacobian class
     for (auto &jac : footJac)

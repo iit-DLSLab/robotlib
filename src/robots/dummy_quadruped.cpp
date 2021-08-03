@@ -204,7 +204,7 @@ namespace dls
 										 const std::shared_ptr<LimbBase> leg,
 										 Jacobian &footJac)
 			{
-				footJac.setOnes();
+				footJac.setZero();
 			}
 			LegDataMap<std::shared_ptr<Frame>> getFeet() override
 			{
