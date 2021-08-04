@@ -221,6 +221,32 @@ TEST(RobotBaseUnitTests, getFeet)
 }
 
 // TODO
+//TEST(RobotBaseUnitTests, forwardKinematicsOne)
+//{
+//    /// Dummy quadruped
+//   std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
+
+// TODO
+//TEST(RobotBaseUnitTests, forwardKinematicsTwo)
+//{
+//    /// Dummy quadruped
+//   std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//
+//    /// Ground truth
+//
+//    /// Assert conditions
+//    ASSERT_EQ(1, 1);
+//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//}
+
+// TODO
 //TEST(RobotBaseUnitTests, inverseKinematicsOne)
 //{
 //    /// Dummy quadruped
