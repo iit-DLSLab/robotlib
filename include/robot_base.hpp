@@ -294,11 +294,8 @@ namespace dls
 
                     for (auto i{0}; i < nLegs_; i++)
                     {
-                        auto first_elem = &data_[i].first;
-                        *first_elem = rhs.data_[i].first;
-
-                        auto second_elem = &data_[i].second;
-                        *second_elem = rhs.data_[i].second;
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
                     }
                 }
 
@@ -306,8 +303,7 @@ namespace dls
                 {
                     for (auto i{0}; i < nLegs_; i++)
                     {
-                        auto second_elem = &data_[i].second;
-                        *second_elem = value;
+                        data_[i].second = value;
                     }
                 }
 
@@ -368,11 +364,8 @@ namespace dls
 
                     for (auto i{0}; i < nLinks_; i++)
                     {
-                        auto first_elem = &data_[i].first;
-                        *first_elem = rhs.data_[i].first;
-
-                        auto second_elem = &data_[i].second;
-                        *second_elem = rhs.data_[i].second;
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
                     }
                 }
 
@@ -380,8 +373,7 @@ namespace dls
                 {
                     for (auto i{0}; i < nLinks_; i++)
                     {
-                        auto second_elem = &data_[i].second;
-                        *second_elem = value;
+                        data_[i].second = value;
                     }
                 }
 
@@ -447,11 +439,8 @@ namespace dls
 
                     for (auto i{0}; i < nJoints_; i++)
                     {
-                        auto first_elem = &data_[i].first;
-                        *first_elem = rhs.data_[i].first;
-
-                        auto second_elem = &data_[i].second;
-                        *second_elem = rhs.data_[i].second;
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
                     }
                 }
 
@@ -459,8 +448,7 @@ namespace dls
                 {
                     for (auto i{0}; i < nJoints_; i++)
                     {
-                        auto second_elem = &data_[i].second;
-                        *second_elem = value;
+                        data_[i].second = value;
                     }
                 }
 
