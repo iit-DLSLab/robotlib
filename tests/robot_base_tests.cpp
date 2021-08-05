@@ -421,6 +421,7 @@ TEST(RobotBaseUnitTests, link_parent_child)
         }
     }
 }
+
 TEST(RobotBaseUnitTests, limb_getEndEffector)
 {
     std::cout << "TODO: getEndEffector TEST" << std::endl;
@@ -495,6 +496,19 @@ TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
     {
         std::cout << fpAssign.first->getName() << " " << fpAssign.second.transpose() << std::endl;
     }
+}
+
+TEST(RobotBaseUnitTests, jointStateSquareBrackets)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    auto q = dummy_quadruped->makeJointState();
+
+    for (int i{0}; i < dummy_quadruped->getNJOINTS(); i++) /// TODO: implement and use q.getSize()
+        q[i] = 10;
+
+    for (auto elem : q)
+        std::cout << "JointState element: " << elem << std::endl;
 }
 
 TEST(RobotBaseUnitTests, legDataMapPair)

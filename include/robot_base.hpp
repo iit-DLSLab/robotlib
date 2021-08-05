@@ -39,6 +39,17 @@ namespace dls
                 // {
                 //     return data_[leg->toId()]; // leg->toId is overridden in the Glue
                 // };
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nLegs_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nLegs_);
+                    return data_[index];
+                }
 
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
@@ -63,6 +74,18 @@ namespace dls
 
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nJoints_]); }
+
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nJoints_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nJoints_);
+                    return data_[index];
+                }
 
             protected:
                 JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
@@ -97,6 +120,18 @@ namespace dls
 
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLinks_]); }
+
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nLinks_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nLinks_);
+                    return data_[index];
+                }
 
             private:
                 LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
