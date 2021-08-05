@@ -223,9 +223,9 @@ namespace dls
 			void forwardKinematics(const JointState &joint_position,
 								   const JointState &joint_velocity,
 								   const JointState &joint_acceleration,
-								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
+								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
 			{
 				std::cout << "Forward Kinematics 1" << std::endl;
 			};
@@ -252,9 +252,9 @@ namespace dls
 				std::cout << "Inverse Kinematics 1" << std::endl;
 			};
 
-			void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+			void inverseKinematics(const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+								   const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+								   const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 								   JointState &joint_position,
 								   JointState &joint_velocity,
 								   JointState &joint_acceleration) override

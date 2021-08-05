@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 namespace dls
 {
@@ -167,7 +168,6 @@ namespace dls
                 }
 
                 int getSize() { return data_.size(); };
-                std::vector<PairType> getData() { return data_; };
 
             private:
                 LegDataMapPair(RobotBase *robot) : nLegs_(robot->getNLEGS())
@@ -202,7 +202,45 @@ namespace dls
                             return pair.second;
                     }
                 };
-                // Get functions
+
+                void copydata(const LinkDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        auto first_elem = &data_[i].first;
+                        *first_elem = rhs.data_[i].first;
+
+                        auto second_elem = &data_[i].second;
+                        *second_elem = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        auto second_elem = &data_[i].second;
+                        *second_elem = value;
+                    }
+                }
+
+                LinkDataMapPair &operator=(const LinkDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LinkDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
                 int getSize() { return data_.size(); };
 
             private: // TODO: private
@@ -244,7 +282,44 @@ namespace dls
                     }
                 };
 
-                // Get functions
+                void copydata(const JointDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        auto first_elem = &data_[i].first;
+                        *first_elem = rhs.data_[i].first;
+
+                        auto second_elem = &data_[i].second;
+                        *second_elem = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        auto second_elem = &data_[i].second;
+                        *second_elem = value;
+                    }
+                }
+
+                JointDataMapPair &operator=(const JointDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
                 int getSize() { return data_.size(); };
 
             private:
@@ -467,9 +542,9 @@ namespace dls
             virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            const JointState &joint_velocity,
                                            const JointState &joint_acceleration,
-                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
 
             virtual void forwardKinematics(const Eigen::Vector3d &joint_position,
                                            const Eigen::Vector3d &joint_velocity,
@@ -487,9 +562,9 @@ namespace dls
                                            Eigen::Vector3d &joint_acceleration,
                                            const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
-            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+            virtual void inverseKinematics(const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                            JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            JointState &joint_velocity,
                                            JointState &joint_acceleration) = 0;
