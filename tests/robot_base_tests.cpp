@@ -498,17 +498,41 @@ TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
     }
 }
 
-TEST(RobotBaseUnitTests, jointStateSquareBrackets)
+TEST(RobotBaseUnitTests, jointStateOperators)
 {
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
     auto q = dummy_quadruped->makeJointState();
 
+    /// Operator[]
     for (int i{0}; i < dummy_quadruped->getNJOINTS(); i++) /// TODO: implement and use q.getSize()
         q[i] = 10;
 
+    std::cout << "JointState q elements:" << std::endl;
     for (auto elem : q)
-        std::cout << "JointState element: " << elem << std::endl;
+        std::cout << elem << std::endl;
+
+    /// Operator= Copy
+    auto q2 = dummy_quadruped->makeJointState();
+
+    std::cout << "JointState q2 elements:" << std::endl;
+    for (auto elem : q2)
+        std::cout << elem << std::endl;
+
+    q2 = q;
+
+    std::cout << "JointState q2 elements (copy):" << std::endl;
+    for (auto elem : q2)
+        std::cout << elem << std::endl;
+
+    /// Operator= AssignAll
+    auto q3 = dummy_quadruped->makeJointState();
+    const double value{0.5};
+    q3 = value;
+
+    std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
+    for (auto elem : q3)
+        std::cout << elem << std::endl;
 }
 
 TEST(RobotBaseUnitTests, legDataMapPair)

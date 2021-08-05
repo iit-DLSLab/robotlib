@@ -51,6 +51,39 @@ namespace dls
                     return data_[index];
                 }
 
+                void copydata(const LegDataMap &rhs)
+                {
+                    assert(nLegs_ == rhs.nLegs_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                LegDataMap &operator=(const LegDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LegDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
@@ -87,6 +120,39 @@ namespace dls
                     return data_[index];
                 }
 
+                void copydata(const JointDataMap &rhs)
+                {
+                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                JointDataMap &operator=(const JointDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
             protected:
                 JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
@@ -103,6 +169,31 @@ namespace dls
                 friend class RobotBase;
 
                 ~JointState(){};
+
+                void copydata(const JointState &rhs)
+                {
+                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                JointState &operator=(const JointState &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointState &operator=(const double &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
 
             private:
                 JointState(RobotBase *robot) : JointDataMap(robot){};
@@ -131,6 +222,39 @@ namespace dls
                 {
                     assert(index >= 0 && index <= nLinks_);
                     return data_[index];
+                }
+
+                void copydata(const LinkDataMap &rhs)
+                {
+                    assert(nLinks_ == rhs.nLinks_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                LinkDataMap &operator=(const LinkDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LinkDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
                 }
 
             private:
