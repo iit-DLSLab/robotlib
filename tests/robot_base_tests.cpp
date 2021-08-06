@@ -561,6 +561,13 @@ TEST(RobotBaseUnitTests, footJacobian)
         std::cout << feetJac[leg] << std::endl;
     }
 
+    feetJac["LF"] << 5, 5, 5,
+        5, 5, 5,
+        5, 5, 5,
+        6, 6, 6,
+        6, 6, 6,
+        6, 6, 6;
+
     /// Access jacobian name and value
     for (auto &fj : feetJac)
     {
