@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 namespace dls
 {
@@ -36,8 +37,52 @@ namespace dls
 
                 // std::shared_ptr<Data> operator[](const std::shared_ptr<LimbBase> leg)
                 // {
-                //     return data_[leg->toId()]; // leg->toId is overrided in the Glue
+                //     return data_[leg->toId()]; // leg->toId is overridden in the Glue
                 // };
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nLegs_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nLegs_);
+                    return data_[index];
+                }
+
+                void copydata(const LegDataMap &rhs)
+                {
+                    assert(nLegs_ == rhs.nLegs_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                LegDataMap &operator=(const LegDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LegDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
 
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
@@ -63,6 +108,51 @@ namespace dls
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nJoints_]); }
 
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nJoints_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nJoints_);
+                    return data_[index];
+                }
+
+                void copydata(const JointDataMap &rhs)
+                {
+                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                JointDataMap &operator=(const JointDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
             protected:
                 JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
@@ -80,6 +170,31 @@ namespace dls
 
                 ~JointState(){};
 
+                void copydata(const JointState &rhs)
+                {
+                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                JointState &operator=(const JointState &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointState &operator=(const double &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
             private:
                 JointState(RobotBase *robot) : JointDataMap(robot){};
             };
@@ -96,6 +211,51 @@ namespace dls
 
                 Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
                 Iterator<Data> end() { return Iterator<Data>(&data_[nLinks_]); }
+
+                Data &operator[](int index)
+                {
+                    assert(index >= 0 && index <= nLinks_);
+                    return data_[index];
+                }
+
+                const Data &operator[](int index) const
+                {
+                    assert(index >= 0 && index <= nLinks_);
+                    return data_[index];
+                }
+
+                void copydata(const LinkDataMap &rhs)
+                {
+                    assert(nLinks_ == rhs.nLinks_); /// TODO: Implement and use getSize() method
+
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i] = value; /// TODO: Implement and use getData() method
+                    }
+                }
+
+                LinkDataMap &operator=(const LinkDataMap &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LinkDataMap &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
 
             private:
                 LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
@@ -127,6 +287,40 @@ namespace dls
                             return pair.second;
                     }
                 };
+
+                void copydata(const LegDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLegs_; i++)
+                    {
+                        data_[i].second = value;
+                    }
+                }
+
+                LegDataMapPair &operator=(const LegDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LegDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
 
                 int getSize() { return data_.size(); };
 
@@ -163,7 +357,41 @@ namespace dls
                             return pair.second;
                     }
                 };
-                // Get functions
+
+                void copydata(const LinkDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nLinks_; i++)
+                    {
+                        data_[i].second = value;
+                    }
+                }
+
+                LinkDataMapPair &operator=(const LinkDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                LinkDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
                 int getSize() { return data_.size(); };
 
             private: // TODO: private
@@ -205,7 +433,40 @@ namespace dls
                     }
                 };
 
-                // Get functions
+                void copydata(const JointDataMapPair &rhs)
+                {
+                    assert(data_.size() == rhs.data_.size());
+
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i].first = rhs.data_[i].first;
+                        data_[i].second = rhs.data_[i].second;
+                    }
+                }
+
+                void assignAll(const Data &value)
+                {
+                    for (auto i{0}; i < nJoints_; i++)
+                    {
+                        data_[i].second = value;
+                    }
+                }
+
+                JointDataMapPair &operator=(const JointDataMapPair &rhs)
+                {
+                    if (&rhs != this)
+                    {
+                        copydata(rhs);
+                    }
+                    return *this;
+                }
+
+                JointDataMapPair &operator=(const Data &defaultValue)
+                {
+                    assignAll(defaultValue);
+                    return *this;
+                }
+
                 int getSize() { return data_.size(); };
 
             private:
@@ -386,38 +647,38 @@ namespace dls
             }
             virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                      const std::shared_ptr<Frame> origin,
-                                                     const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                     const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
                                                         const std::shared_ptr<Frame> origin,
-                                                        const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                        const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFramePose(const JointState &q,
                                                  const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) = 0; //Overrided by Glue
+                                                 const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                    const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                    const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                       const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const std::shared_ptr<Frame> foot) = 0; //Overrided by Glue
+                                                const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual void getFootPosition(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
-                                         Eigen::Vector3d &footPos) = 0; //Overrided by Glue
+                                         Eigen::Vector3d &footPos) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                       const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+                                                       const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                const std::shared_ptr<LimbBase> leg) = 0; //Overrided by Glue
+                                                const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual void getFootJacobian(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
-                                         Jacobian &footJac) = 0; //Overrided by Glue
+                                         Jacobian &footJac) = 0; //overridden by Glue
 
             virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
 
@@ -425,17 +686,32 @@ namespace dls
 
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
+            virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
+                                           const JointState &joint_velocity,
+                                           const JointState &joint_acceleration,
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
+
+            virtual void forwardKinematics(const Eigen::Vector3d &joint_position,
+                                           const Eigen::Vector3d &joint_velocity,
+                                           const Eigen::Vector3d &joint_acceleration,
+                                           Eigen::Vector3d &end_effector_position,
+                                           Eigen::Vector3d &end_effector_velocity,
+                                           Eigen::Vector3d &end_effector_acceleration,
+                                           const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
+
             virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
                                            const Eigen::Vector3d &end_effector_velocity,
                                            const Eigen::Vector3d &end_effector_acceleration,
                                            Eigen::Vector3d &joint_position,
                                            Eigen::Vector3d &joint_velocity,
                                            Eigen::Vector3d &joint_acceleration,
-                                           const std::shared_ptr<Frame> end_effector) = 0;
+                                           const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
-            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+            virtual void inverseKinematics(const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                            JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            JointState &joint_velocity,
                                            JointState &joint_acceleration) = 0;
