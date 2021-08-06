@@ -378,6 +378,26 @@ namespace dls
                     }
                 };
 
+                /// TODO: to understand if we want operator[] with string
+                Data &operator[](std::string link_name)
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(link_name) == 0)
+                            return pair.second;
+                    }
+                };
+
+                /// TODO: to understand if we want operator[] with string
+                const Data &operator[](std::string link_name) const
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(link_name) == 0)
+                            return pair.second;
+                    }
+                };
+
                 void copydata(const LinkDataMapPair &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
@@ -449,6 +469,26 @@ namespace dls
                     for (PairType &pair : *this)
                     {
                         if (pair.first->getName().compare(joint->getName()) == 0)
+                            return pair.second;
+                    }
+                };
+
+                /// TODO: to understand if we want operator[] with string
+                Data &operator[](std::string joint_name)
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(joint_name) == 0)
+                            return pair.second;
+                    }
+                };
+
+                /// TODO: to understand if we want operator[] with string
+                const Data &operator[](std::string joint_name) const
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(joint_name) == 0)
                             return pair.second;
                     }
                 };
