@@ -288,6 +288,26 @@ namespace dls
                     }
                 };
 
+                /// TODO: to understand if we want operator[] with string
+                Data &operator[](std::string leg_name)
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(leg_name) == 0)
+                            return pair.second;
+                    }
+                };
+
+                /// TODO: to understand if we want operator[] with string
+                const Data &operator[](std::string leg_name) const
+                {
+                    for (PairType &pair : *this)
+                    {
+                        if (pair.first->getName().compare(leg_name) == 0)
+                            return pair.second;
+                    }
+                };
+
                 void copydata(const LegDataMapPair &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
