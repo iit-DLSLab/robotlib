@@ -131,7 +131,21 @@ namespace dls
 				return Eigen::Vector3d().setZero();
 			};
 
+			Eigen::Vector3d getFramePosition(const JointDataMapPair<double> &q,
+											 const std::shared_ptr<Frame> origin,
+											 const std::shared_ptr<Frame> destination) override
+			{
+				return Eigen::Vector3d().setZero();
+			};
+
 			Eigen::Matrix3d getFrameOrientation(const JointState &q,
+												const std::shared_ptr<Frame> origin,
+												const std::shared_ptr<Frame> destination) override
+			{
+				return Eigen::Matrix3d().setZero();
+			};
+
+			Eigen::Matrix3d getFrameOrientation(const JointDataMapPair<double> &q,
 												const std::shared_ptr<Frame> origin,
 												const std::shared_ptr<Frame> destination) override
 			{
@@ -152,7 +166,27 @@ namespace dls
 				return frame_pose;
 			};
 
+			Eigen::Matrix4d getFramePose(const JointDataMapPair<double> &q,
+										 const std::shared_ptr<Frame> origin,
+										 const std::shared_ptr<Frame> destination) override
+			{
+				Eigen::Matrix4d frame_pose{};
+				frame_pose.setZero();
+
+				frame_pose.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
+				frame_pose.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
+				frame_pose.row(3) << 0, 0, 0, 1;
+
+				return frame_pose;
+			};
+
 			Eigen::Vector3d getFootPosition(const JointState &q,
+											const std::shared_ptr<Frame> foot) override
+			{
+				return this->getFramePosition(q, this->getLink("trunk"), foot);
+			};
+
+			Eigen::Vector3d getFootPosition(const JointDataMapPair<double> &q,
 											const std::shared_ptr<Frame> foot) override
 			{
 				return this->getFramePosition(q, this->getLink("trunk"), foot);
@@ -164,7 +198,26 @@ namespace dls
 				return this->getFrameOrientation(q, this->getLink("trunk"), foot);
 			};
 
+			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
+											   const std::shared_ptr<Frame> foot) override
+			{
+				return this->getFrameOrientation(q, this->getLink("trunk"), foot);
+			};
+
 			Eigen::Matrix4d getFootPose(const JointState &q,
+										const std::shared_ptr<Frame> foot) override
+			{
+				Eigen::Matrix4d foot_pose{};
+				foot_pose.setZero();
+
+				foot_pose.block(0, 3, 3, 1) << getFootPosition(q, foot);
+				foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, foot);
+				foot_pose.row(3) << 0, 0, 0, 1;
+
+				return foot_pose;
+			};
+
+			Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
 										const std::shared_ptr<Frame> foot) override
 			{
 				Eigen::Matrix4d foot_pose{};
@@ -184,7 +237,20 @@ namespace dls
 				footPos = this->getFramePosition(q, this->getLink("trunk"), leg->getEndEffector());
 			};
 
+			void getFootPosition(const JointDataMapPair<double> &q,
+								 const std::shared_ptr<LimbBase> leg,
+								 Eigen::Vector3d &footPos)
+			{
+				footPos = this->getFramePosition(q, this->getLink("trunk"), leg->getEndEffector());
+			};
+
 			Eigen::Matrix3d getFootOrientation(const JointState &q,
+											   const std::shared_ptr<LimbBase> leg) override
+			{
+				return this->getFrameOrientation(q, this->getLink("trunk"), leg->getEndEffector());
+			};
+
+			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
 											   const std::shared_ptr<LimbBase> leg) override
 			{
 				return this->getFrameOrientation(q, this->getLink("trunk"), leg->getEndEffector());
@@ -203,7 +269,27 @@ namespace dls
 				return foot_pose;
 			};
 
+			Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
+										const std::shared_ptr<LimbBase> leg) override
+			{
+				Eigen::Matrix4d foot_pose{};
+				foot_pose.setZero();
+
+				foot_pose.block(0, 3, 3, 1) << getFootPosition(q, leg->getEndEffector());
+				foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, leg->getEndEffector());
+				foot_pose.row(3) << 0, 0, 0, 1;
+
+				return foot_pose;
+			};
+
 			virtual void getFootJacobian(const JointState &q,
+										 const std::shared_ptr<LimbBase> leg,
+										 Jacobian &footJac)
+			{
+				footJac.setZero();
+			};
+
+			virtual void getFootJacobian(const JointDataMapPair<double> &q,
 										 const std::shared_ptr<LimbBase> leg,
 										 Jacobian &footJac)
 			{
