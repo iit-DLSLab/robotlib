@@ -535,6 +535,41 @@ TEST(RobotBaseUnitTests, jointStateOperators)
         std::cout << elem << std::endl;
 }
 
+TEST(RobotBaseUnitTests, footJacobian)
+{
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    auto feetJac = dummy_quadruped->makeFeetJacobian();
+
+    /// TODO: operator= to be overloaded
+    //Eigen::Matrix<double, 3, 6> footJacValues;
+    //footJacValues << 1, 2, 3,
+    //    4, 5, 6,
+    //    7, 8, 9,
+    //    10, 11, 12,
+    //    13, 14, 15,
+    //    16, 16, 18;
+    /// Access jacobian value associated to a leg
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << "FOOT JAC LEG: " << std::endl;
+        feetJac[leg] << 10, 10, 10,
+            20, 20, 20,
+            30, 30, 30,
+            40, 40, 40,
+            50, 50, 50,
+            60, 60, 60;
+        std::cout << feetJac[leg] << std::endl;
+    }
+
+    /// Access jacobian name and value
+    for (auto &fj : feetJac)
+    {
+        std::cout << "FOOT JAC LEG: " << std::endl;
+        std::cout << fj.first->getName() << std::endl;
+        std::cout << fj.second << std::endl;
+    }
+}
+
 TEST(RobotBaseUnitTests, legDataMapPair)
 {
     std::cout << "TODO: LegDataMapPair TEST" << std::endl;
