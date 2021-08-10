@@ -16,31 +16,31 @@ namespace dls
 					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
 				: Leg<NJOINTS, NLINKS>(name, joints, links),
 				  jointMap({//joint name, parent name, child name
-							{"LF_HAA", std::make_pair("trunk", "LF_assembly")},
-							{"LF_HFE", std::make_pair("LF_assembly", "LF_upperleg")},
-							{"LF_KFE", std::make_pair("LF_upperleg", "LF_lowerleg")},
-							{"RF_HAA", std::make_pair("trunk", "RF_assembly")},
-							{"RF_HFE", std::make_pair("RF_assembly", "RF_upperleg")},
-							{"RF_KFE", std::make_pair("RF_upperleg", "RF_lowerleg")},
-							{"LH_HAA", std::make_pair("trunk", "LH_assembly")},
-							{"LH_HFE", std::make_pair("LH_assembly", "LH_upperleg")},
-							{"LH_KFE", std::make_pair("LH_upperleg", "LH_lowerleg")},
-							{"RH_HAA", std::make_pair("trunk", "RH_assembly")},
-							{"RH_HFE", std::make_pair("RH_assembly", "RH_upperleg")},
-							{"RH_KFE", std::make_pair("RH_upperleg", "RH_lowerleg")}}),
+							{"LF_HAA", std::make_pair("TRUNK", "LF_ASSEMBLY")},
+							{"LF_HFE", std::make_pair("LF_ASSEMBLY", "LF_UPPERLEG")},
+							{"LF_KFE", std::make_pair("LF_UPPERLEG", "LF_LOWERLEG")},
+							{"RF_HAA", std::make_pair("TRUNK", "RF_ASSEMBLY")},
+							{"RF_HFE", std::make_pair("RF_ASSEMBLY", "RF_UPPERLEG")},
+							{"RF_KFE", std::make_pair("RF_UPPERLEG", "RF_LOWERLEG")},
+							{"LH_HAA", std::make_pair("TRUNK", "LH_ASSEMBLY")},
+							{"LH_HFE", std::make_pair("LH_ASSEMBLY", "LH_UPPERLEG")},
+							{"LH_KFE", std::make_pair("LH_UPPERLEG", "LH_LOWERLEG")},
+							{"RH_HAA", std::make_pair("TRUNK", "RH_ASSEMBLY")},
+							{"RH_HFE", std::make_pair("RH_ASSEMBLY", "RH_UPPERLEG")},
+							{"RH_KFE", std::make_pair("RH_UPPERLEG", "RH_LOWERLEG")}}),
 				  linkMap({//link name, parent name, child name
-						   {"LF_assembly", std::make_pair("LF_HAA", "LF_HFE")},
-						   {"LF_upperleg", std::make_pair("LF_HFE", "LF_KFE")},
-						   {"LF_lowerleg", std::make_pair("LF_KFE", "")},
-						   {"RF_assembly", std::make_pair("RF_HAA", "RF_HFE")},
-						   {"RF_upperleg", std::make_pair("RF_HFE", "RF_KFE")},
-						   {"RF_lowerleg", std::make_pair("RF_KFE", "")},
-						   {"LH_assembly", std::make_pair("LH_HAA", "LH_HFE")},
-						   {"LH_upperleg", std::make_pair("LH_HFE", "LH_KFE")},
-						   {"LH_lowerleg", std::make_pair("LH_KFE", "")},
-						   {"RH_assembly", std::make_pair("RH_HAA", "RH_HFE")},
-						   {"RH_upperleg", std::make_pair("RH_HFE", "RH_KFE")},
-						   {"RH_lowerleg", std::make_pair("RH_KFE", "")}}){};
+						   {"LF_ASSEMBLY", std::make_pair("LF_HAA", "LF_HFE")},
+						   {"LF_UPPERLEG", std::make_pair("LF_HFE", "LF_KFE")},
+						   {"LF_LOWERLEG", std::make_pair("LF_KFE", "")},
+						   {"RF_ASSEMBLY", std::make_pair("RF_HAA", "RF_HFE")},
+						   {"RF_UPPERLEG", std::make_pair("RF_HFE", "RF_KFE")},
+						   {"RF_LOWERLEG", std::make_pair("RF_KFE", "")},
+						   {"LH_ASSEMBLY", std::make_pair("LH_HAA", "LH_HFE")},
+						   {"LH_UPPERLEG", std::make_pair("LH_HFE", "LH_KFE")},
+						   {"LH_LOWERLEG", std::make_pair("LH_KFE", "")},
+						   {"RH_ASSEMBLY", std::make_pair("RH_HAA", "RH_HFE")},
+						   {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
+						   {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}}){};
 
 			virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const
 			{
@@ -183,25 +183,25 @@ namespace dls
 			Eigen::Vector3d getFootPosition(const JointState &q,
 											const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFramePosition(q, this->getLink("trunk"), foot);
+				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
 			};
 
 			Eigen::Vector3d getFootPosition(const JointDataMapPair<double> &q,
 											const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFramePosition(q, this->getLink("trunk"), foot);
+				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
 			};
 
 			Eigen::Matrix3d getFootOrientation(const JointState &q,
 											   const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFrameOrientation(q, this->getLink("trunk"), foot);
+				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
 			};
 
 			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
 											   const std::shared_ptr<Frame> foot) override
 			{
-				return this->getFrameOrientation(q, this->getLink("trunk"), foot);
+				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
 			};
 
 			Eigen::Matrix4d getFootPose(const JointState &q,
@@ -234,26 +234,26 @@ namespace dls
 								 const std::shared_ptr<LimbBase> leg,
 								 Eigen::Vector3d &footPos)
 			{
-				footPos = this->getFramePosition(q, this->getLink("trunk"), leg->getEndEffector());
+				footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
 			void getFootPosition(const JointDataMapPair<double> &q,
 								 const std::shared_ptr<LimbBase> leg,
 								 Eigen::Vector3d &footPos)
 			{
-				footPos = this->getFramePosition(q, this->getLink("trunk"), leg->getEndEffector());
+				footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
 			Eigen::Matrix3d getFootOrientation(const JointState &q,
 											   const std::shared_ptr<LimbBase> leg) override
 			{
-				return this->getFrameOrientation(q, this->getLink("trunk"), leg->getEndEffector());
+				return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
 			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
 											   const std::shared_ptr<LimbBase> leg) override
 			{
-				return this->getFrameOrientation(q, this->getLink("trunk"), leg->getEndEffector());
+				return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
 			Eigen::Matrix4d getFootPose(const JointState &q,
@@ -354,12 +354,12 @@ namespace dls
 std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 {
 	std::shared_ptr<dls::robotlib::Joint> haa = std::make_shared<dls::robotlib::Joint>(legName + "_HAA");
-	std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_assembly");
+	std::shared_ptr<dls::robotlib::Link> assembly = std::make_shared<dls::robotlib::Link>(legName + "_ASSEMBLY");
 	std::shared_ptr<dls::robotlib::Joint> hfe = std::make_shared<dls::robotlib::Joint>(legName + "_HFE");
 
-	std::shared_ptr<dls::robotlib::Link> upperleg = std::make_shared<dls::robotlib::Link>(legName + "_upperleg");
+	std::shared_ptr<dls::robotlib::Link> upperleg = std::make_shared<dls::robotlib::Link>(legName + "_UPPERLEG");
 	std::shared_ptr<dls::robotlib::Joint> kfe = std::make_shared<dls::robotlib::Joint>(legName + "_KFE");
-	std::shared_ptr<dls::robotlib::Link> lowerleg = std::make_shared<dls::robotlib::Link>(legName + "_lowerleg");
+	std::shared_ptr<dls::robotlib::Link> lowerleg = std::make_shared<dls::robotlib::Link>(legName + "_LOWERLEG");
 
 	return std::make_shared<dls::robotlib::DummyLeg>(legName,
 													 std::array<std::shared_ptr<dls::robotlib::Joint>, dls::robotlib::NJOINTS>({haa, hfe, kfe}),
@@ -368,7 +368,7 @@ std::shared_ptr<dls::robotlib::DummyLeg> makeLeg(const std::string &legName)
 
 extern "C" std::shared_ptr<dls::robotlib::RobotBase> createRobot_t()
 {
-	const std::shared_ptr<dls::robotlib::Trunk> trunk = std::make_shared<dls::robotlib::Trunk>("trunk");
+	const std::shared_ptr<dls::robotlib::Trunk> trunk = std::make_shared<dls::robotlib::Trunk>("TRUNK");
 	const std::array<std::shared_ptr<dls::robotlib::LimbBase>, dls::robotlib::NLEGS> legs(
 		{makeLeg("LF"),
 		 makeLeg("RF"),
