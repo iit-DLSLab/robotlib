@@ -74,8 +74,8 @@ TEST(RobotBaseUnitTests, getFramePosition)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Vector3d frame_position = dummy_quadruped->getFramePosition(joint_state,
-                                                                       dummy_quadruped->getLink("trunk"),
-                                                                       dummy_quadruped->getLink("LF_lowerleg"));
+                                                                       dummy_quadruped->getLink("TRUNK"),
+                                                                       dummy_quadruped->getLink("LF_LOWERLEG"));
 
     /// Assert conditions
     ASSERT_EQ(frame_position, Eigen::Vector3d().setZero());
@@ -89,8 +89,8 @@ TEST(RobotBaseUnitTests, getFrameOrientation)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix3d frame_orientation = dummy_quadruped->getFrameOrientation(joint_state,
-                                                                             dummy_quadruped->getLink("trunk"),
-                                                                             dummy_quadruped->getLink("LF_lowerleg"));
+                                                                             dummy_quadruped->getLink("TRUNK"),
+                                                                             dummy_quadruped->getLink("LF_LOWERLEG"));
 
     /// Assert conditions
     ASSERT_EQ(frame_orientation, Eigen::Matrix3d().setZero());
@@ -104,8 +104,8 @@ TEST(RobotBaseUnitTests, getFramePose)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix4d frame_pose_dq = dummy_quadruped->getFramePose(joint_state,
-                                                                  dummy_quadruped->getLink("trunk"),
-                                                                  dummy_quadruped->getLink("LF_upperleg"));
+                                                                  dummy_quadruped->getLink("TRUNK"),
+                                                                  dummy_quadruped->getLink("LF_UPPERLEG"));
     /// Ground truth
     Eigen::Matrix4d frame_pose_gt;
     frame_pose_gt.setZero();
@@ -124,7 +124,7 @@ TEST(RobotBaseUnitTests, getFootPosition)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Vector3d foot_position = dummy_quadruped->getFootPosition(joint_state,
-                                                                     dummy_quadruped->getLink("LF_lowerleg"));
+                                                                     dummy_quadruped->getLink("LF_LOWERLEG"));
 
     /// Assert conditions
     ASSERT_EQ(foot_position, Eigen::Vector3d().setZero());
@@ -138,7 +138,7 @@ TEST(RobotBaseUnitTests, getFootOrientation)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix3d foot_orientation = dummy_quadruped->getFootOrientation(joint_state,
-                                                                           dummy_quadruped->getLink("LF_lowerleg"));
+                                                                           dummy_quadruped->getLink("LF_LOWERLEG"));
 
     /// Assert conditions
     ASSERT_EQ(foot_orientation, Eigen::Matrix3d().setZero());
@@ -152,7 +152,7 @@ TEST(RobotBaseUnitTests, getFootPose)
     auto joint_state = dummy_quadruped->makeJointState();
 
     Eigen::Matrix4d foot_pose_dq = dummy_quadruped->getFootPose(joint_state,
-                                                                dummy_quadruped->getLink("LF_lowerleg"));
+                                                                dummy_quadruped->getLink("LF_LOWERLEG"));
 
     /// Ground truth
     Eigen::Matrix4d foot_pose_gt;
@@ -169,10 +169,10 @@ TEST(RobotBaseUnitTests, getLink)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto link_dq = dummy_quadruped->getLink("LF_assembly");
+    auto link_dq = dummy_quadruped->getLink("LF_ASSEMBLY");
 
     /// Ground truth
-    dls::robotlib::Link link_gt("LF_assembly"); //TODO : generalize the test for all the links
+    dls::robotlib::Link link_gt("LF_ASSEMBLY"); //TODO : generalize the test for all the links
 
     /// Assert conditions
     ASSERT_EQ(link_dq->getName(), link_gt.getName());
@@ -292,7 +292,7 @@ TEST(RobotBaseUnitTests, makeFootJacobian)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto foot = dummy_quadruped->getLink("LF_upperleg");
+    auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
 
     auto jacobian = dummy_quadruped->makeFootJacobian(foot);
 
@@ -341,7 +341,7 @@ TEST(RobotBaseUnitTests, makeJacobian)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto foot = dummy_quadruped->getLink("LF_upperleg");
+    auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
 
     dummy_quadruped->makeJacobian(foot, foot);
 }
@@ -354,18 +354,18 @@ TEST(RobotBaseUnitTests, joint_parent_child)
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
         //joint name, parent name, child name
-        {"LF_HAA", std::make_pair("trunk", "LF_assembly")},
-        {"LF_HFE", std::make_pair("LF_assembly", "LF_upperleg")},
-        {"LF_KFE", std::make_pair("LF_upperleg", "LF_lowerleg")},
-        {"RF_HAA", std::make_pair("trunk", "RF_assembly")},
-        {"RF_HFE", std::make_pair("RF_assembly", "RF_upperleg")},
-        {"RF_KFE", std::make_pair("RF_upperleg", "RF_lowerleg")},
-        {"LH_HAA", std::make_pair("trunk", "LH_assembly")},
-        {"LH_HFE", std::make_pair("LH_assembly", "LH_upperleg")},
-        {"LH_KFE", std::make_pair("LH_upperleg", "LH_lowerleg")},
-        {"RH_HAA", std::make_pair("trunk", "RH_assembly")},
-        {"RH_HFE", std::make_pair("RH_assembly", "RH_upperleg")},
-        {"RH_KFE", std::make_pair("RH_upperleg", "RH_lowerleg")},
+        {"LF_HAA", std::make_pair("TRUNK", "LF_ASSEMBLY")},
+        {"LF_HFE", std::make_pair("LF_ASSEMBLY", "LF_UPPERLEG")},
+        {"LF_KFE", std::make_pair("LF_UPPERLEG", "LF_LOWERLEG")},
+        {"RF_HAA", std::make_pair("TRUNK", "RF_ASSEMBLY")},
+        {"RF_HFE", std::make_pair("RF_ASSEMBLY", "RF_UPPERLEG")},
+        {"RF_KFE", std::make_pair("RF_UPPERLEG", "RF_LOWERLEG")},
+        {"LH_HAA", std::make_pair("TRUNK", "LH_ASSEMBLY")},
+        {"LH_HFE", std::make_pair("LH_ASSEMBLY", "LH_UPPERLEG")},
+        {"LH_KFE", std::make_pair("LH_UPPERLEG", "LH_LOWERLEG")},
+        {"RH_HAA", std::make_pair("TRUNK", "RH_ASSEMBLY")},
+        {"RH_HFE", std::make_pair("RH_ASSEMBLY", "RH_UPPERLEG")},
+        {"RH_KFE", std::make_pair("RH_UPPERLEG", "RH_LOWERLEG")},
     };
 
     for (auto leg : *dummy_quadruped->getLegs())
@@ -387,18 +387,18 @@ TEST(RobotBaseUnitTests, link_parent_child)
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
         //link name, parent name, child name
-        {"LF_assembly", std::make_pair("LF_HAA", "LF_HFE")},
-        {"LF_upperleg", std::make_pair("LF_HFE", "LF_KFE")},
-        {"LF_lowerleg", std::make_pair("LF_KFE", "")},
-        {"RF_assembly", std::make_pair("RF_HAA", "RF_HFE")},
-        {"RF_upperleg", std::make_pair("RF_HFE", "RF_KFE")},
-        {"RF_lowerleg", std::make_pair("RF_KFE", "")},
-        {"LH_assembly", std::make_pair("LH_HAA", "LH_HFE")},
-        {"LH_upperleg", std::make_pair("LH_HFE", "LH_KFE")},
-        {"LH_lowerleg", std::make_pair("LH_KFE", "")},
-        {"RH_assembly", std::make_pair("RH_HAA", "RH_HFE")},
-        {"RH_upperleg", std::make_pair("RH_HFE", "RH_KFE")},
-        {"RH_lowerleg", std::make_pair("RH_KFE", "")}};
+        {"LF_ASSEMBLY", std::make_pair("LF_HAA", "LF_HFE")},
+        {"LF_UPPERLEG", std::make_pair("LF_HFE", "LF_KFE")},
+        {"LF_LOWERLEG", std::make_pair("LF_KFE", "")},
+        {"RF_ASSEMBLY", std::make_pair("RF_HAA", "RF_HFE")},
+        {"RF_UPPERLEG", std::make_pair("RF_HFE", "RF_KFE")},
+        {"RF_LOWERLEG", std::make_pair("RF_KFE", "")},
+        {"LH_ASSEMBLY", std::make_pair("LH_HAA", "LH_HFE")},
+        {"LH_UPPERLEG", std::make_pair("LH_HFE", "LH_KFE")},
+        {"LH_LOWERLEG", std::make_pair("LH_KFE", "")},
+        {"RH_ASSEMBLY", std::make_pair("RH_HAA", "RH_HFE")},
+        {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
+        {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}};
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
