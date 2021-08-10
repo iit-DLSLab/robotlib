@@ -184,10 +184,10 @@ TEST(RobotBaseUnitTests, getJoint)
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto joint_dq = dummy_quadruped->getJoint("LF_hfe");
+    auto joint_dq = dummy_quadruped->getJoint("LF_HFE");
 
     /// Ground truth
-    dls::robotlib::Joint joint_gt("LF_hfe");
+    dls::robotlib::Joint joint_gt("LF_HFE");
 
     /// Assert conditions
     ASSERT_EQ(joint_dq->getName(), joint_gt.getName());
@@ -354,18 +354,18 @@ TEST(RobotBaseUnitTests, joint_parent_child)
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
         //joint name, parent name, child name
-        {"LF_haa", std::make_pair("trunk", "LF_assembly")},
-        {"LF_hfe", std::make_pair("LF_assembly", "LF_upperleg")},
-        {"LF_kfe", std::make_pair("LF_upperleg", "LF_lowerleg")},
-        {"RF_haa", std::make_pair("trunk", "RF_assembly")},
-        {"RF_hfe", std::make_pair("RF_assembly", "RF_upperleg")},
-        {"RF_kfe", std::make_pair("RF_upperleg", "RF_lowerleg")},
-        {"LH_haa", std::make_pair("trunk", "LH_assembly")},
-        {"LH_hfe", std::make_pair("LH_assembly", "LH_upperleg")},
-        {"LH_kfe", std::make_pair("LH_upperleg", "LH_lowerleg")},
-        {"RH_haa", std::make_pair("trunk", "RH_assembly")},
-        {"RH_hfe", std::make_pair("RH_assembly", "RH_upperleg")},
-        {"RH_kfe", std::make_pair("RH_upperleg", "RH_lowerleg")},
+        {"LF_HAA", std::make_pair("trunk", "LF_assembly")},
+        {"LF_HFE", std::make_pair("LF_assembly", "LF_upperleg")},
+        {"LF_KFE", std::make_pair("LF_upperleg", "LF_lowerleg")},
+        {"RF_HAA", std::make_pair("trunk", "RF_assembly")},
+        {"RF_HFE", std::make_pair("RF_assembly", "RF_upperleg")},
+        {"RF_KFE", std::make_pair("RF_upperleg", "RF_lowerleg")},
+        {"LH_HAA", std::make_pair("trunk", "LH_assembly")},
+        {"LH_HFE", std::make_pair("LH_assembly", "LH_upperleg")},
+        {"LH_KFE", std::make_pair("LH_upperleg", "LH_lowerleg")},
+        {"RH_HAA", std::make_pair("trunk", "RH_assembly")},
+        {"RH_HFE", std::make_pair("RH_assembly", "RH_upperleg")},
+        {"RH_KFE", std::make_pair("RH_upperleg", "RH_lowerleg")},
     };
 
     for (auto leg : *dummy_quadruped->getLegs())
@@ -387,18 +387,18 @@ TEST(RobotBaseUnitTests, link_parent_child)
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
         //link name, parent name, child name
-        {"LF_assembly", std::make_pair("LF_haa", "LF_hfe")},
-        {"LF_upperleg", std::make_pair("LF_hfe", "LF_kfe")},
-        {"LF_lowerleg", std::make_pair("LF_kfe", "")},
-        {"RF_assembly", std::make_pair("RF_haa", "RF_hfe")},
-        {"RF_upperleg", std::make_pair("RF_hfe", "RF_kfe")},
-        {"RF_lowerleg", std::make_pair("RF_kfe", "")},
-        {"LH_assembly", std::make_pair("LH_haa", "LH_hfe")},
-        {"LH_upperleg", std::make_pair("LH_hfe", "LH_kfe")},
-        {"LH_lowerleg", std::make_pair("LH_kfe", "")},
-        {"RH_assembly", std::make_pair("RH_haa", "RH_hfe")},
-        {"RH_upperleg", std::make_pair("RH_hfe", "RH_kfe")},
-        {"RH_lowerleg", std::make_pair("RH_kfe", "")}};
+        {"LF_assembly", std::make_pair("LF_HAA", "LF_HFE")},
+        {"LF_upperleg", std::make_pair("LF_HFE", "LF_KFE")},
+        {"LF_lowerleg", std::make_pair("LF_KFE", "")},
+        {"RF_assembly", std::make_pair("RF_HAA", "RF_HFE")},
+        {"RF_upperleg", std::make_pair("RF_HFE", "RF_KFE")},
+        {"RF_lowerleg", std::make_pair("RF_KFE", "")},
+        {"LH_assembly", std::make_pair("LH_HAA", "LH_HFE")},
+        {"LH_upperleg", std::make_pair("LH_HFE", "LH_KFE")},
+        {"LH_lowerleg", std::make_pair("LH_KFE", "")},
+        {"RH_assembly", std::make_pair("RH_HAA", "RH_HFE")},
+        {"RH_upperleg", std::make_pair("RH_HFE", "RH_KFE")},
+        {"RH_lowerleg", std::make_pair("RH_KFE", "")}};
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
