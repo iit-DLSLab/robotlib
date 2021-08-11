@@ -31,6 +31,20 @@ namespace dls
                 const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const int id) { return (*legs_)[id]; };
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const int id) { return (*arms_)[id]; };
+                
+                // template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>      /// NB: TODO
+                // const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNextLeg(const std::shared_ptr<LimbBase>& leg){
+                //         for(auto it_leg = (*legs_).begin();it_leg<(*legs_).end(); ++it_leg){
+                //                 if (it_leg->getName().compare(leg->getName()) == 0){
+                //                         // if (it_leg == ){
+                //                         //         std::cout << "You are trying to get the next leg of the last one, which does not exist. The last leg is returned by default";
+                //                         //         return legs_[i]; 
+                //                         // }
+                //                         // else
+                //                                 return *(it_leg+1);
+                //                 }
+                //         }
+                // }
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS()

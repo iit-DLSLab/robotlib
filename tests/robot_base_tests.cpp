@@ -681,3 +681,21 @@ TEST(RobotBaseUnitTests, jointDataMapPair)
         std::cout << pos.second.transpose() << std::endl;
     }
 }
+
+// TEST(RobotBaseUnitTests, getNextLeg)     ///TODO
+// {
+//     std::cout << "TODO: getNextLeg TEST" << std::endl;
+
+//     /// Dummy quadruped
+//     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+//     /// Groud truth
+//     //...
+
+//     Eigen::Vector3d p;
+//     p.setZero();
+//     for (auto leg : *(dummy_quadruped->getLegs()))
+//     {
+//         std::cout << "Leg: " << leg->getName() << ", Next leg: " << robot->getNextLeg(leg)->getName() << std::endl;
+//     }
+// }

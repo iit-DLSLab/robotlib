@@ -627,6 +627,8 @@ namespace dls
             virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
             virtual const std::shared_ptr<LimbBase> getArm(const int id) = 0;
 
+            // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
+
             virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
             virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() = 0;
 
