@@ -699,3 +699,37 @@ TEST(RobotBaseUnitTests, jointDataMapPair)
 //         std::cout << "Leg: " << leg->getName() << ", Next leg: " << robot->getNextLeg(leg)->getName() << std::endl;
 //     }
 // }
+
+
+TEST(RobotBaseUnitTests, jacobian_operator_equal)
+{
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    auto feetJac = dummy_quadruped->makeFeetJacobian();
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << "FOOT JAC LEG: " << std::endl;
+        feetJac[leg] << 10, 10, 10,
+            20, 20, 20,
+            30, 30, 30,
+            40, 40, 40,
+            50, 50, 50,
+            60, 60, 60;
+        std::cout << feetJac[leg] << std::endl;
+    }
+
+    feetJac["LF"] << 5, 5, 5,
+        5, 5, 5,
+        5, 5, 5,
+        6, 6, 6,
+        6, 6, 6,
+        6, 6, 6;
+
+    feetJac["RH"] = feetJac["LF"];
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << leg->getName() << std::endl;
+        std::cout << feetJac[leg] << std::endl;
+    }
+}

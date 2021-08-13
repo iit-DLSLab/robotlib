@@ -577,6 +577,18 @@ namespace dls
                     return Map(&linearMatrix(0, 0), 3, nJoints_);
                 };
 
+                Jacobian &operator=(Jacobian &other)            ///NB: the = operator assumes that nJoints of other is equal to this!
+                {
+                    nJoints_ = other.getNJoints();              ///do this is redundant...
+
+                    for (int i = 0; i < 6 * nJoints_; ++i)
+                    {
+                        data_[i] = other.data_[i];
+                    } 
+
+                    return *this;
+                }
+
             private:
                 Jacobian(const int nJoints) : Map(NULL, 6, nJoints), nJoints_(nJoints)
                 {
@@ -604,11 +616,6 @@ namespace dls
 
                     new (this) Map(data_, 6, nJoints_);
                 }
-                //TODO
-                // Jacobian &operator=(Jacobian &other)
-                // {
-                //     return other;
-                // }
 
                 int getNJoints() const { return nJoints_; };
 
