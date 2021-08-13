@@ -308,7 +308,7 @@ namespace dls
                     }
                 };
 
-                void copydata(const LegDataMapPair &rhs)
+                void copydata(LegDataMapPair &rhs)                          ///NB: const is removed because of discard qualifiers error when using LDMP with Jacobian, eventually ///TODO: fix this, enabling const
                 {
                     assert(data_.size() == rhs.data_.size());
 
@@ -327,7 +327,7 @@ namespace dls
                     }
                 }
 
-                LegDataMapPair &operator=(const LegDataMapPair &rhs)
+                LegDataMapPair &operator=(LegDataMapPair &rhs)
                 {
                     if (&rhs != this)
                     {
