@@ -308,7 +308,7 @@ namespace dls
                     }
                 };
 
-                void copydata(LegDataMapPair &rhs)                          ///NB: const is removed because of discard qualifiers error when using LDMP with Jacobian, eventually ///TODO: fix this, enabling const
+                void copydata(const LegDataMapPair &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
 
@@ -327,7 +327,7 @@ namespace dls
                     }
                 }
 
-                LegDataMapPair &operator=(LegDataMapPair &rhs)
+                LegDataMapPair &operator=(const LegDataMapPair &rhs)
                 {
                     if (&rhs != this)
                     {
@@ -577,7 +577,7 @@ namespace dls
                     return Map(&linearMatrix(0, 0), 3, nJoints_);
                 };
 
-                Jacobian &operator=(Jacobian &other)            ///NB: the = operator assumes that nJoints of other is equal to this!
+                Jacobian &operator=(const Jacobian &other)            ///NB: the = operator assumes that nJoints of other is equal to this!
                 {
                     nJoints_ = other.getNJoints();              ///do this is redundant...
 
