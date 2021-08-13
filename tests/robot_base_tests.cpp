@@ -732,4 +732,34 @@ TEST(RobotBaseUnitTests, jacobian_operator_equal)
         std::cout << leg->getName() << std::endl;
         std::cout << feetJac[leg] << std::endl;
     }
+
+    auto feetJac2 = dummy_quadruped->makeFeetJacobian();
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << "FOOT JAC LEG: " << std::endl;
+        feetJac2[leg] << 1, 1, 1,
+            2, 2, 2,
+            3, 3, 3,
+            4, 4, 4,
+            5, 5, 5,
+            6, 6, 6;
+        std::cout << feetJac2[leg] << std::endl;
+    }
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << leg->getName() << std::endl;
+        std::cout << feetJac2[leg] << std::endl;
+    }
+
+    feetJac = feetJac2;
+
+
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << leg->getName() << std::endl;
+        std::cout << feetJac[leg] << std::endl;
+    }
+
 }
