@@ -20,6 +20,9 @@ namespace dls
 
 			virtual const std::shared_ptr<LimbBase> getLeg(const int id) override;
 			virtual const std::shared_ptr<LimbBase> getArm(const int id) override;
+
+            // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) override;	/// NB: TODO
+
 			virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() override;
 			virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() override;
 
