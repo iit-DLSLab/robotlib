@@ -774,15 +774,15 @@ TEST(RobotBaseUnitTests, inverseDynamics)
 
     Eigen::Matrix<double, 6, 1> v;
     Eigen::Matrix<double, 6, 1> a;
+    Eigen::Matrix<double, 6, 1> g;
     Eigen::Matrix<double, 6, 1> wrench_base; ///output
 
     auto q = dummy_quadruped->makeJointState();
     auto dq = dummy_quadruped->makeJointState();
     auto ddq = dummy_quadruped->makeJointState();
-    auto g = dummy_quadruped->makeJointState();
     auto tau = dummy_quadruped->makeJointState();
 
-    dummy_quadruped->inverseDynamics(v, a, q, dq, ddq, g, wrench_base, tau);
+    dummy_quadruped->inverseDynamics(v, a, g, q, dq, ddq, wrench_base, tau);
 }
 
 TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)

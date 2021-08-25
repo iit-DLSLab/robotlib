@@ -910,10 +910,10 @@ namespace dls
 
             virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                          const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                         const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                          const JointState &joint_position,
                                          const JointState &joint_velocity,
                                          const JointState &joint_acceleration,
-                                         const JointState &gravity_vector,
                                          const Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                          const JointState &tau_joints) = 0;              ///output
 
