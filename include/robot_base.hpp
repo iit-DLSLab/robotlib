@@ -577,14 +577,14 @@ namespace dls
                     return Map(&linearMatrix(0, 0), 3, nJoints_);
                 };
 
-                Jacobian &operator=(const Jacobian &other)            ///NB: the = operator assumes that nJoints of other is equal to this!
+                Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
                 {
-                    nJoints_ = other.getNJoints();              ///do this is redundant...
+                    nJoints_ = other.getNJoints(); ///do this is redundant...
 
                     for (int i = 0; i < 6 * nJoints_; ++i)
                     {
                         data_[i] = other.data_[i];
-                    } 
+                    }
 
                     return *this;
                 }
@@ -831,7 +831,21 @@ namespace dls
                                            JointState &joint_velocity,
                                            JointState &joint_acceleration) = 0;
 
-            std::string getName() { return name_; };
+            virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
+                                         const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                         const JointState &joint_position,
+                                         const JointState &joint_velocity,
+                                         const JointState &joint_acceleration,
+                                         const JointState &gravity_vector,
+                                         const Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                         const JointState &tau_joints) = 0;              ///output
+
+            virtual double getRobotMass() = 0; ///TODO: compute total mass from links and trunk masses
+
+            std::string getName()
+            {
+                return name_;
+            };
 
         protected:
             const std::string name_;

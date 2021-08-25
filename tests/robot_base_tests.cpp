@@ -700,7 +700,6 @@ TEST(RobotBaseUnitTests, jointDataMapPair)
 //     }
 // }
 
-
 TEST(RobotBaseUnitTests, jacobian_operator_equal)
 {
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
@@ -755,11 +754,33 @@ TEST(RobotBaseUnitTests, jacobian_operator_equal)
 
     feetJac = feetJac2;
 
-
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
         std::cout << leg->getName() << std::endl;
         std::cout << feetJac[leg] << std::endl;
     }
+}
 
+TEST(RobotBaseUnitTests, getRobotMass)
+{
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::cout << dummy_quadruped->getRobotMass() << std::endl;
+}
+
+TEST(RobotBaseUnitTests, inverseDynamics)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    Eigen::Matrix<double, 6, 1> v;
+    Eigen::Matrix<double, 6, 1> a;
+    Eigen::Matrix<double, 6, 1> wrench_base; ///output
+
+    auto q = dummy_quadruped->makeJointState();
+    auto dq = dummy_quadruped->makeJointState();
+    auto ddq = dummy_quadruped->makeJointState();
+    auto g = dummy_quadruped->makeJointState();
+    auto tau = dummy_quadruped->makeJointState();
+
+    dummy_quadruped->inverseDynamics(v, a, q, dq, ddq, g, wrench_base, tau);
 }

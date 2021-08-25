@@ -347,6 +347,20 @@ namespace dls
 			{
 				std::cout << "Inverse Kinematics 2" << std::endl;
 			};
+
+			void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
+								 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+								 const JointState &joint_position,
+								 const JointState &joint_velocity,
+								 const JointState &joint_acceleration,
+								 const JointState &gravity_vector,
+								 const Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+								 const JointState &tau_joints)					 ///output
+			{
+				std::cout << "Inverse Dynamics" << std::endl;
+			}
+
+			double getRobotMass() { return 80; } ///TODO: compute total mass from links and trunk masses (this could be done in robotlib)
 		};
 	} //namespace robotlib
 } //namespace dls
