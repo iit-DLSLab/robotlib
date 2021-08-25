@@ -784,3 +784,77 @@ TEST(RobotBaseUnitTests, inverseDynamics)
 
     dummy_quadruped->inverseDynamics(v, a, q, dq, ddq, g, wrench_base, tau);
 }
+
+TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    double data_double{1};
+    double data{1};
+    typedef double type;
+    // typedef Eigen::Vector3d type;
+    // Eigen::Vector3d data;
+    // data.setOnes();
+
+    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
+    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
+    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
+    auto leg_dmp = dummy_quadruped->makeLegDataMapPair<type>(data);
+    auto link_dmp = dummy_quadruped->makeLinkDataMapPair<type>(data);
+    auto joint_dmp = dummy_quadruped->makeJointDataMapPair<type>(data);
+    auto jacobian_dmp = dummy_quadruped->makeFeetJacobian(data_double);
+
+    std::cout << "leg_dm\n";
+    for (auto data : leg_dm)
+    {
+        std::cout << data << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << "link_dm\n";
+    for (auto data : link_dm)
+    {
+        std::cout << data << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << "joint_dm\n";
+    for (auto data : joint_dm)
+    {
+        std::cout << data << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << "leg_dmp\n";
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << leg_dmp[leg] << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << "link_dmp\n";
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        for (auto link : *(leg->getLinks()))
+            std::cout << link_dmp[link] << " ";
+        std::cout << "\n***\n";
+    }
+    std::cout << "\n";
+
+    std::cout << "joint_dmp\n";
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        for (auto joint : *(leg->getJoints()))
+            std::cout << joint_dmp[joint] << " ";
+        std::cout << "\n***\n";
+    }
+    std::cout << "\n";
+
+    std::cout << "jacobian_dmp\n";
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        std::cout << jacobian_dmp[leg] << "\n";
+        std::cout << "***\n";
+    }
+    std::cout << "\n";
+}
