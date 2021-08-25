@@ -919,6 +919,8 @@ namespace dls
 
             virtual double getRobotMass() = 0; ///TODO: compute total mass from links and trunk masses
 
+            virtual Eigen::Vector3d getRobotCoM() = 0;
+
             std::string getName()
             {
                 return name_;

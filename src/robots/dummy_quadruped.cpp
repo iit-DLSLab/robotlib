@@ -361,6 +361,8 @@ namespace dls
 			}
 
 			double getRobotMass() { return 80; } ///TODO: compute total mass from links and trunk masses (this could be done in robotlib)
+
+			Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 		};
 	} //namespace robotlib
 } //namespace dls

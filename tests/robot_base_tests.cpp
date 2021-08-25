@@ -858,3 +858,11 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     }
     std::cout << "\n";
 }
+
+TEST(RobotBaseUnitTests, getRobotCoM)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    std::cout << dummy_quadruped->getRobotCoM() << std::endl;
+}
