@@ -89,6 +89,14 @@ namespace dls
                 {
                     data_ = new Data[nLegs_];
                 }
+                LegDataMap(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
+                {
+                    data_ = new Data[nLegs_];
+                    for (Data &d : *this)
+                    {
+                        d = data;
+                    }
+                }
 
                 Data *data_;
                 const int nLegs_;
@@ -157,6 +165,15 @@ namespace dls
                 JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
                     data_ = new Data[nJoints_];
+                }
+
+                JointDataMap(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
+                {
+                    data_ = new Data[nJoints_];
+                    for (Data &d : *this)
+                    {
+                        d = data;
+                    }
                 }
 
                 Data *data_;
@@ -263,6 +280,15 @@ namespace dls
                     data_ = new Data[nLinks_];
                 }
 
+                LinkDataMap(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
+                {
+                    data_ = new Data[nLinks_];
+                    for (Data &d : *this)
+                    {
+                        d = data;
+                    }
+                }
+
                 Data *data_;
                 const int nLinks_;
             };
@@ -350,6 +376,15 @@ namespace dls
                     for (int i = 0; i < nLegs_; ++i)
                     {
                         PairType pair(robot->getLeg(i), Data()); //shared_pointers?
+                        data_.push_back(pair);
+                    }
+                }
+
+                LegDataMapPair(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
+                {
+                    for (int i = 0; i < nLegs_; ++i)
+                    {
+                        PairType pair(robot->getLeg(i), Data(data)); //shared_pointers?
                         data_.push_back(pair);
                     }
                 }
@@ -443,6 +478,18 @@ namespace dls
                         for (auto link : *(leg->getLinks()))
                         {
                             PairType pair(link, Data());
+                            data_.push_back(pair);
+                        }
+                    }
+                }
+                LinkDataMapPair(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
+                {
+                    const int nLegs = robot->getNLEGS();
+                    for (auto leg : *(robot->getLegs()))
+                    {
+                        for (auto link : *(leg->getLinks()))
+                        {
+                            PairType pair(link, Data(data));
                             data_.push_back(pair);
                         }
                     }
@@ -545,6 +592,21 @@ namespace dls
                         }
                     }
                 }
+                JointDataMapPair(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
+                {
+                    const int nLegs = robot->getNLEGS();
+                    for (int i = 0; i < nLegs; i++)
+                    {
+                        auto leg = robot->getLeg(i);
+                        int nJoints = leg->getNJoints();
+                        for (int j = 0; j < nJoints; j++)
+                        {
+                            std::shared_ptr<Joint> joint = leg->getJoint(j);
+                            PairType pair(joint, Data(data));
+                            data_.push_back(pair);
+                        }
+                    }
+                }
 
                 const int nJoints_;
                 std::vector<PairType> data_;
@@ -577,26 +639,26 @@ namespace dls
                     return Map(&linearMatrix(0, 0), 3, nJoints_);
                 };
 
-                Jacobian &operator=(const Jacobian &other)            ///NB: the = operator assumes that nJoints of other is equal to this!
+                Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
                 {
-                    nJoints_ = other.getNJoints();              ///do this is redundant...
+                    nJoints_ = other.getNJoints(); ///do this is redundant...
 
                     for (int i = 0; i < 6 * nJoints_; ++i)
                     {
                         data_[i] = other.data_[i];
-                    } 
+                    }
 
                     return *this;
                 }
 
             private:
-                Jacobian(const int nJoints) : Map(NULL, 6, nJoints), nJoints_(nJoints)
+                Jacobian(const int nJoints, const double data = 0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
                 {
                     // Data initialization (6: linear and angular part of the jacobian)
                     data_ = new double[6 * nJoints_];
                     for (int i = 0; i < 6 * nJoints_; ++i)
                     {
-                        data_[i] = 0;
+                        data_[i] = data;
                     }
 
                     new (this) Map(data_, 6, nJoints_);
@@ -646,14 +708,22 @@ namespace dls
             // Create a leg data map
             template <class Data>
             LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
+            // Create a leg data map
+            template <class Data>
+            LegDataMap<Data> makeLegDataMap(const Data &data) { return LegDataMap<Data>(this, data); } // NRT
 
             // Create a joint data map
             template <class Data>
             JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
+            // Create a joint data map
+            template <class Data>
+            JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); } // NRT
 
             // Create a link data map
             template <class Data>
             LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
+            template <class Data>
+            LinkDataMap<Data> makeLinkDataMap(const Data &data) { return LinkDataMap<Data>(this, data); } // NRT
 
             // Create a joint state
             JointState makeJointState() { return JointState(this); } // NRT
@@ -661,14 +731,21 @@ namespace dls
             // Create a leg data map pair
             template <class Data>
             LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); } // NRT
+            // Create a leg data map pair
+            template <class Data>
+            LegDataMapPair<Data> makeLegDataMapPair(const Data &data) { return LegDataMapPair<Data>(this, data); } // NRT
 
             // Create a link data map pair
             template <class Data>
             LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); } // NRT
+            template <class Data>
+            LinkDataMapPair<Data> makeLinkDataMapPair(const Data &data) { return LinkDataMapPair<Data>(this, data); } // NRT
 
             // Create a joint data map pair
             template <class Data>
             JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
+            template <class Data>
+            JointDataMapPair<Data> makeJointDataMapPair(const Data &data) { return JointDataMapPair<Data>(this, data); } // NRT
 
             // TODO
             Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
@@ -691,18 +768,18 @@ namespace dls
             };
 
             // TODO: it should use makeJacobian
-            Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg) // NRT
+            Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0) // NRT
             {
-                return Jacobian(leg->getNJoints());
+                return Jacobian(leg->getNJoints(), data);
             };
 
-            LegDataMapPair<Jacobian> makeFeetJacobian() // NRT
+            LegDataMapPair<Jacobian> makeFeetJacobian(const double data = 0) // NRT
             {
                 auto feetJac = this->makeLegDataMapPair<Jacobian>();
 
                 for (auto leg : *(this->getLegs()))
                 {
-                    feetJac[leg].init(makeFootJacobian(leg));
+                    feetJac[leg].init(makeFootJacobian(leg, data));
                 }
                 return feetJac;
             };
@@ -831,7 +908,21 @@ namespace dls
                                            JointState &joint_velocity,
                                            JointState &joint_acceleration) = 0;
 
-            std::string getName() { return name_; };
+            virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
+                                         const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                         const JointState &joint_position,
+                                         const JointState &joint_velocity,
+                                         const JointState &joint_acceleration,
+                                         const JointState &gravity_vector,
+                                         const Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                         const JointState &tau_joints) = 0;              ///output
+
+            virtual double getRobotMass() = 0; ///TODO: compute total mass from links and trunk masses
+
+            std::string getName()
+            {
+                return name_;
+            };
 
         protected:
             const std::string name_;
