@@ -1,5 +1,7 @@
 #include "robot_factory.hpp"
-#include <filesystem>
+
+// TODO: use #include<filesystem> once all dls images are updated with Ubuntu20 (and gcc version > 8)
+#include <experimental/filesystem>	
 
 namespace dls
 {
@@ -9,12 +11,12 @@ namespace dls
 		{
 			std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-			if (std::filesystem::exists("/usr/lib/robots/" + library))
+			if (std::experimental::filesystem::exists("/usr/lib/robots/" + library))
 			{
 				lib_path = "/usr/lib/robots/" + library;
 			}
 
-			else if (std::filesystem::exists("./" + library))
+			else if (std::experimental::filesystem::exists("./" + library))
 			{
 				lib_path = "./" + library;
 			}

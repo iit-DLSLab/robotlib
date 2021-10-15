@@ -7,6 +7,10 @@ set(PATCH 0)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
+#used only for issues with #include <experimental/filesystem>
+#TODO: delete it once dls images are updated with Ubuntu20 (and gcc version > 8)
+link_libraries(stdc++fs)	
+
 find_package(Eigen3 REQUIRED NO_MODULE)
 
 add_compile_options(
