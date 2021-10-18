@@ -432,7 +432,7 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
     /// Groud truth
     //...
 
-    auto footPos = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
 
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
@@ -441,12 +441,12 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
     }
 }
 
-TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
+TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 {
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    auto footPos = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
     auto q = dummy_quadruped->makeJointState();
 
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -463,9 +463,9 @@ TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
         std::cout << fp.first->getName() << " " << fp.second.transpose() << std::endl;
     }
 
-    /// LegDataMapPair Copy
+    /// LegDataMap Copy
 
-    auto footPosCopy = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto footPosCopy = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
     auto qCopy = dummy_quadruped->makeJointState();
 
     for (auto legCopy : *(dummy_quadruped->getLegs()))
@@ -483,9 +483,9 @@ TEST(RobotBaseUnitTests, legDataMapPairCopyOperators)
         std::cout << fpCopy.first->getName() << " " << fpCopy.second.transpose() << std::endl;
     }
 
-    /// LegDataMapPair Copy AssignAll
+    /// LegDataMap Copy AssignAll
 
-    auto footPosAssign = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto footPosAssign = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
     auto qAssign = dummy_quadruped->makeJointState();
 
     footPosAssign = Eigen::Vector3d().setOnes();
@@ -582,9 +582,9 @@ TEST(RobotBaseUnitTests, footJacobian)
     }
 }
 
-TEST(RobotBaseUnitTests, legDataMapPair)
+TEST(RobotBaseUnitTests, LegDataMap)
 {
-    std::cout << "TODO: LegDataMapPair TEST" << std::endl;
+    std::cout << "TODO: LegDataMap TEST" << std::endl;
 
     /// Dummy quadruped
     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
@@ -592,7 +592,7 @@ TEST(RobotBaseUnitTests, legDataMapPair)
     /// Groud truth
     //...
 
-    auto footPos = dummy_quadruped->makeLegDataMapPair<Eigen::Vector3d>();
+    auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
     auto footJac = dummy_quadruped->makeFeetJacobian();
     auto q = dummy_quadruped->makeJointState();
 
@@ -627,7 +627,7 @@ TEST(RobotBaseUnitTests, legDataMapPair)
     }
 }
 
-TEST(RobotBaseUnitTests, linkDataMapPair)
+TEST(RobotBaseUnitTests, LinkDataMap)
 {
     std::cout << "TODO: LinkDataMap TEST" << std::endl;
 
@@ -637,7 +637,7 @@ TEST(RobotBaseUnitTests, linkDataMapPair)
     /// Groud truth
     //...
 
-    auto linkPos = dummy_quadruped->makeLinkDataMapPair<Eigen::Vector3d>();
+    auto linkPos = dummy_quadruped->makeLinkDataMap<Eigen::Vector3d>();
 
     Eigen::Vector3d p;
     p.setZero();
@@ -657,7 +657,7 @@ TEST(RobotBaseUnitTests, linkDataMapPair)
     }
 }
 
-TEST(RobotBaseUnitTests, jointDataMapPair)
+TEST(RobotBaseUnitTests, JointDataMap)
 {
     std::cout << "TODO: JointDataMap TEST" << std::endl;
 
@@ -667,7 +667,7 @@ TEST(RobotBaseUnitTests, jointDataMapPair)
     /// Groud truth
     //...
 
-    auto jointPos = dummy_quadruped->makeJointDataMapPair<Eigen::Vector3d>();
+    auto jointPos = dummy_quadruped->makeJointDataMap<Eigen::Vector3d>();
 
     Eigen::Vector3d p;
     p.setZero();
@@ -801,9 +801,9 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dmp = dummy_quadruped->makeLegDataMapPair<type>(data);
-    auto link_dmp = dummy_quadruped->makeLinkDataMapPair<type>(data);
-    auto joint_dmp = dummy_quadruped->makeJointDataMapPair<type>(data);
+    auto leg_dmp = dummy_quadruped->makeLegDataMap<type>(data);
+    auto link_dmp = dummy_quadruped->makeLinkDataMap<type>(data);
+    auto joint_dmp = dummy_quadruped->makeJointDataMap<type>(data);
     auto jacobian_dmp = dummy_quadruped->makeFeetJacobian(data_double);
 
     std::cout << "leg_dmp\n";

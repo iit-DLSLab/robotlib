@@ -22,13 +22,13 @@ namespace dls
             RobotBase(const std::string &name) : name_(name){};
 
             template <class Data>
-            class LegDataMapPair
+            class LegDataMap
             {
                 using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
 
             public:
                 friend class RobotBase;
-                ~LegDataMapPair(){};
+                ~LegDataMap(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLegs_]); }
@@ -62,7 +62,7 @@ namespace dls
                     }
                 };
 
-                void copydata(const LegDataMapPair &rhs)
+                void copydata(const LegDataMap &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
 
@@ -81,7 +81,7 @@ namespace dls
                     }
                 }
 
-                LegDataMapPair &operator=(const LegDataMapPair &rhs)
+                LegDataMap &operator=(const LegDataMap &rhs)
                 {
                     if (&rhs != this)
                     {
@@ -90,7 +90,7 @@ namespace dls
                     return *this;
                 }
 
-                LegDataMapPair &operator=(const Data &defaultValue)
+                LegDataMap &operator=(const Data &defaultValue)
                 {
                     assignAll(defaultValue);
                     return *this;
@@ -99,7 +99,7 @@ namespace dls
                 int getSize() { return data_.size(); };
 
             private:
-                LegDataMapPair(RobotBase *robot) : nLegs_(robot->getNLEGS())
+                LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
                     for (int i = 0; i < nLegs_; ++i)
                     {
@@ -108,7 +108,7 @@ namespace dls
                     }
                 }
 
-                LegDataMapPair(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
+                LegDataMap(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
                 {
                     for (int i = 0; i < nLegs_; ++i)
                     {
@@ -121,13 +121,13 @@ namespace dls
             };
 
             template <class Data>
-            class LinkDataMapPair
+            class LinkDataMap
             {
                 using PairType = std::pair<std::shared_ptr<Link>, Data>;
 
             public:
                 friend class RobotBase;
-                ~LinkDataMapPair(){};
+                ~LinkDataMap(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nLinks_]); }
@@ -161,7 +161,7 @@ namespace dls
                     }
                 };
 
-                void copydata(const LinkDataMapPair &rhs)
+                void copydata(const LinkDataMap &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
 
@@ -180,7 +180,7 @@ namespace dls
                     }
                 }
 
-                LinkDataMapPair &operator=(const LinkDataMapPair &rhs)
+                LinkDataMap &operator=(const LinkDataMap &rhs)
                 {
                     if (&rhs != this)
                     {
@@ -189,7 +189,7 @@ namespace dls
                     return *this;
                 }
 
-                LinkDataMapPair &operator=(const Data &defaultValue)
+                LinkDataMap &operator=(const Data &defaultValue)
                 {
                     assignAll(defaultValue);
                     return *this;
@@ -198,7 +198,7 @@ namespace dls
                 int getSize() { return data_.size(); };
 
             private: // TODO: private
-                LinkDataMapPair(RobotBase *robot) : nLinks_(robot->getNLINKS())
+                LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
                     const int nLegs = robot->getNLEGS();
                     for (auto leg : *(robot->getLegs()))
@@ -210,7 +210,7 @@ namespace dls
                         }
                     }
                 }
-                LinkDataMapPair(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
+                LinkDataMap(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
                 {
                     const int nLegs = robot->getNLEGS();
                     for (auto leg : *(robot->getLegs()))
@@ -228,13 +228,13 @@ namespace dls
             };
 
             template <class Data>
-            class JointDataMapPair
+            class JointDataMap
             {
                 using PairType = std::pair<std::shared_ptr<Joint>, Data>;
 
             public:
                 friend class RobotBase;
-                ~JointDataMapPair(){};
+                ~JointDataMap(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
                 Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
@@ -268,7 +268,7 @@ namespace dls
                     }
                 };
 
-                void copydata(const JointDataMapPair &rhs)
+                void copydata(const JointDataMap &rhs)
                 {
                     assert(data_.size() == rhs.data_.size());
 
@@ -287,7 +287,7 @@ namespace dls
                     }
                 }
 
-                JointDataMapPair &operator=(const JointDataMapPair &rhs)
+                JointDataMap &operator=(const JointDataMap &rhs)
                 {
                     if (&rhs != this)
                     {
@@ -296,7 +296,7 @@ namespace dls
                     return *this;
                 }
 
-                JointDataMapPair &operator=(const Data &defaultValue)
+                JointDataMap &operator=(const Data &defaultValue)
                 {
                     assignAll(defaultValue);
                     return *this;
@@ -305,7 +305,7 @@ namespace dls
                 int getSize() { return data_.size(); };
 
             private:
-                JointDataMapPair(RobotBase *robot) : nJoints_(robot->getNJOINTS())
+                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
                 {
                     const int nLegs = robot->getNLEGS();
                     for (int i = 0; i < nLegs; i++)
@@ -320,7 +320,7 @@ namespace dls
                         }
                     }
                 }
-                JointDataMapPair(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
+                JointDataMap(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
                 {
                     const int nLegs = robot->getNLEGS();
                     for (int i = 0; i < nLegs; i++)
@@ -339,16 +339,16 @@ namespace dls
                 const int nJoints_;
                 std::vector<PairType> data_;
             };
-            class JointState : public JointDataMapPair<double>
+            class JointState : public JointDataMap<double>
             {
             public:
                 friend class RobotBase;
-                using JointDataMapPair<double>::operator=;
+                using JointDataMap<double>::operator=;
 
                 ~JointState(){};
 
             private:
-                JointState(RobotBase *robot) : JointDataMapPair(robot){};
+                JointState(RobotBase *robot) : JointDataMap(robot){};
             };
 
             using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
@@ -449,22 +449,22 @@ namespace dls
 
             // Create a leg data map pair
             template <class Data>
-            LegDataMapPair<Data> makeLegDataMapPair() { return LegDataMapPair<Data>(this); } // NRT
+            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
             // Create a leg data map pair
             template <class Data>
-            LegDataMapPair<Data> makeLegDataMapPair(const Data &data) { return LegDataMapPair<Data>(this, data); } // NRT
+            LegDataMap<Data> makeLegDataMap(const Data &data) { return LegDataMap<Data>(this, data); } // NRT
 
             // Create a link data map pair
             template <class Data>
-            LinkDataMapPair<Data> makeLinkDataMapPair() { return LinkDataMapPair<Data>(this); } // NRT
+            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
             template <class Data>
-            LinkDataMapPair<Data> makeLinkDataMapPair(const Data &data) { return LinkDataMapPair<Data>(this, data); } // NRT
+            LinkDataMap<Data> makeLinkDataMap(const Data &data) { return LinkDataMap<Data>(this, data); } // NRT
 
             // Create a joint data map pair
             template <class Data>
-            JointDataMapPair<Data> makeJointDataMapPair() { return JointDataMapPair<Data>(this); } // NRT
+            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
             template <class Data>
-            JointDataMapPair<Data> makeJointDataMapPair(const Data &data) { return JointDataMapPair<Data>(this, data); } // NRT
+            JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); } // NRT
 
             // TODO
             Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
@@ -492,9 +492,9 @@ namespace dls
                 return Jacobian(leg->getNJoints(), data);
             };
 
-            LegDataMapPair<Jacobian> makeFeetJacobian(const double data = 0) // NRT
+            LegDataMap<Jacobian> makeFeetJacobian(const double data = 0) // NRT
             {
-                auto feetJac = this->makeLegDataMapPair<Jacobian>();
+                auto feetJac = this->makeLegDataMap<Jacobian>();
 
                 for (auto leg : *(this->getLegs()))
                 {
@@ -503,7 +503,7 @@ namespace dls
                 return feetJac;
             };
 
-            void initFeetJacobians(LegDataMapPair<Jacobian> footJac)
+            void initFeetJacobians(LegDataMap<Jacobian> footJac)
             {
                 for (auto leg : *(this->getLegs()))
                 {
@@ -515,8 +515,8 @@ namespace dls
                                                      const std::shared_ptr<Frame> origin,
                                                      const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Vector3d getFramePosition(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Vector3d getFramePosition(const JointDataMap<double> &q,
                                                      const std::shared_ptr<Frame> origin,
                                                      const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
@@ -524,8 +524,8 @@ namespace dls
                                                         const std::shared_ptr<Frame> origin,
                                                         const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix3d getFrameOrientation(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix3d getFrameOrientation(const JointDataMap<double> &q,
                                                         const std::shared_ptr<Frame> origin,
                                                         const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
@@ -533,61 +533,61 @@ namespace dls
                                                  const std::shared_ptr<Frame> origin,
                                                  const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix4d getFramePose(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix4d getFramePose(const JointDataMap<double> &q,
                                                  const std::shared_ptr<Frame> origin,
                                                  const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
             virtual Eigen::Vector3d getFootPosition(const JointState &q,
                                                     const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Vector3d getFootPosition(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Vector3d getFootPosition(const JointDataMap<double> &q,
                                                     const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                        const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
                                                        const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                                 const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
                                                 const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
             virtual void getFootPosition(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
                                          Eigen::Vector3d &footPos) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual void getFootPosition(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual void getFootPosition(const JointDataMap<double> &q,
                                          const std::shared_ptr<LimbBase> leg,
                                          Eigen::Vector3d &footPos) = 0; //overridden by Glue
 
             virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                        const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
                                                        const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                                 const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
                                                 const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
             virtual void getFootJacobian(const JointState &q,
                                          const std::shared_ptr<LimbBase> leg,
                                          Jacobian &footJac) = 0; //overridden by Glue
 
-            /// TODO: verify if needed with JointDataMapPair<double>
-            virtual void getFootJacobian(const JointDataMapPair<double> &q,
+            /// TODO: verify if needed with JointDataMap<double>
+            virtual void getFootJacobian(const JointDataMap<double> &q,
                                          const std::shared_ptr<LimbBase> leg,
                                          Jacobian &footJac) = 0; //overridden by Glue
 
@@ -595,14 +595,14 @@ namespace dls
 
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
-            virtual LegDataMapPair<std::shared_ptr<Frame>> getFeet() = 0;
+            virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
             virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            const JointState &joint_velocity,
                                            const JointState &joint_acceleration,
-                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                           LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
+                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
 
             virtual void forwardKinematics(const Eigen::Vector3d &joint_position,
                                            const Eigen::Vector3d &joint_velocity,
@@ -620,9 +620,9 @@ namespace dls
                                            Eigen::Vector3d &joint_acceleration,
                                            const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
-            virtual void inverseKinematics(const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                           const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+            virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                            JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            JointState &joint_velocity,
                                            JointState &joint_acceleration) = 0;

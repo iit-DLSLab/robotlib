@@ -131,7 +131,7 @@ namespace dls
 				return Eigen::Vector3d().setZero();
 			};
 
-			Eigen::Vector3d getFramePosition(const JointDataMapPair<double> &q,
+			Eigen::Vector3d getFramePosition(const JointDataMap<double> &q,
 											 const std::shared_ptr<Frame> origin,
 											 const std::shared_ptr<Frame> destination) override
 			{
@@ -145,7 +145,7 @@ namespace dls
 				return Eigen::Matrix3d().setZero();
 			};
 
-			Eigen::Matrix3d getFrameOrientation(const JointDataMapPair<double> &q,
+			Eigen::Matrix3d getFrameOrientation(const JointDataMap<double> &q,
 												const std::shared_ptr<Frame> origin,
 												const std::shared_ptr<Frame> destination) override
 			{
@@ -166,7 +166,7 @@ namespace dls
 				return frame_pose;
 			};
 
-			Eigen::Matrix4d getFramePose(const JointDataMapPair<double> &q,
+			Eigen::Matrix4d getFramePose(const JointDataMap<double> &q,
 										 const std::shared_ptr<Frame> origin,
 										 const std::shared_ptr<Frame> destination) override
 			{
@@ -186,7 +186,7 @@ namespace dls
 				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
 			};
 
-			Eigen::Vector3d getFootPosition(const JointDataMapPair<double> &q,
+			Eigen::Vector3d getFootPosition(const JointDataMap<double> &q,
 											const std::shared_ptr<Frame> foot) override
 			{
 				return this->getFramePosition(q, this->getLink("TRUNK"), foot);
@@ -198,7 +198,7 @@ namespace dls
 				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
 			};
 
-			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
+			Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
 											   const std::shared_ptr<Frame> foot) override
 			{
 				return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
@@ -217,7 +217,7 @@ namespace dls
 				return foot_pose;
 			};
 
-			Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
+			Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
 										const std::shared_ptr<Frame> foot) override
 			{
 				Eigen::Matrix4d foot_pose{};
@@ -237,7 +237,7 @@ namespace dls
 				footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
-			void getFootPosition(const JointDataMapPair<double> &q,
+			void getFootPosition(const JointDataMap<double> &q,
 								 const std::shared_ptr<LimbBase> leg,
 								 Eigen::Vector3d &footPos)
 			{
@@ -250,7 +250,7 @@ namespace dls
 				return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
 			};
 
-			Eigen::Matrix3d getFootOrientation(const JointDataMapPair<double> &q,
+			Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
 											   const std::shared_ptr<LimbBase> leg) override
 			{
 				return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
@@ -269,7 +269,7 @@ namespace dls
 				return foot_pose;
 			};
 
-			Eigen::Matrix4d getFootPose(const JointDataMapPair<double> &q,
+			Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
 										const std::shared_ptr<LimbBase> leg) override
 			{
 				Eigen::Matrix4d foot_pose{};
@@ -289,21 +289,21 @@ namespace dls
 				footJac.setZero();
 			};
 
-			virtual void getFootJacobian(const JointDataMapPair<double> &q,
+			virtual void getFootJacobian(const JointDataMap<double> &q,
 										 const std::shared_ptr<LimbBase> leg,
 										 Jacobian &footJac)
 			{
 				footJac.setZero();
 			};
 
-			LegDataMapPair<std::shared_ptr<Frame>> getFeet() override
+			LegDataMap<std::shared_ptr<Frame>> getFeet() override
 			{
-				auto feet = this->makeLegDataMapPair<std::shared_ptr<Frame>>();
-				
+				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
+
 				for (auto leg : *(this->getLegs()))
-                {
+				{
 					feet[leg] = std::make_shared<Link>("link");
-                }
+				}
 
 				return feet;
 			};
@@ -311,9 +311,9 @@ namespace dls
 			void forwardKinematics(const JointState &joint_position,
 								   const JointState &joint_velocity,
 								   const JointState &joint_acceleration,
-								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-								   LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
+								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+								   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
 			{
 				std::cout << "Forward Kinematics 1" << std::endl;
 			};
@@ -340,9 +340,9 @@ namespace dls
 				std::cout << "Inverse Kinematics 1" << std::endl;
 			};
 
-			void inverseKinematics(const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-								   const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-								   const LegDataMapPair<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+			void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+								   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 								   JointState &joint_position,
 								   JointState &joint_velocity,
 								   JointState &joint_acceleration) override
