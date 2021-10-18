@@ -22,278 +22,6 @@ namespace dls
             RobotBase(const std::string &name) : name_(name){};
 
             template <class Data>
-            class LegDataMap
-            {
-            public:
-                friend class RobotBase;
-
-                ~LegDataMap()
-                {
-                    delete[] data_;
-                };
-
-                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_[nLegs_]); }
-
-                // std::shared_ptr<Data> operator[](const std::shared_ptr<LimbBase> leg)
-                // {
-                //     return data_[leg->toId()]; // leg->toId is overridden in the Glue
-                // };
-                Data &operator[](int index)
-                {
-                    assert(index >= 0 && index <= nLegs_);
-                    return data_[index];
-                }
-
-                const Data &operator[](int index) const
-                {
-                    assert(index >= 0 && index <= nLegs_);
-                    return data_[index];
-                }
-
-                void copydata(const LegDataMap &rhs)
-                {
-                    assert(nLegs_ == rhs.nLegs_); /// TODO: Implement and use getSize() method
-
-                    for (auto i{0}; i < nLegs_; i++)
-                    {
-                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                void assignAll(const Data &value)
-                {
-                    for (auto i{0}; i < nLegs_; i++)
-                    {
-                        data_[i] = value; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                LegDataMap &operator=(const LegDataMap &rhs)
-                {
-                    if (&rhs != this)
-                    {
-                        copydata(rhs);
-                    }
-                    return *this;
-                }
-
-                LegDataMap &operator=(const Data &defaultValue)
-                {
-                    assignAll(defaultValue);
-                    return *this;
-                }
-
-            private:
-                LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
-                {
-                    data_ = new Data[nLegs_];
-                }
-                LegDataMap(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
-                {
-                    data_ = new Data[nLegs_];
-                    for (Data &d : *this)
-                    {
-                        d = data;
-                    }
-                }
-
-                Data *data_;
-                const int nLegs_;
-            };
-
-            template <class Data>
-            class JointDataMap
-            {
-            public:
-                friend class RobotBase;
-
-                ~JointDataMap()
-                {
-                    delete[] data_;
-                };
-
-                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_[nJoints_]); }
-
-                Data &operator[](int index)
-                {
-                    assert(index >= 0 && index <= nJoints_);
-                    return data_[index];
-                }
-
-                const Data &operator[](int index) const
-                {
-                    assert(index >= 0 && index <= nJoints_);
-                    return data_[index];
-                }
-
-                void copydata(const JointDataMap &rhs)
-                {
-                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
-
-                    for (auto i{0}; i < nJoints_; i++)
-                    {
-                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                void assignAll(const Data &value)
-                {
-                    for (auto i{0}; i < nJoints_; i++)
-                    {
-                        data_[i] = value; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                JointDataMap &operator=(const JointDataMap &rhs)
-                {
-                    if (&rhs != this)
-                    {
-                        copydata(rhs);
-                    }
-                    return *this;
-                }
-
-                JointDataMap &operator=(const Data &defaultValue)
-                {
-                    assignAll(defaultValue);
-                    return *this;
-                }
-
-            protected:
-                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
-                {
-                    data_ = new Data[nJoints_];
-                }
-
-                JointDataMap(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
-                {
-                    data_ = new Data[nJoints_];
-                    for (Data &d : *this)
-                    {
-                        d = data;
-                    }
-                }
-
-                Data *data_;
-                const int nJoints_;
-            };
-
-            class JointState : public JointDataMap<double>
-            {
-            public:
-                friend class RobotBase;
-
-                ~JointState(){};
-
-                void copydata(const JointState &rhs)
-                {
-                    assert(nJoints_ == rhs.nJoints_); /// TODO: Implement and use getSize() method
-
-                    for (auto i{0}; i < nJoints_; i++)
-                    {
-                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                JointState &operator=(const JointState &rhs)
-                {
-                    if (&rhs != this)
-                    {
-                        copydata(rhs);
-                    }
-                    return *this;
-                }
-
-                JointState &operator=(const double &defaultValue)
-                {
-                    assignAll(defaultValue);
-                    return *this;
-                }
-
-            private:
-                JointState(RobotBase *robot) : JointDataMap(robot){};
-            };
-
-            template <class Data>
-            class LinkDataMap
-            {
-            public:
-                friend class RobotBase;
-                ~LinkDataMap()
-                {
-                    delete[] data_;
-                };
-
-                Iterator<Data> begin() { return Iterator<Data>(&data_[0]); }
-                Iterator<Data> end() { return Iterator<Data>(&data_[nLinks_]); }
-
-                Data &operator[](int index)
-                {
-                    assert(index >= 0 && index <= nLinks_);
-                    return data_[index];
-                }
-
-                const Data &operator[](int index) const
-                {
-                    assert(index >= 0 && index <= nLinks_);
-                    return data_[index];
-                }
-
-                void copydata(const LinkDataMap &rhs)
-                {
-                    assert(nLinks_ == rhs.nLinks_); /// TODO: Implement and use getSize() method
-
-                    for (auto i{0}; i < nLinks_; i++)
-                    {
-                        data_[i] = rhs.data_[i]; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                void assignAll(const Data &value)
-                {
-                    for (auto i{0}; i < nLinks_; i++)
-                    {
-                        data_[i] = value; /// TODO: Implement and use getData() method
-                    }
-                }
-
-                LinkDataMap &operator=(const LinkDataMap &rhs)
-                {
-                    if (&rhs != this)
-                    {
-                        copydata(rhs);
-                    }
-                    return *this;
-                }
-
-                LinkDataMap &operator=(const Data &defaultValue)
-                {
-                    assignAll(defaultValue);
-                    return *this;
-                }
-
-            private:
-                LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
-                {
-                    data_ = new Data[nLinks_];
-                }
-
-                LinkDataMap(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
-                {
-                    data_ = new Data[nLinks_];
-                    for (Data &d : *this)
-                    {
-                        d = data;
-                    }
-                }
-
-                Data *data_;
-                const int nLinks_;
-            };
-
-            template <class Data>
             class LegDataMapPair
             {
                 using PairType = std::pair<std::shared_ptr<LimbBase>, Data>;
@@ -611,6 +339,17 @@ namespace dls
                 const int nJoints_;
                 std::vector<PairType> data_;
             };
+            class JointState : public JointDataMapPair<double>
+            {
+            public:
+                friend class RobotBase;
+                using JointDataMapPair<double>::operator=;
+
+                ~JointState(){};
+
+            private:
+                JointState(RobotBase *robot) : JointDataMapPair(robot){};
+            };
 
             using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
 
@@ -704,26 +443,6 @@ namespace dls
             // Plugin typedefs
             typedef std::shared_ptr<RobotBase> createRobot_t();
             typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
-
-            // Create a leg data map
-            template <class Data>
-            LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); } // NRT
-            // Create a leg data map
-            template <class Data>
-            LegDataMap<Data> makeLegDataMap(const Data &data) { return LegDataMap<Data>(this, data); } // NRT
-
-            // Create a joint data map
-            template <class Data>
-            JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
-            // Create a joint data map
-            template <class Data>
-            JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); } // NRT
-
-            // Create a link data map
-            template <class Data>
-            LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
-            template <class Data>
-            LinkDataMap<Data> makeLinkDataMap(const Data &data) { return LinkDataMap<Data>(this, data); } // NRT
 
             // Create a joint state
             JointState makeJointState() { return JointState(this); } // NRT
@@ -876,7 +595,7 @@ namespace dls
 
             virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
-            virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
+            virtual LegDataMapPair<std::shared_ptr<Frame>> getFeet() = 0;
 
             virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                            const JointState &joint_velocity,

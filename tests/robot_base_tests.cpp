@@ -208,11 +208,11 @@ TEST(RobotBaseUnitTests, getFeet)
     foot_pose_gt.setZero();
     foot_pose_gt(3, 3) = 1;
 
-    for (const auto foot : feet_dq)
+    for (const auto leg : *(dummy_quadruped->getLegs()))
     {
         Eigen::Matrix4d foot_pose_dq{};
         foot_pose_dq.setZero();
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, foot);
+        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, feet_dq[leg]);
 
         /// Assert conditions
         ASSERT_EQ(foot_pose_dq, foot_pose_gt);
@@ -505,25 +505,30 @@ TEST(RobotBaseUnitTests, jointStateOperators)
     auto q = dummy_quadruped->makeJointState();
 
     /// Operator[]
-    for (int i{0}; i < dummy_quadruped->getNJOINTS(); i++) /// TODO: implement and use q.getSize()
-        q[i] = 10;
-
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    { /// TODO: implement and use q.getSize()
+        for (auto joint : *(leg->getJoints()))
+        {
+            q[joint] = 10;
+        }
+    }
     std::cout << "JointState q elements:" << std::endl;
     for (auto elem : q)
-        std::cout << elem << std::endl;
+
+        std::cout << elem.second << std::endl;
 
     /// Operator= Copy
     auto q2 = dummy_quadruped->makeJointState();
 
     std::cout << "JointState q2 elements:" << std::endl;
     for (auto elem : q2)
-        std::cout << elem << std::endl;
+        std::cout << elem.second << std::endl;
 
     q2 = q;
 
     std::cout << "JointState q2 elements (copy):" << std::endl;
     for (auto elem : q2)
-        std::cout << elem << std::endl;
+        std::cout << elem.second << std::endl;
 
     /// Operator= AssignAll
     auto q3 = dummy_quadruped->makeJointState();
@@ -532,7 +537,7 @@ TEST(RobotBaseUnitTests, jointStateOperators)
 
     std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
     for (auto elem : q3)
-        std::cout << elem << std::endl;
+        std::cout << elem.second << std::endl;
 }
 
 TEST(RobotBaseUnitTests, footJacobian)
@@ -796,34 +801,10 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
-    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
-    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
     auto leg_dmp = dummy_quadruped->makeLegDataMapPair<type>(data);
     auto link_dmp = dummy_quadruped->makeLinkDataMapPair<type>(data);
     auto joint_dmp = dummy_quadruped->makeJointDataMapPair<type>(data);
     auto jacobian_dmp = dummy_quadruped->makeFeetJacobian(data_double);
-
-    std::cout << "leg_dm\n";
-    for (auto data : leg_dm)
-    {
-        std::cout << data << " ";
-    }
-    std::cout << "\n";
-
-    std::cout << "link_dm\n";
-    for (auto data : link_dm)
-    {
-        std::cout << data << " ";
-    }
-    std::cout << "\n";
-
-    std::cout << "joint_dm\n";
-    for (auto data : joint_dm)
-    {
-        std::cout << data << " ";
-    }
-    std::cout << "\n";
 
     std::cout << "leg_dmp\n";
     for (auto leg : *(dummy_quadruped->getLegs()))

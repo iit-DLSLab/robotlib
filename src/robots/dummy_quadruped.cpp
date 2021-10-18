@@ -296,12 +296,14 @@ namespace dls
 				footJac.setZero();
 			};
 
-			LegDataMap<std::shared_ptr<Frame>> getFeet() override
+			LegDataMapPair<std::shared_ptr<Frame>> getFeet() override
 			{
-				auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
-
-				for (auto &foot : feet)
-					foot = std::make_shared<Link>("link");
+				auto feet = this->makeLegDataMapPair<std::shared_ptr<Frame>>();
+				
+				for (auto leg : *(this->getLegs()))
+                {
+					feet[leg] = std::make_shared<Link>("link");
+                }
 
 				return feet;
 			};
