@@ -20,7 +20,7 @@ namespace dls
 
 			virtual ~Link();
 
-			virtual const std::string getName() override;
+			virtual const std::string getName() const override;
 
 			template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
 			friend class Robot;

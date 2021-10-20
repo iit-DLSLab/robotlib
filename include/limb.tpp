@@ -7,22 +7,22 @@ namespace dls
         template <unsigned int NJOINTS, unsigned int NLINKS>
         Limb<NJOINTS, NLINKS>::Limb(
             const std::string &name,
-            const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-            const std::array<std::shared_ptr<Link>, NLINKS> &links)
+            const std::array<const std::shared_ptr<const Joint>, NJOINTS> &joints,
+            const std::array<const std::shared_ptr<const Link>, NLINKS> &links)
             : LimbBase(name),
-              joints_(std::make_shared<Container<Joint, NJOINTS>>(joints)),
-              links_(std::make_shared<Container<Link, NLINKS>>(links)){};
+              joints_(std::make_shared<const Container<const std::shared_ptr<const Joint>, NJOINTS>>(joints)),
+              links_(std::make_shared<const Container<const std::shared_ptr<const Link>, NLINKS>>(links)){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
         Limb<NJOINTS, NLINKS>::~Limb(){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const int linkId) const
+        const std::shared_ptr<const Link> Limb<NJOINTS, NLINKS>::getLink(const int linkId) const
         {
             return (*links_)[linkId];
         };
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) const
+        const std::shared_ptr<const Joint> Limb<NJOINTS, NLINKS>::getJoint(const int jointId) const
         {
             return (*joints_)[jointId];
         };
@@ -37,7 +37,7 @@ namespace dls
         const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name)
+        const std::shared_ptr<const Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name) const
         {
             //Iterate over the array of links to find the link
             for (auto link : *links_)
@@ -49,11 +49,11 @@ namespace dls
             }
 
             //std::cout << "LINK " << name << " NOT FOUND IN LEG " << this->getName() << std::endl;
-            return std::shared_ptr<Link>(nullptr);
+            return std::shared_ptr<const Link>(nullptr);
         };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name)
+        const std::shared_ptr<const Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name) const
         {
             //Iterate over the array of links to find the link
             for (auto joint : *joints_)
@@ -65,11 +65,11 @@ namespace dls
             }
 
             //std::cout << "JOINT NOT FOUD FROM THE INPUT NAME " << name << std::endl;
-            return std::shared_ptr<Joint>(nullptr);
+            return std::shared_ptr<const Joint>(nullptr);
         };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getEndEffector()
+        const std::shared_ptr<const Link> Limb<NJOINTS, NLINKS>::getEndEffector() const
         {
             return *(--links_->end());
         };

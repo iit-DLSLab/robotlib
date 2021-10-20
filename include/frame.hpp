@@ -14,7 +14,7 @@ namespace dls
             //Frame(const Eigen::Vector3d &p, const Eigen::Vector3d &ori)
             virtual ~Frame(){};
 
-            virtual const std::string getName() = 0;
+            virtual const std::string getName() const = 0;
 
         protected:
             const std::string name_{};

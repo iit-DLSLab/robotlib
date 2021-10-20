@@ -847,3 +847,54 @@ TEST(RobotBaseUnitTests, getRobotCoM)
 
     std::cout << dummy_quadruped->getRobotCoM() << std::endl;
 }
+
+TEST(RobotBaseUnitTests, newContainers)
+{
+    std::cout << "Testing correct storing for non share pointer data...\n";
+
+    const int N = 10;
+    double value = 1;
+    std::array<double, N> data;
+
+    for (auto &d : data)
+    {
+        d = value;
+    }
+    Container<double, N> container(data);
+
+    for (auto d : container)
+    {
+        EXPECT_EQ(d, value);
+    }
+
+    std::cout << "Testing correct storing for share pointer data... \n";
+    value = 2;
+    std::array<std::shared_ptr<double>, N> data_shp;
+
+    for (auto &d : data_shp)
+    {
+        d = std::make_shared<double>(value);
+    }
+
+    Container<std::shared_ptr<double>, N> container_shp(data_shp);
+
+    for (auto d : container_shp)
+    {
+        EXPECT_EQ(*d, value);
+    }
+}
+
+TEST(RobotBaseUnitTests, limbClass)
+{
+    std::cout << "Testing Limb constructor...\n";
+
+    std::shared_ptr<const dls::robotlib::Joint> joint_1 = std::make_shared<const dls::robotlib::Joint>("Joint_1");
+    std::shared_ptr<const dls::robotlib::Joint> joint_2 = std::make_shared<const dls::robotlib::Joint>("Joint_2");
+    std::shared_ptr<const dls::robotlib::Link> link_1 = std::make_shared<const dls::robotlib::Link>("Link_1");
+    std::shared_ptr<const dls::robotlib::Link> link_1 = std::make_shared<const dls::robotlib::Link>("Link_2");
+
+    const std::array<std::shared_ptr<const dls::robotlib::Joint>, dls::robotlib::NJOINTS> joints = {joint_1, joint_2};
+    const std::array<std::shared_ptr<const dls::robotlib::Link>, dls::robotlib::NLINKS> links = {link_1, link_2};
+
+    dls::robotlib::Limb limb("leg_1", joints, arrays);
+}

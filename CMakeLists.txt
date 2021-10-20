@@ -19,23 +19,35 @@ add_compile_options(
 	$<$<CONFIG:Debug>:-g>
 )
 
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/include
-	SYSTEM
-)
+if(NOT CODE_TO_COMPILE)
+    set(CODE_TO_COMPILE "ALL")
+endif()
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+if(CODE_TO_COMPILE STREQUAL "Limb")
+	message("\n***********Building only the Limb related code***********\n")
+	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/limb/CMakeLists.txt)
+	
+else()
+	message("\n***********Building the entire robotlib library***********\n")
+	include_directories(
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+		SYSTEM
+	)
 
-include(robotlib_paths)
-include(robotlib_include_dirs)
+	list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+	include(robotlib_paths)
+	include(robotlib_include_dirs)
 
-set(CPACK_PACKAGE_NAME "robotlib")
-set(CPACK_GENERATOR "DEB")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "robotlib")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "dlslab")
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
-include(CPack)
+	set(CPACK_PACKAGE_NAME "robotlib")
+	set(CPACK_GENERATOR "DEB")
+	set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "robotlib")
+	set(CPACK_DEBIAN_PACKAGE_MAINTAINER "dlslab")
+
+	include(CPack)
+endif()
+unset(CODE_TO_COMPILE CACHE)	# unset the variable stored in CMakeCache.txt 
 

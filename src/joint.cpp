@@ -9,7 +9,7 @@ namespace dls
 
 		Joint::~Joint(){};
 
-		const std::string Joint::getName() { return name_; }
+		const std::string Joint::getName() const { return name_; }
 		const std::shared_ptr<Link> Joint::getParent() const { return parent_; };
 		const std::shared_ptr<Link> Joint::getChild() const { return child_; };
 

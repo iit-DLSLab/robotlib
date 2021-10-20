@@ -20,7 +20,7 @@ namespace dls
 
 			virtual ~Joint();
 
-			virtual const std::string getName() override;
+			virtual const std::string getName() const override;
 			const std::shared_ptr<Link> getParent() const;
 			const std::shared_ptr<Link> getChild() const;
 
