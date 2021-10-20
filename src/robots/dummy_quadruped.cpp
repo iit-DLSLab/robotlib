@@ -12,7 +12,8 @@ namespace dls
 		class DummyLeg : public Leg<NJOINTS, NLINKS>
 		{
 		public:
-			DummyLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
+			DummyLeg(const std::string name,
+					 const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
 					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
 				: Leg<NJOINTS, NLINKS>(name, joints, links),
 				  jointMap({//joint name, parent name, child name
@@ -86,8 +87,8 @@ namespace dls
 				: Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>(
 					  "Quadruped",
 					  trunk,
-					  std::make_shared<Container<LimbBase, NLEGS>>(legs),
-					  std::make_shared<Container<LimbBase, NARMS>>(arms))
+					  std::make_shared<const Container<std::shared_ptr<LimbBase>, NLEGS>>(legs),
+					  std::make_shared<const Container<std::shared_ptr<LimbBase>, NARMS>>(arms))
 
 			{
 				std::array<std::shared_ptr<Joint>, NLEGS> children;
@@ -96,7 +97,7 @@ namespace dls
 				children[2] = getJoint("LH_HFE");
 				children[3] = getJoint("RH_HFE");
 
-				setChildrenOfTrunk(std::make_shared<Container<Joint, NLEGS>>(children));
+				setChildrenOfTrunk(std::make_shared<Container<std::shared_ptr<Joint>, NLEGS>>(children));
 
 				setParentOfLink(trunk_, nullptr);
 

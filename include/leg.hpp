@@ -12,8 +12,8 @@ namespace dls
         {
         public:
             Leg(const std::string &name,
-                const std::array<std::shared_ptr<const Joint>, NJOINTS> &joints,
-                const std::array<std::shared_ptr<const Link>, NLINKS> &links);
+                const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
+                const std::array<std::shared_ptr<Link>, NLINKS> &links);
 
             virtual ~Leg();
         };

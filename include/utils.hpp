@@ -57,8 +57,8 @@ namespace dls
         class ContainerBase
         {
         public:
-            ContainerBase(){};
-            virtual ~ContainerBase(){};
+            ContainerBase();
+            virtual ~ContainerBase();
 
             virtual Iterator<const Data> begin() const = 0;
             virtual Iterator<const Data> end() const = 0;
@@ -71,21 +71,23 @@ namespace dls
         class Container : public ContainerBase<Data>
         {
         public:
-            Container(const std::array<Data, N> data) : data_(data){};
+            Container(const std::array<Data, N> data);
 
-            virtual ~Container(){};
+            virtual ~Container();
 
-            virtual Iterator<const Data> begin() const { return Iterator<const Data>(&data_[0]); };
-            virtual Iterator<const Data> end() const { return Iterator<const Data>(&data_[N]); };
+            virtual Iterator<const Data> begin() const override;
+            virtual Iterator<const Data> end() const override;
 
-            virtual const Data operator[](const int id) const { return data_[id]; };
+            virtual const Data operator[](const int id) const override;
 
-            virtual const int size() const { return data_.size(); };
+            virtual const int size() const override;
 
         protected:
             const std::array<Data, N> data_;
         };
     } // namespace robotlib
 } // namespace dls
+
+#include "utils.tpp"
 
 #endif // _ROBOTLIB_UTILS_HPP_

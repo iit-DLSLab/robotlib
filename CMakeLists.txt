@@ -26,6 +26,10 @@ endif()
 if(CODE_TO_COMPILE STREQUAL "Limb")
 	message("\n***********Building only the Limb related code***********\n")
 	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/limb/CMakeLists.txt)
+
+elseif(CODE_TO_COMPILE STREQUAL "utils")
+	message("\n***********Building only the utils related code***********\n")
+	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/utils/CMakeLists.txt)
 	
 else()
 	message("\n***********Building the entire robotlib library***********\n")

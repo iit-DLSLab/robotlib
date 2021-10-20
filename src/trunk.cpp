@@ -7,7 +7,7 @@ namespace dls
 		Trunk::Trunk(const std::string &name) : Link(name){};
 		Trunk::~Trunk(){};
 
-		const std::string Trunk::getName()
+		const std::string Trunk::getName() const
 		{
 			return name_;
 		}

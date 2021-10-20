@@ -200,7 +200,6 @@ namespace dls
             private: // TODO: private
                 LinkDataMap(RobotBase *robot) : nLinks_(robot->getNLINKS())
                 {
-                    const int nLegs = robot->getNLEGS();
                     for (auto leg : *(robot->getLegs()))
                     {
                         for (auto link : *(leg->getLinks()))
@@ -212,7 +211,6 @@ namespace dls
                 }
                 LinkDataMap(RobotBase *robot, const Data &data) : nLinks_(robot->getNLINKS())
                 {
-                    const int nLegs = robot->getNLEGS();
                     for (auto leg : *(robot->getLegs()))
                     {
                         for (auto link : *(leg->getLinks()))
@@ -437,8 +435,8 @@ namespace dls
 
             // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
 
-            virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() = 0;
-            virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() = 0;
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
             // Plugin typedefs
             typedef std::shared_ptr<RobotBase> createRobot_t();

@@ -10,7 +10,7 @@ namespace dls
 
 		const std::string Link::getName() const { return name_; };
 
-		void Link::setChildren(const std::shared_ptr<ContainerBase<Joint>> children)
+		void Link::setChildren(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
 		{
 			children_ = children;
 		};

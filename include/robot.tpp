@@ -8,21 +8,21 @@ namespace dls
                 Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(
                     const std::string &name,
                     const std::shared_ptr<Trunk> trunk,
-                    const std::shared_ptr<Container<LimbBase, NLEGS>> &legs,
-                    const std::shared_ptr<Container<LimbBase, NARMS>> &arms)
+                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> &legs,
+                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> &arms)
                     : RobotBase(name), legs_(legs), arms_(arms), trunk_(trunk){};
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-                const std::shared_ptr<ContainerBase<LimbBase>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLegs()
+                const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLegs() const
                 {
                         return legs_;
                 };
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-                const std::shared_ptr<ContainerBase<LimbBase>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms()
+                const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms() const
                 {
                         return arms_;
                 };
@@ -31,14 +31,14 @@ namespace dls
                 const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const int id) { return (*legs_)[id]; };
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const int id) { return (*arms_)[id]; };
-                
+
                 // template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>      /// NB: TODO
                 // const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNextLeg(const std::shared_ptr<LimbBase>& leg){
                 //         for(auto it_leg = (*legs_).begin();it_leg<(*legs_).end(); ++it_leg){
                 //                 if (it_leg->getName().compare(leg->getName()) == 0){
                 //                         // if (it_leg == ){
                 //                         //         std::cout << "You are trying to get the next leg of the last one, which does not exist. The last leg is returned by default";
-                //                         //         return legs_[i]; 
+                //                         //         return legs_[i];
                 //                         // }
                 //                         // else
                 //                                 return *(it_leg+1);
@@ -62,7 +62,7 @@ namespace dls
                 const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() { return NLINKS; };
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<Joint>> children)
+                void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
                 {
                         trunk_->setChildren(children);
                 };

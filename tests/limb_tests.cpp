@@ -11,8 +11,8 @@ const unsigned int NLINKS = 15;
 class RobotLeg : public dls::robotlib::Leg<NJOINTS, NLINKS>
 {
 public:
-    RobotLeg(std::string name, const std::array<std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints,
-             const std::array<std::shared_ptr<const dls::robotlib::Link>, NLINKS> links)
+    RobotLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
+             const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
         : Leg<NJOINTS, NLINKS>(name, joints, links){};
 
     virtual const std::string jointToChildName(const std::shared_ptr<dls::robotlib::Joint> joint) const
@@ -40,8 +40,8 @@ TEST(LegUnitTests, getName)
 
     std::vector<std::string> joint_names;
     std::vector<std::string> link_names;
-    std::array<std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints;
-    std::array<std::shared_ptr<const dls::robotlib::Link>, NLINKS> links;
+    std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints;
+    std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links;
 
     for (int i = 0; i < NJOINTS; ++i)
     {

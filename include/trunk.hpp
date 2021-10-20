@@ -16,7 +16,7 @@ namespace dls
 
 			~Trunk();
 
-			virtual const std::string getName() override;
+			virtual const std::string getName() const override;
 		};
 	} // namespace robotlib
 } // namespace dls
