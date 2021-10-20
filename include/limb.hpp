@@ -14,8 +14,8 @@ namespace dls
         {
         public:
             Limb(const std::string &name,
-                 const std::array<const std::shared_ptr<const Joint>, NJOINTS> &joints,
-                 const std::array<const std::shared_ptr<const Link>, NLINKS> &links);
+                 const std::array<std::shared_ptr<const Joint>, NJOINTS> &joints,
+                 const std::array<std::shared_ptr<const Link>, NLINKS> &links);
 
             virtual ~Limb();
 
@@ -28,12 +28,12 @@ namespace dls
             virtual const std::shared_ptr<const Joint> getJoint(const std::string &name) const override;
             virtual const std::shared_ptr<const Link> getEndEffector() const override;
 
-            virtual const std::shared_ptr<const ContainerBase<const std::shared_ptr<const Joint>>> getJoints() { return joints_; };
-            virtual const std::shared_ptr<const ContainerBase<const std::shared_ptr<const Link>>> getLinks() { return links_; };
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<const Joint>>> getJoints() { return joints_; };
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<const Link>>> getLinks() { return links_; };
 
         protected:
-            const std::shared_ptr<const Container<const std::shared_ptr<const Joint>, NJOINTS>> joints_;
-            const std::shared_ptr<const Container<const std::shared_ptr<const Link>, NLINKS>> links_;
+            const std::shared_ptr<const Container<std::shared_ptr<const Joint>, NJOINTS>> joints_;
+            const std::shared_ptr<const Container<std::shared_ptr<const Link>, NLINKS>> links_;
         };
     } // namespace robotlib
 } // namespace dls

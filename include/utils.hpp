@@ -60,8 +60,8 @@ namespace dls
             ContainerBase(){};
             virtual ~ContainerBase(){};
 
-            virtual Iterator<Data> begin() const = 0;
-            virtual Iterator<Data> end() const = 0;
+            virtual Iterator<const Data> begin() const = 0;
+            virtual Iterator<const Data> end() const = 0;
 
             virtual const Data operator[](const int id) const = 0;
             virtual const int size() const = 0;
@@ -75,15 +75,15 @@ namespace dls
 
             virtual ~Container(){};
 
-            virtual Iterator<Data> begin() const { return Iterator<Data>(&data_[0]); };
-            virtual Iterator<Data> end() const { return Iterator<Data>(&data_[N]); };
+            virtual Iterator<const Data> begin() const { return Iterator<const Data>(&data_[0]); };
+            virtual Iterator<const Data> end() const { return Iterator<const Data>(&data_[N]); };
 
             virtual const Data operator[](const int id) const { return data_[id]; };
 
             virtual const int size() const { return data_.size(); };
 
         protected:
-            std::array<Data, N> data_;
+            const std::array<Data, N> data_;
         };
     } // namespace robotlib
 } // namespace dls

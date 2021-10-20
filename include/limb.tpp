@@ -7,11 +7,11 @@ namespace dls
         template <unsigned int NJOINTS, unsigned int NLINKS>
         Limb<NJOINTS, NLINKS>::Limb(
             const std::string &name,
-            const std::array<const std::shared_ptr<const Joint>, NJOINTS> &joints,
-            const std::array<const std::shared_ptr<const Link>, NLINKS> &links)
+            const std::array<std::shared_ptr<const Joint>, NJOINTS> &joints,
+            const std::array<std::shared_ptr<const Link>, NLINKS> &links)
             : LimbBase(name),
-              joints_(std::make_shared<const Container<const std::shared_ptr<const Joint>, NJOINTS>>(joints)),
-              links_(std::make_shared<const Container<const std::shared_ptr<const Link>, NLINKS>>(links)){};
+              joints_(std::make_shared<const Container<std::shared_ptr<const Joint>, NJOINTS>>(joints)),
+              links_(std::make_shared<const Container<std::shared_ptr<const Link>, NLINKS>>(links)){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
         Limb<NJOINTS, NLINKS>::~Limb(){};

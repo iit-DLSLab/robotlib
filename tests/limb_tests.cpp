@@ -5,14 +5,14 @@
 #include "joint.hpp"
 #include "link.hpp"
 
-const unsigned int NJOINTS = 2;
-const unsigned int NLINKS = 2;
+const unsigned int NJOINTS = 20;
+const unsigned int NLINKS = 15;
 
 class RobotLeg : public dls::robotlib::Leg<NJOINTS, NLINKS>
 {
 public:
-    RobotLeg(std::string name, const std::array<const std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints,
-             const std::array<const std::shared_ptr<const dls::robotlib::Link>, NLINKS> links)
+    RobotLeg(std::string name, const std::array<std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints,
+             const std::array<std::shared_ptr<const dls::robotlib::Link>, NLINKS> links)
         : Leg<NJOINTS, NLINKS>(name, joints, links){};
 
     virtual const std::string jointToChildName(const std::shared_ptr<dls::robotlib::Joint> joint) const
@@ -36,38 +36,91 @@ public:
 
 TEST(LegUnitTests, getName)
 {
+    std::cout << "Testing Leg getName()...\n";
 
-    std::cout << "Testing Limb constructor...\n";
+    std::vector<std::string> joint_names;
+    std::vector<std::string> link_names;
+    std::array<std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints;
+    std::array<std::shared_ptr<const dls::robotlib::Link>, NLINKS> links;
 
-    const std::shared_ptr<const dls::robotlib::Joint> joint_1 = std::make_shared<const dls::robotlib::Joint>("Joint_1");
-    const std::shared_ptr<const dls::robotlib::Joint> joint_2 = std::make_shared<const dls::robotlib::Joint>("Joint_2");
-    const std::shared_ptr<const dls::robotlib::Link> link_1 = std::make_shared<const dls::robotlib::Link>("Link_1");
-    const std::shared_ptr<const dls::robotlib::Link> link_2 = std::make_shared<const dls::robotlib::Link>("Link_2");
-
-    const std::array<const std::shared_ptr<const dls::robotlib::Joint>, NJOINTS> joints = {joint_1, joint_2};
-    const std::array<const std::shared_ptr<const dls::robotlib::Link>, NLINKS> links = {link_1, link_2};
+    for (int i = 0; i < NJOINTS; ++i)
+    {
+        std::string name{"joint_" + std::to_string(i)};
+        joint_names.push_back(name);
+        joints[i] = std::make_shared<dls::robotlib::Joint>(name);
+    }
+    for (int i = 0; i < NLINKS; ++i)
+    {
+        std::string name{"link_" + std::to_string(i)};
+        link_names.push_back(name);
+        links[i] = std::make_shared<dls::robotlib::Link>(name);
+    }
 
     RobotLeg leg("leg_1", joints, links);
+
+    int i = 0;
+    for (auto link : *leg.getLinks())
+    {
+        EXPECT_EQ(link->getName(), link_names[i]);
+        i++;
+    }
+    i = 0;
+    for (auto link : *leg.getJoints())
+    {
+        EXPECT_EQ(link->getName(), joint_names[i]);
+        i++;
+    }
 }
 
-const std::string getName() const;
-
-virtual const int getNLinks() const = 0;
-virtual const int getNJoints() const = 0;
-
-virtual const std::shared_ptr<const Link> getLink(const int linkId) const = 0;
-virtual const std::shared_ptr<const Joint> getJoint(const int jointId) const = 0;
-
-virtual const std::shared_ptr<const ContainerBase<const std::shared_ptr<const Joint>>> getJoints() = 0;
-virtual const std::shared_ptr<const ContainerBase<const std::shared_ptr<const Link>>> getLinks() = 0;
-
-virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0;  //overridden by Glue
-virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0; //overridden by Glue
-
-virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) const = 0;  //overridden by Glue
-virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) const = 0; //overridden by Glue
-
-virtual const std::shared_ptr<const Link> getLink(const std::string &name) const = 0;
-virtual const std::shared_ptr<const Joint> getJoint(const std::string &name) const = 0;
-
-virtual const std::shared_ptr<const Link> getEndEffector() const = 0; //overridden by Limb class
+TEST(LegUnitTests, getNLinks)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getNJoints)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getLink)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getJoint)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getJoints)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getLinks)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, jointToChildName)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, jointToParentName)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, linkToChildName)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, linkToParentName)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getLink_string)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getJoint_string)
+{
+    std::cout << "TODO\n";
+}
+TEST(LegUnitTests, getEndEffector)
+{
+    std::cout << "TODO\n";
+}
