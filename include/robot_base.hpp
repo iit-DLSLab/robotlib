@@ -235,7 +235,7 @@ namespace dls
                 ~JointDataMap(){};
 
                 Iterator<PairType> begin() { return Iterator<PairType>(&data_[0]); }
-                Iterator<PairType> end() { return Iterator<PairType>(&data_[nJoints_]); }
+                Iterator<PairType> end() { return Iterator<PairType>(&data_[num_joints_]); }
 
                 Data &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
                 {
@@ -268,9 +268,9 @@ namespace dls
 
                 void copydata(const JointDataMap &rhs)
                 {
-                    assert(data_.size() == rhs.data_.size());
+                    assert(this->getSize() == rhs.getSize());
 
-                    for (auto i{0}; i < nJoints_; i++)
+                    for (auto i{0}; i < num_joints_; i++)
                     {
                         data_[i].first = rhs.data_[i].first;
                         data_[i].second = rhs.data_[i].second;
@@ -279,7 +279,7 @@ namespace dls
 
                 void assignAll(const Data &value)
                 {
-                    for (auto i{0}; i < nJoints_; i++)
+                    for (auto i{0}; i < num_joints_; i++)
                     {
                         data_[i].second = value;
                     }
@@ -300,42 +300,71 @@ namespace dls
                     return *this;
                 }
 
-                int getSize() { return data_.size(); };
+                int getSize() const { return num_joints_; };
 
             private:
-                JointDataMap(RobotBase *robot) : nJoints_(robot->getNJOINTS())
+                JointDataMap(RobotBase *robot) : num_joints_(robot->getNJOINTS())
                 {
                     const int nLegs = robot->getNLEGS();
+                    data_ = new PairType[num_joints_];
+
                     for (int i = 0; i < nLegs; i++)
                     {
                         auto leg = robot->getLeg(i);
-                        int nJoints = leg->getNJoints();
-                        for (int j = 0; j < nJoints; j++)
+                        int num_joints_per_leg = leg->getNJoints();
+                        for (int j = 0; j < num_joints_per_leg; j++)
                         {
                             std::shared_ptr<Joint> joint = leg->getJoint(j);
                             PairType pair(joint, Data());
-                            data_.push_back(pair);
+                            data_[i * num_joints_per_leg + j] = pair;
+                            // std::cout << data_[i * num_joints_per_leg + j].first
                         }
                     }
                 }
-                JointDataMap(RobotBase *robot, const Data &data) : nJoints_(robot->getNJOINTS())
+                JointDataMap(RobotBase *robot, const Data &data) : num_joints_(robot->getNJOINTS())
                 {
                     const int nLegs = robot->getNLEGS();
+                    data_ = new PairType[num_joints_];
+
                     for (int i = 0; i < nLegs; i++)
                     {
                         auto leg = robot->getLeg(i);
-                        int nJoints = leg->getNJoints();
-                        for (int j = 0; j < nJoints; j++)
+                        int num_joints_per_leg = leg->getNJoints();
+                        for (int j = 0; j < num_joints_per_leg; j++)
                         {
                             std::shared_ptr<Joint> joint = leg->getJoint(j);
                             PairType pair(joint, Data(data));
-                            data_.push_back(pair);
+                            data_[i * num_joints_per_leg + j] = pair;
                         }
                     }
                 }
+                JointDataMap(const std::shared_ptr<LimbBase> leg) : num_joints_(leg->getNJoints())
+                {
+                    data_ = new PairType[num_joints_];
+                    Iterator<const std::shared_ptr<Joint>> leg_joints_it = leg->getJoints()->begin();
 
-                const int nJoints_;
-                std::vector<PairType> data_;
+                    for (int i = 0; i < num_joints_; i++)
+                    {
+                        std::shared_ptr<Joint> joint = *leg_joints_it;
+                        data_[i] = PairType(joint, Data());
+                        leg_joints_it++;
+                    }
+                }
+                JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : num_joints_(leg->getNJoints())
+                {
+                    data_ = new PairType[num_joints_];
+                    Iterator<const std::shared_ptr<Joint>> leg_joints_it = leg->getJoints()->begin();
+
+                    for (int i = 0; i < num_joints_; i++)
+                    {
+                        std::shared_ptr<Joint> joint = *leg_joints_it;
+                        data_[i] = PairType(joint, Data(data));
+                        leg_joints_it++;
+                    }
+                }
+
+                const int num_joints_;
+                PairType *data_;
             };
             class JointState : public JointDataMap<double>
             {
@@ -463,6 +492,13 @@ namespace dls
             JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
             template <class Data>
             JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); } // NRT
+
+            // Create a joint data map pair
+            template <class Data>
+            JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg) { return JointDataMap<Data>(leg); } // NRT
+            // Create a joint data map pair
+            template <class Data>
+            JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) { return JointDataMap<Data>(leg, data); } // NRT
 
             // TODO
             Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT

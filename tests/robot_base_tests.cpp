@@ -847,3 +847,38 @@ TEST(RobotBaseUnitTests, getRobotCoM)
 
     std::cout << dummy_quadruped->getRobotCoM() << std::endl;
 }
+
+TEST(RobotBaseUnitTests, JointDataMap_leg)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        std::vector<std::string> joint_names;
+        for (auto joint : *leg->getJoints())
+        {
+            joint_names.push_back(joint->getName());
+        }
+
+        auto joint_dmp_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
+
+        int it = 0;
+        for (auto pair : joint_dmp_per_leg)
+        {
+            EXPECT_EQ(joint_names[it], pair.first->getName());
+            it++;
+        }
+        using Type = double;
+        Type value = 1;
+        // using Type = Eigen::Vector3d;
+        // Type value{0, 0, 0};
+
+        auto joint_dmp_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
+
+        for (auto pair : joint_dmp_per_leg_default_data)
+        {
+            EXPECT_EQ(pair.second, value);
+        }
+    }
+}
