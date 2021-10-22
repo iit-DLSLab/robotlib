@@ -14,17 +14,17 @@ namespace dls
 		public:
 			Robot(const std::string &name,
 				  const std::shared_ptr<Trunk> trunk,
-				  const std::shared_ptr<Container<LimbBase, NLEGS>> &legs,
-				  const std::shared_ptr<Container<LimbBase, NARMS>> &arms);
+				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> &legs,
+				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> &arms);
 			virtual ~Robot();
 
 			virtual const std::shared_ptr<LimbBase> getLeg(const int id) override;
 			virtual const std::shared_ptr<LimbBase> getArm(const int id) override;
 
-            // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) override;	/// NB: TODO
+			// virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) override;	/// NB: TODO
 
-			virtual const std::shared_ptr<ContainerBase<LimbBase>> getLegs() override;
-			virtual const std::shared_ptr<ContainerBase<LimbBase>> getArms() override;
+			virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const override;
+			virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const override;
 
 			virtual const int getNLEGS() override;
 			virtual const int getNARMS() override;
@@ -37,10 +37,10 @@ namespace dls
 		protected:
 			const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
 
-			const std::shared_ptr<Container<LimbBase, NLEGS>> legs_; //! Legs of the robot
-			const std::shared_ptr<Container<LimbBase, NARMS>> arms_; //! Arms of the robot
+			const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs_; //! Legs of the robot
+			const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms_; //! Arms of the robot
 
-			void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<Joint>> children);
+			void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 			void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
 			void setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child);
 

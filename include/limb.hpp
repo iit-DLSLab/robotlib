@@ -13,7 +13,9 @@ namespace dls
         class Limb : public LimbBase
         {
         public:
-            Limb(const std::string &name, const std::array<std::shared_ptr<Joint>, NJOINTS> &joints, const std::array<std::shared_ptr<Link>, NLINKS> &links);
+            Limb(const std::string &name,
+                 const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
+                 const std::array<std::shared_ptr<Link>, NLINKS> &links);
 
             virtual ~Limb();
 
@@ -22,18 +24,16 @@ namespace dls
             virtual const int getNLinks() const override;
             virtual const int getNJoints() const override;
 
-            virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
-            virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
-            virtual const std::shared_ptr<Link> getEndEffector() override;
+            virtual const std::shared_ptr<Link> getLink(const std::string &name) const override;
+            virtual const std::shared_ptr<Joint> getJoint(const std::string &name) const override;
+            virtual const std::shared_ptr<Link> getEndEffector() const override;
 
-            //virtual const std::shared_ptr<JointsBase> getJoints() { return joints_; };
-            virtual const std::shared_ptr<ContainerBase<Joint>> getJoints() { return joints_; };
-            virtual const std::shared_ptr<ContainerBase<Link>> getLinks() { return links_; };
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const { return joints_; };
+            virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const { return links_; };
 
         protected:
-            const std::shared_ptr<Container<Joint, NJOINTS>> joints_;
-
-            const std::shared_ptr<Container<Link, NLINKS>> links_;
+            const std::shared_ptr<const Container<std::shared_ptr<Joint>, NJOINTS>> joints_;
+            const std::shared_ptr<const Container<std::shared_ptr<Link>, NLINKS>> links_;
         };
     } // namespace robotlib
 } // namespace dls

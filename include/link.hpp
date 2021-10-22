@@ -20,7 +20,7 @@ namespace dls
 
 			virtual ~Link();
 
-			virtual const std::string getName() override;
+			virtual const std::string getName() const override;
 
 			template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
 			friend class Robot;
@@ -29,11 +29,11 @@ namespace dls
 			const std::shared_ptr<Joint> getChild() const;
 
 		protected:
-			std::shared_ptr<ContainerBase<Joint>> children_;
+			std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children_;
 			std::shared_ptr<Joint> parent_;
 			std::shared_ptr<Joint> child_;
 
-			void setChildren(const std::shared_ptr<ContainerBase<Joint>> children);
+			void setChildren(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 			void setParent(const std::shared_ptr<Joint> parent);
 			void setChild(const std::shared_ptr<Joint> child);
 		};

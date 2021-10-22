@@ -10,8 +10,8 @@ namespace dls
             const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
             const std::array<std::shared_ptr<Link>, NLINKS> &links)
             : LimbBase(name),
-              joints_(std::make_shared<Container<Joint, NJOINTS>>(joints)),
-              links_(std::make_shared<Container<Link, NLINKS>>(links)){};
+              joints_(std::make_shared<const Container<std::shared_ptr<Joint>, NJOINTS>>(joints)),
+              links_(std::make_shared<const Container<std::shared_ptr<Link>, NLINKS>>(links)){};
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
         Limb<NJOINTS, NLINKS>::~Limb(){};
@@ -37,7 +37,7 @@ namespace dls
         const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name)
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name) const
         {
             //Iterate over the array of links to find the link
             for (auto link : *links_)
@@ -53,7 +53,7 @@ namespace dls
         };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name)
+        const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name) const
         {
             //Iterate over the array of links to find the link
             for (auto joint : *joints_)
@@ -69,7 +69,7 @@ namespace dls
         };
 
         template <unsigned int NJOINTS, unsigned int NLINKS>
-        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getEndEffector()
+        const std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getEndEffector() const
         {
             return *(--links_->end());
         };
