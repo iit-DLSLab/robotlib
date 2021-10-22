@@ -1,8 +1,26 @@
-# robotlib
+# Robotlib
 
-A `Robot` class has been created.
+## Overview
 
-NOMENCLATURE
+<!-- TODO -->
+<!-- What is -->
+<!-- How to use it and what is the Glue layer -->
+<!-- Schemes/images to show connections -->
 
-RT: Real-time usage of the function
-NRT: Non-Real-time usage of the function
+## Installation
+
+<!-- TODO -->
+<!-- How to clone and build Robotlib -->
+<!-- How to clone and build Glue layers -->
+
+## Documentation
+
+<!-- TODO -->
+<!-- Doxygen configuration -->
+<!-- Doxygen usage and generation -->
+<!-- Important nomenclatures if not clear (e.g. RT / NRT) -->
+
+## Tests
+
+<!-- TODO -->
+<!-- How to build and run tests -->
