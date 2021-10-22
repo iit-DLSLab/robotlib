@@ -466,7 +466,6 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
     /// LegDataMap Copy
 
     auto footPosCopy = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
-    auto qCopy = dummy_quadruped->makeJointState();
 
     for (auto legCopy : *(dummy_quadruped->getLegs()))
     {
@@ -513,22 +512,37 @@ TEST(RobotBaseUnitTests, jointStateOperators)
         }
     }
     std::cout << "JointState q elements:" << std::endl;
-    for (auto elem : q)
-
-        std::cout << elem.second << std::endl;
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << q[joint] << std::endl;
+        }
+    }
 
     /// Operator= Copy
     auto q2 = dummy_quadruped->makeJointState();
 
     std::cout << "JointState q2 elements:" << std::endl;
-    for (auto elem : q2)
-        std::cout << elem.second << std::endl;
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << q2[joint] << std::endl;
+        }
+    }
 
     q2 = q;
 
     std::cout << "JointState q2 elements (copy):" << std::endl;
-    for (auto elem : q2)
-        std::cout << elem.second << std::endl;
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << q2[joint] << std::endl;
+        }
+    }
 
     /// Operator= AssignAll
     auto q3 = dummy_quadruped->makeJointState();
@@ -536,8 +550,13 @@ TEST(RobotBaseUnitTests, jointStateOperators)
     q3 = value;
 
     std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
-    for (auto elem : q3)
-        std::cout << elem.second << std::endl;
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << q3[joint] << std::endl;
+        }
+    }
 }
 
 TEST(RobotBaseUnitTests, footJacobian)
@@ -582,50 +601,50 @@ TEST(RobotBaseUnitTests, footJacobian)
     }
 }
 
-TEST(RobotBaseUnitTests, LegDataMap)
-{
-    std::cout << "TODO: LegDataMap TEST" << std::endl;
+// TEST(RobotBaseUnitTests, LegDataMap)
+// {
+//     std::cout << "TODO: LegDataMap TEST" << std::endl;
 
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//     /// Dummy quadruped
+//     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    /// Groud truth
-    //...
+//     /// Groud truth
+//     //...
 
-    auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
-    auto footJac = dummy_quadruped->makeFeetJacobian();
-    auto q = dummy_quadruped->makeJointState();
+//     auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+//     auto footJac = dummy_quadruped->makeFeetJacobian();
+//     auto q = dummy_quadruped->makeJointState();
 
-    //    for(auto leg:robot_model_->get() )
-    //    {
-    //        //compute foot position in base space via fwd kinematics
-    //        footPos[leg]= leg.getFootPosition(q);
-    //        JFoot_[LegID(leg)] = leg.getFootJacobian(q);
-    //    }
+//     //    for(auto leg:robot_model_->get() )
+//     //    {
+//     //        //compute foot position in base space via fwd kinematics
+//     //        footPos[leg]= leg.getFootPosition(q);
+//     //        JFoot_[LegID(leg)] = leg.getFootJacobian(q);
+//     //    }
 
-    for (auto leg : *(dummy_quadruped->getLegs()))
-    {
-        //compute foot position in base space via fwd kinematics
-        dummy_quadruped->getFootPosition(q, leg, footPos[leg]);
-        dummy_quadruped->getFootJacobian(q, leg, footJac[leg]);
-    }
+//     for (auto leg : *(dummy_quadruped->getLegs()))
+//     {
+//         //compute foot position in base space via fwd kinematics
+//         dummy_quadruped->getFootPosition(q, leg, footPos[leg]);
+//         dummy_quadruped->getFootJacobian(q, leg, footJac[leg]);
+//     }
 
-    std::cout << "Foot Position" << std::endl;
+//     std::cout << "Foot Position" << std::endl;
 
-    for (auto pos : footPos)
-    {
-        std::cout << pos.second.transpose() << std::endl;
-    }
+//     for (auto pos : footPos)
+//     {
+//         std::cout << pos.second.transpose() << std::endl;
+//     }
 
-    std::cout << "Foot Jacobian" << std::endl;
+//     std::cout << "Foot Jacobian" << std::endl;
 
-    //TODO: overload = operator in Jacobian class
-    for (auto &jac : footJac)
-    {
-        std::cout << jac.first->getName() << std::endl;
-        std::cout << jac.second << std::endl;
-    }
-}
+//     //TODO: overload = operator in Jacobian class
+//     for (auto &jac : footJac)
+//     {
+//         std::cout << jac.first->getName() << std::endl;
+//         std::cout << jac.second << std::endl;
+//     }
+// }
 
 TEST(RobotBaseUnitTests, LinkDataMap)
 {
@@ -772,23 +791,23 @@ TEST(RobotBaseUnitTests, getRobotMass)
     std::cout << dummy_quadruped->getRobotMass() << std::endl;
 }
 
-TEST(RobotBaseUnitTests, inverseDynamics)
-{
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+// TEST(RobotBaseUnitTests, inverseDynamics)
+// {
+//     /// Dummy quadruped
+//     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
-    Eigen::Matrix<double, 6, 1> v;
-    Eigen::Matrix<double, 6, 1> a;
-    Eigen::Matrix<double, 6, 1> g;
-    Eigen::Matrix<double, 6, 1> wrench_base; ///output
+//     Eigen::Matrix<double, 6, 1> v;
+//     Eigen::Matrix<double, 6, 1> a;
+//     Eigen::Matrix<double, 6, 1> g;
+//     Eigen::Matrix<double, 6, 1> wrench_base; ///output
 
-    auto q = dummy_quadruped->makeJointState();
-    auto dq = dummy_quadruped->makeJointState();
-    auto ddq = dummy_quadruped->makeJointState();
-    auto tau = dummy_quadruped->makeJointState();
+//     auto q = dummy_quadruped->makeJointState();
+//     auto dq = dummy_quadruped->makeJointState();
+//     auto ddq = dummy_quadruped->makeJointState();
+//     auto tau = dummy_quadruped->makeJointState();
 
-    dummy_quadruped->inverseDynamics(v, a, g, q, dq, ddq, wrench_base, tau);
-}
+//     dummy_quadruped->inverseDynamics(v, a, g, q, dq, ddq, wrench_base, tau);
+// }
 
 TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
 {
@@ -879,6 +898,32 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
         for (auto pair : joint_dmp_per_leg_default_data)
         {
             EXPECT_EQ(pair.second, value);
+        }
+    }
+}
+
+TEST(RobotBaseUnitTests, getLegJointState)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    auto joint_state = dummy_quadruped->makeJointState();
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        std::vector<std::string> joint_names;
+        for (auto joint : *leg->getJoints())
+        {
+            joint_names.push_back(joint->getName());
+        }
+
+        auto joint_state_per_leg = joint_state.getLegJointState(leg);
+
+        int it = 0;
+        for (auto pair : joint_state_per_leg)
+        {
+            EXPECT_EQ(joint_names[it], pair.first->getName());
+            it++;
         }
     }
 }
