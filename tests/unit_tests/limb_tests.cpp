@@ -34,7 +34,7 @@ public:
     };
 };
 
-TEST(LegUnitTests, getName)
+TEST(LimbUnitTests, getName)
 {
     std::cout << "Testing Leg getName()...\n";
 
@@ -72,55 +72,55 @@ TEST(LegUnitTests, getName)
     }
 }
 
-TEST(LegUnitTests, getNLinks)
+TEST(LimbUnitTests, getNLinks)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getNJoints)
+TEST(LimbUnitTests, getNJoints)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getLink)
+TEST(LimbUnitTests, getLink)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getJoint)
+TEST(LimbUnitTests, getJoint)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getJoints)
+TEST(LimbUnitTests, getJoints)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getLinks)
+TEST(LimbUnitTests, getLinks)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, jointToChildName)
+TEST(LimbUnitTests, jointToChildName)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, jointToParentName)
+TEST(LimbUnitTests, jointToParentName)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, linkToChildName)
+TEST(LimbUnitTests, linkToChildName)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, linkToParentName)
+TEST(LimbUnitTests, linkToParentName)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getLink_string)
+TEST(LimbUnitTests, getLink_string)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getJoint_string)
+TEST(LimbUnitTests, getJoint_string)
 {
     std::cout << "TODO\n";
 }
-TEST(LegUnitTests, getEndEffector)
+TEST(LimbUnitTests, getEndEffector)
 {
     std::cout << "TODO\n";
 }
