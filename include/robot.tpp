@@ -27,11 +27,6 @@ namespace dls
                         return arms_;
                 };
 
-                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-                const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const int id) { return (*legs_)[id]; };
-                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-                const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const int id) { return (*arms_)[id]; };
-
                 // template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>      /// NB: TODO
                 // const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNextLeg(const std::shared_ptr<LimbBase>& leg){
                 //         for(auto it_leg = (*legs_).begin();it_leg<(*legs_).end(); ++it_leg){

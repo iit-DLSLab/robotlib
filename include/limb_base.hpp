@@ -24,9 +24,6 @@ namespace dls
             virtual const int getNLinks() const = 0;
             virtual const int getNJoints() const = 0;
 
-            virtual const std::shared_ptr<Link> getLink(const int linkId) const = 0;
-            virtual const std::shared_ptr<Joint> getJoint(const int jointId) const = 0;
-
             virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const = 0;
             virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const = 0;
 

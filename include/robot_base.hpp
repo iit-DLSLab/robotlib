@@ -110,18 +110,18 @@ namespace dls
             private:
                 LegDataMap(RobotBase *robot) : nLegs_(robot->getNLEGS())
                 {
-                    for (int i = 0; i < nLegs_; ++i)
+                    for (auto leg : *robot->getLegs())
                     {
-                        PairType pair(robot->getLeg(i), Data()); //shared_pointers?
+                        PairType pair(leg, Data()); //shared_pointers?
                         data_.push_back(pair);
                     }
                 }
 
                 LegDataMap(RobotBase *robot, const Data &data) : nLegs_(robot->getNLEGS())
                 {
-                    for (int i = 0; i < nLegs_; ++i)
+                    for (auto leg : *robot->getLegs())
                     {
-                        PairType pair(robot->getLeg(i), data); //shared_pointers?
+                        PairType pair(leg, data); //shared_pointers?
                         data_.push_back(pair);
                     }
                 }
@@ -318,16 +318,14 @@ namespace dls
                     const int nLegs = robot->getNLEGS();
                     data_ = new PairType[num_joints_];
 
-                    for (int i = 0; i < nLegs; i++)
+                    int count_joints = 0;
+                    for (auto leg : *robot->getLegs())
                     {
-                        auto leg = robot->getLeg(i);
-                        int num_joints_per_leg = leg->getNJoints();
-                        for (int j = 0; j < num_joints_per_leg; j++)
+                        for (auto joint : *leg->getJoints())
                         {
-                            std::shared_ptr<Joint> joint = leg->getJoint(j);
                             PairType pair(joint, Data());
-                            data_[i * num_joints_per_leg + j] = pair;
-                            // std::cout << data_[i * num_joints_per_leg + j].first
+                            data_[count_joints] = pair;
+                            count_joints++;
                         }
                     }
                 }
@@ -336,28 +334,27 @@ namespace dls
                     const int nLegs = robot->getNLEGS();
                     data_ = new PairType[num_joints_];
 
-                    for (int i = 0; i < nLegs; i++)
+                    int count_joints = 0;
+                    for (auto leg : *robot->getLegs())
                     {
-                        auto leg = robot->getLeg(i);
-                        int num_joints_per_leg = leg->getNJoints();
-                        for (int j = 0; j < num_joints_per_leg; j++)
+                        for (auto joint : *leg->getJoints())
                         {
-                            std::shared_ptr<Joint> joint = leg->getJoint(j);
-                            PairType pair(joint, Data(data));
-                            data_[i * num_joints_per_leg + j] = pair;
+                            PairType pair(joint, data);
+                            data_[count_joints] = pair;
+                            count_joints++;
                         }
                     }
                 }
                 JointDataMap(const std::shared_ptr<LimbBase> leg) : num_joints_(leg->getNJoints())
                 {
                     data_ = new PairType[num_joints_];
-                    Iterator<const std::shared_ptr<Joint>> leg_joints_it = leg->getJoints()->begin();
 
-                    for (int i = 0; i < num_joints_; i++)
+                    int count_joints = 0;
+                    for (auto joint : *leg->getJoints())
                     {
-                        std::shared_ptr<Joint> joint = *leg_joints_it;
-                        data_[i] = PairType(joint, Data());
-                        leg_joints_it++;
+                        PairType pair(joint, Data());
+                        data_[count_joints] = pair;
+                        count_joints++;
                     }
                 }
                 JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : num_joints_(leg->getNJoints())
@@ -365,11 +362,12 @@ namespace dls
                     data_ = new PairType[num_joints_];
                     Iterator<const std::shared_ptr<Joint>> leg_joints_it = leg->getJoints()->begin();
 
-                    for (int i = 0; i < num_joints_; i++)
+                    int count_joints = 0;
+                    for (auto joint : *leg->getJoints())
                     {
-                        std::shared_ptr<Joint> joint = *leg_joints_it;
-                        data_[i] = PairType(joint, Data(data));
-                        leg_joints_it++;
+                        PairType pair(joint, data);
+                        data_[count_joints] = pair;
+                        count_joints++;
                     }
                 }
                 JointDataMap() : num_joints_(0) //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
@@ -512,9 +510,6 @@ namespace dls
             virtual const int getNARMS() = 0;
             virtual const int getNJOINTS() = 0;
             virtual const int getNLINKS() = 0;
-
-            virtual const std::shared_ptr<LimbBase> getLeg(const int id) = 0;
-            virtual const std::shared_ptr<LimbBase> getArm(const int id) = 0;
 
             // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
 

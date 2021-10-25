@@ -63,7 +63,8 @@ namespace dls
             virtual Iterator<const Data> begin() const = 0;
             virtual Iterator<const Data> end() const = 0;
 
-            virtual const Data operator[](const int id) const = 0;
+            //TODO: define [] operator using a string as input (it implies that all the possible Data classes have a getName function)
+
             virtual const int size() const = 0;
         };
 
@@ -77,8 +78,6 @@ namespace dls
 
             virtual Iterator<const Data> begin() const override;
             virtual Iterator<const Data> end() const override;
-
-            virtual const Data operator[](const int id) const override;
 
             virtual const int size() const override;
 

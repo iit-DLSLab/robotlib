@@ -26,9 +26,6 @@ namespace dls
 		Iterator<const Data> Container<Data, N>::end() const { return Iterator<const Data>(&data_[N]); };
 
 		template <class Data, unsigned int N>
-		const Data Container<Data, N>::operator[](const int id) const { return data_[id]; };
-
-		template <class Data, unsigned int N>
 		const int Container<Data, N>::size() const { return data_.size(); };
 	} // namespace robotlib
 } // namespace dls

@@ -56,13 +56,13 @@ TEST(RobotBaseUnitTests, getLeg)
     /// Ground truth
     std::array<std::string, 4> legs_gt{{"LF", "RF", "LH", "RH"}};
 
-    for (int i{0}; i < dummy_quadruped->getNLEGS(); i++)
+    int count_legs = 0;
+    for (auto legs_dq : *dummy_quadruped->getLegs())
     {
-        auto legs_dq{dummy_quadruped->getLeg(i)};
-
         /// Assert conditions
-        ASSERT_EQ(legs_dq->getName(), legs_gt.at(i));
-        ASSERT_EQ(typeid(legs_dq->getName()).name(), typeid(legs_gt.at(i)).name());
+        ASSERT_EQ(legs_dq->getName(), legs_gt.at(count_legs));
+        ASSERT_EQ(typeid(legs_dq->getName()).name(), typeid(legs_gt.at(count_legs)).name());
+        count_legs++;
     }
 }
 

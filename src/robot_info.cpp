@@ -31,12 +31,14 @@ static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
     {
         std::cout << leg->getName() << ":  ";
         int nLinks = leg->getNLinks();
-        for (int link = 0; link < nLinks; ++link)
+        int count_links = 0;
+        for (auto link : *leg->getLinks())
         {
-            if (link == nLinks - 1)
-                std::cout << std::static_pointer_cast<dls::robotlib::Link>(leg->getLink(link))->getName() << std::endl;
+            if (count_links == nLinks - 1)
+                std::cout << link->getName() << std::endl;
             else
-                std::cout << std::static_pointer_cast<dls::robotlib::Link>(leg->getLink(link))->getName() << ", ";
+                std::cout << link->getName() << ", ";
+            count_links++;
         }
     }
 
@@ -45,11 +47,13 @@ static void info(const std::shared_ptr<dls::robotlib::RobotBase> &robot)
     {
         std::cout << leg->getName() << ":  ";
         int nJoints = leg->getNJoints();
-        for (int joint = 0; joint < nJoints; ++joint)
+        int count_joints = 0;
+        for (auto joint : *leg->getJoints())
         {
-            std::cout << std::static_pointer_cast<dls::robotlib::Joint>(leg->getJoint(joint))->getName() << ", ";
+            std::cout << joint->getName() << ", ";
         }
         std::cout << '\n';
+        count_joints++;
     }
     std::cout << '\n';
 }
