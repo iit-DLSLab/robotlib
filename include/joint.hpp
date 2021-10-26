@@ -35,8 +35,11 @@ namespace dls
 
 			virtual ~Joint();
 
+			template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+			friend class Robot;
+
 			/**
-			 * @brief Get the name of the joint
+			 * @brief Get the name of the Joint
 			 * @return const std::string
 			 */
 			virtual const std::string getName() const override;
@@ -51,13 +54,6 @@ namespace dls
 			 */
 			const std::shared_ptr<Link> getChild() const;
 
-			template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-			friend class Robot;
-
-		protected:
-			std::shared_ptr<Link> parent_;
-			std::shared_ptr<Link> child_;
-
 		private:
 			/**
 			 * @brief Set the Joint parent object, that is a Link object
@@ -71,6 +67,10 @@ namespace dls
 			 * @return void
 			 */
 			void setChild(const std::shared_ptr<Link> child);
+
+		protected:
+			std::shared_ptr<Link> parent_;
+			std::shared_ptr<Link> child_;
 		};
 	} // namespace robotlib
 } // namespace dls

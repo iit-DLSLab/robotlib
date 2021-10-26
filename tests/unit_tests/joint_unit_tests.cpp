@@ -21,6 +21,12 @@ TEST(JointUnitTests, getName)
      ASSERT_EQ(joint.getName(), "joint_test");
 
      /**
+      * @test Joint name with two separate words
+      */
+     dls::robotlib::Joint joint_two_words_name{"joint test"};
+     ASSERT_EQ(joint_two_words_name.getName(), "joint test");
+
+     /**
       * @test Joint name with an empty string
       */
      dls::robotlib::Joint joint_empty_name{""};

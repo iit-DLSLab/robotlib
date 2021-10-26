@@ -1,3 +1,14 @@
+/**
+ * @file link.cpp
+ *
+ * @brief Link class and functions implementation
+ *
+ * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ *
+ * @bug No known bugs.
+ */
+
 #include "link.hpp"
 
 namespace dls

@@ -21,6 +21,12 @@ TEST(LinkUnitTests, getName)
      ASSERT_EQ(link.getName(), "link_test");
 
      /**
+      * @test Link name with two separate words
+      */
+     dls::robotlib::Link link_two_words_name{"link test"};
+     ASSERT_EQ(link_two_words_name.getName(), "link test");
+
+     /**
       * @test Link name with an empty string
       */
      dls::robotlib::Link link_empty_name{""};
