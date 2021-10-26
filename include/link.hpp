@@ -56,7 +56,7 @@ namespace dls
 			 */
 			const std::shared_ptr<Joint> getChild() const;
 
-		private:
+		protected:
 			/**
 			 * @brief Set the Link children, that is a ContainerBase of Joint
 			 * @param children the Link children to be set
@@ -76,7 +76,6 @@ namespace dls
 			 */
 			void setChild(const std::shared_ptr<Joint> child);
 
-		protected:
 			std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children_;
 			std::shared_ptr<Joint> parent_;
 			std::shared_ptr<Joint> child_;
