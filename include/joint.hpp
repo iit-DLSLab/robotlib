@@ -54,7 +54,7 @@ namespace dls
 			 */
 			const std::shared_ptr<Link> getChild() const;
 
-		protected:
+		private:
 			/**
 			 * @brief Set the Joint parent object, that is a Link object
 			 * @param parent the Joint parent object to be set
@@ -68,6 +68,7 @@ namespace dls
 			 */
 			void setChild(const std::shared_ptr<Link> child);
 
+		protected:
 			std::shared_ptr<Link> parent_;
 			std::shared_ptr<Link> child_;
 		};
