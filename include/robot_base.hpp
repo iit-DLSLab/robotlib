@@ -242,80 +242,6 @@ namespace dls
                 
                 ~JointDataMap(){};
 
-                // Iterator<Pair> begin() { return Iterator<Pair>(&data_[0]); }
-                // Iterator<Pair> end() { return Iterator<Pair>(&data_[num_joints_]); }
-
-                // Data &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
-                // {
-                //     std::cout << "inside []\n";
-
-                //     for (auto &pair : *this)
-                //     {
-                //         if (pair.key_->getName().compare(joint->getName()) == 0)
-                //         {
-                //             std::cout << "found joint in jdm, value " << pair.data_ << "\n";
-                //             return pair.data_;
-                //         }
-                            
-                //     }
-                // };
-
-                // /// TODO: to understand if we want operator[] with string
-                // Data &operator[](std::string joint_name)
-                // {
-                //     for (Pair &pair : *this)
-                //     {
-                //         if (pair.key_->getName().compare(joint_name) == 0)
-                //             return pair.data_;
-                //     }
-                // };
-
-                // /// TODO: to understand if we want operator[] with string
-                // const Data &operator[](std::string joint_name) const
-                // {
-                //     for (Pair &pair : *this)
-                //     {
-                //         if (pair.key_->getName().compare(joint_name) == 0)
-                //             return pair.data_;
-                //     }
-                // };
-
-                // void copydata(const JointDataMap &rhs)
-                // {
-                //     assert(this->getSize() == rhs.getSize());
-
-                //     for (auto i{0}; i < num_joints_; i++)
-                //     {
-                //         data_[i].key_ = rhs.data_[i].key_;
-                //         data_[i].data_ = rhs.data_[i].data_;
-                //     }
-                // }
-
-                // void assignAll(const Data &value)
-                // {
-                //     for (auto i{0}; i < num_joints_; i++)
-                //     {
-                //         data_[i].data_ = value;
-                //     }
-                // }
-
-                // JointDataMap &operator=(const JointDataMap &rhs)
-                // {
-                //     if (&rhs != this)
-                //     {
-                //         copydata(rhs);
-                //     }
-                //     return *this;
-                // }
-
-                // JointDataMap &operator=(const Data &defaultValue)
-                // {
-                //     assignAll(defaultValue);
-                //     return *this;
-                // }
-
-                // int getSize() const { return num_joints_; };
-
             private:
                 JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
                 {                   
@@ -368,23 +294,19 @@ namespace dls
                 {}
                 
             };
-            class JointState : public LegDataMap<JointDataMap<double>> //public JointDataMap<double>
+            class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>> //public JointDataMap<double>
             {
             public:
                 friend class RobotBase;
-                using LegDataMap<JointDataMap<double>>::operator=;
-                using LegDataMap<JointDataMap<double>>::operator[];
+                using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator=;
+                using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
                 double &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
                 {
                     for (auto &leg_pair : *this)
                     {
-                        std::cout << leg_pair.key_->getName() << std::endl;
-
-                        for (auto &joint_pair : leg_pair.data_) //iterate over the JointDataMap
+                        for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
                         {
-                            std::cout << joint_pair.key_->getName() << std::endl;
-                        
                             if (joint_pair.key_->getName().compare(joint->getName()) == 0)
                             {
                                 return joint_pair.data_;   
@@ -397,17 +319,17 @@ namespace dls
                 {
                     for (auto leg_pair : *this)
                     {
-                        leg_pair.data_.assignAll(data);
+                        (*leg_pair.data_).assignAll(data);
                     }
                     return *this;
                 }
 
-                JointDataMap<double> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
+                std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
 
                 ~JointState(){};
 
             private:
-                JointState(RobotBase *robot) : LegDataMap<JointDataMap<double>>(robot){};
+                JointState(RobotBase *robot) : LegDataMap<std::shared_ptr<JointDataMap<double>>>(robot){};
             };
 
             using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
@@ -514,32 +436,11 @@ namespace dls
 
                 for (auto leg : *this->getLegs())
                 {
-                    joint_state[leg].init(this->makeJointDataMapPerLeg<double>(leg, 0));
-                    
-                }
-                // for (auto leg : *this->getLegs())
-                // {
-                //     for (auto joint : *leg->getJoints())
-                //     {
-                //         std::cout << "*********** " <<joint_state[leg][joint] << std::endl;
-                //     }
-                // }
-
-                // for (auto leg : *this->getLegs())
-                // {
-                //     std::cout << "@@@@@@START NEW CICLE INSIDE MAKEJOINTSTATE " << leg->getName() << "@@@@@@\n";
-                //     for (auto joint : *leg->getJoints())
-                //     {
-                //         std::cout << "###########before joint_state[joint] " << joint->getName()<<"###########\n";
-                //         joint_state[joint];
-                        
-                //         std::cout << "got joint data\n";
-                //         std::cout << "###################################\n";
-                //     }
-                //     std::cout << "@@@@@@@@@@@@@@@@@@\n";
-                // }
-
-                        
+                    JointDataMap<double> *jdm;
+                    jdm = new JointDataMap<double>(leg);
+                    std::shared_ptr<JointDataMap<double>> ptr(jdm);
+                    joint_state[leg] = ptr;
+                }                       
 
                 return joint_state;
             } // NRT

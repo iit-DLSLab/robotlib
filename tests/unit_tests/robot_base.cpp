@@ -945,11 +945,11 @@ TEST(RobotBaseUnitTests, getLegJointState)
 
         auto joint_state_per_leg = joint_state.getLegJointState(leg);   //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
 
-        // int it = 0;
-        // for (auto pair : joint_state_per_leg)
-        // {
-        //     EXPECT_EQ(joint_names[it], pair.key_->getName());
-        //     it++;
-        // }
+        int it = 0;
+        for (auto pair : *joint_state_per_leg)
+        {
+            EXPECT_EQ(joint_names[it], pair.key_->getName());
+            it++;
+        }
     }
 }
