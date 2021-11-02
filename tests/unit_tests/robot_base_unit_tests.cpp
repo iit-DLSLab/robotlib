@@ -3,29 +3,6 @@
 #include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
 
-TEST(RobotBaseUnitTests, hack)
-{
-    /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
-    auto q = dummy_quadruped->makeJointState();
-    /// Operator[]
-    for (auto leg : *(dummy_quadruped->getLegs()))
-    { /// TODO: implement and use q.getSize()
-        for (auto joint : *(leg->getJoints()))
-        {
-            std::cout << q[joint];
-        }
-    }
-    /// Operator[]
-    for (auto leg : *(dummy_quadruped->getLegs()))
-    { /// TODO: implement and use q.getSize()
-        for (auto joint : *(leg->getJoints()))
-        {
-            q[joint] = 10;
-        }
-    }
-}
-
 TEST(RobotBaseUnitTests, getNLegs)
 {
     /// Dummy quadruped
@@ -937,10 +914,10 @@ TEST(RobotBaseUnitTests, getLegJointState)
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
-        std::vector<std::string> joint_names;
+        std::vector<std::string> joint_names_gt;
         for (auto joint : *leg->getJoints())
         {
-            joint_names.push_back(joint->getName());
+            joint_names_gt.push_back(joint->getName());
         }
 
         auto joint_state_per_leg = joint_state.getLegJointState(leg);   //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
@@ -948,8 +925,43 @@ TEST(RobotBaseUnitTests, getLegJointState)
         int it = 0;
         for (auto pair : *joint_state_per_leg)
         {
-            EXPECT_EQ(joint_names[it], pair.key_->getName());
+            EXPECT_EQ(joint_names_gt[it], pair.key_->getName());
             it++;
         }
     }
+}
+
+
+TEST(RobotBaseUnitTests, JointState_getByJointName)
+{
+    std::cout << "TODO\n";
+    // /// Dummy quadruped
+    // std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    // std::vector<std::pair<std::string,double>> values_gt;
+    // auto joint_state = dummy_quadruped->makeJointState();
+    // double v=0;
+
+
+
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {        
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         values_gt.push_back(std::make_pair<std::string,double>(joint->getName()),v);
+    //         joint_state[joint->getName()] = v;
+    //         v++;
+    //     }
+    // }
+
+    // int count = 0;
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {        
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         EXPECT(values_gt[count].second,joint_state[joint->getName()])
+    //         count++;
+    //     }
+    // }
+
 }
