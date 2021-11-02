@@ -8,8 +8,8 @@ namespace dls
                 Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(
                     const std::string &name,
                     const std::shared_ptr<Trunk> trunk,
-                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> &legs,
-                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> &arms)
+                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs,
+                    const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms)
                     : RobotBase(name), legs_(legs), arms_(arms), trunk_(trunk){};
 
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
@@ -111,7 +111,6 @@ namespace dls
                 template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
                 const std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name)
                 {
-
                         if (name.compare("") == 0)
                                 return nullptr;
                         for (auto leg : *(this->getLegs()))
@@ -123,6 +122,19 @@ namespace dls
                         std::cout << "JOINT NOT FOUND FROM THE INPUT NAME " << name << std::endl;
                         std::cout << "Returning a nullptr... " << std::endl;
                         return std::shared_ptr<Joint>(nullptr);
+                }
+
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name)
+                {
+                        for (auto leg : *(this->getLegs()))
+                        {
+                                if(leg->getName().compare(name)==0)
+                                        return leg;
+                        }
+                        std::cout << "LEG NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+                        std::cout << "Returning a nullptr... " << std::endl;
+                        return std::shared_ptr<LimbBase>(nullptr);
                 }
 
         } // namespace robotlib

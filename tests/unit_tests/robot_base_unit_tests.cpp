@@ -3,6 +3,29 @@
 #include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
 #include <gtest/gtest.h>
 
+TEST(RobotBaseUnitTests, hack)
+{
+    /// Dummy quadruped
+    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    auto q = dummy_quadruped->makeJointState();
+    /// Operator[]
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    { /// TODO: implement and use q.getSize()
+        for (auto joint : *(leg->getJoints()))
+        {
+            std::cout << q[joint];
+        }
+    }
+    /// Operator[]
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    { /// TODO: implement and use q.getSize()
+        for (auto joint : *(leg->getJoints()))
+        {
+            q[joint] = 10;
+        }
+    }
+}
+
 TEST(RobotBaseUnitTests, getNLegs)
 {
     /// Dummy quadruped
@@ -460,7 +483,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fp : footPos)
     {
-        std::cout << fp.first->getName() << " " << fp.second.transpose() << std::endl;
+        std::cout << fp.key_->getName() << " " << fp.data_.transpose() << std::endl;
     }
 
     /// LegDataMap Copy
@@ -479,7 +502,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpCopy : footPosCopy)
     {
-        std::cout << fpCopy.first->getName() << " " << fpCopy.second.transpose() << std::endl;
+        std::cout << fpCopy.key_->getName() << " " << fpCopy.data_.transpose() << std::endl;
     }
 
     /// LegDataMap Copy AssignAll
@@ -493,8 +516,10 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpAssign : footPosAssign)
     {
-        std::cout << fpAssign.first->getName() << " " << fpAssign.second.transpose() << std::endl;
+        std::cout << fpAssign.key_->getName() << " " << fpAssign.data_.transpose() << std::endl;
     }
+
+    // TODO: Const
 }
 
 TEST(RobotBaseUnitTests, jointStateOperators)
@@ -511,52 +536,52 @@ TEST(RobotBaseUnitTests, jointStateOperators)
             q[joint] = 10;
         }
     }
-    std::cout << "JointState q elements:" << std::endl;
-    for (auto leg : *dummy_quadruped->getLegs())
-    {
-        for (auto joint : *leg->getJoints())
-        {
-            std::cout << q[joint] << std::endl;
-        }
-    }
+    // std::cout << "JointState q elements:" << std::endl;
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         std::cout << q[joint] << std::endl;
+    //     }
+    // }
 
-    /// Operator= Copy
-    auto q2 = dummy_quadruped->makeJointState();
+    // /// Operator= Copy
+    // auto q2 = dummy_quadruped->makeJointState();
 
-    std::cout << "JointState q2 elements:" << std::endl;
+    // std::cout << "JointState q2 elements:" << std::endl;
 
-    for (auto leg : *dummy_quadruped->getLegs())
-    {
-        for (auto joint : *leg->getJoints())
-        {
-            std::cout << q2[joint] << std::endl;
-        }
-    }
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         std::cout << q2[joint] << std::endl;
+    //     }
+    // }
 
-    q2 = q;
+    // q2 = q;
 
-    std::cout << "JointState q2 elements (copy):" << std::endl;
-    for (auto leg : *dummy_quadruped->getLegs())
-    {
-        for (auto joint : *leg->getJoints())
-        {
-            std::cout << q2[joint] << std::endl;
-        }
-    }
+    // std::cout << "JointState q2 elements (copy):" << std::endl;
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         std::cout << q2[joint] << std::endl;
+    //     }
+    // }
 
-    /// Operator= AssignAll
-    auto q3 = dummy_quadruped->makeJointState();
-    const double value{0.5};
-    q3 = value;
+    // /// Operator= AssignAll
+    // auto q3 = dummy_quadruped->makeJointState();
+    // const double value{0.5};
+    // q3 = value;
 
-    std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
-    for (auto leg : *dummy_quadruped->getLegs())
-    {
-        for (auto joint : *leg->getJoints())
-        {
-            std::cout << q3[joint] << std::endl;
-        }
-    }
+    // std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
+    // for (auto leg : *dummy_quadruped->getLegs())
+    // {
+    //     for (auto joint : *leg->getJoints())
+    //     {
+    //         std::cout << q3[joint] << std::endl;
+    //     }
+    // }
 }
 
 TEST(RobotBaseUnitTests, footJacobian)
@@ -565,13 +590,14 @@ TEST(RobotBaseUnitTests, footJacobian)
     auto feetJac = dummy_quadruped->makeFeetJacobian();
 
     /// TODO: operator= to be overloaded
-    //Eigen::Matrix<double, 3, 6> footJacValues;
-    //footJacValues << 1, 2, 3,
-    //    4, 5, 6,
-    //    7, 8, 9,
-    //    10, 11, 12,
-    //    13, 14, 15,
-    //    16, 16, 18;
+    Eigen::Matrix<double, 3, 6> footJacValues;
+    footJacValues << 1, 2, 3,
+       4, 5, 6,
+       7, 8, 9,
+       10, 11, 12,
+       13, 14, 15,
+       16, 16, 18;
+
     /// Access jacobian value associated to a leg
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
@@ -596,8 +622,8 @@ TEST(RobotBaseUnitTests, footJacobian)
     for (auto &fj : feetJac)
     {
         std::cout << "FOOT JAC LEG: " << std::endl;
-        std::cout << fj.first->getName() << std::endl;
-        std::cout << fj.second << std::endl;
+        std::cout << fj.key_->getName() << std::endl;
+        std::cout << fj.data_ << std::endl;
     }
 }
 
@@ -633,7 +659,7 @@ TEST(RobotBaseUnitTests, footJacobian)
 
 //     for (auto pos : footPos)
 //     {
-//         std::cout << pos.second.transpose() << std::endl;
+//         std::cout << pos.data_.transpose() << std::endl;
 //     }
 
 //     std::cout << "Foot Jacobian" << std::endl;
@@ -641,8 +667,8 @@ TEST(RobotBaseUnitTests, footJacobian)
 //     //TODO: overload = operator in Jacobian class
 //     for (auto &jac : footJac)
 //     {
-//         std::cout << jac.first->getName() << std::endl;
-//         std::cout << jac.second << std::endl;
+//         std::cout << jac.key_->getName() << std::endl;
+//         std::cout << jac.data_ << std::endl;
 //     }
 // }
 
@@ -672,7 +698,7 @@ TEST(RobotBaseUnitTests, LinkDataMap)
     }
     for (auto pos : linkPos)
     {
-        std::cout << pos.second.transpose() << std::endl;
+        std::cout << pos.data_.transpose() << std::endl;
     }
 }
 
@@ -702,7 +728,7 @@ TEST(RobotBaseUnitTests, JointDataMap)
     }
     for (auto pos : jointPos)
     {
-        std::cout << pos.second.transpose() << std::endl;
+        std::cout << pos.data_.transpose() << std::endl;
     }
 }
 
@@ -820,40 +846,40 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dmp = dummy_quadruped->makeLegDataMap<type>(data);
-    auto link_dmp = dummy_quadruped->makeLinkDataMap<type>(data);
-    auto joint_dmp = dummy_quadruped->makeJointDataMap<type>(data);
-    auto jacobian_dmp = dummy_quadruped->makeFeetJacobian(data_double);
-
-    std::cout << "leg_dmp\n";
+    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
+    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
+    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
+    auto jacobian_dm = dummy_quadruped->makeFeetJacobian(data_double);
+    
+    std::cout << "leg_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        std::cout << leg_dmp[leg] << " ";
+        std::cout << leg_dm[leg] << " ";
     }
     std::cout << "\n";
 
-    std::cout << "link_dmp\n";
+    std::cout << "link_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
         for (auto link : *(leg->getLinks()))
-            std::cout << link_dmp[link] << " ";
+            std::cout << link_dm[link] << " ";
         std::cout << "\n***\n";
     }
     std::cout << "\n";
 
-    std::cout << "joint_dmp\n";
+    std::cout << "joint_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
         for (auto joint : *(leg->getJoints()))
-            std::cout << joint_dmp[joint] << " ";
+            std::cout << joint_dm[joint] << " ";
         std::cout << "\n***\n";
     }
     std::cout << "\n";
 
-    std::cout << "jacobian_dmp\n";
+    std::cout << "jacobian_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        std::cout << jacobian_dmp[leg] << "\n";
+        std::cout << jacobian_dm[leg] << "\n";
         std::cout << "***\n";
     }
     std::cout << "\n";
@@ -880,12 +906,12 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
             joint_names.push_back(joint->getName());
         }
 
-        auto joint_dmp_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
+        auto joint_dm_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
 
         int it = 0;
-        for (auto pair : joint_dmp_per_leg)
+        for (auto pair : joint_dm_per_leg)
         {
-            EXPECT_EQ(joint_names[it], pair.first->getName());
+            EXPECT_EQ(joint_names[it], pair.key_->getName());
             it++;
         }
         using Type = double;
@@ -893,11 +919,11 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
         // using Type = Eigen::Vector3d;
         // Type value{0, 0, 0};
 
-        auto joint_dmp_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
+        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
 
-        for (auto pair : joint_dmp_per_leg_default_data)
+        for (auto pair : joint_dm_per_leg_default_data)
         {
-            EXPECT_EQ(pair.second, value);
+            EXPECT_EQ(pair.data_, value);
         }
     }
 }
@@ -917,12 +943,12 @@ TEST(RobotBaseUnitTests, getLegJointState)
             joint_names.push_back(joint->getName());
         }
 
-        auto joint_state_per_leg = joint_state.getLegJointState(leg);
+        auto joint_state_per_leg = joint_state.getLegJointState(leg);   //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
 
         int it = 0;
-        for (auto pair : joint_state_per_leg)
+        for (auto pair : *joint_state_per_leg)
         {
-            EXPECT_EQ(joint_names[it], pair.first->getName());
+            EXPECT_EQ(joint_names[it], pair.key_->getName());
             it++;
         }
     }

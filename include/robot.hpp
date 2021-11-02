@@ -14,8 +14,8 @@ namespace dls
 		public:
 			Robot(const std::string &name,
 				  const std::shared_ptr<Trunk> trunk,
-				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> &legs,
-				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> &arms);
+				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs,
+				  const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms);
 			virtual ~Robot();
 
 			// virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) override;	/// NB: TODO
@@ -30,6 +30,7 @@ namespace dls
 
 			virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
 			virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
+			virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
 
 		protected:
 			const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot

@@ -12,9 +12,9 @@ namespace dls
 		class DummyLeg : public Leg<NJOINTS, NLINKS>
 		{
 		public:
-			DummyLeg(const std::string name,
-					 const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
-					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
+			DummyLeg(const std::string &name,
+					 const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> &joints,
+					 const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> &links)
 				: Leg<NJOINTS, NLINKS>(name, joints, links),
 				  jointMap({//joint name, parent name, child name
 							{"LF_HAA", std::make_pair("TRUNK", "LF_ASSEMBLY")},
