@@ -328,7 +328,7 @@ namespace dls
                         }
                     }
                 };
-
+                
                 JointState &operator=(const double data)
                 {
                     for (auto leg_pair : *this)
@@ -339,6 +339,7 @@ namespace dls
                 }
 
                 std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
+                const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 
                 ~JointState(){};
 
