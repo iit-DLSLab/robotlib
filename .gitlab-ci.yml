@@ -25,7 +25,20 @@ test:
     - ant-devel
   script:
     - cd build
-    - make -j$(nproc) main_tests
-    - ./tests/main_tests
+    #- make -j$(nproc) main_tests
+    #- ./tests/main_tests
+    # TODO: go back to single main_test executable
+    make -j$(nproc) joint_unit_tests
+    make -j$(nproc) limb_unit_tests
+    make -j$(nproc) link_unit_tests
+    make -j$(nproc) robot_base_unit_tests
+    make -j$(nproc) trunk_unit_tests
+    make -j$(nproc) utils_unit_tests
+    - ./tests/joint_unit_tests
+    - ./tests/limb_unit_tests
+    - ./tests/link_unit_tests
+    - ./tests/robot_base_unit_tests
+    - ./tests/trunk_unit_tests
+    - ./tests/utils_unit_tests
   dependencies:
     - build

@@ -1,6 +1,6 @@
 #include "robot_base.hpp"
 // TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
+#include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
 #include <gtest/gtest.h>
 
 TEST(RobotBaseUnitTests, getNLegs)
@@ -926,4 +926,10 @@ TEST(RobotBaseUnitTests, getLegJointState)
             it++;
         }
     }
+}
+
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
