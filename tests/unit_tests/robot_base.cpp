@@ -846,40 +846,40 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dmp = dummy_quadruped->makeLegDataMap<type>(data);
-    auto link_dmp = dummy_quadruped->makeLinkDataMap<type>(data);
-    auto joint_dmp = dummy_quadruped->makeJointDataMap<type>(data);
-    auto jacobian_dmp = dummy_quadruped->makeFeetJacobian(data_double);
-
-    std::cout << "leg_dmp\n";
+    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
+    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
+    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
+    auto jacobian_dm = dummy_quadruped->makeFeetJacobian(data_double);
+    
+    std::cout << "leg_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        std::cout << leg_dmp[leg] << " ";
+        std::cout << leg_dm[leg] << " ";
     }
     std::cout << "\n";
 
-    std::cout << "link_dmp\n";
+    std::cout << "link_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
         for (auto link : *(leg->getLinks()))
-            std::cout << link_dmp[link] << " ";
+            std::cout << link_dm[link] << " ";
         std::cout << "\n***\n";
     }
     std::cout << "\n";
 
-    std::cout << "joint_dmp\n";
+    std::cout << "joint_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
         for (auto joint : *(leg->getJoints()))
-            std::cout << joint_dmp[joint] << " ";
+            std::cout << joint_dm[joint] << " ";
         std::cout << "\n***\n";
     }
     std::cout << "\n";
 
-    std::cout << "jacobian_dmp\n";
+    std::cout << "jacobian_dm\n";
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        std::cout << jacobian_dmp[leg] << "\n";
+        std::cout << jacobian_dm[leg] << "\n";
         std::cout << "***\n";
     }
     std::cout << "\n";
@@ -906,10 +906,10 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
             joint_names.push_back(joint->getName());
         }
 
-        auto joint_dmp_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
+        auto joint_dm_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
 
         int it = 0;
-        for (auto pair : joint_dmp_per_leg)
+        for (auto pair : joint_dm_per_leg)
         {
             EXPECT_EQ(joint_names[it], pair.key_->getName());
             it++;
@@ -919,9 +919,9 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
         // using Type = Eigen::Vector3d;
         // Type value{0, 0, 0};
 
-        auto joint_dmp_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
+        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
 
-        for (auto pair : joint_dmp_per_leg_default_data)
+        for (auto pair : joint_dm_per_leg_default_data)
         {
             EXPECT_EQ(pair.data_, value);
         }

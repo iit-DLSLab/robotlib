@@ -42,7 +42,7 @@ namespace dls
                         ~Pair(){};
 
                     private:
-                        Pair(const std::shared_ptr<Key> key, const Data data ): key_(key), data_(data){};
+                        Pair(const std::shared_ptr<Key> key, const Data &data ): key_(key), data_(data){};
                         Pair(){};
                         
                     
@@ -160,7 +160,7 @@ namespace dls
 
 
                 const Pair createPair(const std::shared_ptr<Key> key, const Data & data ) const {return Pair(key, data);} //shared_pointers?}
-                Pair createPair(std::shared_ptr<Key> key, Data data ) {return Pair(key, data);} //shared_pointers?}
+                Pair createPair(std::shared_ptr<Key> key, Data &data ) {return Pair(key, data);} //shared_pointers?}
                 
                 int num_data_;
                 Pair *data_;
