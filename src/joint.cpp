@@ -1,3 +1,14 @@
+/**
+ * @file joint.cpp
+ *
+ * @brief Joint class and functions implementation
+ *
+ * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ *
+ * @bug No known bugs.
+ */
+
 #include "joint.hpp"
 
 namespace dls
