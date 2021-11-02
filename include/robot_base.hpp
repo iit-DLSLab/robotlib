@@ -315,6 +315,20 @@ namespace dls
                     }
                 };
 
+                const double &operator[](const std::shared_ptr<Joint> joint) const
+                {
+                    for (auto &leg_pair : *this)
+                    {
+                        for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+                        {
+                            if (joint_pair.key_->getName().compare(joint->getName()) == 0)
+                            {
+                                return joint_pair.data_;   
+                            }
+                        }
+                    }
+                };
+
                 JointState &operator=(const double data)
                 {
                     for (auto leg_pair : *this)
