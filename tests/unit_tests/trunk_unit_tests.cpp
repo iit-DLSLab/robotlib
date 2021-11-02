@@ -38,3 +38,9 @@ TEST(TrunkUnitTests, getName)
      dls::robotlib::Trunk trunk_single_space_name{" "};
      ASSERT_EQ(trunk_single_space_name.getName(), " ");
 }
+
+int main(int argc, char **argv)
+{
+     ::testing::InitGoogleTest(&argc, argv);
+     return RUN_ALL_TESTS();
+}

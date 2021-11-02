@@ -23,7 +23,7 @@ namespace dls
 		const std::shared_ptr<Link> Joint::getParent() const { return parent_; }
 		const std::shared_ptr<Link> Joint::getChild() const { return child_; }
 
-		void Joint::setChild(const std::shared_ptr<Link> child) { child_ = child; }
 		void Joint::setParent(const std::shared_ptr<Link> parent) { parent_ = parent; }
+		void Joint::setChild(const std::shared_ptr<Link> child) { child_ = child; }
 	} // namespace robotlib
 } // namespace dls
