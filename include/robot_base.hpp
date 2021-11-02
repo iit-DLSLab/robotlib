@@ -171,10 +171,11 @@ namespace dls
             {
             public:
                 using DataMap<LimbBase, Data>::operator=;
-
                 friend class RobotBase;
+
+                ~LegDataMap(){};
             protected:
-                LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS())
+                LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS())       //TODO: remove it, leave only the constructor with data
                 {
                     int count_data = 0;                    
                     for (auto key : *robot->getLegs())
@@ -237,7 +238,6 @@ namespace dls
 
             public:
                 using DataMap<Joint, Data>::operator=;
-
                 friend class RobotBase;
                 
                 ~JointDataMap(){};
@@ -294,14 +294,14 @@ namespace dls
                 {}
                 
             };
-            class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>> //public JointDataMap<double>
+            class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>>
             {
             public:
                 friend class RobotBase;
                 using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator=;
                 using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
-                double &operator[](const std::shared_ptr<Joint> joint) // q: shared_ptr or & ?
+                double &operator[](const std::shared_ptr<Joint> joint)
                 {
                     for (auto &leg_pair : *this)
                     {
@@ -424,10 +424,6 @@ namespace dls
 
             virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
             virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
-
-            // Plugin typedefs
-            typedef std::shared_ptr<RobotBase> createRobot_t();
-            typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
             // Create a joint state
             JointState makeJointState()
@@ -602,7 +598,6 @@ namespace dls
 
             virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
 
-
             virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
             virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
@@ -652,6 +647,10 @@ namespace dls
             {
                 return name_;
             };
+
+            // Plugin typedefs
+            typedef std::shared_ptr<RobotBase> createRobot_t();
+            typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
         protected:
             const std::string name_;
