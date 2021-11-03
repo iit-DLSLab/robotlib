@@ -18,45 +18,55 @@ TEST(JointUnitTests, getName)
      /**
       * @test Joint name with a complete string
       */
-     dls::robotlib::Joint joint{"joint_test"};
-     ASSERT_EQ(joint.getName(), "joint_test");
+     {
+          dls::robotlib::Joint joint{"joint_test"};
+          ASSERT_EQ(joint.getName(), "joint_test");
+     }
 
      /**
       * @test Joint name with two separate words
       */
-     dls::robotlib::Joint joint_two_words_name{"joint test"};
-     ASSERT_EQ(joint_two_words_name.getName(), "joint test");
+     {
+          dls::robotlib::Joint joint_two_words_name{"joint test"};
+          ASSERT_EQ(joint_two_words_name.getName(), "joint test");
+     }
 
      /**
       * @test Joint name with an empty string
       */
-     dls::robotlib::Joint joint_empty_name{""};
-     ASSERT_EQ(joint_empty_name.getName(), "");
+     {
+          dls::robotlib::Joint joint_empty_name{""};
+          ASSERT_EQ(joint_empty_name.getName(), "");
+     }
 
      /**
       * @test Joint name with a single space character
       */
-     dls::robotlib::Joint joint_single_space_name{" "};
-     ASSERT_EQ(joint_single_space_name.getName(), " ");
+     {
+          dls::robotlib::Joint joint_single_space_name{" "};
+          ASSERT_EQ(joint_single_space_name.getName(), " ");
+     }
 
      /**
       * @test Dummy Quadruped - Limbs (legs) joints names
       */
-     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
-     std::array<std::array<std::string, 3>, 4> joints_names{{{"LF_HAA", "LF_HFE", "LF_KFE"},
-                                                             {"RF_HAA", "RF_HFE", "RF_KFE"},
-                                                             {"LH_HAA", "LH_HFE", "LH_KFE"},
-                                                             {"RH_HAA", "RH_HFE", "RH_KFE"}}};
-     unsigned int i{0}, j{0};
-     for (auto leg : *(dummy_quadruped->getLegs()))
      {
-          for (auto leg_joint : *(leg->getJoints()))
+          std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+          std::array<std::array<std::string, 3>, 4> joints_names{{{"LF_HAA", "LF_HFE", "LF_KFE"},
+                                                                  {"RF_HAA", "RF_HFE", "RF_KFE"},
+                                                                  {"LH_HAA", "LH_HFE", "LH_KFE"},
+                                                                  {"RH_HAA", "RH_HFE", "RH_KFE"}}};
+          unsigned int i{0}, j{0};
+          for (auto leg : *(dummy_quadruped->getLegs()))
           {
-               ASSERT_EQ(leg_joint->getName(), joints_names.at(i).at(j));
-               j++;
+               for (auto leg_joint : *(leg->getJoints()))
+               {
+                    ASSERT_EQ(leg_joint->getName(), joints_names.at(i).at(j));
+                    j++;
+               }
+               i++;
+               j = 0;
           }
-          i++;
-          j = 0;
      }
 }
 

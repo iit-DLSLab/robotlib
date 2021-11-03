@@ -1,15 +1,31 @@
+/**
+ * @file dyn_params.cpp
+ *
+ * @brief DynParams class and functions implementation
+ *
+ * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ *
+ * @bug No known bugs.
+ */
+
 #include "dyn_params.hpp"
 
 namespace dls
 {
 	namespace robotlib
 	{
-		DynParams::DynParams(const Eigen::Vector3d &com, const double m, const Eigen::Matrix3d &I) : com_(com), m_(m), I_(I){};
+		DynParams::DynParams(const Eigen::Vector3d &com,
+							 const double mass,
+							 const Eigen::Matrix3d &inertia)
+			: com_(com),
+			  mass_(mass),
+			  inertia_(inertia){};
 
 		DynParams::~DynParams(){};
 
-		inline const Eigen::Vector3d &DynParams::getCom() { return com_; };
-		inline const double DynParams::getM() { return m_; };
-		inline const Eigen::Matrix3d &DynParams::getI() { return I_; };
+		const Eigen::Vector3d &DynParams::getCoM() { return com_; };
+		const double DynParams::getMass() { return mass_; };
+		const Eigen::Matrix3d &DynParams::getInertia() { return inertia_; };
 	} // namespace robotlib
 } // namespace dls

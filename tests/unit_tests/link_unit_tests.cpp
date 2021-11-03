@@ -18,45 +18,55 @@ TEST(LinkUnitTests, getName)
      /**
       * @test Link name with a complete string
       */
-     dls::robotlib::Link link{"link_test"};
-     ASSERT_EQ(link.getName(), "link_test");
+     {
+          dls::robotlib::Link link{"link_test"};
+          ASSERT_EQ(link.getName(), "link_test");
+     }
 
      /**
       * @test Link name with two separate words
       */
-     dls::robotlib::Link link_two_words_name{"link test"};
-     ASSERT_EQ(link_two_words_name.getName(), "link test");
+     {
+          dls::robotlib::Link link_two_words_name{"link test"};
+          ASSERT_EQ(link_two_words_name.getName(), "link test");
+     }
 
      /**
       * @test Link name with an empty string
       */
-     dls::robotlib::Link link_empty_name{""};
-     ASSERT_EQ(link_empty_name.getName(), "");
+     {
+          dls::robotlib::Link link_empty_name{""};
+          ASSERT_EQ(link_empty_name.getName(), "");
+     }
 
      /**
       * @test Link name with a single space character
       */
-     dls::robotlib::Link link_single_space_name{" "};
-     ASSERT_EQ(link_single_space_name.getName(), " ");
+     {
+          dls::robotlib::Link link_single_space_name{" "};
+          ASSERT_EQ(link_single_space_name.getName(), " ");
+     }
 
      /**
       * @test Dummy Quadruped - Limbs (legs) links names
       */
-     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
-     std::array<std::array<std::string, 3>, 4> links_names{{{"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"},
-                                                            {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
-                                                            {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
-                                                            {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}}};
-     unsigned int i{0}, j{0};
-     for (auto leg : *(dummy_quadruped->getLegs()))
      {
-          for (auto leg_link : *(leg->getLinks()))
+          std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+          std::array<std::array<std::string, 3>, 4> links_names{{{"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"},
+                                                                 {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
+                                                                 {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
+                                                                 {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}}};
+          unsigned int i{0}, j{0};
+          for (auto leg : *(dummy_quadruped->getLegs()))
           {
-               ASSERT_EQ(leg_link->getName(), links_names.at(i).at(j));
-               j++;
+               for (auto leg_link : *(leg->getLinks()))
+               {
+                    ASSERT_EQ(leg_link->getName(), links_names.at(i).at(j));
+                    j++;
+               }
+               i++;
+               j = 0;
           }
-          i++;
-          j = 0;
      }
 }
 

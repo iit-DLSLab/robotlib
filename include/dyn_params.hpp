@@ -1,27 +1,58 @@
+/**
+ * @file dyn_params.hpp
+ *
+ * @brief DynParams class definition and functions prototypes
+ *
+ * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ *
+ * @bug No known bugs.
+ */
+
 #ifndef _ROBOTLIB_DYN_PARAMS_HPP_
 #define _ROBOTLIB_DYN_PARAMS_HPP_
 
 #include <Eigen/Dense>
+#include <iostream>
 
 namespace dls
 {
 	namespace robotlib
 	{
+		/**
+		* @brief DynParams class
+		* @details
+		* This class contains the methods used to get the robot dynamic parameters
+		*/
 		class DynParams
 		{
 		public:
-			DynParams(const Eigen::Vector3d &com, const double m, const Eigen::Matrix3d &I);
+			DynParams(const Eigen::Vector3d &com,
+					  const double mass,
+					  const Eigen::Matrix3d &inertia);
 
 			~DynParams();
 
-			inline const Eigen::Vector3d &getCom();
-			inline const double getM();
-			inline const Eigen::Matrix3d &getI();
+			/**
+			 * @brief Get the center of mass of the robot
+			 * @return const Eigen::Vector3d
+			 */
+			const Eigen::Vector3d &getCoM();
+			/**
+			 * @brief Get the mass of the robot
+			 * @return const double
+			 */
+			const double getMass();
+			/**
+			 * @brief Get the inertia of the robot
+			 * @return const Eigen::Matrix3d
+			 */
+			const Eigen::Matrix3d &getInertia();
 
 		private:
-			const Eigen::Vector3d com_; //! Center of mass
-			const double m_;			//! Mass
-			const Eigen::Matrix3d I_;	//! Inertia
+			const Eigen::Vector3d com_;
+			const double mass_;
+			const Eigen::Matrix3d inertia_;
 		};
 	} // namespace robotlib
 } // namespace dls

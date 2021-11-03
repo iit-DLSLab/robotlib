@@ -17,26 +17,34 @@ TEST(TrunkUnitTests, getName)
      /**
       * @test Trunk name with a complete string
       */
-     dls::robotlib::Trunk trunk{"trunk_test"};
-     ASSERT_EQ(trunk.getName(), "trunk_test");
+     {
+          dls::robotlib::Trunk trunk{"trunk_test"};
+          ASSERT_EQ(trunk.getName(), "trunk_test");
+     }
 
      /**
       * @test Trunk name with two separate words
       */
-     dls::robotlib::Trunk trunk_two_words_name{"trunk test"};
-     ASSERT_EQ(trunk_two_words_name.getName(), "trunk test");
+     {
+          dls::robotlib::Trunk trunk_two_words_name{"trunk test"};
+          ASSERT_EQ(trunk_two_words_name.getName(), "trunk test");
+     }
 
      /**
       * @test Trunk name with an empty string
       */
-     dls::robotlib::Trunk trunk_empty_name{""};
-     ASSERT_EQ(trunk_empty_name.getName(), "");
+     {
+          dls::robotlib::Trunk trunk_empty_name{""};
+          ASSERT_EQ(trunk_empty_name.getName(), "");
+     }
 
      /**
       * @test Trunk name with a single space character
       */
-     dls::robotlib::Trunk trunk_single_space_name{" "};
-     ASSERT_EQ(trunk_single_space_name.getName(), " ");
+     {
+          dls::robotlib::Trunk trunk_single_space_name{" "};
+          ASSERT_EQ(trunk_single_space_name.getName(), " ");
+     }
 }
 
 int main(int argc, char **argv)
