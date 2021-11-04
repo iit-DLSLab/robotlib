@@ -21,7 +21,7 @@ void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map
 TEST(EigenMapTest, setMap)
 {
     /// Dummy quadruped
-    std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = std::make_shared<dls::robotlib::DummyQuadruped>();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = std::make_shared<robotlib::DummyQuadruped>();
 
     auto name_dq = dummy_quadruped->getName();
 

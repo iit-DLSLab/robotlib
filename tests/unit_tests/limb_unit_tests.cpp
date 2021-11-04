@@ -8,27 +8,27 @@
 const unsigned int NJOINTS = 20;
 const unsigned int NLINKS = 15;
 
-class RobotLeg : public dls::robotlib::Leg<NJOINTS, NLINKS>
+class RobotLeg : public robotlib::Leg<NJOINTS, NLINKS>
 {
 public:
-    RobotLeg(std::string name, const std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints,
-             const std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links)
+    RobotLeg(std::string name, const std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints,
+             const std::array<std::shared_ptr<robotlib::Link>, NLINKS> links)
         : Leg<NJOINTS, NLINKS>(name, joints, links){};
 
-    virtual const std::string jointToChildName(const std::shared_ptr<dls::robotlib::Joint> joint) const
+    virtual const std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         return "jointToChildName";
     };
-    virtual const std::string jointToParentName(const std::shared_ptr<dls::robotlib::Joint> joint) const
+    virtual const std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         return "jointToParentName";
     };
 
-    virtual const std::string linkToChildName(const std::shared_ptr<dls::robotlib::Link> link) const
+    virtual const std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
     {
         return "linkToChildName";
     };
-    virtual const std::string linkToParentName(const std::shared_ptr<dls::robotlib::Link> link) const
+    virtual const std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
     {
         return "linkToParentName";
     };
@@ -40,20 +40,20 @@ TEST(LimbUnitTests, getName)
 
     std::vector<std::string> joint_names;
     std::vector<std::string> link_names;
-    std::array<std::shared_ptr<dls::robotlib::Joint>, NJOINTS> joints;
-    std::array<std::shared_ptr<dls::robotlib::Link>, NLINKS> links;
+    std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints;
+    std::array<std::shared_ptr<robotlib::Link>, NLINKS> links;
 
     for (int i = 0; i < NJOINTS; ++i)
     {
         std::string name{"joint_" + std::to_string(i)};
         joint_names.push_back(name);
-        joints[i] = std::make_shared<dls::robotlib::Joint>(name);
+        joints[i] = std::make_shared<robotlib::Joint>(name);
     }
     for (int i = 0; i < NLINKS; ++i)
     {
         std::string name{"link_" + std::to_string(i)};
         link_names.push_back(name);
-        links[i] = std::make_shared<dls::robotlib::Link>(name);
+        links[i] = std::make_shared<robotlib::Link>(name);
     }
 
     RobotLeg leg("leg_1", joints, links);

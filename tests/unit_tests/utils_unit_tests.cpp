@@ -14,7 +14,7 @@ TEST(UtilsUnitTests, Containers)
     {
         d = value;
     }
-    dls::robotlib::Container<double, N> container(data);
+    robotlib::Container<double, N> container(data);
 
     for (auto d : container)
     {
@@ -30,7 +30,7 @@ TEST(UtilsUnitTests, Containers)
         d = std::make_shared<double>(value);
     }
 
-    dls::robotlib::Container<std::shared_ptr<double>, N> container_shp(data_shp);
+    robotlib::Container<std::shared_ptr<double>, N> container_shp(data_shp);
 
     for (auto d : container_shp)
     {

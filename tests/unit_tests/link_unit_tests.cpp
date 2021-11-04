@@ -19,7 +19,7 @@ TEST(LinkUnitTests, getName)
       * @test Link name with a complete string
       */
      {
-          dls::robotlib::Link link{"link_test"};
+          robotlib::Link link{"link_test"};
           ASSERT_EQ(link.getName(), "link_test");
      }
 
@@ -27,7 +27,7 @@ TEST(LinkUnitTests, getName)
       * @test Link name with two separate words
       */
      {
-          dls::robotlib::Link link_two_words_name{"link test"};
+          robotlib::Link link_two_words_name{"link test"};
           ASSERT_EQ(link_two_words_name.getName(), "link test");
      }
 
@@ -35,7 +35,7 @@ TEST(LinkUnitTests, getName)
       * @test Link name with an empty string
       */
      {
-          dls::robotlib::Link link_empty_name{""};
+          robotlib::Link link_empty_name{""};
           ASSERT_EQ(link_empty_name.getName(), "");
      }
 
@@ -43,7 +43,7 @@ TEST(LinkUnitTests, getName)
       * @test Link name with a single space character
       */
      {
-          dls::robotlib::Link link_single_space_name{" "};
+          robotlib::Link link_single_space_name{" "};
           ASSERT_EQ(link_single_space_name.getName(), " ");
      }
 
@@ -51,7 +51,7 @@ TEST(LinkUnitTests, getName)
       * @test Dummy Quadruped - Limbs (legs) links names
       */
      {
-          std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+          std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
           std::array<std::array<std::string, 3>, 4> links_names{{{"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"},
                                                                  {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
                                                                  {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
@@ -79,35 +79,35 @@ TEST(LinkUnitTests, getParent)
       * @test Dummy Quadruped - Joint parent compared according to its name only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
      const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_assembly_parent = std::make_shared<dls::robotlib::Joint>("LF_HAA");
+     const std::shared_ptr<robotlib::Joint> link_lf_assembly_parent = std::make_shared<robotlib::Joint>("LF_HAA");
      const auto link_lf_upperleg = dummy_quadruped->getLink("LF_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_upperleg_parent = std::make_shared<dls::robotlib::Joint>("LF_HFE");
+     const std::shared_ptr<robotlib::Joint> link_lf_upperleg_parent = std::make_shared<robotlib::Joint>("LF_HFE");
      const auto link_lf_lowerleg = dummy_quadruped->getLink("LF_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_lowerleg_parent = std::make_shared<dls::robotlib::Joint>("LF_KFE");
+     const std::shared_ptr<robotlib::Joint> link_lf_lowerleg_parent = std::make_shared<robotlib::Joint>("LF_KFE");
 
      const auto link_rf_assembly = dummy_quadruped->getLink("RF_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_assembly_parent = std::make_shared<dls::robotlib::Joint>("RF_HAA");
+     const std::shared_ptr<robotlib::Joint> link_rf_assembly_parent = std::make_shared<robotlib::Joint>("RF_HAA");
      const auto link_rf_upperleg = dummy_quadruped->getLink("RF_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_upperleg_parent = std::make_shared<dls::robotlib::Joint>("RF_HFE");
+     const std::shared_ptr<robotlib::Joint> link_rf_upperleg_parent = std::make_shared<robotlib::Joint>("RF_HFE");
      const auto link_rf_lowerleg = dummy_quadruped->getLink("RF_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_lowerleg_parent = std::make_shared<dls::robotlib::Joint>("RF_KFE");
+     const std::shared_ptr<robotlib::Joint> link_rf_lowerleg_parent = std::make_shared<robotlib::Joint>("RF_KFE");
 
      const auto link_lh_assembly = dummy_quadruped->getLink("LH_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_assembly_parent = std::make_shared<dls::robotlib::Joint>("LH_HAA");
+     const std::shared_ptr<robotlib::Joint> link_lh_assembly_parent = std::make_shared<robotlib::Joint>("LH_HAA");
      const auto link_lh_upperleg = dummy_quadruped->getLink("LH_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_upperleg_parent = std::make_shared<dls::robotlib::Joint>("LH_HFE");
+     const std::shared_ptr<robotlib::Joint> link_lh_upperleg_parent = std::make_shared<robotlib::Joint>("LH_HFE");
      const auto link_lh_lowerleg = dummy_quadruped->getLink("LH_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_lowerleg_parent = std::make_shared<dls::robotlib::Joint>("LH_KFE");
+     const std::shared_ptr<robotlib::Joint> link_lh_lowerleg_parent = std::make_shared<robotlib::Joint>("LH_KFE");
 
      const auto link_rh_assembly = dummy_quadruped->getLink("RH_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_assembly_parent = std::make_shared<dls::robotlib::Joint>("RH_HAA");
+     const std::shared_ptr<robotlib::Joint> link_rh_assembly_parent = std::make_shared<robotlib::Joint>("RH_HAA");
      const auto link_rh_upperleg = dummy_quadruped->getLink("RH_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_upperleg_parent = std::make_shared<dls::robotlib::Joint>("RH_HFE");
+     const std::shared_ptr<robotlib::Joint> link_rh_upperleg_parent = std::make_shared<robotlib::Joint>("RH_HFE");
      const auto link_rh_lowerleg = dummy_quadruped->getLink("RH_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_lowerleg_parent = std::make_shared<dls::robotlib::Joint>("RH_KFE");
+     const std::shared_ptr<robotlib::Joint> link_rh_lowerleg_parent = std::make_shared<robotlib::Joint>("RH_KFE");
 
      ASSERT_EQ(link_lf_assembly->getParent()->getName(), link_lf_assembly_parent->getName());
      ASSERT_EQ(link_lf_upperleg->getParent()->getName(), link_lf_upperleg_parent->getName());
@@ -135,35 +135,35 @@ TEST(LinkUnitTests, getChild)
       * @test Dummy Quadruped - Joint child compared according to its names only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<dls::robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
 
      const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_assembly_child = std::make_shared<dls::robotlib::Joint>("LF_HFE");
+     const std::shared_ptr<robotlib::Joint> link_lf_assembly_child = std::make_shared<robotlib::Joint>("LF_HFE");
      const auto link_lf_upperleg = dummy_quadruped->getLink("LF_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_upperleg_child = std::make_shared<dls::robotlib::Joint>("LF_KFE");
+     const std::shared_ptr<robotlib::Joint> link_lf_upperleg_child = std::make_shared<robotlib::Joint>("LF_KFE");
      const auto link_lf_lowerleg = dummy_quadruped->getLink("LF_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lf_lowerleg_child = std::make_shared<dls::robotlib::Joint>("");
+     const std::shared_ptr<robotlib::Joint> link_lf_lowerleg_child = std::make_shared<robotlib::Joint>("");
 
      const auto link_rf_assembly = dummy_quadruped->getLink("RF_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_assembly_child = std::make_shared<dls::robotlib::Joint>("RF_HFE");
+     const std::shared_ptr<robotlib::Joint> link_rf_assembly_child = std::make_shared<robotlib::Joint>("RF_HFE");
      const auto link_rf_upperleg = dummy_quadruped->getLink("RF_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_upperleg_child = std::make_shared<dls::robotlib::Joint>("RF_KFE");
+     const std::shared_ptr<robotlib::Joint> link_rf_upperleg_child = std::make_shared<robotlib::Joint>("RF_KFE");
      const auto link_rf_lowerleg = dummy_quadruped->getLink("RF_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rf_lowerleg_child = std::make_shared<dls::robotlib::Joint>("");
+     const std::shared_ptr<robotlib::Joint> link_rf_lowerleg_child = std::make_shared<robotlib::Joint>("");
 
      const auto link_lh_assembly = dummy_quadruped->getLink("LH_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_assembly_child = std::make_shared<dls::robotlib::Joint>("LH_HFE");
+     const std::shared_ptr<robotlib::Joint> link_lh_assembly_child = std::make_shared<robotlib::Joint>("LH_HFE");
      const auto link_lh_upperleg = dummy_quadruped->getLink("LH_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_upperleg_child = std::make_shared<dls::robotlib::Joint>("LH_KFE");
+     const std::shared_ptr<robotlib::Joint> link_lh_upperleg_child = std::make_shared<robotlib::Joint>("LH_KFE");
      const auto link_lh_lowerleg = dummy_quadruped->getLink("LH_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_lh_lowerleg_child = std::make_shared<dls::robotlib::Joint>("");
+     const std::shared_ptr<robotlib::Joint> link_lh_lowerleg_child = std::make_shared<robotlib::Joint>("");
 
      const auto link_rh_assembly = dummy_quadruped->getLink("RH_ASSEMBLY");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_assembly_child = std::make_shared<dls::robotlib::Joint>("RH_HFE");
+     const std::shared_ptr<robotlib::Joint> link_rh_assembly_child = std::make_shared<robotlib::Joint>("RH_HFE");
      const auto link_rh_upperleg = dummy_quadruped->getLink("RH_UPPERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_upperleg_child = std::make_shared<dls::robotlib::Joint>("RH_KFE");
+     const std::shared_ptr<robotlib::Joint> link_rh_upperleg_child = std::make_shared<robotlib::Joint>("RH_KFE");
      const auto link_rh_lowerleg = dummy_quadruped->getLink("RH_LOWERLEG");
-     const std::shared_ptr<dls::robotlib::Joint> link_rh_lowerleg_child = std::make_shared<dls::robotlib::Joint>("");
+     const std::shared_ptr<robotlib::Joint> link_rh_lowerleg_child = std::make_shared<robotlib::Joint>("");
 
      ASSERT_EQ(link_lf_assembly->getChild()->getName(), link_lf_assembly_child->getName());
      ASSERT_EQ(link_lf_upperleg->getChild()->getName(), link_lf_upperleg_child->getName());

@@ -11,17 +11,14 @@
 
 #include "arm.hpp"
 
-namespace dls
+namespace robotlib
 {
-    namespace robotlib
-    {
-        template <unsigned int NJOINTS, unsigned int NLINKS>
-        Arm<NJOINTS, NLINKS>::Arm(const std::string &name,
-                                  const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-                                  const std::array<std::shared_ptr<Link>, NLINKS> &links)
-            : Limb<NJOINTS, NLINKS>(name, joints, links){};
+    template <unsigned int NJOINTS, unsigned int NLINKS>
+    Arm<NJOINTS, NLINKS>::Arm(const std::string &name,
+                              const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
+                              const std::array<std::shared_ptr<Link>, NLINKS> &links)
+        : Limb<NJOINTS, NLINKS>(name, joints, links){};
 
-        template <unsigned int NJOINTS, unsigned int NLINKS>
-        Arm<NJOINTS, NLINKS>::~Arm(){};
-    } // namespace robotlib
-} // namespace dls
+    template <unsigned int NJOINTS, unsigned int NLINKS>
+    Arm<NJOINTS, NLINKS>::~Arm(){};
+} // namespace robotlib

@@ -14,27 +14,24 @@
 
 #include "limb.hpp"
 
-namespace dls
+namespace robotlib
 {
-    namespace robotlib
+    /**
+	 * @brief Leg class
+	 * @details
+	 * This class represents a generic robot leg and extends the class Limb
+	 */
+    template <unsigned int NJOINTS, unsigned int NLINKS>
+    class Leg : public Limb<NJOINTS, NLINKS>
     {
-        /**
-		* @brief Leg class
-		* @details
-		* This class represents a generic robot leg and extends the class Limb
-		*/
-        template <unsigned int NJOINTS, unsigned int NLINKS>
-        class Leg : public Limb<NJOINTS, NLINKS>
-        {
-        public:
-            Leg(const std::string &name,
-                const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-                const std::array<std::shared_ptr<Link>, NLINKS> &links);
+    public:
+        Leg(const std::string &name,
+            const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
+            const std::array<std::shared_ptr<Link>, NLINKS> &links);
 
-            virtual ~Leg();
-        };
-    } // namespace robotlib
-} // namespace dls
+        virtual ~Leg();
+    };
+} // namespace robotlib
 
 #include "leg.tpp"
 

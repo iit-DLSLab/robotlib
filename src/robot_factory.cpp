@@ -1,35 +1,32 @@
 #include "robot_factory.hpp"
 
 // TODO: use #include<filesystem> once all dls images are updated with Ubuntu20 (and gcc version > 8)
-#include <experimental/filesystem>	
+#include <experimental/filesystem>
 
-namespace dls
+namespace robotlib
 {
-	namespace robotlib
+	std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string &robot_type)
 	{
-		std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string &robot_type)
+		std::string library{"lib" + robot_type + ".so"}, lib_path{};
+
+		if (std::experimental::filesystem::exists("/usr/lib/robots/" + library))
 		{
-			std::string library{"lib" + robot_type + ".so"}, lib_path{};
-
-			if (std::experimental::filesystem::exists("/usr/lib/robots/" + library))
-			{
-				lib_path = "/usr/lib/robots/" + library;
-			}
-
-			else if (std::experimental::filesystem::exists("./" + library))
-			{
-				lib_path = "./" + library;
-			}
-			else
-			{
-				const std::string error{library + " not found"};
-				throw error;
-			}
-
-			void *robot = dlopen(lib_path.c_str(), RTLD_LAZY);
-			RobotBase::createRobot_t *create_robot = (RobotBase::createRobot_t *)dlsym(robot, "createRobot_t");
-
-			return create_robot();
+			lib_path = "/usr/lib/robots/" + library;
 		}
-	} // namespace robotlib
-} // namespace dls
+
+		else if (std::experimental::filesystem::exists("./" + library))
+		{
+			lib_path = "./" + library;
+		}
+		else
+		{
+			const std::string error{library + " not found"};
+			throw error;
+		}
+
+		void *robot = dlopen(lib_path.c_str(), RTLD_LAZY);
+		RobotBase::createRobot_t *create_robot = (RobotBase::createRobot_t *)dlsym(robot, "createRobot_t");
+
+		return create_robot();
+	}
+} // namespace robotlib

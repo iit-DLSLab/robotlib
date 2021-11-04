@@ -16,29 +16,26 @@
 #include "utils.hpp"
 #include "joint.hpp"
 
-namespace dls
+namespace robotlib
 {
-	namespace robotlib
+	/**
+	 * @brief Trunk class
+	 * @details
+	 * This class represents the robot trunk and extends the class Link
+	 */
+	class Trunk : public Link
 	{
+	public:
+		Trunk(const std::string &name);
+
+		~Trunk();
+
 		/**
-		* @brief Trunk class
-		* @details
-		* This class represents the robot trunk and extends the class Link
-		*/
-		class Trunk : public Link
-		{
-		public:
-			Trunk(const std::string &name);
-
-			~Trunk();
-
-			/**
-			 * @brief Get the name of the Trunk
-			 * @return const std::string
-			 */
-			virtual const std::string getName() const override;
-		};
-	} // namespace robotlib
-} // namespace dls
+		 * @brief Get the name of the Trunk
+		 * @return const std::string
+		 */
+		virtual const std::string getName() const override;
+	};
+} // namespace robotlib
 
 #endif // _ROBOTLIB_TRUNK_HPP_

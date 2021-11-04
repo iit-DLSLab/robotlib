@@ -18,7 +18,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with a complete string
       */
      {
-          dls::robotlib::Trunk trunk{"trunk_test"};
+          robotlib::Trunk trunk{"trunk_test"};
           ASSERT_EQ(trunk.getName(), "trunk_test");
      }
 
@@ -26,7 +26,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with two separate words
       */
      {
-          dls::robotlib::Trunk trunk_two_words_name{"trunk test"};
+          robotlib::Trunk trunk_two_words_name{"trunk test"};
           ASSERT_EQ(trunk_two_words_name.getName(), "trunk test");
      }
 
@@ -34,7 +34,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with an empty string
       */
      {
-          dls::robotlib::Trunk trunk_empty_name{""};
+          robotlib::Trunk trunk_empty_name{""};
           ASSERT_EQ(trunk_empty_name.getName(), "");
      }
 
@@ -42,7 +42,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with a single space character
       */
      {
-          dls::robotlib::Trunk trunk_single_space_name{" "};
+          robotlib::Trunk trunk_single_space_name{" "};
           ASSERT_EQ(trunk_single_space_name.getName(), " ");
      }
 }
