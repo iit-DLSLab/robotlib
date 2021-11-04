@@ -59,37 +59,37 @@ namespace robotlib
         }
         std::cout << '\n';
     }
+} // namespace robotlib
 
-    int main(int argc, char *argv[])
+int main(int argc, char *argv[])
+{
+    if (argc <= 1 || (argc == 2 && strcmp(argv[1], "--help") != 0))
     {
-        if (argc <= 1 || (argc == 2 && strcmp(argv[1], "--help") != 0))
+        robotlib::display_help(argv[0]);
+        return 1;
+    }
+
+    /// ROBOT ARGUMENTS
+    std::shared_ptr<robotlib::RobotBase> robot;
+
+    try
+    {
+        // argv[1] is the robot library used
+        robot = robotlib::RobotFactory::openRobot(argv[1]);
+
+        /// OPTION ARGUMENTS
+        if (strcmp(argv[2], "--info") == 0)
         {
-            display_help(argv[0]);
+            info(robot);
+        }
+        else
+        {
+            robotlib::display_help(argv[0]);
             return 1;
         }
-
-        /// ROBOT ARGUMENTS
-        std::shared_ptr<robotlib::RobotBase> robot;
-
-        try
-        {
-            // argv[1] is the robot library used
-            robot = robotlib::RobotFactory::openRobot(argv[1]);
-
-            /// OPTION ARGUMENTS
-            if (strcmp(argv[2], "--info") == 0)
-            {
-                info(robot);
-            }
-            else
-            {
-                display_help(argv[0]);
-                return 1;
-            }
-        }
-        catch (const std::string &e)
-        {
-            std::cout << e << std::endl;
-        }
     }
-} // namespace robotlib
+    catch (const std::string &e)
+    {
+        std::cout << e << std::endl;
+    }
+}
