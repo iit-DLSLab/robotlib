@@ -5,17 +5,27 @@
 
 namespace robotlib
 {
-    static void display_help(std::string name)
+    static void display_message(std::string message)
     {
-        std::cerr << "Usage:\n"
-                  << "\t" << name << " --help\t\t\tShow this help message\n"
-                  << "\t" << name << " Robot_type <option>\t\tExecute the option\n"
-                  << "Robot_type:\n"
-                  << "\t hyq\n"
-                  << "\t hyqreal\n"
-                  << "Options:\n"
-                  << "\t--info\t\tShow info of the robot\n"
-                  << std::endl;
+        if (message.compare("manual") == 0)
+        {
+            std::cerr << "\n*** Robot Info manual ***\n"
+                      << "\nCommands:\n"
+                      << "1. ./robot_info --help\t\t\t[Show user manual]\n"
+                      << "2. ./robot_info <robot_library> --info\t[Show robot information]\n"
+                      << "\nRobot libraries:\n"
+                      << "- dummy-quadruped\n"
+                      << std::endl;
+        }
+        else if (message.compare("suggestion") == 0)
+        {
+            std::cout << "\nTo read Robot Info manual, run:\n"
+                      << std::endl;
+            std::cout << "robot_info --help\n"
+                      << std::endl;
+        }
+        else
+            std::cout << "Is this a message or a suggestion?" << std::endl;
     }
 
     static void info(const std::shared_ptr<robotlib::RobotBase> &robot)
@@ -61,35 +71,50 @@ namespace robotlib
     }
 } // namespace robotlib
 
+/**
+ * @brief Main function called to display robots information
+ *
+ * @param argc this is the number of
+ * @param argv
+ * @return int
+ */
 int main(int argc, char *argv[])
 {
-    if (argc <= 1 || (argc == 2 && strcmp(argv[1], "--help") != 0))
+    switch (argc)
     {
-        robotlib::display_help(argv[0]);
-        return 1;
+    case 2:
+    {
+        if (strcmp(argv[1], "--help") == 0)
+            robotlib::display_message("manual");
+        else
+            robotlib::display_message("suggestion");
+        break;
     }
-
-    /// ROBOT ARGUMENTS
-    std::shared_ptr<robotlib::RobotBase> robot;
-
-    try
+    case 3:
     {
-        // argv[1] is the robot library used
-        robot = robotlib::RobotFactory::openRobot(argv[1]);
+        /// ROBOT ARGUMENTS
+        std::shared_ptr<robotlib::RobotBase> robot;
 
-        /// OPTION ARGUMENTS
         if (strcmp(argv[2], "--info") == 0)
         {
-            info(robot);
+            try
+            {
+                /// argv[1] is the robot library used
+                robot = robotlib::RobotFactory::openRobot(argv[1]);
+                robotlib::info(robot);
+            }
+            catch (const std::string &e)
+            {
+                std::cout << e << std::endl;
+            }
         }
         else
-        {
-            robotlib::display_help(argv[0]);
-            return 1;
-        }
+            robotlib::display_message("suggestion");
+        break;
     }
-    catch (const std::string &e)
+    default:
     {
-        std::cout << e << std::endl;
+        robotlib::display_message("suggestion");
+    }
     }
 }
