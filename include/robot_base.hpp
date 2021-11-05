@@ -334,6 +334,8 @@ namespace robotlib
                 return *this;
             }
 
+            void setZero() { *this = 0; }
+
             std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
             const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 

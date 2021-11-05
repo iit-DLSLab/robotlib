@@ -604,6 +604,43 @@ TEST(RobotBaseUnitTests, footJacobian)
     }
 }
 
+TEST(RobotBaseUnitTests, jointStateSetZero)
+{
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    auto joint_state = dummy_quadruped->makeJointState();
+
+    /// Operator[]
+    for (auto leg : *(dummy_quadruped->getLegs()))
+    {
+        for (auto joint : *(leg->getJoints()))
+        {
+            joint_state[joint] = 10;
+        }
+    }
+
+    std::cout << "JointState elements before:" << std::endl;
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << joint_state[joint] << std::endl;
+        }
+    }
+
+    joint_state.setZero();
+
+    std::cout << "JointState elements after:" << std::endl;
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            std::cout << joint_state[joint] << std::endl;
+        }
+    }
+}
+
 // TEST(RobotBaseUnitTests, LegDataMap)
 // {
 //     std::cout << "TODO: LegDataMap TEST" << std::endl;
