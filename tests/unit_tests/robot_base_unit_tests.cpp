@@ -504,61 +504,52 @@ TEST(RobotBaseUnitTests, jointStateOperators)
     /// Dummy quadruped
     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
     auto q = dummy_quadruped->makeJointState();
-
+    double value_gt = 10;
+    
     /// Operator[]
     for (auto leg : *(dummy_quadruped->getLegs()))
     { /// TODO: implement and use q.getSize()
         for (auto joint : *(leg->getJoints()))
         {
-            q[joint] = 10;
+            q[joint] = value_gt;
         }
     }
-    // std::cout << "JointState q elements:" << std::endl;
-    // for (auto leg : *dummy_quadruped->getLegs())
-    // {
-    //     for (auto joint : *leg->getJoints())
-    //     {
-    //         std::cout << q[joint] << std::endl;
-    //     }
-    // }
+    std::cout << "Testing [] operator...\n";
 
-    // /// Operator= Copy
-    // auto q2 = dummy_quadruped->makeJointState();
+    std::cout << "JointState q elements:" << std::endl;
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            EXPECT_EQ(value_gt, q[joint]);
+        }
+    }
 
-    // std::cout << "JointState q2 elements:" << std::endl;
+    /// Operator= Copy
+    auto q2 = dummy_quadruped->makeJointState();
+    q2 = q;
 
-    // for (auto leg : *dummy_quadruped->getLegs())
-    // {
-    //     for (auto joint : *leg->getJoints())
-    //     {
-    //         std::cout << q2[joint] << std::endl;
-    //     }
-    // }
+    std::cout << "Testing = operator using another joint state...\n";
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            EXPECT_EQ(q[joint], q2[joint]);
+        }
+    }
 
-    // q2 = q;
+    /// Operator= AssignAll
+    auto q3 = dummy_quadruped->makeJointState();
+    q3 = value_gt;
 
-    // std::cout << "JointState q2 elements (copy):" << std::endl;
-    // for (auto leg : *dummy_quadruped->getLegs())
-    // {
-    //     for (auto joint : *leg->getJoints())
-    //     {
-    //         std::cout << q2[joint] << std::endl;
-    //     }
-    // }
-
-    // /// Operator= AssignAll
-    // auto q3 = dummy_quadruped->makeJointState();
-    // const double value{0.5};
-    // q3 = value;
-
-    // std::cout << "JointState q3 elements (copy - assignAll):" << std::endl;
-    // for (auto leg : *dummy_quadruped->getLegs())
-    // {
-    //     for (auto joint : *leg->getJoints())
-    //     {
-    //         std::cout << q3[joint] << std::endl;
-    //     }
-    // }
+    std::cout << "Testing = operator using a value...\n";
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            EXPECT_EQ(value_gt, q3[joint]);
+        }
+    }
 }
 
 TEST(RobotBaseUnitTests, footJacobian)
