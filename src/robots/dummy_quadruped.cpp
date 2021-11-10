@@ -356,8 +356,8 @@ namespace robotlib
 							 const JointState &joint_position,
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
-							 const Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 const JointState &tau_joints)					 ///output
+							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+							 JointState &tau_joints)					 ///output
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
