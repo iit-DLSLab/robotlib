@@ -29,6 +29,7 @@ test:
     #- ./tests/main_tests
     # TODO: go back to single main_test executable
     - ./tests/arm_unit_tests
+    - ./tests/data_map_unit_tests
     - ./tests/dyn_params_unit_tests
     - ./tests/joint_unit_tests
     - ./tests/leg_unit_tests
