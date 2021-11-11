@@ -358,18 +358,20 @@ namespace robotlib
                     delete[] data_;
             }
 
-            Map getLinearJacobian() //RT
+            Map getLinearJacobian() const //RT
             {
-                auto linearMatrix{this->block(0, 0, 3, nJoints_)}; // Fixed size matrix!
+                auto linear_matrix{this->block(0, 0, 3, nJoints_)}; // Fixed size matrix!
+                auto start_index = linear_matrix(0, 0);
 
-                return Map(&linearMatrix(0, 0), 3, nJoints_);
+                return Map(&start_index, 3, nJoints_);
             };
 
-            Map getAngularJacobian() //RT
+            Map getAngularJacobian() const //RT
             {
-                auto linearMatrix{this->block(3, 0, 3, nJoints_)}; // Fixed size matrix!
-
-                return Map(&linearMatrix(0, 0), 3, nJoints_);
+                auto angular_matrix{this->block(3, 0, 3, nJoints_)}; // Fixed size matrix!
+                auto start_index = angular_matrix(0, 0);
+                
+                return Map(&start_index, 3, nJoints_);
             };
 
             Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
@@ -439,14 +441,14 @@ namespace robotlib
         virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
         // Create a joint state
-        JointState makeJointState()
+        JointState makeJointState(const double value = 0)
         {
-            JointState joint_state = JointState(this);
+            JointState joint_state{this};
 
             for (auto leg : *this->getLegs())
             {
                 JointDataMap<double> *jdm;
-                jdm = new JointDataMap<double>(leg);
+                jdm = new JointDataMap<double>(leg, value);
                 std::shared_ptr<JointDataMap<double>> ptr(jdm);
                 joint_state[leg] = ptr;
             }
@@ -646,7 +648,7 @@ namespace robotlib
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                       const Jacobian &jacobian,
+                                       const LegDataMap<Jacobian> &robot_jacobian,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) = 0;
