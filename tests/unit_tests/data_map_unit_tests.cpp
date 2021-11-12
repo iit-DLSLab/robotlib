@@ -34,18 +34,18 @@ TEST(JointStateUnitTests, makeJointState)
      /**
       * @test Dummy Quadruped - JointState initialized with a chosen value for each element using makeJointState
       */
-//     {
-//         auto joint_state = dummy_quadruped->makeJointState(2.0);
+     {
+         auto joint_state = dummy_quadruped->makeJointState(2.0);
          
-//         for(auto leg: *dummy_quadruped->getLegs())
-//		 {
-//			for(auto joint : *leg->getJoints())
-//			{
- //               ASSERT_NE(joint_state[joint], 0.0);
- //               ASSERT_EQ(joint_state[joint], 2.0);
- //           }
- //        }
-  //   }
+         for(auto leg: *dummy_quadruped->getLegs())
+		 {
+			for(auto joint : *leg->getJoints())
+			{
+                ASSERT_NE(joint_state[joint], 0.0);
+                ASSERT_EQ(joint_state[joint], 2.0);
+            }
+         }
+     }
 }
 
 /**

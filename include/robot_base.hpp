@@ -370,7 +370,7 @@ namespace robotlib
             {
                 auto angular_matrix{this->block(3, 0, 3, nJoints_)}; // Fixed size matrix!
                 auto start_index = angular_matrix(0, 0);
-                
+
                 return Map(&start_index, 3, nJoints_);
             };
 
