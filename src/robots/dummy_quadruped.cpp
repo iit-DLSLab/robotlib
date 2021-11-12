@@ -350,6 +350,17 @@ namespace robotlib
 			std::cout << "Inverse Kinematics 2" << std::endl;
 		};
 
+		virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                       const LegDataMap<Jacobian> &robot_jacobian,
+                                       JointState &joint_position,
+                                       JointState &joint_velocity,
+                                       JointState &joint_acceleration) override
+		{
+			std::cout << "Inverse Kinematics 3" << std::endl;
+		};
+
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
 							 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
 							 const Eigen::Matrix<double, 6, 1> &gravity_vector,

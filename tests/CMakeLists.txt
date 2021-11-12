@@ -33,6 +33,15 @@ target_link_libraries(arm_unit_tests
 	${CMAKE_DL_LIBS}
 	gtest
 )
+add_executable(data_map_unit_tests
+	unit_tests/data_map_unit_tests.cpp
+)
+target_link_libraries(data_map_unit_tests
+	PRIVATE
+	robotlib
+	${CMAKE_DL_LIBS}
+	gtest
+)
 add_executable(dyn_params_unit_tests
 	unit_tests/dyn_params_unit_tests.cpp
 )
