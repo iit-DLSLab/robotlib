@@ -607,6 +607,9 @@ namespace robotlib
                                      const std::shared_ptr<LimbBase> leg,
                                      Jacobian &footJac) = 0; //overridden by Glue
 
+        virtual void updateLinearJacobian(const JointState &joints_positions,
+                                          LegDataMap<Jacobian> &robot_jacobian) = 0; //overridden by Glue
+
         virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
 
         virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;

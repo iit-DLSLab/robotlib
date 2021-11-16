@@ -296,6 +296,12 @@ namespace robotlib
 			footJac.setZero();
 		};
 
+		virtual void updateLinearJacobian(const JointState &joints_positions,
+										  LegDataMap<Jacobian> &robot_jacobian)
+		{
+			std::cout << "Update Linear Jacobian" << std::endl;
+		};
+
 		LegDataMap<std::shared_ptr<Frame>> getFeet() override
 		{
 			auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
