@@ -18,9 +18,9 @@ add_compile_options(
 	-fPIC
 	$<$<CONFIG:Debug>:-g>
 	#-Wall -Wextra -pedantic # Enable warnings
-	-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
+	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
 )
-add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
+#add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
 
 if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
