@@ -10,5 +10,4 @@ add_robotlib_test(TARGET trunk_unit_tests SOURCES unit_tests/trunk_unit_tests.cp
 add_robotlib_test(TARGET utils_unit_tests SOURCES unit_tests/utils_unit_tests.cpp)
 
 get_property(my_list_content GLOBAL PROPERTY ALL_TEST_TARGETS)
-message("${my_list_content}")
 add_custom_target(check COMMAND make test DEPENDS "${my_list_content}" COMMENT "Running tests...")
