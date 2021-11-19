@@ -25,6 +25,6 @@ test:
     - ant-devel
   script:
     - cd build
-    - cmake .. -DBUILD_TEST=On
+    - cmake .. -DBUILD_TESTING=On
     - make -j$(nproc)
     - make check
