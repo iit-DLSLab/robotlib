@@ -101,6 +101,35 @@ TEST(JointStateUnitTests, setZero)
      }
 }
 
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::size function
+ */
+TEST(JointStateUnitTests, size)
+{
+     /**
+      * @test Dummy Quadruped - JointState with 12 (4 legs x 3 joints) elements
+      */
+     {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        auto joint_state = dummy_quadruped->makeJointState();
+
+        ASSERT_EQ(joint_state.size(), 12);
+     }
+     /**
+      * @test Dummy Quadruped - JointState empty
+      */
+     {}
+     /**
+      * @test Dummy Quadruped - JointState with one element
+      */
+    {}
+     /**
+      * @test Dummy Quadruped - JointState with 100 elements
+      */
+    {}
+}
+
 int main(int argc, char **argv)
 {
      ::testing::InitGoogleTest(&argc, argv);
