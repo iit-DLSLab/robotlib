@@ -63,7 +63,6 @@ namespace robotlib
                 {
                     if (pair.key_->getName().compare(key->getName()) == 0)
                     {
-                        pair.data_;
                         return pair.data_;
                     }
                 }
