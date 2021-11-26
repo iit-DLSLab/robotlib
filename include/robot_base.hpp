@@ -336,7 +336,7 @@ namespace robotlib
 
             void setZero() { *this = 0; }
 
-            int size()
+            const int size()
             {
                 auto size{0};
 
