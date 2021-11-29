@@ -24,3 +24,8 @@
 
 <!-- TODO -->
 <!-- How to build and run tests -->
+
+## Important notes
+
+<!-- TODO -->
+<!-- You cannot have methods that return <X>DataMap or JointState etc... You need to pass these as reference -->
