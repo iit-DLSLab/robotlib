@@ -85,6 +85,7 @@ namespace robotlib
                         return pair.data_;
                 }
             };
+
             virtual const Data &operator[](const std::string &key_name) const
             {
                 for (auto &pair : *this)
@@ -155,7 +156,7 @@ namespace robotlib
             }
 
             const Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //shared_pointers?}
-            Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }                         //shared_pointers?}
+            Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }             //shared_pointers?}
 
             int num_data_;
             Pair *data_;
@@ -168,6 +169,18 @@ namespace robotlib
             friend class RobotBase;
 
             ~LegDataMap(){};
+
+            /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
+            void print()
+            {
+                std::cout << "LegDataMap [Name - Value]" << std::endl;
+                std::cout << "-------------------------" << std::endl;
+
+                for (auto &leg_pair : *this)
+                {
+                    std::cout << leg_pair.key_->getName() << " - " << leg_pair.data_ << std::endl;
+                }
+            }
 
         protected:
             LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS()) //TODO: remove it, leave only the constructor with data
@@ -284,7 +297,6 @@ namespace robotlib
                     count_data++;
                 }
             }
-
             JointDataMap() : DataMap<Joint, Data>() //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
             {
             }
@@ -348,6 +360,20 @@ namespace robotlib
                 }
 
                 return size;
+            }
+
+            void print()
+            {
+                std::cout << "JointState [Name - Value]" << std::endl;
+                std::cout << "-------------------------" << std::endl;
+
+                for (auto &leg_pair : *this)
+                {
+                    for (auto &joint_pair : *leg_pair.data_)
+                    {
+                        std::cout << joint_pair.key_->getName() << " - " << joint_pair.data_ << std::endl;
+                    }
+                }
             }
 
             std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }

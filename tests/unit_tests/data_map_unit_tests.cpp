@@ -10,6 +10,23 @@
 #include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
 
 /**
+ * @brief Unit tests for LegDataMap class
+ * @details Set of unit tests for LegDataMap::print function
+ */
+TEST(LegDataMapUnitTests, print)
+{
+     /**
+      * @test Dummy Quadruped - LegDataMap values printed with print function
+      */
+     {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        auto leg_data_map = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+        
+        leg_data_map.print();
+     }
+}
+
+/**
  * @brief Unit tests for JointState class
  * @details Set of unit tests for JointState::makeJointState function
  */
@@ -128,6 +145,23 @@ TEST(JointStateUnitTests, size)
       * @test Dummy Quadruped - JointState with 100 elements
       */
     {}
+}
+
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::print function
+ */
+TEST(JointStateUnitTests, print)
+{
+     /**
+      * @test Dummy Quadruped - JointState values printed with print function
+      */
+     {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        auto joint_state = dummy_quadruped->makeJointState();
+
+        joint_state.print();
+     }
 }
 
 int main(int argc, char **argv)
