@@ -164,6 +164,50 @@ TEST(JointStateUnitTests, print)
      }
 }
 
+/**
+ * @brief Unit tests for Jacobian class
+ * @details Set of unit tests for Jacobian::getLinearJacobian function
+ */
+TEST(JacobianUnitTests, print)
+{
+     /**
+      * @test Dummy Quadruped - Linear Jacobian matrix extracted with getLinearJacobian function
+      */
+     {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
+
+        std::cout << "PRINT FROM LEG DATA MAP" << std::endl;
+        feet_jacobian.print();
+
+        std::cout << "\nPRINT FROM JACOBIAN" << std::endl;
+        for(auto leg: *dummy_quadruped->getLegs())
+        {
+            feet_jacobian[leg].print();
+        }
+
+        for (auto leg : *(dummy_quadruped->getLegs()))
+        {
+            feet_jacobian[leg] <<
+                1, 2, 3,
+                4, 5, 6,
+                7, 8, 9,
+                10, 20, 30,
+                40, 50, 60,
+                70, 80, 90;
+        }
+
+        std::cout << "PRINT FROM LEG DATA MAP" << std::endl;
+        feet_jacobian.print();
+
+        std::cout << "\nPRINT FROM JACOBIAN" << std::endl;
+        for(auto leg: *dummy_quadruped->getLegs())
+        {
+            feet_jacobian[leg].print();
+        }
+     }
+}
+
 int main(int argc, char **argv)
 {
      ::testing::InitGoogleTest(&argc, argv);

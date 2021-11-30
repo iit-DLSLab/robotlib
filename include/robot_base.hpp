@@ -433,8 +433,21 @@ namespace robotlib
                 return *this;
             }
 
+            void print()
+            {
+                std::cout << "Jacobian [Linear]" << std::endl;
+                std::cout << "-----------------" << std::endl;
+
+                std::cout << this->getLinearJacobian() << std::endl;
+
+                std::cout << "Jacobian [Angular]" << std::endl;
+                std::cout << "-----------------" << std::endl;
+
+                std::cout << this->getAngularJacobian() << std::endl;
+            }
+
         private:
-            Jacobian(const int nJoints, const double data = 0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
+            Jacobian(const int nJoints, const double data = 0.0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
             {
                 // Data initialization (6: linear and angular part of the jacobian)
                 data_ = new double[6 * nJoints_];
@@ -481,7 +494,7 @@ namespace robotlib
         virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
         // Create a joint state
-        JointState makeJointState(const double value = 0)
+        JointState makeJointState(const double value = 0.0)
         {
             JointState joint_state{this};
 
@@ -543,12 +556,12 @@ namespace robotlib
         };
 
         // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0) // NRT
+        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0) // NRT
         {
             return Jacobian(leg->getNJoints(), data);
         };
 
-        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0) // NRT
+        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0) // NRT
         {
             auto feetJac = this->makeLegDataMap<Jacobian>();
 
