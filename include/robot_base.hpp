@@ -400,18 +400,32 @@ namespace robotlib
 
             Map getLinearJacobian() const //RT
             {
-                auto linear_matrix{this->block(0, 0, 3, nJoints_)}; // Fixed size matrix!
-                auto start_index = linear_matrix(0, 0);
+                using Matrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
-                return Map(&start_index, 3, nJoints_);
+                Matrix linear_jacobian = Matrix::Zero(3, nJoints_);
+
+                for(int i{0}; i<linear_jacobian.size(); i++)
+                {
+                    linear_jacobian(i) = this->data_[i];
+                }
+
+                return Map(linear_jacobian.data(), linear_jacobian.rows(), linear_jacobian.cols());
             };
 
             Map getAngularJacobian() const //RT
             {
-                auto angular_matrix{this->block(3, 0, 3, nJoints_)}; // Fixed size matrix!
-                auto start_index = angular_matrix(0, 0);
+                using Matrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
-                return Map(&start_index, 3, nJoints_);
+                Matrix angular_jacobian = Matrix::Zero(3, nJoints_);
+
+                int linear_jacobian_size{3*nJoints_};
+
+                for(int i{0}; i<angular_jacobian.size(); i++)
+                {
+                    angular_jacobian(i) = this->data_[i + linear_jacobian_size];
+                }
+
+                return Map(angular_jacobian.data(), angular_jacobian.rows(), angular_jacobian.cols());
             };
 
             Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!

@@ -1,6 +1,5 @@
 #include "robot.hpp"
 #include "robot_factory.hpp"
-#include <gtest/gtest.h>
 #include <stdlib.h>
 
 namespace robotlib

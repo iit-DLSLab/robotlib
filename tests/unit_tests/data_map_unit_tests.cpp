@@ -19,10 +19,11 @@ TEST(LegDataMapUnitTests, print)
       * @test Dummy Quadruped - LegDataMap values printed with print function
       */
      {
-        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-        auto leg_data_map = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
-        
-        leg_data_map.print();
+        /// Uncomment if you want to test the print method
+        //std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        //auto leg_data_map = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+        //
+        //leg_data_map.print();
      }
 }
 
@@ -157,10 +158,11 @@ TEST(JointStateUnitTests, print)
       * @test Dummy Quadruped - JointState values printed with print function
       */
      {
-        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-        auto joint_state = dummy_quadruped->makeJointState();
-
-        joint_state.print();
+        /// Uncomment if you want to test the print method
+        //std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        //auto joint_state = dummy_quadruped->makeJointState();
+        //
+        //joint_state.print();
      }
 }
 
@@ -177,34 +179,41 @@ TEST(JacobianUnitTests, print)
         std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
         auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
 
-        std::cout << "PRINT FROM LEG DATA MAP" << std::endl;
-        feet_jacobian.print();
-
-        std::cout << "\nPRINT FROM JACOBIAN" << std::endl;
-        for(auto leg: *dummy_quadruped->getLegs())
-        {
-            feet_jacobian[leg].print();
-        }
-
         for (auto leg : *(dummy_quadruped->getLegs()))
         {
             feet_jacobian[leg] <<
-                1, 2, 3,
-                4, 5, 6,
-                7, 8, 9,
-                10, 20, 30,
-                40, 50, 60,
-                70, 80, 90;
+                11, 22, 33,
+                44, 55, 66,
+                77, 88, 99,
+                111, 222, 333,
+                444, 555, 666,
+                777, 888, 999;
         }
 
-        std::cout << "PRINT FROM LEG DATA MAP" << std::endl;
-        feet_jacobian.print();
+        //std::cout << "JACOBIAN - LEG DATA MAP PRINT" << std::endl;
+        //feet_jacobian.print();
 
-        std::cout << "\nPRINT FROM JACOBIAN" << std::endl;
-        for(auto leg: *dummy_quadruped->getLegs())
-        {
-            feet_jacobian[leg].print();
-        }
+        std::cout << "\nJACOBIAN - JACOBIAN STD::COUT" << std::endl;
+        std::cout << feet_jacobian["LF"].block<3,3>(0,0) << std::endl;
+        std::cout << feet_jacobian["LF"].block<3,3>(3,0) << std::endl;
+
+        //for(auto leg: *dummy_quadruped->getLegs())
+        //{
+        //    std::cout << "Jacobian [Linear]" << std::endl;
+        //    std::cout << "-----------------" << std::endl;
+        //    std::cout << feet_jacobian[leg].block<3,3>(0,0) << std::endl;
+        //    std::cout << "Jacobian [Angular]" << std::endl;
+        //    std::cout << "-----------------" << std::endl;
+        //    std::cout << feet_jacobian[leg].block<3,3>(3,0) << std::endl;
+        //}
+
+        std::cout << "\nJACOBIAN - JACOBIAN PRINT" << std::endl;
+        feet_jacobian["LF"].print();
+        //for(auto leg: *dummy_quadruped->getLegs())
+        //{
+        //    feet_jacobian[leg].print();
+        //}
+        std::cout << "" << std::endl;
      }
 }
 
