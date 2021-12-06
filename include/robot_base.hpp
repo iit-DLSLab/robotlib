@@ -398,34 +398,32 @@ namespace robotlib
                     delete[] data_;
             }
 
-            Map getLinearJacobian() const //RT
+            /// A new Map is returned but this points to class variable "linear_jacobian_".
+            /// This because if you define the matrix linear_jacobian inside the method you have a pointer to it (linear_jacobian.data())
+            /// that does not exist anymore outside the method and leads to errors.
+            Map getLinearJacobian() //RT?
             {
-                using Matrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-
-                Matrix linear_jacobian = Matrix::Zero(3, nJoints_);
-
-                for(int i{0}; i<linear_jacobian.size(); i++)
+                for(int i{0}; i<linear_jacobian_.size(); i++)
                 {
-                    linear_jacobian(i) = this->data_[i];
+                    linear_jacobian_(i) = this->data_[i];
                 }
 
-                return Map(linear_jacobian.data(), linear_jacobian.rows(), linear_jacobian.cols());
+                return Map(linear_jacobian_.data(), linear_jacobian_.rows(), linear_jacobian_.cols());
             };
 
-            Map getAngularJacobian() const //RT
+            /// A new Map is returned but this points to class variable "angular_jacobian_".
+            /// This because if you define the matrix angular_jacobian inside the method you have a pointer to it (angular_jacobian.data())
+            /// that does not exist anymore outside the method and leads to errors.
+            Map getAngularJacobian() //RT?
             {
-                using Matrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-
-                Matrix angular_jacobian = Matrix::Zero(3, nJoints_);
-
                 int linear_jacobian_size{3*nJoints_};
 
-                for(int i{0}; i<angular_jacobian.size(); i++)
+                for(int i{0}; i<angular_jacobian_.size(); i++)
                 {
-                    angular_jacobian(i) = this->data_[i + linear_jacobian_size];
+                    angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
                 }
 
-                return Map(angular_jacobian.data(), angular_jacobian.rows(), angular_jacobian.cols());
+                return Map(angular_jacobian_.data(), angular_jacobian_.rows(), angular_jacobian_.cols());
             };
 
             Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
@@ -454,7 +452,7 @@ namespace robotlib
 
                 std::cout << this->getLinearJacobian() << std::endl;
 
-                std::cout << "Jacobian [Angular]" << std::endl;
+                std::cout << "\nJacobian [Angular]" << std::endl;
                 std::cout << "-----------------" << std::endl;
 
                 std::cout << this->getAngularJacobian() << std::endl;
@@ -479,12 +477,14 @@ namespace robotlib
             {
                 nJoints_ = other.getNJoints();
 
+                linear_jacobian_.setZero(3, nJoints_);
+                angular_jacobian_.setZero(3, nJoints_);
+
                 data_ = new double[6 * nJoints_];
                 for (int i = 0; i < 6 * nJoints_; ++i)
                 {
                     data_[i] = other.data_[i];
                 }
-
                 new (this) Map(data_, 6, nJoints_);
             }
 
@@ -494,6 +494,9 @@ namespace robotlib
 
             int nJoints_;
             double *data_; // Squashed matrix
+
+            // TODO: Is it ok to declare these here (not initialized) and initialize them later in "init" function?
+            Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> linear_jacobian_, angular_jacobian_;
         };
 
         // Get functions
