@@ -356,13 +356,13 @@ namespace robotlib
 			std::cout << "Inverse Kinematics 2" << std::endl;
 		};
 
-		virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                       const LegDataMap<Jacobian> &robot_jacobian,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity,
-                                       JointState &joint_acceleration) override
+		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+									   const LegDataMap<Jacobian> &robot_jacobian,
+									   JointState &joint_position,
+									   JointState &joint_velocity,
+									   JointState &joint_acceleration) override
 		{
 			std::cout << "Inverse Kinematics 3" << std::endl;
 		};
@@ -374,7 +374,7 @@ namespace robotlib
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
 							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 JointState &tau_joints)					 ///output
+							 JointState &tau_joints) override		   ///output
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
@@ -382,6 +382,56 @@ namespace robotlib
 		double getRobotMass() { return 80; } ///TODO: compute total mass from links and trunk masses (this could be done in robotlib)
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
+
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM() override
+		{
+			std::cout << "Get whole body COM 2" << std::endl;
+
+			return Eigen::Matrix<double, 3, 1>::Zero();
+		};
+
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
+		{
+			std::cout << "Get whole body COM 1" << std::endl;
+
+			return Eigen::Matrix<double, 3, 1>::Zero();
+		};
+
+		Eigen::Vector3d getCoMFromBase(const JointState & q,
+									   const Eigen::Vector3d & base_orient,
+									   const Eigen::Vector3d & base_pos) override
+		{
+			std::cout << "Get COM from base" << std::endl;
+
+			return Eigen::Vector3d::Zero();
+		};
+
+        Eigen::Vector3d getBaseFromCoM(const JointState & q,
+                                       const Eigen::Vector3d & base_orient,
+                                       const Eigen::Vector3d & CoM) override
+		{
+			std::cout << "Get base from COM" << std::endl;
+
+			return Eigen::Vector3d::Zero();
+		};
+
+		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState & q,
+                                                       		   const JointState & qd) override
+		{
+			std::cout << "Get whole body COM vel" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();		
+		};
+
+        Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
+                                                                 const Eigen::Matrix3d & rotationMx,
+                                                                 const JointState & q,
+                                                                 const JointState & qd) override
+		{
+			std::cout << "Get whole body COM vel FB" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();	
+		};
 	};
 } // namespace robotlib
 

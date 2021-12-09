@@ -403,7 +403,7 @@ namespace robotlib
             /// that does not exist anymore outside the method and leads to errors.
             Map getLinearJacobian() //RT?
             {
-                for(int i{0}; i<linear_jacobian_.size(); i++)
+                for (int i{0}; i < linear_jacobian_.size(); i++)
                 {
                     linear_jacobian_(i) = this->data_[i];
                 }
@@ -416,9 +416,9 @@ namespace robotlib
             /// that does not exist anymore outside the method and leads to errors.
             Map getAngularJacobian() //RT?
             {
-                int linear_jacobian_size{3*nJoints_};
+                int linear_jacobian_size{3 * nJoints_};
 
-                for(int i{0}; i<angular_jacobian_.size(); i++)
+                for (int i{0}; i < angular_jacobian_.size(); i++)
                 {
                     angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
                 }
@@ -738,6 +738,26 @@ namespace robotlib
         virtual double getRobotMass() = 0; ///TODO: compute total mass from links and trunk masses
 
         virtual Eigen::Vector3d getRobotCoM() = 0;
+
+        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
+
+        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) = 0;
+
+        virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
+                                               const Eigen::Vector3d &base_orient,
+                                               const Eigen::Vector3d &base_pos) = 0;
+
+        virtual Eigen::Vector3d getBaseFromCoM(const JointState &q,
+                                               const Eigen::Vector3d &base_orient,
+                                               const Eigen::Vector3d &CoM) = 0;
+
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState &q,
+                                                               const JointState &qd) = 0;
+
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const JointState &q,
+                                                                 const JointState &qd) = 0;
 
         std::string getName()
         {
