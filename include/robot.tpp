@@ -85,6 +85,19 @@ namespace robotlib
         }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setJointLimits(const std::shared_ptr<Joint> joint, 
+                                                const double q_min, 
+                                                const double q_max, 
+                                                const double qd_max, 
+                                                const double tau_max)
+        {
+                joint->setMinAngle(q_min);
+                joint->setMaxAngle(q_max);
+                joint->setMaxVelocity(qd_max);
+                joint->setMaxEffort(tau_max);
+        }
+                                                
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name)
         {
                 if (name.compare("") == 0)
@@ -134,4 +147,6 @@ namespace robotlib
                 std::cout << "Returning a nullptr... " << std::endl;
                 return std::shared_ptr<LimbBase>(nullptr);
         }
+
+
 } // namespace robotlib

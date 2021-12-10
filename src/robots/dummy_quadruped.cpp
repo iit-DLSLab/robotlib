@@ -122,6 +122,21 @@ namespace robotlib
 					setParentOfLink(link, getJoint(parent_name));
 				}
 			}
+
+			// Set joint limits (summy limits are used here)
+			const double q_min = 0;
+			const double q_max = 90;
+			const double qd_max = 3;
+			const double tau_max = 5;
+
+			for (auto leg : *(this->getLegs()))
+			{
+				for (auto joint : *(leg->getJoints()))
+				{
+					setJointLimits(joint, q_min, q_max, qd_max, tau_max);
+				}
+			}
+
 		};
 
 		Eigen::Vector3d getFramePosition(const JointState &q,

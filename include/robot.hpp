@@ -42,6 +42,13 @@ namespace robotlib
 
 		void setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent);
 		void setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent);
+
+
+		void setJointLimits(const std::shared_ptr<Joint> joint, 
+							const double q_min, 
+							const double q_max, 
+							const double qd_max, 
+							const double tau_max);
 	};
 } // namespace robotlib
 

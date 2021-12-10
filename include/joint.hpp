@@ -52,6 +52,28 @@ namespace robotlib
 		 */
 		const std::shared_ptr<Link> getChild() const;
 
+		/**
+		 * @brief Get the Joint minimum angle
+		 * @return const double
+		 */
+		const double getMinAngle() const;
+		/**
+		 * @brief Get the Joint maximum angle
+		 * @return const double
+		 */
+		const double getMaxAngle() const;
+		/**
+		 * @brief Get the Joint limit velocity
+		 * @return const double
+		 */
+		const double getMaxVelocity() const;
+		/**
+		 * @brief Get the Joint limit effort
+		 * @return const double
+		 */
+		const double getMaxEffort() const;
+
+
 	private:
 		/**
 		 * @brief Set the Joint parent object, that is a Link object
@@ -64,7 +86,35 @@ namespace robotlib
 		 * @param parent the Joint child object to be set
 		 * @return void
 		 */
-		void setChild(const std::shared_ptr<Link> child);
+		void setChild(const std::shared_ptr<Link> child);		
+		/**
+		 * @brief Set the Joint minimum angle
+		 * @return const double
+		 */
+		void setMinAngle(const double q_min);
+		/**
+		 * @brief Set the Joint maximum angle
+		 * @return const double
+		 */
+		void setMaxAngle(const double q_max);
+		/**
+		 * @brief Set the Joint limit velocity
+		 * @return const double
+		 */
+		void setMaxVelocity(const double qd_max);
+		/**
+		 * @brief Set the Joint limit effort
+		 * @return const double
+		 */
+		void setMaxEffort(const double tau_max);
+
+		/**
+		 * @brief Joint limits
+		 */
+		double q_min_;
+		double q_max_;
+		double qd_max_;
+		double tau_max_;
 
 	protected:
 		std::shared_ptr<Link> parent_;

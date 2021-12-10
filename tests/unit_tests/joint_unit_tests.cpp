@@ -204,6 +204,37 @@ TEST(JointUnitTests, setChild)
       */
 }
 
+/**
+ * @brief Set of unit tests for 
+ * Joint::setMinAngle and Joint::getMinAngle functions
+ * Joint::setMaxAngle and Joint::getMaxAngle functions
+ * Joint::setMaxVelocity and Joint::getMaxVelocity functions
+ * Joint::setMaxEffort and Joint::getMaxEffort functions
+ */
+TEST(JointUnitTests, setLimits_getLimits)
+{
+     /**
+      * @test Joint limits compared with a ground truth
+      */
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+     const double q_min_gt = 0;
+     const double q_max_gt = 90;
+     const double qd_max_gt = 3;
+     const double tau_max_gt = 5;
+
+     for (auto leg : *(dummy_quadruped->getLegs()))
+     {
+          for (auto leg_joint : *(leg->getJoints()))
+          {
+               ASSERT_EQ(q_min_gt, leg_joint->getMinAngle());
+               ASSERT_EQ(q_max_gt, leg_joint->getMaxAngle());
+               ASSERT_EQ(qd_max_gt, leg_joint->getMaxVelocity());
+               ASSERT_EQ(tau_max_gt, leg_joint->getMaxEffort());
+          }
+     }
+}
+
 int main(int argc, char **argv)
 {
      ::testing::InitGoogleTest(&argc, argv);
