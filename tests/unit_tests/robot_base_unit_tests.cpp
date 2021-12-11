@@ -989,6 +989,42 @@ TEST(RobotBaseUnitTests, JointState_getByJointName)
     //     }
     // }
 }
+
+
+TEST(RobotBaseUnitTests, getJointLimits)
+{
+    /// Dummy quadruped
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    auto q_min = dummy_quadruped->makeJointState();
+    auto q_max = dummy_quadruped->makeJointState();
+    auto qd_max = dummy_quadruped->makeJointState();
+    auto tau_max = dummy_quadruped->makeJointState();
+
+    // Ground truth for the dummy quadruped
+    const double q_min_gt = 0;
+    const double q_max_gt = 90;
+    const double qd_max_gt = 3;
+    const double tau_max_gt = 5;
+
+    dummy_quadruped->getMinJointAngle(q_min);
+    dummy_quadruped->getMaxJointAngle(q_max);
+    dummy_quadruped->getMaxJointVelocity(qd_max);
+    dummy_quadruped->getMaxJointEffort(tau_max);
+
+    // TODO: override operator == for dataMap
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        for (auto joint : *leg->getJoints())
+        {
+            EXPECT_EQ(q_min_gt, q_min[joint]);
+            EXPECT_EQ(q_max_gt, q_max[joint]);
+            EXPECT_EQ(qd_max_gt, qd_max[joint]);
+            EXPECT_EQ(tau_max_gt, tau_max[joint]);
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

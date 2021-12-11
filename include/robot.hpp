@@ -30,6 +30,11 @@ namespace robotlib
 		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
 		virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
 
+        virtual void getMinJointAngle(JointState &q_min) override;
+        virtual void getMaxJointAngle(JointState &q_max) override;
+        virtual void getMaxJointVelocity(JointState &qd_max) override;
+        virtual void getMaxJointEffort(JointState &tau_max) override;
+
 	protected:
 		const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
 

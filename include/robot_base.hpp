@@ -759,6 +759,16 @@ namespace robotlib
                                                                  const JointState &q,
                                                                  const JointState &qd) = 0;
 
+        virtual void getMinJointAngle(JointState &q_min) = 0;
+        virtual void getMaxJointAngle(JointState &q_max) = 0;
+        virtual void getMaxJointVelocity(JointState &qd_max) = 0;
+        virtual void getMaxJointEffort(JointState &tau_max) = 0;
+
+        virtual void getMinJointAngle(const std::shared_ptr<Joint> joint, double &q_min) { q_min = joint->getMinAngle();};
+        virtual void getMaxJointAngle(const std::shared_ptr<Joint> joint, double &q_max) { q_max = joint->getMaxAngle();};
+        virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity();};
+        virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort();};
+
         std::string getName()
         {
             return name_;

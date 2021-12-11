@@ -149,4 +149,53 @@ namespace robotlib
         }
 
 
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMinJointAngle(JointState &q_min)
+        {
+                for(auto leg : *legs_)
+                {
+                        for (auto joint : *leg->getJoints()) 
+                        {
+                                q_min[joint] = joint->getMinAngle();
+                        }
+                }
+        }
+        
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointAngle(JointState &q_max)
+        {
+                for(auto leg : *legs_)
+                {
+                        for (auto joint : *leg->getJoints()) 
+                        {
+                                q_max[joint] = joint->getMaxAngle();
+                        }
+                }
+        }
+        
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointVelocity(JointState &qd_max)
+        {
+                for(auto leg : *legs_)
+                {
+                        for (auto joint : *leg->getJoints()) 
+                        {
+                                qd_max[joint] = joint->getMaxVelocity();
+                        }
+                }
+        }
+        
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointEffort(JointState &tau_max)
+        {
+                for(auto leg : *legs_)
+                {
+                        for (auto joint : *leg->getJoints()) 
+                        {
+                                tau_max[joint] = joint->getMaxEffort();
+                        }
+                }
+        }
+
+
 } // namespace robotlib

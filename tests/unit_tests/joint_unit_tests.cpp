@@ -227,10 +227,10 @@ TEST(JointUnitTests, setLimits_getLimits)
      {
           for (auto leg_joint : *(leg->getJoints()))
           {
-               ASSERT_EQ(q_min_gt, leg_joint->getMinAngle());
-               ASSERT_EQ(q_max_gt, leg_joint->getMaxAngle());
-               ASSERT_EQ(qd_max_gt, leg_joint->getMaxVelocity());
-               ASSERT_EQ(tau_max_gt, leg_joint->getMaxEffort());
+               EXPECT_EQ(q_min_gt, leg_joint->getMinAngle());
+               EXPECT_EQ(q_max_gt, leg_joint->getMaxAngle());
+               EXPECT_EQ(qd_max_gt, leg_joint->getMaxVelocity());
+               EXPECT_EQ(tau_max_gt, leg_joint->getMaxEffort());
           }
      }
 }
