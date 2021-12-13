@@ -35,6 +35,8 @@ namespace robotlib
         virtual void getMaxJointVelocity(JointState &qd_max) override;
         virtual void getMaxJointEffort(JointState &tau_max) override;
 
+		virtual const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const override;
+
 	protected:
 		const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot
 

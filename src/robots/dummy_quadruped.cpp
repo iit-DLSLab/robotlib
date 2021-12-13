@@ -401,11 +401,6 @@ namespace robotlib
 			return 0;
 		}
 
-        const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const override
-		{
-			return trunk_->getCoM();
-		};
-
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 
