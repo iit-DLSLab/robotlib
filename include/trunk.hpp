@@ -27,6 +27,9 @@ namespace robotlib
 	class Trunk : public Link
 	{
 	public:
+		//TODO: it makes sense only if the dynamic_parameter variable is not constant, so understand if dynamic_parameters can be non constant
+		Trunk(const std::string &name);
+
 		Trunk(const std::string &name, const DynParams &dynamic_parameters);
 
 		~Trunk();
@@ -66,7 +69,7 @@ namespace robotlib
 		/**
 		 * @brief Dynamic parameters of the Trunk
 		 */
-		const DynParams dynamic_parameters_;
+		DynParams dynamic_parameters_;
 	};
 } // namespace robotlib
 

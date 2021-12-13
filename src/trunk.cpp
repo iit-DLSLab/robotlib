@@ -13,6 +13,9 @@
 
 namespace robotlib
 {
+
+	Trunk::Trunk(const std::string &name) : Link(name), dynamic_parameters_(DynParams(Eigen::Vector3d::Zero(), 0, Eigen::Matrix3d::Zero())){};
+
 	Trunk::Trunk(const std::string &name, const DynParams &dynamic_parameters) : Link(name), dynamic_parameters_(dynamic_parameters){};
 	Trunk::~Trunk(){};
 
