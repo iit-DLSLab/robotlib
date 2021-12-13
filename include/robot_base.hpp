@@ -749,6 +749,7 @@ namespace robotlib
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
 
+        // TODO: compute total mass from links and trunk masses (it could be even implemented in robotlib)
         virtual double getRobotMass() const = 0;
 
         virtual const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const = 0;
