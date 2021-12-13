@@ -54,6 +54,12 @@ namespace robotlib
 		 * @return const Eigen::Matrix3d
 		 */
 		const Eigen::Matrix3d &getInertia() const;
+
+		/**
+		 * @brief Get the dynamic parameters of the trunk
+		 * @return const DynParams
+		 */
+		const DynParams &getDynParams() const;
 	
 	private:
 
