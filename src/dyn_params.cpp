@@ -22,7 +22,7 @@ namespace robotlib
 
 	DynParams::~DynParams(){};
 
-	const Eigen::Vector3d &DynParams::getCoM() { return com_; };
-	const double DynParams::getMass() { return mass_; };
-	const Eigen::Matrix3d &DynParams::getInertia() { return inertia_; };
+	const Eigen::Vector3d &DynParams::getCoM()  const { return com_; };
+	const double DynParams::getMass() const { return mass_; };
+	const Eigen::Matrix3d &DynParams::getInertia() const { return inertia_; };
 } // namespace robotlib

@@ -15,6 +15,7 @@
 #include "link.hpp"
 #include "utils.hpp"
 #include "joint.hpp"
+#include "dyn_params.hpp"
 
 namespace robotlib
 {
@@ -26,7 +27,7 @@ namespace robotlib
 	class Trunk : public Link
 	{
 	public:
-		Trunk(const std::string &name);
+		Trunk(const std::string &name, const DynParams &dynamic_parameters);
 
 		~Trunk();
 
@@ -35,6 +36,31 @@ namespace robotlib
 		 * @return const std::string
 		 */
 		virtual const std::string getName() const override;
+
+		/**
+		 * @brief Get the center of mass of the trunk
+		 * @return const Eigen::Vector3d
+		 */
+		const Eigen::Vector3d &getCoM() const;
+
+		/**
+		 * @brief Get the mass of the trunk
+		 * @return const double
+		 */
+		const double getMass() const;
+
+		/**
+		 * @brief Get the inertia of the trunk
+		 * @return const Eigen::Matrix3d
+		 */
+		const Eigen::Matrix3d &getInertia() const;
+	
+	private:
+
+		/**
+		 * @brief Dynamic parameters of the Trunk
+		 */
+		const DynParams dynamic_parameters_;
 	};
 } // namespace robotlib
 

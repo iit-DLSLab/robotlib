@@ -1,13 +1,14 @@
 #include "robot.hpp"
 #include "leg.hpp"
 #include "trunk.hpp"
+#include "dyn_params.hpp"
+
 #include <map>
 
 namespace robotlib
 {
 	const int NJOINTS = 3;
 	const int NLINKS = 3;
-	Eigen::Vector3d trunk_com{0.0, 0.0, 0.0};
 
 	class DummyLeg : public Leg<NJOINTS, NLINKS>
 	{
@@ -402,7 +403,7 @@ namespace robotlib
 
         const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const override
 		{
-			return trunk_com;
+			return trunk_->getCoM();
 		};
 
 
@@ -477,7 +478,9 @@ std::shared_ptr<robotlib::DummyLeg> makeLeg(const std::string &legName)
 
 extern "C" std::shared_ptr<robotlib::RobotBase> createRobot_t()
 {
-	const std::shared_ptr<robotlib::Trunk> trunk = std::make_shared<robotlib::Trunk>("TRUNK");
+	const robotlib::DynParams trunk_dyn_params{Eigen::Vector3d::Zero(), 5, Eigen::Matrix3d::Zero()}; //dummy com, mass, inertia
+	
+	const std::shared_ptr<robotlib::Trunk> trunk = std::make_shared<robotlib::Trunk>("TRUNK", trunk_dyn_params);
 	const std::array<std::shared_ptr<robotlib::LimbBase>, robotlib::NLEGS> legs(
 		{makeLeg("LF"),
 		 makeLeg("RF"),

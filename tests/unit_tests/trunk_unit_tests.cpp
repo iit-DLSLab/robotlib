@@ -14,11 +14,15 @@
  */
 TEST(TrunkUnitTests, getName)
 {
+     
+     const robotlib::DynParams trunk_dyn_params{Eigen::Vector3d::Zero(), 5, Eigen::Matrix3d::Zero()}; // dummy com, mass, inertia
+          
      /**
       * @test Trunk name with a complete string
       */
      {
-          robotlib::Trunk trunk{"trunk_test"};
+
+	     robotlib::Trunk trunk{"trunk_test", trunk_dyn_params};
           ASSERT_EQ(trunk.getName(), "trunk_test");
      }
 
@@ -26,7 +30,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with two separate words
       */
      {
-          robotlib::Trunk trunk_two_words_name{"trunk test"};
+          robotlib::Trunk trunk_two_words_name{"trunk test", trunk_dyn_params};
           ASSERT_EQ(trunk_two_words_name.getName(), "trunk test");
      }
 
@@ -34,7 +38,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with an empty string
       */
      {
-          robotlib::Trunk trunk_empty_name{""};
+          robotlib::Trunk trunk_empty_name{"", trunk_dyn_params};
           ASSERT_EQ(trunk_empty_name.getName(), "");
      }
 
@@ -42,7 +46,7 @@ TEST(TrunkUnitTests, getName)
       * @test Trunk name with a single space character
       */
      {
-          robotlib::Trunk trunk_single_space_name{" "};
+          robotlib::Trunk trunk_single_space_name{" ", trunk_dyn_params};
           ASSERT_EQ(trunk_single_space_name.getName(), " ");
      }
 }
