@@ -7,6 +7,7 @@ namespace robotlib
 {
 	const int NJOINTS = 3;
 	const int NLINKS = 3;
+	Eigen::Vector3d trunk_com{0.0, 0.0, 0.0};
 
 	class DummyLeg : public Leg<NJOINTS, NLINKS>
 	{
@@ -394,7 +395,16 @@ namespace robotlib
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
 
-		double getRobotMass() { return 80; } ///TODO: compute total mass from links and trunk masses (this could be done in robotlib)
+		double getRobotMass() const override
+		{
+			return 0;
+		}
+
+        const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const override
+		{
+			return trunk_com;
+		};
+
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 

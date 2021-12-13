@@ -398,32 +398,46 @@ namespace robotlib
                     delete[] data_;
             }
 
-            /// A new Map is returned but this points to class variable "linear_jacobian_".
-            /// This because if you define the matrix linear_jacobian inside the method you have a pointer to it (linear_jacobian.data())
-            /// that does not exist anymore outside the method and leads to errors.
+            ///// A new Map is returned but this points to class variable "linear_jacobian_".
+            ///// This because if you define the matrix linear_jacobian inside the method you have a pointer to it (linear_jacobian.data())
+            ///// that does not exist anymore outside the method and leads to errors.
+            //Map getLinearJacobian() //RT?
+            //{
+            //    for(int i{0}; i<linear_jacobian_.size(); i++)
+            //    {
+            //        linear_jacobian_(i) = this->data_[i];
+            //    }
+            //
+            //    ///This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
+            //    return Map(linear_jacobian_.data(), linear_jacobian_.rows(), linear_jacobian_.cols());
+            //};
+
             Map getLinearJacobian() //RT?
             {
-                for (int i{0}; i < linear_jacobian_.size(); i++)
-                {
-                    linear_jacobian_(i) = this->data_[i];
-                }
-
-                return Map(linear_jacobian_.data(), linear_jacobian_.rows(), linear_jacobian_.cols());
+                ///This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
+                return Map(this->data(), 3, nJoints_);
             };
 
-            /// A new Map is returned but this points to class variable "angular_jacobian_".
-            /// This because if you define the matrix angular_jacobian inside the method you have a pointer to it (angular_jacobian.data())
-            /// that does not exist anymore outside the method and leads to errors.
+            ///// A new Map is returned but this points to class variable "angular_jacobian_".
+            ///// This because if you define the matrix angular_jacobian inside the method you have a pointer to it (angular_jacobian.data())
+            ///// that does not exist anymore outside the method and leads to errors.
+            //Map getAngularJacobian() //RT?
+            //{
+            //    int linear_jacobian_size{3*nJoints_};
+            //
+            //    for(int i{0}; i<angular_jacobian_.size(); i++)
+            //    {
+            //        angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
+            //    }
+            //
+            //    return Map(angular_jacobian_.data(), angular_jacobian_.rows(), angular_jacobian_.cols());
+            //};
+
             Map getAngularJacobian() //RT?
             {
                 int linear_jacobian_size{3 * nJoints_};
-
-                for (int i{0}; i < angular_jacobian_.size(); i++)
-                {
-                    angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
-                }
-
-                return Map(angular_jacobian_.data(), angular_jacobian_.rows(), angular_jacobian_.cols());
+                ///This operation returns a new Map of angular Jacobian and also updates the angular part of the complete Jacobian
+                return Map(this->data() + linear_jacobian_size, 3, nJoints_);
             };
 
             Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
@@ -735,7 +749,9 @@ namespace robotlib
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
 
-        virtual double getRobotMass() = 0; ///TODO: compute total mass from links and trunk masses
+        virtual double getRobotMass() const = 0;
+
+        virtual const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const = 0;
 
         virtual Eigen::Vector3d getRobotCoM() = 0;
 
@@ -764,10 +780,10 @@ namespace robotlib
         virtual void getMaxJointVelocity(JointState &qd_max) = 0;
         virtual void getMaxJointEffort(JointState &tau_max) = 0;
 
-        virtual void getMinJointAngle(const std::shared_ptr<Joint> joint, double &q_min) { q_min = joint->getMinAngle();};
-        virtual void getMaxJointAngle(const std::shared_ptr<Joint> joint, double &q_max) { q_max = joint->getMaxAngle();};
-        virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity();};
-        virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort();};
+        virtual void getMinJointAngle(const std::shared_ptr<Joint> joint, double &q_min) { q_min = joint->getMinAngle(); };
+        virtual void getMaxJointAngle(const std::shared_ptr<Joint> joint, double &q_max) { q_max = joint->getMaxAngle(); };
+        virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity(); };
+        virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort(); };
 
         std::string getName()
         {
