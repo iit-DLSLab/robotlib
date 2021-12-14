@@ -464,6 +464,9 @@ namespace robotlib
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
+
+		void setInvKinTimePeriod(const double& period)
+		{}; 
 	};
 } // namespace robotlib
 

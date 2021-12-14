@@ -791,6 +791,12 @@ namespace robotlib
         virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity(); };
         virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort(); };
 
+		/**
+		 * @brief Set inverse kinematics time period
+         * @param period period of the controller
+		 */
+        virtual void setInvKinTimePeriod(const double& period) = 0;
+
         std::string getName()
         {
             return name_;
