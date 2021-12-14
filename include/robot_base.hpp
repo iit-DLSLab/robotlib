@@ -752,7 +752,9 @@ namespace robotlib
         // TODO: compute total mass from links and trunk masses (it could be even implemented in Robot class)
         virtual double getRobotMass() const = 0;
 
-        virtual double getRobotLegsMass() const = 0;
+        virtual double getTrunkMass() const = 0;
+
+        virtual double getLegsMass() const = 0;
 
         // NB: eventually make the get function void for possible NRT issue
         virtual const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const = 0;

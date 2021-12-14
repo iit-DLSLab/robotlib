@@ -401,7 +401,12 @@ namespace robotlib
 			return 0;
 		}
 
-		double getRobotLegsMass() const override
+        double getTrunkMass() const override
+		{
+			return 0;
+		};
+
+		double getLegsMass() const override
 		{
 			return 0;
 		}
