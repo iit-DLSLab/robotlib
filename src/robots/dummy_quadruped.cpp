@@ -401,6 +401,10 @@ namespace robotlib
 			return 0;
 		}
 
+		double getRobotLegsMass() const override
+		{
+			return 0;
+		}
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 
@@ -416,6 +420,13 @@ namespace robotlib
 			std::cout << "Get whole body COM 1" << std::endl;
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
+		};
+
+        Eigen::Vector3d getLegContribution(const JointState &q) override
+		{
+			std::cout << "Get leg contribution" << std::endl;
+
+			return Eigen::Vector3d::Zero();
 		};
 
 		Eigen::Vector3d getCoMFromBase(const JointState & q,
