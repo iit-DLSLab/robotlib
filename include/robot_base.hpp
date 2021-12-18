@@ -807,6 +807,8 @@ namespace robotlib
         // Plugin typedefs
         typedef std::shared_ptr<RobotBase> createRobot_t();
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+        typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string&);
+        typedef void destroyRobotWithUrdf_t(std::shared_ptr<RobotBase>);
 
     protected:
         const std::string name_;
