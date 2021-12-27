@@ -1032,6 +1032,41 @@ TEST(RobotBaseUnitTests, getJointLimits)
     }
 }
 
+TEST(RobotBaseUnitTests, minJointValue)
+{
+    /// Dummy quadruped
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    auto q = dummy_quadruped->makeJointState();
+
+    // Ground truth for the dummy quadruped
+    const double q_min_gt = -10;
+    q[dummy_quadruped->getJoint("LF_HAA")] = q_min_gt;
+    q[dummy_quadruped->getJoint("LF_HFE")] = 10;
+    q[dummy_quadruped->getJoint("LH_HAA")] = 5;
+    
+    EXPECT_EQ(q.min(), q_min_gt);
+}
+
+
+TEST(RobotBaseUnitTests, maxJointValue)
+{
+    /// Dummy quadruped
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+
+    auto q = dummy_quadruped->makeJointState();
+
+    // Ground truth for the dummy quadruped
+    const double q_max_gt = 10;
+    q[dummy_quadruped->getJoint("LF_HAA")] = q_max_gt;
+    q[dummy_quadruped->getJoint("LF_HFE")] = -10;
+    q[dummy_quadruped->getJoint("LH_HAA")] = 5;
+    
+    EXPECT_EQ(q.max(), q_max_gt);
+}
+
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

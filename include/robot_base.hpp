@@ -373,6 +373,69 @@ namespace robotlib
                 return size;
             }
 
+            /**
+             * @brief Return the max value of the joint state
+             * @return double
+             */
+            double max()
+            {
+                double max_value{0};
+                bool first_val{true};
+
+                for (auto &leg_pair : *this)
+                {
+                    for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+                    {
+                        double value = joint_pair.data_;
+                        if (first_val==true)
+                        {
+                            max_value = value;
+                            first_val=false;
+                        }
+                        else
+                        {
+                            if(value>max_value)
+                            {
+                                max_value = value;
+                            }
+                        }
+                    }
+                }
+                return max_value;
+            }
+
+
+            /**
+             * @brief Return the min value of the joint state
+             * @return double
+             */
+            double min()
+            {
+                double min_value{0};
+                bool first_val{true};
+
+                for (auto &leg_pair : *this)
+                {
+                    for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+                    {
+                        double value = joint_pair.data_;
+                        if (first_val==true)
+                        {
+                            min_value = value;
+                            first_val=false;
+                        }
+                        else
+                        {
+                            if(value<min_value)
+                            {
+                                min_value = value;
+                            }
+                        }
+                    }
+                }
+                return min_value;
+            }
+
             void print()
             {
                 std::cout << "JointState [Name - Value]" << std::endl;
