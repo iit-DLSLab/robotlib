@@ -528,15 +528,22 @@ TEST(RobotBaseUnitTests, jointStateOperators)
     /// Operator= Copy
     auto q2 = dummy_quadruped->makeJointState();
     q2 = q;
-
+    
     std::cout << "Testing = operator using another joint state...\n";
     for (auto leg : *dummy_quadruped->getLegs())
     {
         for (auto joint : *leg->getJoints())
         {
-            EXPECT_EQ(q[joint], q2[joint]);
+            EXPECT_EQ(q[joint], q2[joint]);   
         }
     }
+
+    // Dummy check: Checking that q and q2 does not point to the same memory
+    std::cout << "Testing = operator does not allow variables to point to same memory\n";
+    double value{5};
+    auto joint{dummy_quadruped->getJoint("LF_HAA")};
+    q[joint] = value;
+    EXPECT_NE(value, q2[joint]);
 
     /// Operator= AssignAll
     auto q3 = dummy_quadruped->makeJointState();

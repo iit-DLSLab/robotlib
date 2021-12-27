@@ -305,7 +305,6 @@ namespace robotlib
         {
         public:
             friend class RobotBase;
-            using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator=;
             using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
             double &operator[](const std::shared_ptr<Joint> joint)
@@ -341,6 +340,18 @@ namespace robotlib
                 for (auto leg_pair : *this)
                 {
                     (*leg_pair.data_).assignAll(data);
+                }
+                return *this;
+            }
+
+            JointState &operator=(const JointState &other)
+            {
+                for (auto &leg_pair : *this)
+                {
+                    for(auto &joint_pair: *leg_pair.data_)
+                    {   
+                        joint_pair.data_ = other[joint_pair.key_];
+                    }
                 }
                 return *this;
             }
