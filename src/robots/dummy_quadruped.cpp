@@ -473,7 +473,9 @@ namespace robotlib
 		void setInvKinTimePeriod(const double& period)
 		{};
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {};
+		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};
+
+		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";};
 		 
 	};
 } // namespace robotlib

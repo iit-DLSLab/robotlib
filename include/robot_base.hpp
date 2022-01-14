@@ -869,6 +869,8 @@ namespace robotlib
 
         virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
 
+        virtual void setTrunkMass(const double& trunk_mass) = 0;
+
 		/**
 		 * @brief Set inverse kinematics time period
          * @param period period of the controller
