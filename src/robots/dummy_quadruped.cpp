@@ -93,10 +93,10 @@ namespace robotlib
 
 		{
 			std::array<std::shared_ptr<Joint>, NLEGS> children;
-			children[0] = getJoint("LF_HFE");
-			children[1] = getJoint("RF_HFE");
-			children[2] = getJoint("LH_HFE");
-			children[3] = getJoint("RH_HFE");
+			children[0] = getJoint("LF_HAA");
+			children[1] = getJoint("RF_HAA");
+			children[2] = getJoint("LH_HAA");
+			children[3] = getJoint("RH_HAA");
 
 			setChildrenOfTrunk(std::make_shared<Container<std::shared_ptr<Joint>, NLEGS>>(children));
 
@@ -125,7 +125,7 @@ namespace robotlib
 				}
 			}
 
-			// Set joint limits (summy limits are used here)
+			// Set joint limits (dummy limits are used here)
 			const double q_min = 0;
 			const double q_max = 90;
 			const double qd_max = 3;
