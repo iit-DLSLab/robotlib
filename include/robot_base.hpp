@@ -561,32 +561,43 @@ namespace robotlib
                 new (this) Map(data_, 6, nJoints_);
             }
 
+            /**
+		    * @brief Empy constructor for the Jacobian class.
+            * This constructor is used to create a LegDataMap<Jacobian> object, with "empty" jacobians.
+            * Each jacobian may have different sizes, and the init function is used to initialize each of them. 
+            */
             Jacobian() : Map(NULL, 0, 0), nJoints_(0), data_(nullptr){};
 
-            void init(const Jacobian other)
+            /**
+		    * @brief Init function for the Jacobian class. 
+            * This function is needed to initialize the jacobians of a LegDataMap<Jacobian> object, where each jacobian may have different sizes. 
+            * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
+            * To make real-time code, we created fixed size data structures, like the LegDataMap class, that does not allow you to dinamically change its length.
+            * Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobian
+            * @example makeFeetJacobian function 
+            * @param nJoints number of joints 
+            * @param init_value value used to initialize the jacobian
+		    */
+            void init(const int nJoints, const double init_value = 0.0)
             {
-                nJoints_ = other.getNJoints();
+                nJoints_ = nJoints;
 
-                linear_jacobian_.setZero(3, nJoints_);
-                angular_jacobian_.setZero(3, nJoints_);
+                // linear_jacobian_.setZero(3, nJoints_);
+                // angular_jacobian_.setZero(3, nJoints_);
 
                 data_ = new double[6 * nJoints_];
                 for (int i = 0; i < 6 * nJoints_; ++i)
                 {
-                    data_[i] = other.data_[i];
+                    data_[i] = init_value;
                 }
                 new (this) Map(data_, 6, nJoints_);
             }
-
-            int getNJoints() const { return nJoints_; };
-
-            double *getData() { return data_; };
 
             int nJoints_;
             double *data_; // Squashed matrix
 
             // TODO: Is it ok to declare these here (not initialized) and initialize them later in "init" function?
-            Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> linear_jacobian_, angular_jacobian_;
+            // Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> linear_jacobian_, angular_jacobian_;
         };
 
 
@@ -666,19 +677,10 @@ namespace robotlib
 
             for (auto leg : *(this->getLegs()))
             {
-                feetJac[leg].init(makeFootJacobian(leg, data));
+                feetJac[leg].init(leg->getNJoints(), data);
             }
             return feetJac;
         };
-
-        void initFeetJacobians(LegDataMap<Jacobian> footJac)
-        {
-            for (auto leg : *(this->getLegs()))
-            {
-                footJac[leg].init(makeFootJacobian(leg));
-            }
-        }
-
 
         // ** FORWARD KINEMATICS ** 
 
