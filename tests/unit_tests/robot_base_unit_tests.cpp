@@ -1,12 +1,15 @@
 #include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
+#include "robot_factory.hpp"
 #include <gtest/gtest.h>
+
+
+// In order to do the tests you need in install the dummy robots.
+// To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
 
 TEST(RobotBaseUnitTests, getNLegs)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto n_legs_dq{dummy_quadruped->getNLEGS()};
 
@@ -15,13 +18,13 @@ TEST(RobotBaseUnitTests, getNLegs)
 
     /// Assert conditions
     ASSERT_EQ(n_legs_dq, n_legs_gt);
-    ASSERT_EQ(typeid(n_legs_dq).name(), typeid(n_legs_gt).name());
+    ASSERT_EQ(typeid(n_legs_dq), typeid(n_legs_gt));
 }
 
 TEST(RobotBaseUnitTests, getNJoints)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto n_joints_dq{dummy_quadruped->getNJOINTS()};
 
@@ -30,13 +33,13 @@ TEST(RobotBaseUnitTests, getNJoints)
 
     /// Assert conditions
     ASSERT_EQ(n_joints_dq, n_joints_gt);
-    ASSERT_EQ(typeid(n_joints_dq).name(), typeid(n_joints_gt).name());
+    ASSERT_EQ(typeid(n_joints_dq), typeid(n_joints_gt));
 }
 
 TEST(RobotBaseUnitTests, getNLinks)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto n_links_dq{dummy_quadruped->getNLINKS()};
 
@@ -45,13 +48,13 @@ TEST(RobotBaseUnitTests, getNLinks)
 
     /// Assert conditions
     ASSERT_EQ(n_links_dq, n_links_gt);
-    ASSERT_EQ(typeid(n_links_dq).name(), typeid(n_links_gt).name());
+    ASSERT_EQ(typeid(n_links_dq), typeid(n_links_gt));
 }
 
 TEST(RobotBaseUnitTests, getLeg)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Ground truth
     std::array<std::string, 4> legs_gt{{"LF", "RF", "LH", "RH"}};
@@ -61,7 +64,7 @@ TEST(RobotBaseUnitTests, getLeg)
     {
         /// Assert conditions
         ASSERT_EQ(legs_dq->getName(), legs_gt.at(count_legs));
-        ASSERT_EQ(typeid(legs_dq->getName()).name(), typeid(legs_gt.at(count_legs)).name());
+        ASSERT_EQ(typeid(legs_dq->getName()), typeid(legs_gt.at(count_legs)));
         count_legs++;
     }
 }
@@ -69,7 +72,7 @@ TEST(RobotBaseUnitTests, getLeg)
 TEST(RobotBaseUnitTests, getFramePosition)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -84,7 +87,7 @@ TEST(RobotBaseUnitTests, getFramePosition)
 TEST(RobotBaseUnitTests, getFrameOrientation)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -99,7 +102,7 @@ TEST(RobotBaseUnitTests, getFrameOrientation)
 TEST(RobotBaseUnitTests, getFramePose)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -113,13 +116,13 @@ TEST(RobotBaseUnitTests, getFramePose)
 
     /// Assert conditions
     ASSERT_EQ(frame_pose_dq, frame_pose_gt);
-    ASSERT_EQ(typeid(frame_pose_dq).name(), typeid(frame_pose_gt).name());
+    ASSERT_EQ(typeid(frame_pose_dq), typeid(frame_pose_gt));
 }
 
 TEST(RobotBaseUnitTests, getFootPosition)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -133,7 +136,7 @@ TEST(RobotBaseUnitTests, getFootPosition)
 TEST(RobotBaseUnitTests, getFootOrientation)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -147,7 +150,7 @@ TEST(RobotBaseUnitTests, getFootOrientation)
 TEST(RobotBaseUnitTests, getFootPose)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -161,29 +164,29 @@ TEST(RobotBaseUnitTests, getFootPose)
 
     /// Assert conditions
     ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-    ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
+    ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
 }
 
 TEST(RobotBaseUnitTests, getLink)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
-    auto link_dq = dummy_quadruped->getLink("LF_ASSEMBLY");
+    auto link = dummy_quadruped->getLink("LF_ASSEMBLY");
 
     /// Ground truth
     robotlib::Link link_gt("LF_ASSEMBLY"); //TODO : generalize the test for all the links
 
     /// Assert conditions
-    ASSERT_EQ(link_dq->getName(), link_gt.getName());
-    ASSERT_EQ(typeid(*link_dq).name(), typeid(link_gt).name());
+    ASSERT_EQ(link->getName(), link_gt.getName());
+    ASSERT_EQ(typeid(*link), typeid(link_gt));
 }
 
 TEST(RobotBaseUnitTests, getJoint)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    
     auto joint_dq = dummy_quadruped->getJoint("LF_HFE");
 
     /// Ground truth
@@ -191,13 +194,13 @@ TEST(RobotBaseUnitTests, getJoint)
 
     /// Assert conditions
     ASSERT_EQ(joint_dq->getName(), joint_gt.getName());
-    ASSERT_EQ(typeid(*joint_dq).name(), typeid(joint_gt).name());
+    ASSERT_EQ(typeid(*joint_dq), typeid(joint_gt));
 }
 
 TEST(RobotBaseUnitTests, getFeet)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -216,7 +219,7 @@ TEST(RobotBaseUnitTests, getFeet)
 
         /// Assert conditions
         ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-        ASSERT_EQ(typeid(foot_pose_dq).name(), typeid(foot_pose_gt).name());
+        ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
     }
 }
 
@@ -224,58 +227,58 @@ TEST(RobotBaseUnitTests, getFeet)
 //TEST(RobotBaseUnitTests, forwardKinematicsOne)
 //{
 //    /// Dummy quadruped
-//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 //
 //    /// Ground truth
 //
 //    /// Assert conditions
 //    ASSERT_EQ(1, 1);
-//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//    ASSERT_EQ(typeid(1), typeid(1));
 //}
 
 // TODO
 //TEST(RobotBaseUnitTests, forwardKinematicsTwo)
 //{
 //    /// Dummy quadruped
-//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 //
 //    /// Ground truth
 //
 //    /// Assert conditions
 //    ASSERT_EQ(1, 1);
-//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//    ASSERT_EQ(typeid(1), typeid(1));
 //}
 
 // TODO
 //TEST(RobotBaseUnitTests, inverseKinematicsOne)
 //{
 //    /// Dummy quadruped
-//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 //
 //    /// Ground truth
 //
 //    /// Assert conditions
 //    ASSERT_EQ(1, 1);
-//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//    ASSERT_EQ(typeid(1), typeid(1));
 //}
 
 // TODO
 //TEST(RobotBaseUnitTests, inverseKinematicsTwo)
 //{
 //    /// Dummy quadruped
-//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//   std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 //
 //    /// Ground truth
 //
 //    /// Assert conditions
 //    ASSERT_EQ(1, 1);
-//    ASSERT_EQ(typeid(1).name(), typeid(1).name());
+//    ASSERT_EQ(typeid(1), typeid(1));
 //}
 
 TEST(RobotBaseUnitTests, getName)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto name_dq = dummy_quadruped->getName();
 
@@ -284,13 +287,13 @@ TEST(RobotBaseUnitTests, getName)
 
     /// Assert conditions
     ASSERT_EQ(name_dq, name_gt);
-    ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
+    ASSERT_EQ(typeid(name_dq), typeid(name_gt));
 }
 
 TEST(RobotBaseUnitTests, makeFootJacobian)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
 
@@ -333,13 +336,13 @@ TEST(RobotBaseUnitTests, makeFootJacobian)
     // ASSERT_EQ(jacobian, jacobian_gt);
     // ASSERT_EQ(jacobian.getLinearJacobian(), jacobian_gt.block(0, 0, 3, nJoints));
     // ASSERT_EQ(jacobian.getAngularJacobian(), jacobian_gt.block(3, 0, 3, nJoints));
-    //ASSERT_EQ(typeid(jacobian).name(), typeid(jacobian_gt).name());
+    //ASSERT_EQ(typeid(jacobian), typeid(jacobian_gt));
 }
 
 TEST(RobotBaseUnitTests, makeJacobian)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
 
@@ -349,7 +352,7 @@ TEST(RobotBaseUnitTests, makeJacobian)
 TEST(RobotBaseUnitTests, joint_parent_child)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
@@ -382,7 +385,7 @@ TEST(RobotBaseUnitTests, joint_parent_child)
 TEST(RobotBaseUnitTests, link_parent_child)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Groud truth
     std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
@@ -427,7 +430,7 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
     std::cout << "TODO: getEndEffector TEST" << std::endl;
 
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Groud truth
     //...
@@ -444,7 +447,7 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
 TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
     auto q = dummy_quadruped->makeJointState();
@@ -502,7 +505,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 TEST(RobotBaseUnitTests, jointStateOperators)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     auto q = dummy_quadruped->makeJointState();
     double value_gt = 10;
     
@@ -561,7 +564,7 @@ TEST(RobotBaseUnitTests, jointStateOperators)
 
 TEST(RobotBaseUnitTests, footJacobian)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     auto feetJac = dummy_quadruped->makeFeetJacobian();
 
     /// TODO: operator= to be overloaded
@@ -604,7 +607,7 @@ TEST(RobotBaseUnitTests, footJacobian)
 
 TEST(RobotBaseUnitTests, jointStateSetZero)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     auto joint_state = dummy_quadruped->makeJointState();
 
     /// Operator[]
@@ -644,7 +647,7 @@ TEST(RobotBaseUnitTests, jointStateSetZero)
 //     std::cout << "TODO: LegDataMap TEST" << std::endl;
 
 //     /// Dummy quadruped
-//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
 //     /// Groud truth
 //     //...
@@ -689,7 +692,7 @@ TEST(RobotBaseUnitTests, LinkDataMap)
     std::cout << "TODO: LinkDataMap TEST" << std::endl;
 
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Groud truth
     //...
@@ -719,7 +722,7 @@ TEST(RobotBaseUnitTests, JointDataMap)
     std::cout << "TODO: JointDataMap TEST" << std::endl;
 
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     /// Groud truth
     //...
@@ -749,7 +752,7 @@ TEST(RobotBaseUnitTests, JointDataMap)
 //     std::cout << "TODO: getNextLeg TEST" << std::endl;
 
 //     /// Dummy quadruped
-//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
 //     /// Groud truth
 //     //...
@@ -764,7 +767,9 @@ TEST(RobotBaseUnitTests, JointDataMap)
 
 TEST(RobotBaseUnitTests, jacobian_operator_equal)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    // std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+
     auto feetJac = dummy_quadruped->makeFeetJacobian();
 
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -825,14 +830,14 @@ TEST(RobotBaseUnitTests, jacobian_operator_equal)
 
 TEST(RobotBaseUnitTests, getRobotMass)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     std::cout << dummy_quadruped->getRobotMass() << std::endl;
 }
 
 // TEST(RobotBaseUnitTests, inverseDynamics)
 // {
 //     /// Dummy quadruped
-//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
 //     Eigen::Matrix<double, 6, 1> v;
 //     Eigen::Matrix<double, 6, 1> a;
@@ -850,7 +855,7 @@ TEST(RobotBaseUnitTests, getRobotMass)
 TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     double data_double{1};
     double data{1};
     typedef double type;
@@ -900,7 +905,7 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
 TEST(RobotBaseUnitTests, getRobotCoM)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     std::cout << dummy_quadruped->getRobotCoM() << std::endl;
 }
@@ -908,7 +913,7 @@ TEST(RobotBaseUnitTests, getRobotCoM)
 TEST(RobotBaseUnitTests, JointDataMap_leg)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     for (auto leg : *dummy_quadruped->getLegs())
     {
@@ -943,7 +948,7 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
 TEST(RobotBaseUnitTests, getLegJointState)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto joint_state = dummy_quadruped->makeJointState();
 
@@ -970,7 +975,7 @@ TEST(RobotBaseUnitTests, JointState_getByJointName)
 {
     std::cout << "TODO\n";
     // /// Dummy quadruped
-    // std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    // std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     // std::vector<std::pair<std::string,double>> values_gt;
     // auto joint_state = dummy_quadruped->makeJointState();
@@ -1001,7 +1006,7 @@ TEST(RobotBaseUnitTests, JointState_getByJointName)
 TEST(RobotBaseUnitTests, getJointLimits)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto q_min = dummy_quadruped->makeJointState();
     auto q_max = dummy_quadruped->makeJointState();
@@ -1035,7 +1040,7 @@ TEST(RobotBaseUnitTests, getJointLimits)
 TEST(RobotBaseUnitTests, minJointValue)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto q = dummy_quadruped->makeJointState();
 
@@ -1052,7 +1057,7 @@ TEST(RobotBaseUnitTests, minJointValue)
 TEST(RobotBaseUnitTests, maxJointValue)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto q = dummy_quadruped->makeJointState();
 
