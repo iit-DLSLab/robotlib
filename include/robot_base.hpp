@@ -11,6 +11,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <stdexcept>
+
 
 namespace robotlib
 {
@@ -516,9 +518,13 @@ namespace robotlib
                 return Map(this->data() + linear_jacobian_size, 3, nJoints_);
             };
 
-            Jacobian &operator=(const Jacobian &other) ///NB: the = operator assumes that nJoints of other is equal to this!
+            Jacobian &operator=(const Jacobian &other)
             {
-                nJoints_ = other.getNJoints(); ///do this is redundant...
+                if (nJoints_ != other.nJoints_)
+                {
+                    throw std::invalid_argument("CANNOT USE = OPERATOR FOR JACOBIANS WITH DIFFERENT SIZE. First size: 6x" 
+                                            + std::to_string(nJoints_) +", second size: 6x" + std::to_string(other.nJoints_));
+                }
 
                 if (other.data_ == nullptr)
                 {
