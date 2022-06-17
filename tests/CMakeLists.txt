@@ -114,3 +114,14 @@ target_link_libraries(utils_unit_tests
 	${CMAKE_DL_LIBS}
 	gtest
 )
+
+# REAL TIME TESTS
+add_executable(jacobian_tests
+	real_time_tests/jacobian_tests.cpp
+)
+target_link_libraries(jacobian_tests
+	PRIVATE
+	robotlib
+	${CMAKE_DL_LIBS}
+	gtest
+)
