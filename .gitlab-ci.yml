@@ -3,20 +3,26 @@ image: server-harbor:80/ant/ant_iit:devel
 stages:
    - build
    - test
+   - deploy
 
 build:
   stage: build
   tags:
     - ant-devel
   script:
+    - echo "Build stage started"
     - mkdir build
     - cd build
     - cmake ..
     - make -j$(nproc)
+    - make package
+    - echo $CI_JOB_ID > CI_JOB_ID
   artifacts:
     paths:
-      - build/*
       - bin/*
+      - build/*
+      - build/*.deb
+      - build/CI_JOB_ID
     expire_in: 3 hrs
 
 test:
@@ -24,6 +30,7 @@ test:
   tags: 
     - ant-devel
   script:
+    - echo "Test stage started"
     - cd build
     #- make -j$(nproc) main_tests
     #- ./tests/main_tests
@@ -40,3 +47,16 @@ test:
     - ./tests/utils_unit_tests
   dependencies:
     - build
+
+deploy:
+  stage: deploy
+  tags:
+    - ant-devel
+  script:
+    - echo "Deploy stage started"
+    - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
+    - source make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$(cat build/CI_JOB_ID) tag=latest release=$(lsb_release -cs) > out.json
+    - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
+  dependencies:
+    - build
+    - test
