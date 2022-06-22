@@ -60,6 +60,7 @@ package:
     expire_in: 3 hrs
   dependencies:
     - build
+    - test
 
 deploy:
   stage: deploy
@@ -72,4 +73,3 @@ deploy:
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
     - package
-    - test
