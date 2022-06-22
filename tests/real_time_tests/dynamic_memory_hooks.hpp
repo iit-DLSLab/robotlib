@@ -1,45 +1,63 @@
+/**
+ * @brief Implementation of hook functions to check dynamic memory allocation/deallocation/reallocation for Eigen and non-Eigen structures.
+ *         This implementation has some limitations:
+ *           * __builtin_return_address is only avaiable for gcc compiler.
+ *           * __libc_malloc only works with glibc.
+ *         In order to test dynamic memory allocation/deallocation/reallocation you have to:
+ *           * reset de variable checking dynamic memory allocation/deallocation/reallocation 
+ *           * activate the hook
+ *           * add the code you want to test
+ *           * deactivate the hook
+ *           * test if any of the allocation/deallocation/reallocation operation has happened
+ * @example
+ *          [...]
+ *          reset_variables_checking_use_of_dynamic_memory(); 
+ *          activate_hooks();
+ *          <code you want to test>
+ *          deactivate_hooks();
+ *          is_dynamic_memory_used(true/false, true/false, true/false, true/false) # These boolean values are related to what you want to test.
+*/
+
 #ifndef _ROBOTLIB_DYNAMIC_MEMORY_HOOKS_HPP_
 #define _ROBOTLIB_DYNAMIC_MEMORY_HOOKS_HPP_
 
-// Implementation of hook functions to check dynamic memory allocation/deallocation/reallocation for Eigen and non-Eigen structures.
-
-// This implementation has some limitations:
-// * __builtin_return_address is only avaiable for gcc compiler.
-// * __libc_malloc only works with glibc.
-
+// ** GNU C library functions **
 extern "C" void *__libc_malloc(size_t size);
 extern "C" void *__libc_calloc(size_t size_1, size_t size_2);
 extern "C" void *__libc_realloc(void* ptr, size_t size);
 extern "C" void __libc_free(void* ptr);
 
+// ** Redefinition of malloc, calloc, realloc, free functions ** 
 void* malloc (size_t size);
 void* calloc (size_t size_1, size_t size_2);
 void* realloc (void* ptr, size_t size);
 void free (void* ptr);
 
-// Hook functions
+// ** Hook functions **
 void* malloc_hook (size_t size, void *caller);
 void* calloc_hook (size_t size_1, size_t size_2, void *caller);
 void* realloc_hook (void* ptr, size_t size, void *caller);
 void free_hook (void* ptr, void *caller);
 
-// Utility functions
+// ** Utility functions **
 void activate_hooks();
 void deactivate_hooks();
 void reset_variables_checking_use_of_dynamic_memory();
+void is_dynamic_memory_used(const bool malloc_value, const bool calloc_value, const bool realloc_value, const bool free_value);
 
-// Variables to activate/deactivate hook functions
+// ** Variables to activate/deactivate hook functions **
 bool malloc_hook_active { false };
 bool calloc_hook_active { false };
 bool realloc_hook_active { false };
 bool free_hook_active { false };
 
-// Variables to check dynamic memory allocation/deallocation/reallocation
+// ** Variables to check dynamic memory allocation/deallocation/reallocation **
 bool malloc_is_used { false };
 bool calloc_is_used { false };
 bool realloc_is_used { false };
 bool free_is_used { false };
 
+// ** Implementation **
 void* malloc (size_t size)
 {
   void *caller = __builtin_return_address(0);
@@ -135,7 +153,6 @@ void free_hook (void* ptr, void *caller)
 
 }
 
-
 void activate_hooks()
 {
     malloc_hook_active = true;
@@ -143,7 +160,6 @@ void activate_hooks()
     realloc_hook_active = true;
     free_hook_active = true;
 }
-
 void deactivate_hooks()
 {
     malloc_hook_active = false;
@@ -151,7 +167,6 @@ void deactivate_hooks()
     realloc_hook_active = false;
     free_hook_active = false;
 }
-
 void reset_variables_checking_use_of_dynamic_memory()
 {
     malloc_is_used = false;
@@ -159,7 +174,6 @@ void reset_variables_checking_use_of_dynamic_memory()
     realloc_is_used = false;
     free_is_used = false;
 }
-
 void is_dynamic_memory_used(const bool malloc_value, const bool calloc_value, const bool realloc_value, const bool free_value)
 {
   EXPECT_EQ(malloc_is_used, malloc_value);
