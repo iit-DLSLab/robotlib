@@ -22,7 +22,7 @@ TEST(RealTimeTest, eigen_multiplication)
     (C.noalias()=A.lazyProduct(B));
     // Eigen::internal::set_is_malloc_allowed(true);
     
-    is_dynamic_memory_used(false);
+    is_dynamic_memory_used(false, false, false, false);
     
     deactivate_hooks();
 
