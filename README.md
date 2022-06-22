@@ -26,7 +26,7 @@ You just need to substitue the *X* value with the chosen CMake version.
 **GTest**
 * `sudo apt install libgtest-dev`
 
-Once installed the *libgtest-dev* library, there could still be an error during the build of Robotlib, due to the missing *libgtest-dev.a* library in */usr/lib/*. A well known solution is the following:
+Once installed the *libgtest-dev* library, there could still be an error during the build of Robotlib, due to the missing *libgtest.a* library in */usr/lib/*. A well known solution is the following:
 * `sudo apt install libgtest-dev`
 * `cd /usr/src/googletest/googletest`
 * `sudo mkdir build && cd build`
@@ -55,12 +55,16 @@ Once installed the *libgtest-dev* library, there could still be an error during 
 ### Develop
 
 | **Focal Fossa** |  Build status  |   Test coverage  |
-| :---------: | :-----: | :--------------: |
-| **Noetic** | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) 
+| :-------------: | :------------: | :--------------: |
+| **Noetic** | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) |
 
 | **Bionic Beaver** |  Build status  |   Test coverage  |
-| :---------: | :-----: | :--------------: |
+| :---------------: | :------------: | :--------------: |
 | **Melodic** | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) |
+
+| **Xenial Xerus** |  Build status  |   Test coverage  |
+| :--------------: | :------------: | :--------------: |
+| **Kinetic** | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) |
 
 <!-- TODO -->
 <!-- Add GCOV/LCOV for test coverage and parsing for gitlab CI/CD badge -->
