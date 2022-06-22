@@ -1,5 +1,5 @@
-# Minimum CMake version working in Ubuntu 20.04
-cmake_minimum_required(VERSION 3.7.0)
+# Minimum CMake version working in Ubuntu 16.04
+cmake_minimum_required(VERSION 3.1.0)
 project(robotlib)
 
 set(MAJOR 0)

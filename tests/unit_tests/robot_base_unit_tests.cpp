@@ -1,5 +1,6 @@
 #include "robot_base.hpp"
 #include "robot_factory.hpp"
+#include <map>
 #include <gtest/gtest.h>
 
 
