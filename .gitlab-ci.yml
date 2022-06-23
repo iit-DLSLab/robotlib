@@ -1,54 +1,72 @@
-image: server-harbor:80/ant/ant_iit:devel
+variables:
+  REGISTRY: server-harbor:80
+
+image: $REGISTRY/clones/ubuntu:18.04
 
 stages:
-   - build
-   - test
-   - package
-   - deploy
+  - build
+  - test
+  - package
+  - deploy
+
+before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update
+  - apt-get install -y --no-install-recommends build-essential curl cmake libeigen3-dev libgtest-dev
 
 build:
   stage: build
   tags:
-    - ant-devel
+    - dls
   script:
     - echo "Build stage started"
+    # Make libgtest.a visible to Robotlib
+    - cd /usr/src/googletest/googletest
+    - mkdir build && cd build
+    - cmake .. && make -j$(nproc)
+    - cp libgtest* /usr/lib/
+    - cd .. && rm -rf build
+    # Build Robotlib
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
     - mkdir build
     - cd build
     - cmake ..
-    - make -j$(nproc)
+    - make -j$(nproc) install
+    # Make robots libraries visible for test stage
+    - cp /usr/lib/robots/* tests/
   artifacts:
     paths:
-      - bin/*
       - build/*
+      - build/tests/*
     expire_in: 3 hrs
 
 test:
   stage: test
   tags: 
-    - ant-devel
+    - dls
   script:
     - echo "Test stage started"
-    - cd build
+    - cd build/tests
     #- make -j$(nproc) main_tests
     #- ./tests/main_tests
     # TODO: go back to single main_test executable
-    - ./tests/arm_unit_tests
-    - ./tests/data_map_unit_tests
-    - ./tests/dyn_params_unit_tests
-    - ./tests/joint_unit_tests
-    - ./tests/leg_unit_tests
-    - ./tests/limb_unit_tests
-    - ./tests/link_unit_tests
-    - ./tests/robot_base_unit_tests
-    - ./tests/trunk_unit_tests
-    - ./tests/utils_unit_tests
+    - ./arm_unit_tests
+    - ./data_map_unit_tests
+    - ./dyn_params_unit_tests
+    - ./joint_unit_tests
+    - ./leg_unit_tests
+    - ./limb_unit_tests
+    - ./link_unit_tests
+    - ./robot_base_unit_tests
+    - ./trunk_unit_tests
+    - ./utils_unit_tests
   dependencies:
     - build
 
 package:
   stage: package
   tags:
-    - ant-devel
+    - dls
   script:
     - cd build
     - make package
@@ -65,7 +83,7 @@ package:
 deploy:
   stage: deploy
   tags:
-    - ant-devel
+    - dls
   script:
     - echo "Deploy stage started"
     - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
