@@ -31,6 +31,35 @@ TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }
 
+TEST(RealTimeTest, eigen_multiplication_static_matrices)
+{
+    Eigen::Matrix<double, 120, 120>A,B,C;
+    A.setOnes();
+    B.setOnes();
+    C.setOnes();
+
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    C = A*B;
+    deactivate_hooks();
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
+
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    C.noalias() = A * B;
+    deactivate_hooks(); 
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free 
+
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    (C.noalias()=A.lazyProduct(B));
+    deactivate_hooks();
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
