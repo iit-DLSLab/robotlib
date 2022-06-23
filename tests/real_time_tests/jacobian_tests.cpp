@@ -1,8 +1,4 @@
-// #define EIGEN_RUNTIME_NO_MALLOC
-
 #include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
 #include "dynamic_memory_hooks.hpp"
 
