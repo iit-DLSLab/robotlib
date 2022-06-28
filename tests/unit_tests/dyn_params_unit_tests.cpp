@@ -135,9 +135,3 @@ TEST(DynParamsUnitTests, getInertia)
     ASSERT_EQ(dyn_params.getInertia(), Eigen::Matrix3d().setOnes());
   }
 }
-
-int main(int argc, char **argv)
-{
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
