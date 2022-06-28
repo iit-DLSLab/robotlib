@@ -30,7 +30,7 @@ extern "C" void __libc_free(void* ptr);
 // ** Redefinition of malloc, calloc, realloc, free functions ** 
 void* malloc (size_t size);
 void* calloc (size_t size_1, size_t size_2);
-void* realloc (void* ptr, size_t size);
+void* realloc (void* ptr, size_t size) throw ();
 void free (void* ptr);
 
 // ** Hook functions **
@@ -72,7 +72,7 @@ void* calloc (size_t size_1, size_t size_2)
     return calloc_hook(size_1, size_2, caller);
   return __libc_calloc(size_1, size_2);
 }
-void* realloc (void* ptr, size_t size)
+void* realloc (void* ptr, size_t size) throw ()
 {
   void *caller = __builtin_return_address(0);
   if (realloc_hook_active)
