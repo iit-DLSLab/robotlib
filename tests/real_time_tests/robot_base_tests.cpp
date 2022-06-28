@@ -7,7 +7,7 @@
 // In order to do the tests you need in install the dummy robots.
 // To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
 
-TEST(RobotBaseUnitTests, create_robot)
+TEST(RobotBaseRealTimeTests, create_robot)
 {
     // Dynamic memory allocation/deallocation have to take place
     reset_variables_checking_use_of_dynamic_memory();
@@ -20,7 +20,7 @@ TEST(RobotBaseUnitTests, create_robot)
   
 }
 
-TEST(RobotBaseUnitTests, getLegs)
+TEST(RobotBaseRealTimeTests, getLegs)
 {
     // ** Define robot **
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
