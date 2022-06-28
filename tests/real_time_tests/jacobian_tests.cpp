@@ -1,6 +1,6 @@
 #include "robot_base.hpp"
-#include <gtest/gtest.h>
 #include "dynamic_memory_hooks.hpp"
+#include <gtest/gtest.h>
 
 TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
 {

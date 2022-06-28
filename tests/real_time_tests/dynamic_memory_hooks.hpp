@@ -20,6 +20,7 @@
 
 #ifndef _ROBOTLIB_DYNAMIC_MEMORY_HOOKS_HPP_
 #define _ROBOTLIB_DYNAMIC_MEMORY_HOOKS_HPP_
+#include <gtest/gtest.h>
 
 // ** GNU C library functions **
 extern "C" void *__libc_malloc(size_t size);
