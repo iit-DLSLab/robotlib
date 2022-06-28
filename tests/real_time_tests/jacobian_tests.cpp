@@ -31,7 +31,7 @@ TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }
 
-TEST(RealTimeTest, eigen_multiplication_static_matrices)
+TEST(RealTimeTest, eigen_multiplication_fized_size_matrices)
 {
     Eigen::Matrix<double, 120, 120>A,B,C;
     A.setOnes();
@@ -104,6 +104,65 @@ TEST(RealTimeTest, eigen_multiplication_map_matrices)
     deactivate_hooks();
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
     
+}
+
+TEST(RealTimeTest, eigen_operations_map_matrices)
+{
+    // ** Define data for the operations **
+    const double fCoeff {0.5};
+    const int n_rows {6};
+    const int n_joints {18};
+    Eigen::VectorXd q_home_filter_dynamic;
+    Eigen::VectorXd q_home_dynamic;
+    Eigen::VectorXd qd_dynamic;
+    Eigen::VectorXd v_dynamic;
+    Eigen::MatrixXd J_dynamic;
+    Eigen::Matrix<double, n_joints, 1> q_home_filter_fixed_size;
+    Eigen::Matrix<double, n_joints, 1> q_home_fixed_size;
+    Eigen::Matrix<double, n_joints, 1> qd_fixed_size;
+    Eigen::Matrix<double, n_rows, 1> v_fixed_size;
+    Eigen::Matrix<double, n_rows, n_joints> J_fixed_size;
+
+    q_home_filter_dynamic.setOnes(n_joints);
+    q_home_dynamic.setOnes(n_joints);
+    qd_dynamic.setOnes(n_joints);
+    v_dynamic.setOnes(n_rows);
+    J_dynamic.setOnes(n_rows, n_joints);   
+
+    q_home_filter_fixed_size.setOnes();
+    q_home_fixed_size.setOnes();
+    qd_fixed_size.setOnes();
+    v_fixed_size.setOnes();
+    J_fixed_size.setOnes();
+
+    // ** Operations with eigen structures **
+    // Dynamic memory allocation/deallocation have not to take place (component-wise operation)
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    q_home_filter_dynamic = (1.0 - fCoeff) * q_home_filter_dynamic + fCoeff * q_home_dynamic;
+    deactivate_hooks();
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
+
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    q_home_filter_fixed_size = (1.0 - fCoeff) * q_home_filter_fixed_size + fCoeff * q_home_fixed_size;
+    deactivate_hooks();
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
+    
+    // Dynamic memory allocation/deallocation have to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    v_dynamic = J_dynamic * qd_dynamic;
+    deactivate_hooks();
+    is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
+
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    v_fixed_size = J_fixed_size * qd_fixed_size;
+    deactivate_hooks();
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }
 
 int main(int argc, char **argv)
