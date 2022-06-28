@@ -105,9 +105,3 @@ TEST(RealTimeTest, eigen_multiplication_map_matrices)
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
     
 }
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
