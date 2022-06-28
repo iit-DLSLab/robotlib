@@ -12,7 +12,7 @@ stages:
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
   - apt-get update
-  - apt-get install -y --no-install-recommends build-essential curl cmake libeigen3-dev libgtest-dev
+  - apt-get install -y --no-install-recommends build-essential curl lsb-release cmake libeigen3-dev libgtest-dev
 
 build:
   stage: build
