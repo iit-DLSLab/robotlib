@@ -24,6 +24,9 @@ TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
     is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
 
     // Dynamic memory allocation/deallocation have not to take place
+    // Eigen by default assumes aliases when doing multiplication (i.e. it assumes that in left- and right-side of = operator there might be the same matrix).
+    // So you need to say that this is not true in this case, that's why you have to use .noalias().
+    // Moreover, the multiplication allocates by default a temporary variable, that's why you need .lazyProduct(<matrix>). 
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
     (C.noalias()=A.lazyProduct(B));
@@ -33,7 +36,9 @@ TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
 
 TEST(RealTimeTest, eigen_multiplication_fized_size_matrices)
 {
-    Eigen::Matrix<double, 120, 120>A,B,C;
+    const int n_rows {120};
+    const int n_cols {120};
+    Eigen::Matrix<double, n_rows, n_cols>A,B,C;
     A.setOnes();
     B.setOnes();
     C.setOnes();
