@@ -100,6 +100,9 @@ void* malloc_hook (size_t size, void *caller)
   // do logging
   malloc_is_used = true;
 
+  // Debug print
+  printf("malloc\n");
+  
   // reactivate hooks
   malloc_hook_active = true;
 
@@ -148,6 +151,9 @@ void free_hook (void* ptr, void *caller)
 
   // do logging
   free_is_used = true;
+
+  // Debug print
+  printf("free\n");
 
   // reactivate hooks
   free_hook_active = true;
