@@ -135,3 +135,13 @@ target_link_libraries(robot_base_tests
 	${CMAKE_DL_LIBS}
 	gtest
 )
+
+add_executable(eigen_tests
+	real_time_tests/robot_base_tests.cpp
+)
+target_link_libraries(eigen_tests
+	PRIVATE
+	robotlib
+	${CMAKE_DL_LIBS}
+	gtest
+)
