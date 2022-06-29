@@ -1,12 +1,7 @@
-# Minimum CMake version working in Ubuntu 20.04
-cmake_minimum_required(VERSION 3.7.0)
+cmake_minimum_required(VERSION 3.15)
 project(robotlib)
 
-set(MAJOR 0)
-set(MINOR 0)
-set(PATCH 0)
-
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 #used only for issues with #include <experimental/filesystem>
 #TODO: delete it once dls images are updated with Ubuntu20 (and gcc version > 8)
@@ -22,6 +17,48 @@ add_compile_options(
 	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
 )
 #add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
+
+# ==============================================================================
+# Setup the repository
+# ==============================================================================
+# This will perfom task such as setting up the git hooks for anyone who uses
+# this project
+execute_process(
+	COMMAND           ./setup.sh
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# ==============================================================================
+# Calculate correct project version number
+# ==============================================================================
+# Read in the current version
+file(READ version.txt PROJECT_VERSION)
+
+# create array of version strings
+string(REPLACE "." ";" VERSION_ARRAY ${PROJECT_VERSION})
+# ------------------------------------------------------------------------------
+# Major, Minor, Patch numbers
+# ------------------------------------------------------------------------------
+# set corresponding cmake version variables
+list(POP_FRONT VERSION_ARRAY
+	PROJECT_VERSION_MAJOR
+	PROJECT_VERSION_MINOR
+	PROJECT_VERSION_PATCH
+)
+# Remove the trailing newline from the patch number
+string(REPLACE "\n" "" PROJECT_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+
+# ------------------------------------------------------------------------------
+# Full version number
+# ------------------------------------------------------------------------------
+# Rebuild the project version including the current commit hash
+string(JOIN "." PROJECT_VERSION
+	${PROJECT_VERSION_MAJOR}
+	${PROJECT_VERSION_MINOR}
+	${PROJECT_VERSION_PATCH}
+)
+unset(VERSION_ARRAY) # delete aray of version strings
+message(STATUS "PID ROJECT VERSION ${PROJECT_VERSION}")
 
 if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
@@ -50,12 +87,8 @@ else()
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
-	set(CPACK_PACKAGE_NAME "robotlib")
-	set(CPACK_GENERATOR "DEB")
-	set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "robotlib")
-	set(CPACK_DEBIAN_PACKAGE_MAINTAINER "dlslab")
-
-	include(CPack)
+	include(debian_settings) # configure installation
+	
 endif()
 unset(CODE_TO_COMPILE CACHE)	# unset the variable stored in CMakeCache.txt 
 
