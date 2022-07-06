@@ -1,5 +1,5 @@
 #include "dynamic_memory_hooks.hpp"
-#include <Eigen/Dense.h>
+#include <Eigen/Dense>
 #include <gtest/gtest.h>
 
 TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)

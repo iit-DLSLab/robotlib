@@ -137,7 +137,7 @@ target_link_libraries(robot_base_tests
 )
 
 add_executable(eigen_tests
-	real_time_tests/robot_base_tests.cpp
+	real_time_tests/eigen_tests.cpp
 )
 target_link_libraries(eigen_tests
 	PRIVATE
