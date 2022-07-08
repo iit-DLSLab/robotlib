@@ -33,17 +33,17 @@ namespace robotlib
 
 		/**
 		 * @brief Get the center of mass of the robot
-		 * @return Eigen::Vector3d
+		 * @return const Eigen::Vector3d
 		 */
 		const Eigen::Vector3d &getCoM() const;
 		/**
 		 * @brief Get the mass of the robot
-		 * @return double
+		 * @return const double
 		 */
-		double getMass() const;
+		const double getMass() const;
 		/**
 		 * @brief Get the inertia of the robot
-		 * @return Eigen::Matrix3d
+		 * @return const Eigen::Matrix3d
 		 */
 		const Eigen::Matrix3d &getInertia() const;
 

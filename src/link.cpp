@@ -17,7 +17,7 @@ namespace robotlib
 
 	Link::~Link(){};
 
-	std::string Link::getName() const { return name_; }
+	const std::string Link::getName() const { return name_; }
 	const std::shared_ptr<Joint> Link::getParent() const { return parent_; }
 	const std::shared_ptr<Joint> Link::getChild() const { return child_; }
 

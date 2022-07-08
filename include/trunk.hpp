@@ -38,7 +38,7 @@ namespace robotlib
 		 * @brief Get the name of the Trunk
 		 * @return const std::string
 		 */
-		virtual std::string getName() const override;
+		virtual const std::string getName() const override;
 
 		/**
 		 * @brief Get the center of mass of the trunk
@@ -48,9 +48,9 @@ namespace robotlib
 
 		/**
 		 * @brief Get the mass of the trunk
-		 * @return double
+		 * @return const double
 		 */
-		double getMass() const;
+		const double getMass() const;
 
 		/**
 		 * @brief Get the inertia of the trunk

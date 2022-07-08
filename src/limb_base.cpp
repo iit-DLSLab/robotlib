@@ -17,5 +17,5 @@ namespace robotlib
 
     LimbBase::~LimbBase(){};
 
-    std::string LimbBase::getName() const { return name_; };
+    const std::string LimbBase::getName() const { return name_; };
 } // namespace robotlib
