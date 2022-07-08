@@ -464,60 +464,88 @@ namespace robotlib
         };
 
         using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
-
+        
+        /**
+        * @brief Jacobian class. This class allows the definition of jacobian matrices, divided in linear and angular parts, for a robot having an 
+        *        arbitrary number of joints. 
+        * 
+        * It inherits from Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class to handle matrix operations 
+        * easily. Its dimension is 6 X #joints, where 6 stands for the linear and angular part of the jacobian. The number of joints is arbitrary, 
+        * which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb 
+        * having a different number of joints.
+        * 
+        * This calss provides also functions to access only to linear and angular part of the jacobian plus all eigen functions inherited from the 
+        * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
+        * 
+        * All the constructors produce NRT operations and are private, letting only a RobotBase object to use them. The user is therefore forced to 
+        * use a RobotBase object to create a Jacobian one, with the purpose of letting the user managing more carefully NRT operations.
+        */
         class Jacobian : public Map
         {
         public:
-            friend class RobotBase;
+            
+            friend class RobotBase; //!< RobotBase is a friend class to let it uses the private costructors of the Jacobian class
 
+            /**
+		    * @brief Destructor.
+            * 
+            * \remark{NOT REAL TIME}
+		    */
             ~Jacobian()
             {
                 if (data_ != nullptr)
                     delete[] data_;
             }
 
-            ///// A new Map is returned but this points to class variable "linear_jacobian_".
-            ///// This because if you define the matrix linear_jacobian inside the method you have a pointer to it (linear_jacobian.data())
-            ///// that does not exist anymore outside the method and leads to errors.
-            //Map getLinearJacobian() //RT?
-            //{
-            //    for(int i{0}; i<linear_jacobian_.size(); i++)
-            //    {
-            //        linear_jacobian_(i) = this->data_[i];
-            //    }
-            //
-            //    ///This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
-            //    return Map(linear_jacobian_.data(), linear_jacobian_.rows(), linear_jacobian_.cols());
-            //};
-
-            Map getLinearJacobian() //RT?
+            /**
+		    * @brief Get function. It gets the linear part of the jacobian.
+            * 
+            * The returned object is of type Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>. This means that it 
+            * points to the same memory location associated to the linear part of the jacobian. 
+            * 
+            * This means that once you do auto linear_jacobian = jacobian.getLinearJacobian(), if you change linear_jacobian it will change also the 
+            * linear part of the jacobian object accordingly.
+            * 
+            * @return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
+            * 
+            * \remark{REAL TIME}
+		    */
+            Map getLinearJacobian()
             {
-                ///This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
+                // This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
                 return Map(this->data(), 3, nJoints_);
             };
 
-            ///// A new Map is returned but this points to class variable "angular_jacobian_".
-            ///// This because if you define the matrix angular_jacobian inside the method you have a pointer to it (angular_jacobian.data())
-            ///// that does not exist anymore outside the method and leads to errors.
-            //Map getAngularJacobian() //RT?
-            //{
-            //    int linear_jacobian_size{3*nJoints_};
-            //
-            //    for(int i{0}; i<angular_jacobian_.size(); i++)
-            //    {
-            //        angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
-            //    }
-            //
-            //    return Map(angular_jacobian_.data(), angular_jacobian_.rows(), angular_jacobian_.cols());
-            //};
-
-            Map getAngularJacobian() //RT?
+            /**
+		    * @brief Get function. It gets the angular part of the jacobian.
+            * 
+            * The returned object is of type Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>. This means that it 
+            * points to the same memory location associated to the angular part of the jacobian. 
+            * 
+            * This means that once you do auto angular_jacobian = jacobian.getAngularJacobian(), if you change angular_jacobian it will change also 
+            * the angular part of the jacobian object accordingly.
+            * 
+            * @return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
+            * 
+            * \remark{REAL TIME}
+		    */
+            Map getAngularJacobian()
             {
                 int linear_jacobian_size{3 * nJoints_};
-                ///This operation returns a new Map of angular Jacobian and also updates the angular part of the complete Jacobian
+                // This operation returns a new Map of angular Jacobian and also updates the angular part of the complete Jacobian
                 return Map(this->data() + linear_jacobian_size, 3, nJoints_);
             };
 
+            /**
+		    * @brief Equal operator. It gets the angular part of the jacobian.
+            * 
+            * The equality is performed over the data structure stored internally.
+            * 
+            * @param other Jacobian object to compare with
+            * @return Jacobian&
+            * 
+            * \remark{REAL TIME}
+		    */
             Jacobian &operator=(const Jacobian &other)
             {
                 if (nJoints_ != other.nJoints_)
@@ -541,6 +569,13 @@ namespace robotlib
                 return *this;
             }
 
+            /**
+		    * @brief Print function.
+            * 
+            * It prints the Jacobian object.
+            * 
+            * \remark{NOT REAL TIME}
+		    */
             void print()
             {
                 std::cout << "Jacobian [Linear]" << std::endl;
@@ -555,6 +590,17 @@ namespace robotlib
             }
 
         private:
+            /**
+		    * @brief Full constructor.
+            * 
+            * This constructor is used to create a Jacobian object given the number of joints and a default value. When using this constructor, the 
+            * init function is not needed.
+            * 
+            * @param nJoints number of joints
+            * @param data value used to initialize the jacobian
+            * 
+            * \remark{NOT REAL TIME}
+		    */
             Jacobian(const int nJoints, const double data = 0.0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
             {
                 // Data initialization (6: linear and angular part of the jacobian)
@@ -568,28 +614,34 @@ namespace robotlib
             }
 
             /**
-		    * @brief Empy constructor for the Jacobian class.
-            * This constructor is used to create a LegDataMap<Jacobian> object, with "empty" jacobians.
-            * Each jacobian may have different sizes, and the init function is used to initialize each of them. 
+		    * @brief Empy constructor.
+            * 
+            * This constructor is used to create a LegDataMap<Jacobian> object, with "empty" jacobians. Each jacobian may have different sizes, and 
+            * the init function is used to initialize each of them.
+            * 
+            * \remark{REAL TIME}
             */
             Jacobian() : Map(NULL, 0, 0), nJoints_(0), data_(nullptr){};
 
             /**
-		    * @brief Init function for the Jacobian class. 
-            * This function is needed to initialize the jacobians of a LegDataMap<Jacobian> object, where each jacobian may have different sizes. 
+		    * @brief Init function. This function is needed to initialize the jacobians of a LegDataMap<Jacobian> object, where each jacobian may 
+            * have different sizes.
+            * 
             * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
-            * To make real-time code, we created fixed size data structures, like the LegDataMap class, that does not allow you to dinamically change its length.
-            * Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobian
-            * @example makeFeetJacobian function 
+            * To make real-time code, we created fixed size data structures, like the LegDataMap class, that does not allow you to dinamically change 
+            * its length.
+            * Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb 
+            * specific jacobian.
+            * 
             * @param nJoints number of joints 
             * @param init_value value used to initialize the jacobian
+            * 
+            * \remark{NOT REAL TIME}
 		    */
+            
             void init(const int nJoints, const double init_value = 0.0)
             {
                 nJoints_ = nJoints;
-
-                // linear_jacobian_.setZero(3, nJoints_);
-                // angular_jacobian_.setZero(3, nJoints_);
 
                 data_ = new double[6 * nJoints_];
                 for (int i = 0; i < 6 * nJoints_; ++i)
@@ -599,11 +651,8 @@ namespace robotlib
                 new (this) Map(data_, 6, nJoints_);
             }
 
-            int nJoints_;
-            double *data_; // Squashed matrix
-
-            // TODO: Is it ok to declare these here (not initialized) and initialize them later in "init" function?
-            // Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> linear_jacobian_, angular_jacobian_;
+            int nJoints_;   //!< Number of joints
+            double *data_;  //!< Squashed matrix
         };
 
 
@@ -829,7 +878,7 @@ namespace robotlib
         virtual void setTrunkMass(const double& trunk_mass) = 0;
 
 		/**
-		 * @brief Set inverse kinematics time period
+		 * @brief Set inverse kinematics time period.
          * @param period period of the controller
 		 */
         virtual void setInvKinTimePeriod(const double& period) = 0;
@@ -843,7 +892,7 @@ namespace robotlib
         typedef void destroyRobotWithUrdf_t(std::shared_ptr<RobotBase>);
 
     protected:
-        const std::string name_;
+        const std::string name_; //!< Robot name
     };
 } // namespace robotlib
 
