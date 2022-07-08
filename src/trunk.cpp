@@ -19,11 +19,11 @@ namespace robotlib
 	Trunk::Trunk(const std::string &name, const DynParams &dynamic_parameters) : Link(name), dynamic_parameters_(dynamic_parameters){};
 	Trunk::~Trunk(){};
 
-	const std::string Trunk::getName() const { return name_; }
+	std::string Trunk::getName() const { return name_; }
 
 	const Eigen::Vector3d & Trunk::getCoM() const {return dynamic_parameters_.getCoM(); };
 
-	const double Trunk::getMass() const { return dynamic_parameters_.getMass(); };
+	double Trunk::getMass() const { return dynamic_parameters_.getMass(); };
 	
 	const Eigen::Matrix3d &Trunk::getInertia() const {return dynamic_parameters_.getInertia(); };
 

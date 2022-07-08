@@ -43,7 +43,7 @@ namespace robotlib
 		 * @brief Get the name of the Link
 		 * @return const std::string
 		 */
-		virtual const std::string getName() const override;
+		virtual std::string getName() const override;
 		/**
 		 * @brief Get the Link parent object, that is a Joint object
 		 * @return const std::shared_ptr<Joint>

@@ -70,6 +70,7 @@ namespace robotlib
                         return pair.data_;
                     }
                 }
+                throw std::out_of_range("Key does not exist");
             };
 
             virtual const Data &operator[](const std::shared_ptr<Key> key) const // q: shared_ptr or & ?
@@ -79,6 +80,7 @@ namespace robotlib
                     if (pair.key_->getName().compare(key->getName()) == 0)
                         return pair.data_;
                 }
+                throw std::out_of_range("Key does not exist");
             };
 
             virtual Data &operator[](const std::string &key_name)
@@ -88,6 +90,7 @@ namespace robotlib
                     if (pair.key_->getName().compare(key_name) == 0)
                         return pair.data_;
                 }
+                throw std::out_of_range("Key does not exist");
             };
 
             virtual const Data &operator[](const std::string &key_name) const
@@ -97,6 +100,7 @@ namespace robotlib
                     if (pair.key_->getName().compare(key_name) == 0)
                         return pair.data_;
                 }
+                throw std::out_of_range("Key does not exist");
             };
 
             virtual void copydata(const DataMap &rhs)
@@ -133,7 +137,7 @@ namespace robotlib
                 return *this;
             }
 
-            virtual const int getSize() const { return num_data_; };
+            virtual int getSize() const { return num_data_; };
 
         protected:
             DataMap(const int num_data) : num_data_(num_data)
@@ -341,9 +345,9 @@ namespace robotlib
 
             JointState &operator=(const double data)
             {
-                for (auto leg_pair : *this)
+                for (auto &leg_pair : *this)
                 {
-                    (*leg_pair.data_).assignAll(data);
+                    leg_pair.data_->assignAll(data);
                 }
                 return *this;
             }
@@ -362,16 +366,13 @@ namespace robotlib
 
             void setZero() { *this = 0; }
 
-            const int size() const
+            int size() const
             {
                 auto size{0};
 
                 for (auto &leg_pair : *this)
                 {
-                    for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
-                    {
-                        size++;
-                    }
+                    size += leg_pair.data_->getSize();
                 }
 
                 return size;
@@ -751,10 +752,10 @@ namespace robotlib
             return name_;
         };
         
-        virtual const int getNLEGS() = 0;
-        virtual const int getNARMS() = 0;
-        virtual const int getNJOINTS() = 0;
-        virtual const int getNLINKS() = 0;
+        virtual int getNLEGS() = 0;
+        virtual int getNARMS() = 0;
+        virtual int getNJOINTS() = 0;
+        virtual int getNLINKS() = 0;
 
         // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
 

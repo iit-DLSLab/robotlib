@@ -38,9 +38,9 @@ namespace robotlib
 
 		/**
 		 * @brief Get the name of the Joint
-		 * @return const std::string
+		 * @return std::string
 		 */
-		virtual const std::string getName() const override;
+		virtual std::string getName() const override;
 		/**
 		 * @brief Get the Joint parent object, that is a Link object
 		 * @return const std::shared_ptr<Link>
@@ -54,24 +54,24 @@ namespace robotlib
 
 		/**
 		 * @brief Get the Joint minimum angle
-		 * @return const double
+		 * @return double
 		 */
-		const double getMinAngle() const;
+		double getMinAngle() const;
 		/**
 		 * @brief Get the Joint maximum angle
-		 * @return const double
+		 * @return double
 		 */
-		const double getMaxAngle() const;
+		double getMaxAngle() const;
 		/**
 		 * @brief Get the Joint limit velocity
-		 * @return const double
+		 * @return double
 		 */
-		const double getMaxVelocity() const;
+		double getMaxVelocity() const;
 		/**
 		 * @brief Get the Joint limit effort
-		 * @return const double
+		 * @return double
 		 */
-		const double getMaxEffort() const;
+		double getMaxEffort() const;
 
 
 	private:
