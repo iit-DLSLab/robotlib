@@ -1,5 +1,5 @@
 #include "robot.hpp"
-#include "robot_factory.hpp"
+#include "robotlib/robot_factory.hpp"
 #include <stdlib.h>
 
 namespace robotlib

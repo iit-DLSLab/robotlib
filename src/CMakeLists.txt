@@ -1,11 +1,14 @@
 add_library(robotlib
-	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/robot_factory.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/joint.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/link.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/limb_base.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/trunk.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/dyn_params.cpp
+	robot_info.cpp
+	robot_factory.cpp
+	joint.cpp
+	link.cpp
+	limb_base.cpp
+	trunk.cpp
+	dyn_params.cpp
+    robot_base.cpp
+    joint_state.cpp
+    jacobian.cpp
 )
 
 target_link_libraries(robotlib PRIVATE)

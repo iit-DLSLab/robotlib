@@ -64,6 +64,10 @@ if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
 endif()
 
+include_directories(
+	include/robotlib
+)
+
 if(CODE_TO_COMPILE STREQUAL "Limb")
 	message("\n***********Building only the Limb related code***********\n")
 	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/limb/CMakeLists.txt)

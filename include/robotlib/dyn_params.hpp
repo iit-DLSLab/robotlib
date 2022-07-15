@@ -12,8 +12,8 @@
 #ifndef _ROBOTLIB_DYN_PARAMS_HPP_
 #define _ROBOTLIB_DYN_PARAMS_HPP_
 
-#include <Eigen/Dense>
 #include <iostream>
+#include <Eigen/Dense>
 
 namespace robotlib
 {

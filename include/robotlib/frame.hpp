@@ -12,7 +12,7 @@
 #ifndef _ROBOTLIB_FRAME_HPP_
 #define _ROBOTLIB_FRAME_HPP_
 
-#include <Eigen/Dense>
+#include <string>
 
 namespace robotlib
 {
