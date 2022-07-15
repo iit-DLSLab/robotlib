@@ -26,9 +26,9 @@ namespace robotlib
 		virtual const int getNJOINTS() override;
 		virtual const int getNLINKS() override;
 
-		virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
-		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
-		virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
+		virtual const std::shared_ptr<Link> getLink(const std::string &name) const override;
+		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) const override;
+		virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) const override;
 
         virtual void getMinJointAngle(JointState &q_min) override;
         virtual void getMaxJointAngle(JointState &q_max) override;

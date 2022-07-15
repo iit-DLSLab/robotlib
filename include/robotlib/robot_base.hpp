@@ -26,7 +26,7 @@ namespace robotlib
         ~RobotBase();
 
         // ** GET FUNCTIONS **
-        std::string getName();
+        const std::string getName() const;
 
         virtual const int getNLEGS() = 0;
         virtual const int getNARMS() = 0;
@@ -38,9 +38,9 @@ namespace robotlib
         virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
         virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
-        virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
-        virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
-        virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
+        virtual const std::shared_ptr<Link> getLink(const std::string &name) const = 0;
+        virtual const std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
+        virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) const = 0;
 
         virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
@@ -49,11 +49,10 @@ namespace robotlib
         virtual void getMaxJointVelocity(JointState &qd_max) = 0;
         virtual void getMaxJointEffort(JointState &tau_max) = 0;
 
-        virtual void getMinJointAngle(const std::shared_ptr<Joint> joint, double &q_min) { q_min = joint->getMinAngle(); };
-        virtual void getMaxJointAngle(const std::shared_ptr<Joint> joint, double &q_max) { q_max = joint->getMaxAngle(); };
-        virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity(); };
-        virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort(); };
-
+        virtual void getMinJointAngle(const std::shared_ptr<Joint> joint, double &q_min);
+        virtual void getMaxJointAngle(const std::shared_ptr<Joint> joint, double &q_max);
+        virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max);
+        virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max);
         
         virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                  const std::shared_ptr<Frame> origin,
@@ -172,89 +171,50 @@ namespace robotlib
                                                                  const Eigen::Matrix3d &rotationMx,
                                                                  const JointState &q,
                                                                  const JointState &qd) = 0;
-
         
    
         // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
 
         // Create a joint state
-        JointState makeJointState(const double value = 0.0)
-        {
-            JointState joint_state(this->getLegs());
-
-            for (auto leg : *this->getLegs())
-            {
-                JointDataMap<double> *jdm;
-                jdm = new JointDataMap<double>(leg, value);
-                std::shared_ptr<JointDataMap<double>> ptr(jdm);
-                joint_state[leg] = ptr;
-            }
-
-            return joint_state;
-        } // NRT
+        JointState makeJointState(const double value = 0.0) const;
 
         // Create a leg data map pair
         template <class Data>
-        LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this->getLegs()); } // NRT
+        LegDataMap<Data> makeLegDataMap() const; // NRT
+
         // Create a leg data map pair
         template <class Data>
-        LegDataMap<Data> makeLegDataMap(const Data &data) { return LegDataMap<Data>(this->getLegs(), data); } // NRT
+        LegDataMap<Data> makeLegDataMap(const Data &data) const; // NRT
 
         // Create a link data map pair
         template <class Data>
-        LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); } // NRT
+        LinkDataMap<Data> makeLinkDataMap(); // NRT
         template <class Data>
-        LinkDataMap<Data> makeLinkDataMap(const Data &data) { return LinkDataMap<Data>(this, data); } // NRT
+        LinkDataMap<Data> makeLinkDataMap(const Data &data); // NRT
 
         // Create a joint data map pair
         template <class Data>
-        JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); } // NRT
+        JointDataMap<Data> makeJointDataMap(); // NRT
         template <class Data>
-        JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); } // NRT
+        JointDataMap<Data> makeJointDataMap(const Data &data); // NRT
 
         // Create a joint data map pair
         template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg) { return JointDataMap<Data>(leg); } // NRT
+        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg); // NRT
         // Create a joint data map pair
         template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) { return JointDataMap<Data>(leg, data); } // NRT
+        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data); // NRT
 
         // TODO
-        Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
-        {
-            std::cout << "makeJacobian function: TODO\n";
-            return Jacobian(1);
-        };
+        Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest); // NRT
 
         // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<Frame> frame) // NRT
-        {
-            // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
-
-            // const LimbBase *l = foot.getParentLimb();
-            // const int nJoints = l->getNJoints();
-
-            // return Jacobian(nJoints);
-            std::cout << "makeFootJacobian-Input: foot function: TODO\n";
-            return Jacobian(1);
-        };
+        Jacobian makeFootJacobian(const std::shared_ptr<Frame> frame); // NRT
 
         // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0) // NRT
-        {
-            return Jacobian(leg->getNJoints(), data);
-        };
+        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0); // NRT
 
-        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0) // NRT
-        {
-            auto feetJac = this->makeLegDataMap<Jacobian>();
-
-            for (auto leg : *(this->getLegs()))
-            {
-                feetJac[leg].init(leg->getNJoints(), data);
-            }
-            return feetJac;
-        };
+        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0); // NRT
 
         // ** FORWARD KINEMATICS ** 
 
@@ -263,7 +223,7 @@ namespace robotlib
                                        const JointState &joint_acceleration,
                                        LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
+                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const = 0;
 
         virtual void forwardKinematics(const Eigen::Vector3d &joint_position,
                                        const Eigen::Vector3d &joint_velocity,
@@ -271,7 +231,7 @@ namespace robotlib
                                        Eigen::Vector3d &end_effector_position,
                                        Eigen::Vector3d &end_effector_velocity,
                                        Eigen::Vector3d &end_effector_acceleration,
-                                       const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
+                                       const std::shared_ptr<Frame> end_effector) const = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
 
         // ** INVERSE KINEMATICS ** 
@@ -282,14 +242,14 @@ namespace robotlib
                                        Eigen::Vector3d &joint_position,
                                        Eigen::Vector3d &joint_velocity,
                                        Eigen::Vector3d &joint_acceleration,
-                                       const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
+                                       const std::shared_ptr<Frame> end_effector) const = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
-                                       JointState &joint_acceleration) = 0;
+                                       JointState &joint_acceleration) const = 0;
 
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
@@ -297,7 +257,7 @@ namespace robotlib
                                        const LegDataMap<Jacobian> &robot_jacobian,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
-                                       JointState &joint_acceleration) = 0;
+                                       JointState &joint_acceleration) const = 0;
                                        
 
         // ** INVERSE DYNAMICS ** 
@@ -311,10 +271,6 @@ namespace robotlib
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
 
-
-
-
-
         // ** SET FUNCTIONS **
 
         virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
@@ -325,7 +281,7 @@ namespace robotlib
 		 * @brief Set inverse kinematics time period
          * @param period period of the controller
 		 */
-        virtual void setInvKinTimePeriod(const double& period) = 0;
+        virtual void setInvKinTimePeriod(const double& period) const = 0;
 
 
         // ** PLUGIN TYPEDEFS ** 
@@ -339,5 +295,7 @@ namespace robotlib
         const std::string name_;
     };
 } // namespace robotlib
+
+#include "robot_base.tpp"
 
 #endif // _ROBOTLIB_ROBOT_BASE_HPP_

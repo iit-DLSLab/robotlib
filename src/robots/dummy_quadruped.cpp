@@ -336,7 +336,7 @@ namespace robotlib
 							   const JointState &joint_acceleration,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
+							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const override
 		{
 			std::cout << "Forward Kinematics 1" << std::endl;
 		};
@@ -347,7 +347,7 @@ namespace robotlib
 							   Eigen::Vector3d &end_effector_position,
 							   Eigen::Vector3d &end_effector_velocity,
 							   Eigen::Vector3d &end_effector_acceleration,
-							   const std::shared_ptr<Frame> end_effector) override
+							   const std::shared_ptr<Frame> end_effector) const override
 		{
 			std::cout << "Forward Kinematics 2" << std::endl;
 		};
@@ -358,7 +358,7 @@ namespace robotlib
 							   Eigen::Vector3d &joint_position,
 							   Eigen::Vector3d &joint_velocity,
 							   Eigen::Vector3d &joint_acceleration,
-							   const std::shared_ptr<Frame> end_effector) override
+							   const std::shared_ptr<Frame> end_effector) const override
 		{
 			std::cout << "Inverse Kinematics 1" << std::endl;
 		};
@@ -368,7 +368,7 @@ namespace robotlib
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 							   JointState &joint_position,
 							   JointState &joint_velocity,
-							   JointState &joint_acceleration) override
+							   JointState &joint_acceleration) const override
 		{
 			std::cout << "Inverse Kinematics 2" << std::endl;
 		};
@@ -379,7 +379,7 @@ namespace robotlib
 									   const LegDataMap<Jacobian> &robot_jacobian,
 									   JointState &joint_position,
 									   JointState &joint_velocity,
-									   JointState &joint_acceleration) override
+									   JointState &joint_acceleration) const override
 		{
 			std::cout << "Inverse Kinematics 3" << std::endl;
 		};
@@ -470,7 +470,7 @@ namespace robotlib
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
 
-		void setInvKinTimePeriod(const double& period)
+		void setInvKinTimePeriod(const double& period) const
 		{};
 
 		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};

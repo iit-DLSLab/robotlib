@@ -98,7 +98,7 @@ namespace robotlib
         }
                                                 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name)
+        const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name) const
         {
                 if (name.compare("") == 0)
                         return nullptr;
@@ -120,7 +120,7 @@ namespace robotlib
         };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name)
+        const std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name) const
         {
                 if (name.compare("") == 0)
                         return nullptr;
@@ -136,7 +136,7 @@ namespace robotlib
         }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name)
+        const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name) const
         {
                 for (auto leg : *(this->getLegs()))
                 {
