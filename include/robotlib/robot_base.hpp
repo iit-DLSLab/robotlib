@@ -154,7 +154,7 @@ namespace robotlib
 
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const = 0;
 
-        virtual Eigen::Vector3d getLegContribution(const JointState &q) = 0;
+        virtual Eigen::Vector3d getLegContribution(const JointState &q) const = 0;
 
         virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
                                                const Eigen::Vector3d &base_orient,
@@ -273,9 +273,9 @@ namespace robotlib
 
         // ** SET FUNCTIONS **
 
-        virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
+        virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) const = 0;
 
-        virtual void setTrunkMass(const double& trunk_mass) = 0;
+        virtual void setTrunkMass(const double& trunk_mass) const = 0;
 
 		/**
 		 * @brief Set inverse kinematics time period

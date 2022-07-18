@@ -441,7 +441,7 @@ namespace robotlib
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-        Eigen::Vector3d getLegContribution(const JointState &q) override
+        Eigen::Vector3d getLegContribution(const JointState &q) const override
 		{
 			std::cout << "Get leg contribution" << std::endl;
 
@@ -487,9 +487,9 @@ namespace robotlib
 		void setInvKinTimePeriod(const double& period) const
 		{};
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};
+		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) const {std::cout << "TODO\n";};
 
-		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";};
+		virtual void setTrunkMass(const double& trunk_mass) const {std::cout << "TODO\n";};
 		 
 	};
 } // namespace robotlib
