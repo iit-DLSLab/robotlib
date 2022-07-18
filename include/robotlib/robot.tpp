@@ -40,19 +40,19 @@ namespace robotlib
         // }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS()
+        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() const 
         {
                 return NLEGS;
         };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() { return NARMS; };
+        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() const  { return NARMS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() { return NJOINTS; };
+        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() const  { return NJOINTS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() { return NLINKS; };
+        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const  { return NLINKS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)

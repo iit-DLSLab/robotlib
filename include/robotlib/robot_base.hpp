@@ -28,10 +28,10 @@ namespace robotlib
         // ** GET FUNCTIONS **
         const std::string getName() const;
 
-        virtual const int getNLEGS() = 0;
-        virtual const int getNARMS() = 0;
-        virtual const int getNJOINTS() = 0;
-        virtual const int getNLINKS() = 0;
+        virtual const int getNLEGS() const = 0;
+        virtual const int getNARMS() const = 0;
+        virtual const int getNJOINTS() const = 0;
+        virtual const int getNLINKS() const = 0;
 
         // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
 
@@ -152,7 +152,7 @@ namespace robotlib
 
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
 
-        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) = 0;
+        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const = 0;
 
         virtual Eigen::Vector3d getLegContribution(const JointState &q) = 0;
 
@@ -269,7 +269,7 @@ namespace robotlib
                                      const JointState &joint_velocity,
                                      const JointState &joint_acceleration,
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-                                     JointState &tau_joints) = 0;              ///output
+                                     JointState &tau_joints) const = 0;              ///output
 
         // ** SET FUNCTIONS **
 

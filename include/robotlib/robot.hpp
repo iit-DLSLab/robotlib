@@ -21,10 +21,10 @@ namespace robotlib
 		virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const override;
 		virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const override;
 
-		virtual const int getNLEGS() override;
-		virtual const int getNARMS() override;
-		virtual const int getNJOINTS() override;
-		virtual const int getNLINKS() override;
+		virtual const int getNLEGS() const override;
+		virtual const int getNARMS() const override;
+		virtual const int getNJOINTS() const override;
+		virtual const int getNLINKS() const override;
 
 		virtual const std::shared_ptr<Link> getLink(const std::string &name) const override;
 		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) const override;

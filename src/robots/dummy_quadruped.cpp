@@ -391,7 +391,7 @@ namespace robotlib
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
 							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 JointState &tau_joints) override		   ///output
+							 JointState &tau_joints) const override		   ///output
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
@@ -420,7 +420,7 @@ namespace robotlib
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const override
 		{
 			std::cout << "Get whole body COM 1" << std::endl;
 
