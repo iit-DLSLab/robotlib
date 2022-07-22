@@ -1,3 +1,7 @@
+SET(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage -pthread")
+SET(CMAKE_C_FLAGS "-g -O0 -Wall -W -fprofile-arcs -ftest-coverage -pthread")
+SET(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage -pthread")
+
 enable_testing()
 
 # TODO: Solve multiple dummy robots inclusion
