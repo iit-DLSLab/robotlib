@@ -6,18 +6,20 @@ image: $REGISTRY/clones/ubuntu:18.04
 stages:
   - build
   - test
+  - coverage
+  - coverage-badge
   - package
   - deploy
 
-before_script:
-  - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update
-  - apt-get install -y --no-install-recommends build-essential curl lsb-release cmake libeigen3-dev libgtest-dev
-
+# Build and install Robotlib
 build:
   stage: build
   tags:
     - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - echo "Build stage started"
     # Make libgtest.a visible to Robotlib
@@ -38,8 +40,9 @@ build:
     paths:
       - build/*
       - build/tests/*
-    expire_in: 3 hrs
+    expire_in: 15 mins
 
+# Run Robotlib tests
 test:
   stage: test
   tags: 
@@ -60,13 +63,80 @@ test:
     - ./robot_base_unit_tests
     - ./trunk_unit_tests
     - ./utils_unit_tests
+  artifacts:
+    paths:
+      - build/tests/CMakeFiles/*
+    expire_in: 15 mins
   dependencies:
     - build
 
+# Generate code coverage data and html output for visualizing them
+# The build and test stages generate the ".gcno" and ".gcda" files used by GCOV
+coverage:
+  stage: coverage
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (lines) stage started"
+    - cd build/tests/CMakeFiles && mkdir gcov_tests
+    - for file in *.dir/*/* ; do cp "$file" gcov_tests ; done
+    - cd gcov_tests && ls
+    - lcov --capture --directory . --output-file coverage.info
+    - genhtml coverage.info --output-directory out
+  artifacts:
+    paths:
+      - build/tests/CMakeFiles/gcov_tests/*
+    expire_in: 1 hrs
+  dependencies:
+    - test
+
+# Update the test coverage GitLab badge with lines coverage value
+coverage-lines:
+  stage: coverage-badge
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (lines) stage started"
+    - cd build/tests/CMakeFiles/gcov_tests
+    - genhtml coverage.info --output-directory out
+  coverage: '/lines.*?(\d+.*(?:\d+)*)[$%]/'
+  dependencies:
+    - coverage
+
+# Update the test coverage GitLab badge with functions coverage value
+coverage-functions:
+  stage: coverage-badge
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (functions) stage started"
+    - cd build/tests/CMakeFiles/gcov_tests
+    - genhtml coverage.info --output-directory out
+  coverage: '/functions.*?(\d+.*(?:\d+)*)[$%]/'
+  dependencies:
+    - coverage
+
+# Create Robotlib debian
 package:
   stage: package
   tags:
     - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev
   script:
     - cd build
     - make package
@@ -75,15 +145,20 @@ package:
     paths:
       - build/*.deb
       - build/CI_JOB_ID
-    expire_in: 3 hrs
+    expire_in: 1 hrs
   dependencies:
     - build
     - test
 
+# Deploy Robotlib debian on DLS server-ubuntu18
 deploy:
   stage: deploy
   tags:
     - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends curl lsb-release
   script:
     - echo "Deploy stage started"
     - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
