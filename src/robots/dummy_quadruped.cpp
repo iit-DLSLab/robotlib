@@ -352,17 +352,6 @@ namespace robotlib
 			std::cout << "Forward Kinematics 2" << std::endl;
 		};
 
-		void inverseKinematics(const Eigen::Vector3d &end_effector_position,
-							   const Eigen::Vector3d &end_effector_velocity,
-							   const Eigen::Vector3d &end_effector_acceleration,
-							   Eigen::Vector3d &joint_position,
-							   Eigen::Vector3d &joint_velocity,
-							   Eigen::Vector3d &joint_acceleration,
-							   const std::shared_ptr<Frame> end_effector) override
-		{
-			std::cout << "Inverse Kinematics 1" << std::endl;
-		};
-
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
@@ -370,18 +359,7 @@ namespace robotlib
 							   JointState &joint_velocity,
 							   JointState &joint_acceleration) override
 		{
-			std::cout << "Inverse Kinematics 2" << std::endl;
-		};
-
-		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-									   const LegDataMap<Jacobian> &robot_jacobian,
-									   JointState &joint_position,
-									   JointState &joint_velocity,
-									   JointState &joint_acceleration) override
-		{
-			std::cout << "Inverse Kinematics 3" << std::endl;
+			std::cout << "Inverse Kinematics" << std::endl;
 		};
 
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
