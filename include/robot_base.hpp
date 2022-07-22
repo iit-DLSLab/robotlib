@@ -688,7 +688,7 @@ namespace robotlib
             return feetJac;
         };
 
-        // ** FORWARD KINEMATICS ** 
+        // ** FORWARD KINEMATICS **
 
         virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                        const JointState &joint_velocity,
@@ -705,32 +705,12 @@ namespace robotlib
                                        Eigen::Vector3d &end_effector_acceleration,
                                        const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
 
-
-        // ** INVERSE KINEMATICS ** 
-        
-        virtual void inverseKinematics(const Eigen::Vector3d &end_effector_position,
-                                       const Eigen::Vector3d &end_effector_velocity,
-                                       const Eigen::Vector3d &end_effector_acceleration,
-                                       Eigen::Vector3d &joint_position,
-                                       Eigen::Vector3d &joint_velocity,
-                                       Eigen::Vector3d &joint_acceleration,
-                                       const std::shared_ptr<Frame> end_effector) = 0; // TODO: Better to use end effector or leg (as in ANT controller)?
-
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) = 0;
-
-        virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                       const LegDataMap<Jacobian> &robot_jacobian,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity,
-                                       JointState &joint_acceleration) = 0;
-                                       
 
         // ** INVERSE DYNAMICS ** 
 
