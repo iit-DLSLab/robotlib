@@ -713,7 +713,6 @@ namespace robotlib
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
 
-
         // ** GET FUNCTIONS **
 
         std::string getName()
@@ -749,13 +748,7 @@ namespace robotlib
         virtual void getMaxJointVelocity(const std::shared_ptr<Joint> joint, double &qd_max) { qd_max = joint->getMaxVelocity(); };
         virtual void getMaxJointEffort(const std::shared_ptr<Joint> joint, double &tau_max) { tau_max = joint->getMaxEffort(); };
 
-        
         virtual Eigen::Vector3d getFramePosition(const JointState &q,
-                                                 const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
-
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Vector3d getFramePosition(const JointDataMap<double> &q,
                                                  const std::shared_ptr<Frame> origin,
                                                  const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
@@ -763,70 +756,30 @@ namespace robotlib
                                                     const std::shared_ptr<Frame> origin,
                                                     const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix3d getFrameOrientation(const JointDataMap<double> &q,
-                                                    const std::shared_ptr<Frame> origin,
-                                                    const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
-
         virtual Eigen::Matrix4d getFramePose(const JointState &q,
-                                             const std::shared_ptr<Frame> origin,
-                                             const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
-
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix4d getFramePose(const JointDataMap<double> &q,
                                              const std::shared_ptr<Frame> origin,
                                              const std::shared_ptr<Frame> destination) = 0; //overridden by Glue
 
         virtual Eigen::Vector3d getFootPosition(const JointState &q,
                                                 const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Vector3d getFootPosition(const JointDataMap<double> &q,
-                                                const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
-
         virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                    const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
-                                                   const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
-
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                            const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
-
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
                                             const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
         virtual void getFootPosition(const JointState &q,
                                      const std::shared_ptr<LimbBase> leg,
                                      Eigen::Vector3d &footPos) = 0; //overridden by Glue
 
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual void getFootPosition(const JointDataMap<double> &q,
-                                     const std::shared_ptr<LimbBase> leg,
-                                     Eigen::Vector3d &footPos) = 0; //overridden by Glue
-
         virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                   const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
-
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
                                                    const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                             const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
-                                            const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
-
         virtual void getFootJacobian(const JointState &q,
-                                     const std::shared_ptr<LimbBase> leg,
-                                     Jacobian &footJac) = 0; //overridden by Glue
-
-        /// TODO: verify if needed with JointDataMap<double>
-        virtual void getFootJacobian(const JointDataMap<double> &q,
                                      const std::shared_ptr<LimbBase> leg,
                                      Jacobian &footJac) = 0; //overridden by Glue
 
