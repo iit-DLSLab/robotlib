@@ -1,7 +1,6 @@
-#include "robot_base.hpp"
+#include <gtest/gtest.h>
 #include "robot_factory.hpp"
 #include "dynamic_memory_hooks.hpp"
-#include <gtest/gtest.h>
 
 TEST(RealTimeTest, constructor)
 {
@@ -66,10 +65,4 @@ TEST(RealTimeTest, equal_operator)
     activate_hooks();
     feet_jacobians = feet_jacobians_2;
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

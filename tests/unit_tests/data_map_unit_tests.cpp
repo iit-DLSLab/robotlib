@@ -7,7 +7,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
+#include "robot_factory.hpp"
 
 /**
  * @brief Unit tests for LegDataMap class
@@ -33,8 +33,8 @@ TEST(LegDataMapUnitTests, print)
  */
 TEST(JointStateUnitTests, makeJointState)
 {
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-     
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+
      /**
       * @test Dummy Quadruped - JointState initialized with all 0.0 values when called makeJointState
       */
@@ -54,7 +54,7 @@ TEST(JointStateUnitTests, makeJointState)
       */
      {
          auto joint_state = dummy_quadruped->makeJointState(2.0);
-         
+
          for(auto leg: *dummy_quadruped->getLegs())
 		 {
 			for(auto joint : *leg->getJoints())
@@ -72,25 +72,25 @@ TEST(JointStateUnitTests, makeJointState)
  */
 TEST(JointStateUnitTests, operatorSquareBracket)
 {
-     /**
-      * @test Dummy Quadruped - JointState values set with operator[]
-      */
-     {
-         std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-         auto joint_state = dummy_quadruped->makeJointState();
+    /**
+     * @test Dummy Quadruped - JointState values set with operator[]
+     */
+    {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+        auto joint_state = dummy_quadruped->makeJointState();
          
-         for(auto leg: *dummy_quadruped->getLegs())
-		 {
-			for(auto joint : *leg->getJoints())
-			{
+        for(auto leg: *dummy_quadruped->getLegs())
+        {
+            for(auto joint : *leg->getJoints())
+            {
                 ASSERT_EQ(joint_state[joint], 0.0);
                 
                 joint_state[joint] = 2.0;
 
                 ASSERT_EQ(joint_state[joint], 2.0);
             }
-         }
-     }
+        }
+    }
 }
 
 /**
@@ -99,24 +99,24 @@ TEST(JointStateUnitTests, operatorSquareBracket)
  */
 TEST(JointStateUnitTests, setZero)
 {
-     /**
-      * @test Dummy Quadruped - JointState values set to 0.0 with setZero function
-      */
-     {
-         std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
-         auto joint_state = dummy_quadruped->makeJointState(2.0);
-         
-         joint_state.setZero();
+    /**
+     * @test Dummy Quadruped - JointState values set to 0.0 with setZero function
+     */
+    {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+        auto joint_state = dummy_quadruped->makeJointState(2.0);
+        
+        joint_state.setZero();
 
-         for(auto leg: *dummy_quadruped->getLegs())
-		 {
-			for(auto joint : *leg->getJoints())
-			{
+        for(auto leg: *dummy_quadruped->getLegs())
+        {
+            for(auto joint : *leg->getJoints())
+            {
                 ASSERT_NE(joint_state[joint], 2.0);
                 ASSERT_EQ(joint_state[joint], 0.0);
             }
-         }
-     }
+        }
+    }
 }
 
 /**
@@ -125,26 +125,26 @@ TEST(JointStateUnitTests, setZero)
  */
 TEST(JointStateUnitTests, size)
 {
-     /**
-      * @test Dummy Quadruped - JointState with 12 (4 legs x 3 joints) elements
-      */
-     {
-        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+    /**
+     * @test Dummy Quadruped - JointState with 12 (4 legs x 3 joints) elements
+     */
+    {
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
         auto joint_state = dummy_quadruped->makeJointState();
 
         ASSERT_EQ(joint_state.size(), 12);
-     }
-     /**
-      * @test Dummy Quadruped - JointState empty
-      */
-     {}
-     /**
-      * @test Dummy Quadruped - JointState with one element
-      */
+    }
+    /**
+     * @test Dummy Quadruped - JointState empty
+     */
     {}
-     /**
-      * @test Dummy Quadruped - JointState with 100 elements
-      */
+    /**
+     * @test Dummy Quadruped - JointState with one element
+     */
+    {}
+    /**
+     * @test Dummy Quadruped - JointState with 100 elements
+     */
     {}
 }
 
@@ -176,7 +176,7 @@ TEST(JacobianUnitTests, print)
       * @test Dummy Quadruped - Linear Jacobian matrix extracted with getLinearJacobian function
       */
      {
-        std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+        std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
         auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
 
         for(auto leg: *dummy_quadruped->getLegs())
@@ -200,10 +200,4 @@ TEST(JacobianUnitTests, print)
             feet_jacobian[leg].print();
         }
      }
-}
-
-int main(int argc, char **argv)
-{
-     ::testing::InitGoogleTest(&argc, argv);
-     return RUN_ALL_TESTS();
 }

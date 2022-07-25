@@ -1,8 +1,6 @@
-#include "robot_base.hpp"
+#include <gtest/gtest.h>
 #include "robot_factory.hpp"
 #include "dynamic_memory_hooks.hpp"
-#include <gtest/gtest.h>
-
 
 // In order to do the tests you need in install the dummy robots.
 // To do so, just do make install inside the build folder of robotlib, from docker root terminal. 

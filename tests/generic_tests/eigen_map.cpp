@@ -1,7 +1,5 @@
-#include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 
 void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map)
 {
@@ -21,7 +19,7 @@ void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map
 TEST(EigenMapTest, setMap)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = std::make_shared<robotlib::DummyQuadruped>();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto name_dq = dummy_quadruped->getName();
 
