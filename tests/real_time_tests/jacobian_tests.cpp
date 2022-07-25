@@ -1,9 +1,5 @@
-// #define EIGEN_RUNTIME_NO_MALLOC
-
-#include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 #include "dynamic_memory_hooks.hpp"
 
 TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
@@ -33,10 +29,4 @@ TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
     (C.noalias()=A.lazyProduct(B));
     deactivate_hooks();
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

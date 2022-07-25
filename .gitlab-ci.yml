@@ -50,19 +50,7 @@ test:
   script:
     - echo "Test stage started"
     - cd build/tests
-    #- make -j$(nproc) main_tests
-    #- ./tests/main_tests
-    # TODO: go back to single main_test executable
-    - ./arm_unit_tests
-    - ./data_map_unit_tests
-    - ./dyn_params_unit_tests
-    - ./joint_unit_tests
-    - ./leg_unit_tests
-    - ./limb_unit_tests
-    - ./link_unit_tests
-    - ./robot_base_unit_tests
-    - ./trunk_unit_tests
-    - ./utils_unit_tests
+    - ./main_tests
   artifacts:
     paths:
       - build/tests/CMakeFiles/*

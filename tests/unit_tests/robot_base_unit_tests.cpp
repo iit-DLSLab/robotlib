@@ -1,7 +1,5 @@
-#include "robot_base.hpp"
-#include "robot_factory.hpp"
 #include <gtest/gtest.h>
-
+#include "robot_factory.hpp"
 
 // In order to do the tests you need in install the dummy robots.
 // To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
@@ -1068,12 +1066,4 @@ TEST(RobotBaseUnitTests, maxJointValue)
     q[dummy_quadruped->getJoint("LH_HAA")] = 5;
     
     EXPECT_EQ(q.max(), q_max_gt);
-}
-
-
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }
