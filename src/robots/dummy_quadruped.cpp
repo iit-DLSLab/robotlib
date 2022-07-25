@@ -250,7 +250,7 @@ namespace robotlib
 							   const JointState &joint_acceleration,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
+							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const override
 		{
 			std::cout << "Forward Kinematics" << std::endl;
 		};
@@ -260,7 +260,7 @@ namespace robotlib
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 							   JointState &joint_position,
 							   JointState &joint_velocity,
-							   JointState &joint_acceleration) override
+							   JointState &joint_acceleration) const override
 		{
 			std::cout << "Inverse Kinematics" << std::endl;
 		};
@@ -272,7 +272,7 @@ namespace robotlib
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
 							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 JointState &tau_joints) override		   ///output
+							 JointState &tau_joints) const override		   ///output
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
@@ -301,14 +301,14 @@ namespace robotlib
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const override
 		{
 			std::cout << "Get whole body COM 1" << std::endl;
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-        Eigen::Vector3d getLegContribution(const JointState &q) override
+        Eigen::Vector3d getLegContribution(const JointState &q) const override
 		{
 			std::cout << "Get leg contribution" << std::endl;
 
@@ -351,12 +351,11 @@ namespace robotlib
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
 
-		void setInvKinTimePeriod(const double& period)
-		{};
+		void setInvKinTimePeriod(const double& period) const override {};
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};
+		void setTrunkCom(const Eigen::Vector3d &trunk_com) const override {std::cout << "TODO\n";};
 
-		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";};
+		void setTrunkMass(const double& trunk_mass) const override {std::cout << "TODO\n";};
 		 
 	};
 } // namespace robotlib

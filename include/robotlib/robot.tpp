@@ -55,49 +55,6 @@ namespace robotlib
         const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const  { return NLINKS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
-        {
-                trunk_->setChildren(children);
-        };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
-        {
-                joint->setChild(child);
-        }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent)
-        {
-                joint->setParent(parent);
-        }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child)
-        {
-                link->setChild(child);
-        }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent)
-        {
-                link->setParent(parent);
-        }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setJointLimits(const std::shared_ptr<Joint> joint, 
-                                                const double q_min, 
-                                                const double q_max, 
-                                                const double qd_max, 
-                                                const double tau_max)
-        {
-                joint->setMinAngle(q_min);
-                joint->setMaxAngle(q_max);
-                joint->setMaxVelocity(qd_max);
-                joint->setMaxEffort(tau_max);
-        }
-                                                
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name) const
         {
                 if (name.compare("") == 0)
@@ -148,8 +105,7 @@ namespace robotlib
                 return std::shared_ptr<LimbBase>(nullptr);
         }
 
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+                template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMinJointAngle(JointState &q_min)
         {
                 for(auto leg : *legs_)
@@ -197,12 +153,53 @@ namespace robotlib
                 }
         }
 
-
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const Eigen::Matrix<double, 3, 1>& Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
         {
                 return trunk_->getCoM();
         };
 
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
+        {
+                trunk_->setChildren(children);
+        };
 
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
+        {
+                joint->setChild(child);
+        }
+ 
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child)
+        {
+                link->setChild(child);
+        }
+
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent)
+        {
+                joint->setParent(parent);
+        }
+
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent)
+        {
+                link->setParent(parent);
+        }
+
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setJointLimits(const std::shared_ptr<Joint> joint, 
+                                                const double q_min, 
+                                                const double q_max, 
+                                                const double qd_max, 
+                                                const double tau_max)
+        {
+                joint->setMinAngle(q_min);
+                joint->setMaxAngle(q_max);
+                joint->setMaxVelocity(qd_max);
+                joint->setMaxEffort(tau_max);
+        }
+                                                
 } // namespace robotlib

@@ -11,7 +11,7 @@ TEST(RealTimeTest, constructor)
     // Dynamic memory allocation/deallocation have to take place
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
-    robotlib::RobotBase::Jacobian foot_jacobian {robot->makeFootJacobian(robot->getLink("LF_LOWERLEG"))};
+    robotlib::Jacobian foot_jacobian {robot->makeFootJacobian(robot->getLink("LF_LOWERLEG"))};
     deactivate_hooks();
     is_dynamic_memory_used(true, false, false, false); // malloc, calloc, realloc, free
 }
@@ -22,7 +22,7 @@ TEST(RealTimeTest, get_functions)
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     
     // ** Define feet jacobian **
-    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    robotlib::LegDataMap<robotlib::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
     
     // Dynamic memory allocation/deallocation have not to take place
     reset_variables_checking_use_of_dynamic_memory();
@@ -42,7 +42,7 @@ TEST(RealTimeTest, print_function)
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     
     // ** Define feet jacobian **
-    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    robotlib::LegDataMap<robotlib::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
     
     // Dynamic memory allocation/deallocation have to take place
     reset_variables_checking_use_of_dynamic_memory();
@@ -57,8 +57,8 @@ TEST(RealTimeTest, equal_operator)
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     
     // ** Define feet jacobian **
-    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
-    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians_2 {robot->makeFeetJacobian()};
+    robotlib::LegDataMap<robotlib::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    robotlib::LegDataMap<robotlib::Jacobian> feet_jacobians_2 {robot->makeFeetJacobian()};
     
     // Dynamic memory allocation/deallocation have not to take place
     reset_variables_checking_use_of_dynamic_memory();
