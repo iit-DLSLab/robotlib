@@ -1,54 +1,122 @@
-image: server-harbor:80/ant/ant_iit:devel
+variables:
+  REGISTRY: server-harbor:80
+
+image: $REGISTRY/clones/ubuntu:20.04
 
 stages:
-   - build
-   - test
-   - package
-   - deploy
+  - build
+  - test
+  - coverage
+  - coverage-badge
+  - package
+  - deploy
 
+# Build and install Robotlib
 build:
   stage: build
   tags:
-    - ant-devel
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - echo "Build stage started"
     - mkdir build
     - cd build
     - cmake ..
-    - make -j$(nproc)
+    - make -j$(nproc) install
+    # Make robots libraries visible for test stage
+    - cp /usr/lib/robots/* tests/
   artifacts:
     paths:
-      - bin/*
       - build/*
-    expire_in: 3 hrs
+      - build/tests/*
+    expire_in: 30 mins
 
+# Run Robotlib tests
 test:
   stage: test
   tags: 
-    - ant-devel
+    - dls
   script:
     - echo "Test stage started"
-    - cd build
-    #- make -j$(nproc) main_tests
-    #- ./tests/main_tests
-    # TODO: go back to single main_test executable
-    - ./tests/arm_unit_tests
-    - ./tests/data_map_unit_tests
-    - ./tests/dyn_params_unit_tests
-    - ./tests/joint_unit_tests
-    - ./tests/leg_unit_tests
-    - ./tests/limb_unit_tests
-    - ./tests/link_unit_tests
-    - ./tests/robot_base_unit_tests
-    - ./tests/trunk_unit_tests
-    - ./tests/utils_unit_tests
+    - cd build/tests
+    - ./main_tests
+  artifacts:
+    paths:
+      - build/tests/CMakeFiles/*
+    expire_in: 30 mins
   dependencies:
     - build
 
+# Generate code coverage data and html output for visualizing them
+# The build and test stages generate the ".gcno" and ".gcda" files used by GCOV
+coverage:
+  stage: coverage
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (lines) stage started"
+    - cd build/tests/CMakeFiles && mkdir gcov_tests
+    - for file in *.dir/*/* ; do cp "$file" gcov_tests ; done
+    - cd gcov_tests && ls
+    - lcov --capture --directory . --output-file coverage.info
+    - genhtml coverage.info --output-directory out
+  artifacts:
+    paths:
+      - build/tests/CMakeFiles/gcov_tests/*
+    expire_in: 1 hrs
+  dependencies:
+    - test
+
+# Update the test coverage GitLab badge with lines coverage value
+coverage-lines:
+  stage: coverage-badge
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (lines) stage started"
+    - cd build/tests/CMakeFiles/gcov_tests
+    - genhtml coverage.info --output-directory out
+  coverage: '/lines.*?(\d+.*(?:\d+)*)[$%]/'
+  dependencies:
+    - coverage
+
+# Update the test coverage GitLab badge with functions coverage value
+coverage-functions:
+  stage: coverage-badge
+  tags:
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+  script:
+    - echo "Coverage (functions) stage started"
+    - cd build/tests/CMakeFiles/gcov_tests
+    - genhtml coverage.info --output-directory out
+  coverage: '/functions.*?(\d+.*(?:\d+)*)[$%]/'
+  dependencies:
+    - coverage
+
+# Create Robotlib debian
 package:
   stage: package
   tags:
-    - ant-devel
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev
   script:
     - cd build
     - make package
@@ -57,14 +125,20 @@ package:
     paths:
       - build/*.deb
       - build/CI_JOB_ID
-    expire_in: 3 hrs
+    expire_in: 1 hrs
   dependencies:
     - build
+    - test
 
+# Deploy Robotlib debian on DLS server-ubuntu18
 deploy:
   stage: deploy
   tags:
-    - ant-devel
+    - dls
+  before_script:
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update
+    - apt-get install -y --no-install-recommends curl lsb-release
   script:
     - echo "Deploy stage started"
     - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
@@ -72,4 +146,3 @@ deploy:
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
     - package
-    - test

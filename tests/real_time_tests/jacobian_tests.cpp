@@ -1,42 +1,68 @@
-// #define EIGEN_RUNTIME_NO_MALLOC
-
-#include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 #include "dynamic_memory_hooks.hpp"
 
-TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
+TEST(RealTimeTest, constructor)
 {
-    Eigen::Matrix<double,Eigen::Dynamic,Eigen::Dynamic>A,B,C;
-    A.setOnes(500,500);
-    B.setOnes(500,500);
-    C.setOnes(500,500);
-
+    // ** Define robot **
+    std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    
+    // ** Define feet jacobian **    
     // Dynamic memory allocation/deallocation have to take place
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
-    C = A*B;
+    robotlib::RobotBase::Jacobian foot_jacobian {robot->makeFootJacobian(robot->getLink("LF_LOWERLEG"))};
     deactivate_hooks();
-    is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
+    is_dynamic_memory_used(true, false, false, false); // malloc, calloc, realloc, free
+}
 
-    // Dynamic memory allocation/deallocation have to take place
-    reset_variables_checking_use_of_dynamic_memory();
-    activate_hooks();
-    C.noalias() = A * B;
-    deactivate_hooks();
-    is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
-
+TEST(RealTimeTest, get_functions)
+{
+    // ** Define robot **
+    std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    
+    // ** Define feet jacobian **
+    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    
     // Dynamic memory allocation/deallocation have not to take place
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
-    (C.noalias()=A.lazyProduct(B));
+    for(auto leg : *robot->getLegs())
+    {
+        Eigen::Map linear_jacobian {feet_jacobians[leg].getLinearJacobian()};
+        Eigen::Map angular_jacobian {feet_jacobians[leg].getAngularJacobian()};
+    }
     deactivate_hooks();
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }
 
-int main(int argc, char **argv)
+TEST(RealTimeTest, print_function)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    // ** Define robot **
+    std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    
+    // ** Define feet jacobian **
+    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    
+    // Dynamic memory allocation/deallocation have to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    feet_jacobians.print();
+    is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
+}
+
+TEST(RealTimeTest, equal_operator)
+{
+    // ** Define robot **
+    std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    
+    // ** Define feet jacobian **
+    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians {robot->makeFeetJacobian()};
+    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobians_2 {robot->makeFeetJacobian()};
+    
+    // Dynamic memory allocation/deallocation have not to take place
+    reset_variables_checking_use_of_dynamic_memory();
+    activate_hooks();
+    feet_jacobians = feet_jacobians_2;
+    is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }

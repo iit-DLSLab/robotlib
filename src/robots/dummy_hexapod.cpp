@@ -162,21 +162,7 @@ namespace robotlib
 			return Eigen::Vector3d().setZero();
 		};
 
-		Eigen::Vector3d getFramePosition(const JointDataMap<double> &q,
-										 const std::shared_ptr<Frame> origin,
-										 const std::shared_ptr<Frame> destination) override
-		{
-			return Eigen::Vector3d().setZero();
-		};
-
 		Eigen::Matrix3d getFrameOrientation(const JointState &q,
-											const std::shared_ptr<Frame> origin,
-											const std::shared_ptr<Frame> destination) override
-		{
-			return Eigen::Matrix3d().setZero();
-		};
-
-		Eigen::Matrix3d getFrameOrientation(const JointDataMap<double> &q,
 											const std::shared_ptr<Frame> origin,
 											const std::shared_ptr<Frame> destination) override
 		{
@@ -197,27 +183,7 @@ namespace robotlib
 			return frame_pose;
 		};
 
-		Eigen::Matrix4d getFramePose(const JointDataMap<double> &q,
-									 const std::shared_ptr<Frame> origin,
-									 const std::shared_ptr<Frame> destination) override
-		{
-			Eigen::Matrix4d frame_pose{};
-			frame_pose.setZero();
-
-			frame_pose.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
-			frame_pose.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
-			frame_pose.row(3) << 0, 0, 0, 1;
-
-			return frame_pose;
-		};
-
 		Eigen::Vector3d getFootPosition(const JointState &q,
-										const std::shared_ptr<Frame> foot) override
-		{
-			return this->getFramePosition(q, this->getLink("TRUNK"), foot);
-		};
-
-		Eigen::Vector3d getFootPosition(const JointDataMap<double> &q,
 										const std::shared_ptr<Frame> foot) override
 		{
 			return this->getFramePosition(q, this->getLink("TRUNK"), foot);
@@ -229,26 +195,7 @@ namespace robotlib
 			return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
 		};
 
-		Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
-										   const std::shared_ptr<Frame> foot) override
-		{
-			return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
-		};
-
 		Eigen::Matrix4d getFootPose(const JointState &q,
-									const std::shared_ptr<Frame> foot) override
-		{
-			Eigen::Matrix4d foot_pose{};
-			foot_pose.setZero();
-
-			foot_pose.block(0, 3, 3, 1) << getFootPosition(q, foot);
-			foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, foot);
-			foot_pose.row(3) << 0, 0, 0, 1;
-
-			return foot_pose;
-		};
-
-		Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
 									const std::shared_ptr<Frame> foot) override
 		{
 			Eigen::Matrix4d foot_pose{};
@@ -268,20 +215,7 @@ namespace robotlib
 			footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 		};
 
-		void getFootPosition(const JointDataMap<double> &q,
-							 const std::shared_ptr<LimbBase> leg,
-							 Eigen::Vector3d &footPos)
-		{
-			footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
-		};
-
 		Eigen::Matrix3d getFootOrientation(const JointState &q,
-										   const std::shared_ptr<LimbBase> leg) override
-		{
-			return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
-		};
-
-		Eigen::Matrix3d getFootOrientation(const JointDataMap<double> &q,
 										   const std::shared_ptr<LimbBase> leg) override
 		{
 			return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
@@ -300,27 +234,7 @@ namespace robotlib
 			return foot_pose;
 		};
 
-		Eigen::Matrix4d getFootPose(const JointDataMap<double> &q,
-									const std::shared_ptr<LimbBase> leg) override
-		{
-			Eigen::Matrix4d foot_pose{};
-			foot_pose.setZero();
-
-			foot_pose.block(0, 3, 3, 1) << getFootPosition(q, leg->getEndEffector());
-			foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, leg->getEndEffector());
-			foot_pose.row(3) << 0, 0, 0, 1;
-
-			return foot_pose;
-		};
-
 		virtual void getFootJacobian(const JointState &q,
-									 const std::shared_ptr<LimbBase> leg,
-									 Jacobian &footJac)
-		{
-			footJac.setZero();
-		};
-
-		virtual void getFootJacobian(const JointDataMap<double> &q,
 									 const std::shared_ptr<LimbBase> leg,
 									 Jacobian &footJac)
 		{
@@ -350,31 +264,9 @@ namespace robotlib
 							   const JointState &joint_acceleration,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const override
+							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
 		{
-			std::cout << "Forward Kinematics 1" << std::endl;
-		};
-
-		void forwardKinematics(const Eigen::Vector3d &joint_position,
-							   const Eigen::Vector3d &joint_velocity,
-							   const Eigen::Vector3d &joint_acceleration,
-							   Eigen::Vector3d &end_effector_position,
-							   Eigen::Vector3d &end_effector_velocity,
-							   Eigen::Vector3d &end_effector_acceleration,
-							   const std::shared_ptr<Frame> end_effector) const override
-		{
-			std::cout << "Forward Kinematics 2" << std::endl;
-		};
-
-		void inverseKinematics(const Eigen::Vector3d &end_effector_position,
-							   const Eigen::Vector3d &end_effector_velocity,
-							   const Eigen::Vector3d &end_effector_acceleration,
-							   Eigen::Vector3d &joint_position,
-							   Eigen::Vector3d &joint_velocity,
-							   Eigen::Vector3d &joint_acceleration,
-							   const std::shared_ptr<Frame> end_effector) const override
-		{
-			std::cout << "Inverse Kinematics 1" << std::endl;
+			std::cout << "Forward Kinematics" << std::endl;
 		};
 
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
@@ -382,20 +274,9 @@ namespace robotlib
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
 							   JointState &joint_position,
 							   JointState &joint_velocity,
-							   JointState &joint_acceleration) const override
+							   JointState &joint_acceleration) override
 		{
-			std::cout << "Inverse Kinematics 2" << std::endl;
-		};
-
-		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-									   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-									   const LegDataMap<Jacobian> &robot_jacobian,
-									   JointState &joint_position,
-									   JointState &joint_velocity,
-									   JointState &joint_acceleration) const override
-		{
-			std::cout << "Inverse Kinematics 3" << std::endl;
+			std::cout << "Inverse Kinematics" << std::endl;
 		};
 
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
@@ -405,7 +286,7 @@ namespace robotlib
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
 							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 JointState &tau_joints) const override		   ///output
+							 JointState &tau_joints) override		   ///output
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
@@ -434,14 +315,14 @@ namespace robotlib
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const override
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
 		{
 			std::cout << "Get whole body COM 1" << std::endl;
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		};
 
-        Eigen::Vector3d getLegContribution(const JointState &q) const override
+        Eigen::Vector3d getLegContribution(const JointState &q) override
 		{
 			std::cout << "Get leg contribution" << std::endl;
 
@@ -484,12 +365,12 @@ namespace robotlib
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
 
-		void setInvKinTimePeriod(const double& period) const
+		void setInvKinTimePeriod(const double& period)
 		{};
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) const {std::cout << "TODO\n";};
+		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};
 
-		virtual void setTrunkMass(const double& trunk_mass) const {std::cout << "TODO\n";};
+		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";};
 		 
 	};
 } // namespace robotlib
