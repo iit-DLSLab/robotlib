@@ -46,20 +46,15 @@ You just need to substitue the *X* value with the chosen CMake version.
 
 ### Develop
 
-|  **Ubuntu OS**  |  **Build status**  |   **Test coverage**  |
-| :-------------: | :------------: | :--------------: |
-| Focal Fossa | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) |
-| Bionic Beaver | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) |
-| Xenial Xerus | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) |
-
-<!-- TODO -->
-<!-- Add GCOV/LCOV for test coverage and parsing for gitlab CI/CD badge -->
-
-<!-- TODO -->
-<!-- Add the same for (Bionic Beaver + Melodic) and for (Xenial Xerus + Kinetic) -->
+|  **Ubuntu OS**  |  **Build status**  |   **Test coverage - Lines**  |   **Test coverage - Functions**  |
+| :-------------: | :----------------: | :--------------------------: | :------------------------------: |
+| Focal Fossa | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) |
+| Bionic Beaver | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) |
+| Xenial Xerus | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) |
 
 ### Release
 <!-- TODO -->
+<!-- Add the same table for the master branch? (that is updated from focal-develop) -->
 <!-- Add the same table for the Release branch -->
 
 ## Issues
