@@ -1,6 +1,4 @@
-// TODO: Change this include
 #include <gtest/gtest.h>
-
 #include "leg.hpp"
 #include "joint.hpp"
 #include "link.hpp"
@@ -123,10 +121,4 @@ TEST(LimbUnitTests, getJoint_string)
 TEST(LimbUnitTests, getEndEffector)
 {
     std::cout << "TODO\n";
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

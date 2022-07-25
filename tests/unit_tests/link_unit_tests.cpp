@@ -7,8 +7,8 @@
  */
 
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 #include "link.hpp"
-#include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
 
 /**
  * @brief Set of unit tests for Link::getName function
@@ -51,7 +51,7 @@ TEST(LinkUnitTests, getName)
       * @test Dummy Quadruped - Limbs (legs) links names
       */
      {
-          std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+          std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
           std::array<std::array<std::string, 3>, 4> links_names{{{"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"},
                                                                  {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
                                                                  {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
@@ -79,7 +79,7 @@ TEST(LinkUnitTests, getParent)
       * @test Dummy Quadruped - Joint parent compared according to its name only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
      const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
      const std::shared_ptr<robotlib::Joint> link_lf_assembly_parent = std::make_shared<robotlib::Joint>("LF_HAA");
@@ -135,7 +135,7 @@ TEST(LinkUnitTests, getChild)
       * @test Dummy Quadruped - Joint child compared according to its names only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
      const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
      const std::shared_ptr<robotlib::Joint> link_lf_assembly_child = std::make_shared<robotlib::Joint>("LF_HFE");
@@ -215,10 +215,4 @@ TEST(LinkUnitTests, setChildren)
       * @test Dummy Quadruped - Set of link children
       * /// TODO: implement the unit tests. Set method is private
       */
-}
-
-int main(int argc, char **argv)
-{
-     ::testing::InitGoogleTest(&argc, argv);
-     return RUN_ALL_TESTS();
 }
