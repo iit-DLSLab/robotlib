@@ -78,7 +78,7 @@ namespace robotlib
         return Jacobian(leg->getNJoints(), data);
     };
 
-    LegDataMap<Jacobian> RobotBase::makeFeetJacobian(const double data) // NRT
+    LegDataMap<Jacobian> RobotBase::makeFeetJacobian(const double data) const // NRT
     {
         auto feetJac = this->makeLegDataMap<Jacobian>();
 

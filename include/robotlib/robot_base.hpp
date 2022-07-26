@@ -90,7 +90,7 @@ namespace robotlib
                                      Jacobian &footJac) = 0; //overridden by Glue
 
         virtual void updateLinearJacobian(const JointState &joints_positions,
-                                          LegDataMap<Jacobian> &robot_jacobian) = 0; //overridden by Glue
+                                          LegDataMap<Jacobian> &robot_jacobian) const = 0; //overridden by Glue
 
 
         // TODO: compute total mass from links and trunk masses (it could be even implemented in Robot class)
@@ -169,7 +169,7 @@ namespace robotlib
         // TODO: it should use makeJacobian
         Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0); // NRT
 
-        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0); // NRT
+        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0) const; // NRT
 
         // ** FORWARD KINEMATICS ** 
 
