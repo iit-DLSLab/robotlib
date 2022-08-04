@@ -18,7 +18,7 @@ add_compile_options(
 	-std=c++17
 	-fPIC
 	$<$<CONFIG:Debug>:-g>
-	#-Wall -Wextra -pedantic # Enable warnings
+	-Wall -Wextra -Wpedantic # Enable warnings
 	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
 )
 #add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
