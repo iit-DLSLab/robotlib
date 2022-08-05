@@ -17,7 +17,6 @@ find_package(Eigen3 REQUIRED NO_MODULE)
 add_compile_options(
 	-std=c++17
 	-fPIC
-	$<$<CONFIG:Debug>:-g>
 	-Wall -Wextra -Wpedantic # Enable warnings
 	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
 )
