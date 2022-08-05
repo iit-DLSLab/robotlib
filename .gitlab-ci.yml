@@ -24,14 +24,14 @@ build:
     - echo "Build stage started"
     - mkdir build
     - cd build
-    - cmake ..
+    - cmake -DCMAKE_BUILD_TYPE=Release ..
     - make -j$(nproc) install
+    - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
     - cp /usr/lib/robots/* tests/
   artifacts:
     paths:
       - build/*
-      - build/tests/*
     expire_in: 30 mins
 
 # Run Robotlib tests
