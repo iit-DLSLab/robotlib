@@ -53,9 +53,13 @@ You just need to substitue the *X* value with the chosen CMake version.
 | Xenial Xerus | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) |
 
 ### Release
+
+|  **Stable branch**  |  **Build status**  |   **Test coverage - Lines**  |   **Test coverage - Functions**  |
+| :------------------: | :----------------: | :--------------------------: | :------------------------------: |
+| master | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) |
+
 <!-- TODO -->
-<!-- Add the same table for the master branch? (that is updated from focal-develop) -->
-<!-- Add the same table for the Release branch -->
+<!-- Actually, master is the release branch for Focal. We need releases for Bionic and Xenial as well -->
 
 ## Issues
 
