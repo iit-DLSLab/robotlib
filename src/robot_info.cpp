@@ -40,8 +40,9 @@ namespace robotlib
         for (auto leg : *robot->getLegs())
         {
             std::cout << leg->getName() << ":  ";
-            int nLinks = leg->getNLinks();
-            int count_links = 0;
+            int nLinks {leg->getNLinks()};
+
+            int count_links {0};
             for (auto link : *leg->getLinks())
             {
                 if (count_links == nLinks - 1)
@@ -56,8 +57,7 @@ namespace robotlib
         for (auto leg : *robot->getLegs())
         {
             std::cout << leg->getName() << ":  ";
-            int nJoints = leg->getNJoints();
-            int count_joints = 0;
+            int count_joints {0};
             for (auto joint : *leg->getJoints())
             {
                 std::cout << joint->getName() << ", ";
