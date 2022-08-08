@@ -3,12 +3,12 @@
 
 void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map)
 {
-    float r = 3;
-    float c = 4;
-    int count = 0;
-    for (int i = 0; i < r; ++i)
+    float r {3}, c {4};
+
+    int count {0};
+    for (int i {0}; i < r; ++i)
     {
-        for (int j = 0; j < c; ++j)
+        for (int j {0}; j < c; ++j)
         {
             map(i, j) = count;
             count++;
@@ -31,7 +31,7 @@ TEST(EigenMapTest, setMap)
     ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
 
     double *array = new double[9];
-    for (int i = 0; i < 9; i++)
+    for (int i {0}; i < 9; i++)
     {
         array[i] = i;
     }

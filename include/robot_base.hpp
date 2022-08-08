@@ -103,7 +103,7 @@ namespace robotlib
             {
                 assert(this->getSize() == rhs.getSize());
 
-                for (auto i{0}; i < num_data_; i++)
+                for (auto i {0}; i < num_data_; i++)
                 {
                     data_[i].key_ = rhs.data_[i].key_;
                     data_[i].data_ = rhs.data_[i].data_;
@@ -112,7 +112,7 @@ namespace robotlib
 
             virtual void assignAll(const Data &value)
             {
-                for (auto i{0}; i < num_data_; i++)
+                for (auto i {0}; i < num_data_; i++)
                 {
                     data_[i].data_ = value;
                 }
@@ -189,7 +189,7 @@ namespace robotlib
         protected:
             LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS()) //TODO: remove it, leave only the constructor with data
             {
-                int count_data = 0;
+                int count_data {0};
                 for (auto key : *robot->getLegs())
                 {
                     this->data_[count_data] = this->createPair(key, Data()); //shared_pointers?
@@ -199,7 +199,7 @@ namespace robotlib
 
             LegDataMap(RobotBase *robot, const Data &data) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
-                int count_data = 0;
+                int count_data {0};
                 for (auto key : *robot->getLegs())
                 {
                     this->data_[count_data] = this->createPair(key, data);
@@ -220,7 +220,7 @@ namespace robotlib
         private:
             LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(robot->getNLINKS())
             {
-                int count_data = 0;
+                int count_data {0};
                 for (auto leg : *(robot->getLegs()))
                 {
                     for (auto key : *(leg->getLinks()))
@@ -232,7 +232,7 @@ namespace robotlib
             }
             LinkDataMap(RobotBase *robot, const Data &data) : DataMap<Link, Data>(robot->getNLINKS())
             {
-                int count_data = 0;
+                int count_data {0};
                 for (auto leg : *(robot->getLegs()))
                 {
                     for (auto key : *(leg->getLinks()))
@@ -257,7 +257,7 @@ namespace robotlib
         private:
             JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
-                int count_data = 0;
+                int count_data {0};
 
                 for (auto leg : *(robot->getLegs()))
                 {
@@ -270,7 +270,7 @@ namespace robotlib
             }
             JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
-                int count_data = 0;
+                int count_data {0};
 
                 for (auto leg : *(robot->getLegs()))
                 {
@@ -283,7 +283,7 @@ namespace robotlib
             }
             JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
             {
-                int count_data = 0;
+                int count_data {0};
 
                 for (auto key : *(leg->getJoints()))
                 {
@@ -293,7 +293,7 @@ namespace robotlib
             }
             JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : DataMap<Joint, Data>(leg->getNJoints())
             {
-                int count_data = 0;
+                int count_data {0};
 
                 for (auto key : *(leg->getJoints()))
                 {
@@ -532,7 +532,7 @@ namespace robotlib
                 }
                 else
                 {
-                    for (int i = 0; i < 6 * nJoints_; ++i)
+                    for (int i {0}; i < 6 * nJoints_; ++i)
                     {
                         data_[i] = other.data_[i];
                     }
@@ -559,7 +559,7 @@ namespace robotlib
             {
                 // Data initialization (6: linear and angular part of the jacobian)
                 data_ = new double[6 * nJoints_];
-                for (int i = 0; i < 6 * nJoints_; ++i)
+                for (int i {0}; i < 6 * nJoints_; ++i)
                 {
                     data_[i] = data;
                 }
@@ -592,7 +592,7 @@ namespace robotlib
                 // angular_jacobian_.setZero(3, nJoints_);
 
                 data_ = new double[6 * nJoints_];
-                for (int i = 0; i < 6 * nJoints_; ++i)
+                for (int i {0}; i < 6 * nJoints_; ++i)
                 {
                     data_[i] = init_value;
                 }

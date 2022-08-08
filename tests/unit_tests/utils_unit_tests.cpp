@@ -6,8 +6,8 @@ TEST(UtilsUnitTests, Containers)
 {
     std::cout << "Testing correct storing for non share pointer data...\n";
 
-    const int N = 10;
-    double value = 1;
+    const int N {10};
+    double value {1};
     std::array<double, N> data;
 
     for (auto &d : data)

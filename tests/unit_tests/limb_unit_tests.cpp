@@ -3,8 +3,8 @@
 #include "joint.hpp"
 #include "link.hpp"
 
-const unsigned int NJOINTS = 20;
-const unsigned int NLINKS = 15;
+const unsigned int NJOINTS {20};
+const unsigned int NLINKS {15};
 
 class RobotLeg : public robotlib::Leg<NJOINTS, NLINKS>
 {
@@ -41,13 +41,13 @@ TEST(LimbUnitTests, getName)
     std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints;
     std::array<std::shared_ptr<robotlib::Link>, NLINKS> links;
 
-    for (int i = 0; i < NJOINTS; ++i)
+    for (unsigned int i {0}; i < NJOINTS; ++i)
     {
         std::string name{"joint_" + std::to_string(i)};
         joint_names.push_back(name);
         joints[i] = std::make_shared<robotlib::Joint>(name);
     }
-    for (int i = 0; i < NLINKS; ++i)
+    for (unsigned int i {0}; i < NLINKS; ++i)
     {
         std::string name{"link_" + std::to_string(i)};
         link_names.push_back(name);
@@ -56,7 +56,7 @@ TEST(LimbUnitTests, getName)
 
     RobotLeg leg("leg_1", joints, links);
 
-    int i = 0;
+    int i {0};
     for (auto link : *leg.getLinks())
     {
         EXPECT_EQ(link->getName(), link_names[i]);
