@@ -56,7 +56,7 @@ TEST(JointUnitTests, getName)
                                                                   {"RF_HAA", "RF_HFE", "RF_KFE"},
                                                                   {"LH_HAA", "LH_HFE", "LH_KFE"},
                                                                   {"RH_HAA", "RH_HFE", "RH_KFE"}}};
-          unsigned int i{0}, j{0};
+          unsigned int i {0}, j {0};
           for (auto leg : *(dummy_quadruped->getLegs()))
           {
                for (auto leg_joint : *(leg->getJoints()))
@@ -218,10 +218,10 @@ TEST(JointUnitTests, setLimits_getLimits)
       */
      std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
-     const double q_min_gt = 0;
-     const double q_max_gt = 90;
-     const double qd_max_gt = 3;
-     const double tau_max_gt = 5;
+     const double q_min_gt {0};
+     const double q_max_gt {90};
+     const double qd_max_gt {3};
+     const double tau_max_gt {5};
 
      for (auto leg : *(dummy_quadruped->getLegs()))
      {

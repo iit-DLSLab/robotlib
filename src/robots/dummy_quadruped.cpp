@@ -7,8 +7,8 @@
 
 namespace robotlib
 {
-	const int NJOINTS = 3;
-	const int NLINKS = 3;
+	const int NJOINTS {3};
+	const int NLINKS {3};
 
 	class DummyLeg : public Leg<NJOINTS, NLINKS>
 	{
@@ -42,43 +42,47 @@ namespace robotlib
 					   {"LH_LOWERLEG", std::make_pair("LH_KFE", "")},
 					   {"RH_ASSEMBLY", std::make_pair("RH_HAA", "RH_HFE")},
 					   {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
-					   {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}}){};
+					   {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}}){}
 
 		virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const
 		{
-			const std::string joint_name = joint->getName();
-			const std::string child_name = jointMap.find(joint_name)->second.second; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
+			const std::string joint_name {joint->getName()};
+			const std::string child_name {jointMap.find(joint_name)->second.second}; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
 			return child_name;
-		};
+		}
+
 		virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const
 		{
-			const std::string joint_name = joint->getName();
-			const std::string parent_name = jointMap.find(joint_name)->second.first;
+			const std::string joint_name {joint->getName()};
+			const std::string parent_name {jointMap.find(joint_name)->second.first};
 			return parent_name;
-		};
+		}
 
 		virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const
 		{
-			const std::string link_name = link->getName();
-			const std::string child_name = linkMap.find(link_name)->second.second;
+			const std::string link_name {link->getName()};
+			const std::string child_name {linkMap.find(link_name)->second.second};
 			return child_name;
-		};
+		}
+
 		virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const
 		{
-			const std::string link_name = link->getName();
-			const std::string parent_name = linkMap.find(link_name)->second.first;
+			const std::string link_name {link->getName()};
+			const std::string parent_name {linkMap.find(link_name)->second.first};
 			return parent_name;
-		};
+		}
 
 	private:
 		const std::map<std::string, std::pair<std::string, std::string>> jointMap;
 		const std::map<std::string, std::pair<std::string, std::string>> linkMap;
 	};
-	const int NJOINTS_TOT = 12;
-	const int NLINKS_TOT = 12;
-	const int NLEGS = 4;
-	const int NARMS = 0;
-	const int NCHILDRENS = NLEGS;
+
+	const int NJOINTS_TOT {12};
+	const int NLINKS_TOT {12};
+	const int NLEGS {4};
+	const int NARMS {0};
+	const int NCHILDRENS {NLEGS};
+
 	class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 	{
 	public:
@@ -106,9 +110,9 @@ namespace robotlib
 			{
 				for (auto joint : *(leg->getJoints()))
 				{
-					const std::string child_name = leg->jointToChildName(joint);
+					const std::string child_name {leg->jointToChildName(joint)};
 					setChildOfJoint(joint, getLink(child_name));
-					const std::string parent_name = leg->jointToParentName(joint);
+					const std::string parent_name {leg->jointToParentName(joint)};
 					setParentOfJoint(joint, getLink(parent_name));
 				}
 			}
@@ -117,19 +121,19 @@ namespace robotlib
 			{
 				for (auto link : *(leg->getLinks()))
 				{
-					const std::string child_name = leg->linkToChildName(link);
+					const std::string child_name {leg->linkToChildName(link)};
 					setChildOfLink(link, getJoint(child_name));
 
-					const std::string parent_name = leg->linkToParentName(link);
+					const std::string parent_name {leg->linkToParentName(link)};
 					setParentOfLink(link, getJoint(parent_name));
 				}
 			}
 
 			// Set joint limits (dummy limits are used here)
-			const double q_min = 0;
-			const double q_max = 90;
-			const double qd_max = 3;
-			const double tau_max = 5;
+			const double q_min {0};
+			const double q_max {90};
+			const double qd_max {3};
+			const double tau_max {5};
 
 			for (auto leg : *(this->getLegs()))
 			{
@@ -138,22 +142,21 @@ namespace robotlib
 					setJointLimits(joint, q_min, q_max, qd_max, tau_max);
 				}
 			}
-
-		};
+		}
 
 		Eigen::Vector3d getFramePosition(const JointState &q,
 										 const std::shared_ptr<Frame> origin,
 										 const std::shared_ptr<Frame> destination) override
 		{
 			return Eigen::Vector3d().setZero();
-		};
+		}
 
 		Eigen::Matrix3d getFrameOrientation(const JointState &q,
 											const std::shared_ptr<Frame> origin,
 											const std::shared_ptr<Frame> destination) override
 		{
 			return Eigen::Matrix3d().setZero();
-		};
+		}
 
 		Eigen::Matrix4d getFramePose(const JointState &q,
 									 const std::shared_ptr<Frame> origin,
@@ -167,19 +170,19 @@ namespace robotlib
 			frame_pose.row(3) << 0, 0, 0, 1;
 
 			return frame_pose;
-		};
+		}
 
 		Eigen::Vector3d getFootPosition(const JointState &q,
 										const std::shared_ptr<Frame> foot) override
 		{
 			return this->getFramePosition(q, this->getLink("TRUNK"), foot);
-		};
+		}
 
 		Eigen::Matrix3d getFootOrientation(const JointState &q,
 										   const std::shared_ptr<Frame> foot) override
 		{
 			return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
-		};
+		}
 
 		Eigen::Matrix4d getFootPose(const JointState &q,
 									const std::shared_ptr<Frame> foot) override
@@ -192,20 +195,20 @@ namespace robotlib
 			foot_pose.row(3) << 0, 0, 0, 1;
 
 			return foot_pose;
-		};
+		}
 
 		void getFootPosition(const JointState &q,
 							 const std::shared_ptr<LimbBase> leg,
 							 Eigen::Vector3d &footPos)
 		{
 			footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
-		};
+		}
 
 		Eigen::Matrix3d getFootOrientation(const JointState &q,
 										   const std::shared_ptr<LimbBase> leg) override
 		{
 			return this->getFrameOrientation(q, this->getLink("TRUNK"), leg->getEndEffector());
-		};
+		}
 
 		Eigen::Matrix4d getFootPose(const JointState &q,
 									const std::shared_ptr<LimbBase> leg) override
@@ -218,20 +221,20 @@ namespace robotlib
 			foot_pose.row(3) << 0, 0, 0, 1;
 
 			return foot_pose;
-		};
+		}
 
 		virtual void getFootJacobian(const JointState &q,
 									 const std::shared_ptr<LimbBase> leg,
 									 Jacobian &footJac)
 		{
 			footJac.setZero();
-		};
+		}
 
 		virtual void updateLinearJacobian(const JointState &joints_positions,
 										  LegDataMap<Jacobian> &robot_jacobian)
 		{
 			std::cout << "Update Linear Jacobian" << std::endl;
-		};
+		}
 
 		LegDataMap<std::shared_ptr<Frame>> getFeet() override
 		{
@@ -243,7 +246,7 @@ namespace robotlib
 			}
 
 			return feet;
-		};
+		}
 
 		void forwardKinematics(const JointState &joint_position,
 							   const JointState &joint_velocity,
@@ -253,7 +256,7 @@ namespace robotlib
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
 		{
 			std::cout << "Forward Kinematics" << std::endl;
-		};
+		}
 
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
@@ -263,7 +266,7 @@ namespace robotlib
 							   JointState &joint_acceleration) override
 		{
 			std::cout << "Inverse Kinematics" << std::endl;
-		};
+		}
 
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
 							 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
@@ -285,7 +288,7 @@ namespace robotlib
         double getTrunkMass() const override
 		{
 			return 0;
-		};
+		}
 
 		double getLegsMass() const override
 		{
@@ -299,21 +302,21 @@ namespace robotlib
 			std::cout << "Get whole body COM 2" << std::endl;
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
-		};
+		}
 
 		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
 		{
 			std::cout << "Get whole body COM 1" << std::endl;
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
-		};
+		}
 
         Eigen::Vector3d getLegContribution(const JointState &q) override
 		{
 			std::cout << "Get leg contribution" << std::endl;
 
 			return Eigen::Vector3d::Zero();
-		};
+		}
 
 		Eigen::Vector3d getCoMFromBase(const JointState & q,
 									   const Eigen::Vector3d & base_orient,
@@ -322,7 +325,7 @@ namespace robotlib
 			std::cout << "Get COM from base" << std::endl;
 
 			return Eigen::Vector3d::Zero();
-		};
+		}
 
         Eigen::Vector3d getBaseFromCoM(const JointState & q,
                                        const Eigen::Vector3d & base_orient,
@@ -331,7 +334,7 @@ namespace robotlib
 			std::cout << "Get base from COM" << std::endl;
 
 			return Eigen::Vector3d::Zero();
-		};
+		}
 
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState & q,
                                                        		   const JointState & qd) override
@@ -339,7 +342,7 @@ namespace robotlib
 			std::cout << "Get whole body COM vel" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();		
-		};
+		}
 
         Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                  const Eigen::Matrix3d & rotationMx,
@@ -349,15 +352,13 @@ namespace robotlib
 			std::cout << "Get whole body COM vel FB" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
-		};
+		}
 
-		void setInvKinTimePeriod(const double& period)
-		{};
+		void setInvKinTimePeriod(const double& period){}
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";};
+		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";}
 
-		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";};
-		 
+		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";}
 	};
 } // namespace robotlib
 
@@ -391,6 +392,4 @@ extern "C" std::shared_ptr<robotlib::RobotBase> createRobot_t()
 	return std::make_shared<robotlib::DummyQuadruped>(trunk, legs, arms);
 }
 
-extern "C" void destroyRobot_t(std::shared_ptr<robotlib::RobotBase> robot)
-{
-}
+extern "C" void destroyRobot_t(std::shared_ptr<robotlib::RobotBase> robot){}

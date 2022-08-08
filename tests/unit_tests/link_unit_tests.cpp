@@ -56,7 +56,7 @@ TEST(LinkUnitTests, getName)
                                                                  {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
                                                                  {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
                                                                  {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}}};
-          unsigned int i{0}, j{0};
+          unsigned int i {0}, j {0};
           for (auto leg : *(dummy_quadruped->getLegs()))
           {
                for (auto leg_link : *(leg->getLinks()))
