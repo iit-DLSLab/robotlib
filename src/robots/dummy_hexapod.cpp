@@ -291,6 +291,14 @@ namespace robotlib
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
 
+		void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                        const JointState &joint_position,
+                                        Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                        JointState &tau_joints)              ///output
+		{
+			std::cout << "Gravity compensation" << std::endl;
+		}
+
 		double getRobotMass() const override
 		{
 			return 0;

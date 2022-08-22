@@ -761,6 +761,23 @@ namespace robotlib
                                      const JointState &joint_acceleration,
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
+        
+        /**
+        * @brief Function to compute gravity terms.
+        * 
+        * Instead of using the inverseDynamics function, you can use this function to compute gravity terms. In this way you can define an optimized * version of their computation, avoiding unnecessary computational cost provided by the inverse dynamics function
+        * 
+        * @param[in] gravity_vector gravity vector
+        * @param[in] joint_position joint angle
+        * @param[out] wrench_base wrench of the base
+        * @param[out] tau_joints tau of each joint
+        * 
+        * \remark{NOT REAL TIME / REAL TIME depending on glue code}
+        */
+        virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                      const JointState &joint_position,
+                                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                                      JointState &tau_joints) = 0;              ///output
 
         // ** GET FUNCTIONS **
 
