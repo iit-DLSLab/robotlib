@@ -40,7 +40,7 @@ namespace robotlib
 		 * @brief Get the mass of the robot
 		 * @return const double
 		 */
-		const double getMass() const;
+		double getMass() const;
 		/**
 		 * @brief Get the inertia of the robot
 		 * @return const Eigen::Matrix3d

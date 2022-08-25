@@ -28,10 +28,10 @@ namespace robotlib
         // ** GET FUNCTIONS **
         const std::string getName() const;
 
-        virtual const int getNLEGS() const = 0;
-        virtual const int getNARMS() const = 0;
-        virtual const int getNJOINTS() const = 0;
-        virtual const int getNLINKS() const = 0;
+        virtual int getNLEGS() const = 0;
+        virtual int getNARMS() const = 0;
+        virtual int getNJOINTS() const = 0;
+        virtual int getNLINKS() const = 0;
 
         // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
 

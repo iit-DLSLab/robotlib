@@ -40,19 +40,19 @@ namespace robotlib
         // }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() const 
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() const 
         {
                 return NLEGS;
         };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() const  { return NARMS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() const  { return NARMS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() const  { return NJOINTS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() const  { return NJOINTS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const  { return NLINKS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const  { return NLINKS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name) const

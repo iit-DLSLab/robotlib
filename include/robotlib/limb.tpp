@@ -25,10 +25,10 @@ namespace robotlib
     Limb<NJOINTS, NLINKS>::~Limb(){};
 
     template <unsigned int NJOINTS, unsigned int NLINKS>
-    const int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
+    int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
 
     template <unsigned int NJOINTS, unsigned int NLINKS>
-    const int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_->size(); };
+    int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_->size(); };
 
     template <unsigned int NJOINTS, unsigned int NLINKS>
     const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name) const

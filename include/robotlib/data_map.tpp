@@ -3,6 +3,7 @@
 
 #include "data_map.hpp"
 #include <assert.h>
+#include <iostream>
 
 namespace robotlib
 {
@@ -47,7 +48,8 @@ namespace robotlib
                 return pair.data_;
             }
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     template <class Key, class Data>
     const Data& DataMap<Key, Data>::operator[](const std::shared_ptr<Key> key) const // q: shared_ptr or & ?
@@ -57,7 +59,8 @@ namespace robotlib
             if (pair.key_->getName().compare(key->getName()) == 0)
                 return pair.data_;
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     template <class Key, class Data>
     Data& DataMap<Key, Data>::operator[](const std::string &key_name)
@@ -67,7 +70,8 @@ namespace robotlib
             if (pair.key_->getName().compare(key_name) == 0)
                 return pair.data_;
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     template <class Key, class Data>
     const Data& DataMap<Key, Data>::operator[](const std::string &key_name) const
@@ -77,7 +81,8 @@ namespace robotlib
             if (pair.key_->getName().compare(key_name) == 0)
                 return pair.data_;
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     template <class Key, class Data>
     void DataMap<Key, Data>::copydata(const DataMap &rhs)
@@ -118,9 +123,9 @@ namespace robotlib
     }
 
     template <class Key, class Data>
-    const int DataMap<Key, Data>::getSize() const { 
+    int DataMap<Key, Data>::getSize() const { 
         return num_data_;
-    };
+    }
 
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const int num_data) : num_data_(num_data)

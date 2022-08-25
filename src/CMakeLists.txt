@@ -9,6 +9,7 @@ add_library(robotlib
     robot_base.cpp
     joint_state.cpp
     jacobian.cpp
+    data_map.cpp
 )
 
 target_link_libraries(robotlib PRIVATE)
@@ -33,7 +34,7 @@ install(
 	DIRECTORY
 		${PROJECT_SOURCE_DIR}/include/
 	DESTINATION
-		${ROBOTLIB_INSTALL_HEADERS_DIR}/${CMAKE_PROJECT_NAME}
+		/usr/include
 	COMPONENT
 		"robotlib"
 	FILES_MATCHING

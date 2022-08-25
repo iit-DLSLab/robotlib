@@ -37,12 +37,12 @@ namespace robotlib
        * @brief Get the number of joints of the Limb
        * @return const int
        */
-      virtual const int getNJoints() const override;
+      virtual int getNJoints() const override;
       /**
        * @brief Get the number of links of the Limb
        * @return const int
        */
-      virtual const int getNLinks() const override;
+      virtual int getNLinks() const override;
       /**
        * @brief Get the Joint object associated to the name
        * @param name name of the Joint object that is returned

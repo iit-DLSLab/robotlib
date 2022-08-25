@@ -41,13 +41,13 @@ TEST(LimbUnitTests, getName)
     std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints;
     std::array<std::shared_ptr<robotlib::Link>, NLINKS> links;
 
-    for (int i = 0; i < NJOINTS; ++i)
+    for (unsigned int i = 0; i < NJOINTS; ++i)
     {
         std::string name{"joint_" + std::to_string(i)};
         joint_names.push_back(name);
         joints[i] = std::make_shared<robotlib::Joint>(name);
     }
-    for (int i = 0; i < NLINKS; ++i)
+    for (unsigned int i = 0; i < NLINKS; ++i)
     {
         std::string name{"link_" + std::to_string(i)};
         link_names.push_back(name);

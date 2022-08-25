@@ -2,10 +2,22 @@
 #define _ROBOTLIB_DATA_MAP_HPP_
 
 #include "utils.hpp"
+#include "limb_base.hpp"
 
 namespace robotlib
 {
+    class RobotBase;
 
+    class DataHelper
+    {
+    public:
+        friend class RobotBase;
+
+        static int getRobotNumLinks(RobotBase *);
+        static int getRobotNumJoints(RobotBase *);
+        static const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs(RobotBase *);
+    };
+    
     template <class Key, class Data>
     class DataMap
     {
@@ -32,6 +44,8 @@ namespace robotlib
             Pair(const std::shared_ptr<Key> key, const Data &data) : key_(key), data_(data){};
             Pair(){};
         };
+    
+        int getRobotNumLinks(RobotBase *);
 
     public:
         friend class RobotBase;
@@ -58,7 +72,7 @@ namespace robotlib
 
         virtual DataMap &operator=(const Data &defaultValue);
 
-        virtual const int getSize() const;
+        virtual int getSize() const;
 
     protected:
         DataMap(const int num_data);

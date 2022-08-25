@@ -21,7 +21,7 @@ namespace robotlib
         JointState &operator=(const JointState &other);
 
         void setZero();
-        const int size() const;
+        int size() const;
 
         /**
          * @brief Return the max value of the joint state

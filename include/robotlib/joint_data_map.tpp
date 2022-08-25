@@ -2,18 +2,19 @@
 #define _ROBOTLIB_JOINT_DATA_MAP_TPP_
 
 #include "joint_data_map.hpp"
+#include "data_map.hpp"
 
 namespace robotlib
 {
     template <class Data>
-    JointDataMap<Data>::~JointDataMap(){};
+    JointDataMap<Data>::~JointDataMap(){}
 
     template <class Data>
-    JointDataMap<Data>::JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
+    JointDataMap<Data>::JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
 
-        for (auto leg : *(robot->getLegs()))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto key : *(leg->getJoints()))
             {
@@ -24,11 +25,11 @@ namespace robotlib
     }
      
     template <class Data> 
-    JointDataMap<Data>::JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(robot->getNJOINTS())
+    JointDataMap<Data>::JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
 
-        for (auto leg : *(robot->getLegs()))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto key : *(leg->getJoints()))
             {

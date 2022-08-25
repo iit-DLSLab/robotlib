@@ -19,7 +19,8 @@ namespace robotlib
                 }
             }
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     const double& JointState::operator[](const std::shared_ptr<Joint> joint) const
     {
@@ -33,7 +34,8 @@ namespace robotlib
                 }
             }
         }
-    };
+        throw std::range_error("key not found");
+    }
 
     JointState& JointState::operator=(const double data)
     {
@@ -61,7 +63,7 @@ namespace robotlib
         *this = 0; 
     }
 
-    const int JointState::size() const
+    int JointState::size() const
     {
         auto size{0};
 
