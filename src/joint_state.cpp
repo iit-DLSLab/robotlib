@@ -168,6 +168,24 @@ namespace robotlib
     JointState::~JointState(){}
 
     JointState::JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) : LegDataMap<std::shared_ptr<JointDataMap<double>>>(legs){}
+
+    JointState::operator std::vector<double>() const
+    {
+        std::vector<double> msg;
+
+        msg.resize(this->size());
+
+        int i = 0;
+        for (auto &leg_pair : *this)
+        {
+            for (auto &joint_pair : *leg_pair.data_)
+            {
+                msg[i++] = joint_pair.data_;
+            }
+        }
+
+        return msg;
+    }
 }
 
 #endif //_ROBOTLIB_JOINT_STATE_CPP_

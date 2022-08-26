@@ -2,10 +2,12 @@
 #define _ROBOTLIB_JOINT_STATE_HPP_
 
 #include <memory>
+#include <vector>
 
 #include "leg_data_map.hpp"
 #include "joint_data_map.hpp"
 #include "joint.hpp"
+#include <Eigen/Dense>
 
 namespace robotlib
 {
@@ -19,6 +21,10 @@ namespace robotlib
         const double &operator[](const std::shared_ptr<Joint> joint) const;
         JointState &operator=(const double data);
         JointState &operator=(const JointState &other);
+
+        operator std::vector<double>() const;
+
+        JointState &operator<< (double);
 
         void setZero();
         int size() const;
