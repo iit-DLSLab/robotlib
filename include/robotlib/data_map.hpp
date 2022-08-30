@@ -21,12 +21,14 @@ namespace robotlib
     template <class Key, class Data>
     class DataMap
     {
+    friend class JointState;
     private:
         class Pair
         {
         public:
             friend class RobotBase;
             friend class DataMap;
+            friend class JointState;
 
             virtual Pair &operator=(const Pair &rhs)
             {
@@ -68,7 +70,7 @@ namespace robotlib
 
         virtual void assignAll(const Data &value);
 
-        virtual DataMap &operator=(const DataMap &rhs);
+        // virtual DataMap &operator=(const DataMap &rhs);
 
         virtual DataMap &operator=(const Data &defaultValue);
 

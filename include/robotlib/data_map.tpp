@@ -105,15 +105,15 @@ namespace robotlib
         }
     }
 
-    template <class Key, class Data>    
-    DataMap<Key, Data>& DataMap<Key, Data>::operator=(const DataMap<Key, Data> &rhs)
-    {
-        if (&rhs != this)
-        {
-            copydata(rhs);
-        }
-        return *this;
-    }
+    // template <class Key, class Data>    
+    // DataMap<Key, Data>& DataMap<Key, Data>::operator=(const DataMap<Key, Data> &rhs)
+    // {
+    //     if (&rhs != this)
+    //     {
+    //         copydata(rhs);
+    //     }
+    //     return *this;
+    // }
 
     template <class Key, class Data>
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &defaultValue)

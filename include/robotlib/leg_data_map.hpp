@@ -21,6 +21,7 @@ namespace robotlib
 
         LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs); //TODO: remove it, leave only the constructor with data
         LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const Data &data);
+        LegDataMap(std::shared_ptr<LegDataMap<Data>>);
     };
 }
 

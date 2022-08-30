@@ -24,6 +24,16 @@ namespace robotlib
     }
 
     template <class Data>
+    LegDataMap<Data>::LegDataMap(std::shared_ptr<LegDataMap<Data>> dataMap) : DataMap<LimbBase, Data>(dataMap->getSize())
+    {
+        int count_data = 0;
+        for (auto &data_pair : *dataMap)
+        {
+            this->data_[count_data++] = this->createPair(data_pair.key_, Data());
+        }
+    }
+
+    template <class Data>
     LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) : DataMap<LimbBase, Data>(legs->size()) //TODO: remove it, leave only the constructor with data
     {
         int count_data = 0;

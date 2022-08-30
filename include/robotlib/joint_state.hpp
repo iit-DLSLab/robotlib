@@ -20,11 +20,20 @@ namespace robotlib
         double &operator[](const std::shared_ptr<Joint> joint);
         const double &operator[](const std::shared_ptr<Joint> joint) const;
         JointState &operator=(const double data);
-        JointState &operator=(const JointState &other);
+        JointState &operator=(const std::vector<double> data);
+        // JointState &operator=(const JointState &other);
+
+        JointState operator+(const JointState &other);
+        JointState &operator+=(const JointState &other);
+        JointState operator-(const JointState &other);
+        JointState &operator-=(const JointState &other);
 
         operator std::vector<double>() const;
 
         JointState &operator<< (double);
+        JointState &operator, (double);
+
+        Eigen::VectorXd vec_();
 
         void setZero();
         int size() const;
@@ -47,12 +56,17 @@ namespace robotlib
         const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const;
 
         ~JointState();
+        JointState(std::shared_ptr<JointState>);
 
     private:
 
         JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs);
+        
+        Iterator<DataMap<Joint, double>::Pair> jointIt;
     };
 
 } //namespace robotlib
+
+robotlib::JointState operator*(const double&, const robotlib::JointState&);
 
 #endif //_ROBOTLIB_JOINT_STATE_HPP_
