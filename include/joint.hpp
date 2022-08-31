@@ -56,22 +56,22 @@ namespace robotlib
 		 * @brief Get the Joint minimum angle
 		 * @return const double
 		 */
-		const double getMinAngle() const;
+		double getMinAngle() const;
 		/**
 		 * @brief Get the Joint maximum angle
 		 * @return const double
 		 */
-		const double getMaxAngle() const;
+		double getMaxAngle() const;
 		/**
 		 * @brief Get the Joint limit velocity
 		 * @return const double
 		 */
-		const double getMaxVelocity() const;
+		double getMaxVelocity() const;
 		/**
 		 * @brief Get the Joint limit effort
 		 * @return const double
 		 */
-		const double getMaxEffort() const;
+		double getMaxEffort() const;
 
 
 	private:
