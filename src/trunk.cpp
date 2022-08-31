@@ -24,7 +24,7 @@ namespace robotlib
 
 	const Eigen::Vector3d & Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
 
-	const double Trunk::getMass() const { return dynamic_parameters_.getMass(); }
+	double Trunk::getMass() const { return dynamic_parameters_.getMass(); }
 	
 	const Eigen::Matrix3d &Trunk::getInertia() const {return dynamic_parameters_.getInertia(); }
 

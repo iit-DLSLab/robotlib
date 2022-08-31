@@ -24,10 +24,10 @@ namespace robotlib
 	void Joint::setParent(const std::shared_ptr<Link> parent) { parent_ = parent; }
 	void Joint::setChild(const std::shared_ptr<Link> child) { child_ = child; }
 
-	const double Joint::getMinAngle() const {return q_min_;}
-	const double Joint::getMaxAngle() const {return q_max_;}
-	const double Joint::getMaxVelocity() const {return qd_max_;}
-	const double Joint::getMaxEffort() const {return tau_max_;}
+	double Joint::getMinAngle() const {return q_min_;}
+	double Joint::getMaxAngle() const {return q_max_;}
+	double Joint::getMaxVelocity() const {return qd_max_;}
+	double Joint::getMaxEffort() const {return tau_max_;}
 
 	void Joint::setMinAngle(const double q_min) {q_min_ = q_min;}
 	void Joint::setMaxAngle(const double q_max) {q_max_ = q_max;}
