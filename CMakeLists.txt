@@ -6,7 +6,7 @@ set(MAJOR 0)
 set(MINOR 0)
 set(PATCH 0)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage -pthread")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 #used only for issues with #include <experimental/filesystem>
 #TODO: delete it once dls images are updated with Ubuntu20 (and gcc version > 8)
