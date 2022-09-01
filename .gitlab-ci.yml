@@ -32,7 +32,8 @@ build:
     - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
     - mkdir build
     - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Debug ..
+    # Enable gcov/lcov from command line
+    - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
     - make -j$(nproc) install
     - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
