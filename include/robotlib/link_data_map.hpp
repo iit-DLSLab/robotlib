@@ -15,8 +15,8 @@ namespace robotlib
         ~LinkDataMap();
 
     private:
-        LinkDataMap(RobotBase *robot);
-        LinkDataMap(RobotBase *robot, const Data &data);
+        LinkDataMap(const std::shared_ptr<RobotBase>);
+        LinkDataMap(const std::shared_ptr<RobotBase>, const std::shared_ptr<Data>);
     };
 }
 

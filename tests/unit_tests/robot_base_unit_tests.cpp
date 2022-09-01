@@ -462,7 +462,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fp : footPos)
     {
-        std::cout << fp.key_->getName() << " " << fp.data_.transpose() << std::endl;
+        std::cout << fp.key_->getName() << " " << fp.data_->transpose() << std::endl;
     }
 
     /// LegDataMap Copy
@@ -481,7 +481,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpCopy : footPosCopy)
     {
-        std::cout << fpCopy.key_->getName() << " " << fpCopy.data_.transpose() << std::endl;
+        std::cout << fpCopy.key_->getName() << " " << fpCopy.data_->transpose() << std::endl;
     }
 
     /// LegDataMap Copy AssignAll
@@ -495,7 +495,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpAssign : footPosAssign)
     {
-        std::cout << fpAssign.key_->getName() << " " << fpAssign.data_.transpose() << std::endl;
+        std::cout << fpAssign.key_->getName() << " " << fpAssign.data_->transpose() << std::endl;
     }
 
     // TODO: Const
@@ -712,7 +712,7 @@ TEST(RobotBaseUnitTests, LinkDataMap)
     }
     for (auto pos : linkPos)
     {
-        std::cout << pos.data_.transpose() << std::endl;
+        std::cout << pos.data_->transpose() << std::endl;
     }
 }
 
@@ -742,7 +742,7 @@ TEST(RobotBaseUnitTests, JointDataMap)
     }
     for (auto pos : jointPos)
     {
-        std::cout << pos.data_.transpose() << std::endl;
+        std::cout << pos.data_->transpose() << std::endl;
     }
 }
 
@@ -862,9 +862,9 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
-    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
-    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
+    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(std::make_shared<double>(data));
+    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(std::make_shared<double>(data));
+    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(std::make_shared<double>(data));
     auto jacobian_dm = dummy_quadruped->makeFeetJacobian(data_double);
 
     std::cout << "leg_dm\n";
@@ -935,11 +935,11 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
         // using Type = Eigen::Vector3d;
         // Type value{0, 0, 0};
 
-        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
+        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, std::shared_ptr<Type>(&value));
 
         for (auto pair : joint_dm_per_leg_default_data)
         {
-            EXPECT_EQ(pair.data_, value);
+            EXPECT_EQ(*(pair.data_), value);
         }
     }
 }
@@ -962,7 +962,7 @@ TEST(RobotBaseUnitTests, getLegJointState)
         auto joint_state_per_leg = joint_state.getLegJointState(leg); //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
 
         int it = 0;
-        for (auto pair : *joint_state_per_leg)
+        for (auto pair : joint_state_per_leg)
         {
             EXPECT_EQ(joint_names_gt[it], pair.key_->getName());
             it++;

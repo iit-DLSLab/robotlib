@@ -11,17 +11,21 @@
 
 namespace robotlib
 {
-    class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>>
+    class JointState : public LegDataMap<JointDataMap<double>>
     {
-    public:
         friend class RobotBase;
-        using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
+
+    public:
+
+        JointState(const JointState&);
+        ~JointState();
+
+        using LegDataMap<JointDataMap<double>>::operator[];
 
         double &operator[](const std::shared_ptr<Joint> joint);
         const double &operator[](const std::shared_ptr<Joint> joint) const;
         JointState &operator=(const double data);
         JointState &operator=(const std::vector<double> data);
-        // JointState &operator=(const JointState &other);
 
         JointState operator+(const JointState &other);
         JointState &operator+=(const JointState &other);
@@ -52,15 +56,13 @@ namespace robotlib
 
         void print();
 
-        std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg);
-        const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const;
-
-        ~JointState();
-        JointState(std::shared_ptr<JointState>);
+        JointDataMap<double>& getLegJointState(const std::shared_ptr<LimbBase> leg);
+        const JointDataMap<double>& getLegJointState(const std::shared_ptr<LimbBase> leg) const;
 
     private:
 
-        JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs);
+        JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>>);
+        JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>>, double);
         
         Iterator<DataMap<Joint, double>::Pair> jointIt;
     };

@@ -11,18 +11,18 @@ namespace robotlib
     template <class Data>
     class JointDataMap : public DataMap<Joint, Data>
     {
+        friend class RobotBase;
+        friend class JointState;
     public:
         using DataMap<Joint, Data>::operator=;
-        friend class RobotBase;
-
+        JointDataMap(const JointDataMap&);
         ~JointDataMap();
 
     private:
-        JointDataMap(RobotBase *robot);
-        JointDataMap(RobotBase *robot, const Data &data);
+        JointDataMap(std::shared_ptr<RobotBase> robot);
+        JointDataMap(std::shared_ptr<RobotBase> robot, const std::shared_ptr<Data> data);
         JointDataMap(const std::shared_ptr<LimbBase> leg);
-        JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data);
-        JointDataMap();
+        JointDataMap(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data);
     };
 }
 

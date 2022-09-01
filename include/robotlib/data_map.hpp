@@ -13,9 +13,9 @@ namespace robotlib
     public:
         friend class RobotBase;
 
-        static int getRobotNumLinks(RobotBase *);
-        static int getRobotNumJoints(RobotBase *);
-        static const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs(RobotBase *);
+        static int getRobotNumLinks(std::shared_ptr<RobotBase>);
+        static int getRobotNumJoints(std::shared_ptr<RobotBase>);
+        static const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs(std::shared_ptr<RobotBase>);
     };
     
     template <class Key, class Data>
@@ -38,12 +38,12 @@ namespace robotlib
             }
 
             std::shared_ptr<Key> key_;
-            Data data_;
+            std::shared_ptr<Data> data_;
 
             ~Pair(){};
 
         private:
-            Pair(const std::shared_ptr<Key> key, const Data &data) : key_(key), data_(data){};
+            Pair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) : key_(key), data_(data){};
             Pair(){};
         };
     
@@ -52,6 +52,7 @@ namespace robotlib
     public:
         friend class RobotBase;
         virtual ~DataMap();
+        // DataMap (const DataMap&);
 
         virtual Iterator<Pair> begin();
         virtual Iterator<Pair> end();
@@ -70,7 +71,7 @@ namespace robotlib
 
         virtual void assignAll(const Data &value);
 
-        // virtual DataMap &operator=(const DataMap &rhs);
+        virtual DataMap &operator=(const DataMap &rhs);
 
         virtual DataMap &operator=(const Data &defaultValue);
 
@@ -82,11 +83,11 @@ namespace robotlib
 
         virtual void init(const DataMap &data);
 
-        const Pair createPair(const std::shared_ptr<Key> key, const Data &data) const; //shared_pointers?}
-        Pair createPair(const std::shared_ptr<Key> key, const Data &data); //shared_pointers?}
+        const Pair createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) const; //shared_pointers?}
+        Pair createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data); //shared_pointers?}
 
         int num_data_;
-        Pair *data_;
+        Pair *data_array_;
     };
 }
 

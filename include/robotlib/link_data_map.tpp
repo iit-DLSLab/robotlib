@@ -9,29 +9,27 @@ namespace robotlib
     LinkDataMap<Data>::~LinkDataMap(){}
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
+    LinkDataMap<Data>::LinkDataMap(std::shared_ptr<RobotBase> robot) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
         for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto key : *(leg->getLinks()))
             {
-                this->data_[count_data] = this->createPair(key, Data());
-                count_data++;
+                this->data_array_[count_data++] = this->createPair(key, nullptr);
             }
         }
     }
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(RobotBase *robot, const Data &data) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
+    LinkDataMap<Data>::LinkDataMap(std::shared_ptr<RobotBase> robot, const std::shared_ptr<Data> data) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
         for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto key : *(leg->getLinks()))
             {
-                this->data_[count_data] = this->createPair(key, data);
-                count_data++;
+                this->data_array_[count_data++] = this->createPair(key, data);
             }
         }
     }

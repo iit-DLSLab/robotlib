@@ -11,31 +11,31 @@ namespace robotlib
     template <class Key, class Data>
     DataMap<Key, Data>::~DataMap()
     {
-        delete[] data_;
+        delete[] data_array_;
     }
 
     template <class Key, class Data>
     Iterator<typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::begin() 
     { 
-        return Iterator<Pair>(&data_[0]);
+        return Iterator<Pair>(&data_array_[0]);
     }
     
     template <class Key, class Data>
     Iterator<typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::end()
     { 
-        return Iterator<Pair>(&data_[num_data_]);
+        return Iterator<Pair>(&data_array_[num_data_]);
     }
 
     template <class Key, class Data>
     Iterator<const typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::begin() const 
     { 
-        return Iterator<const Pair>(&data_[0]); 
+        return Iterator<const Pair>(&data_array_[0]); 
     }
         
     template <class Key, class Data>
     Iterator<const typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::end() const 
     { 
-        return Iterator<const Pair>(&data_[num_data_]); 
+        return Iterator<const Pair>(&data_array_[num_data_]); 
     }
 
     template <class Key, class Data>
@@ -45,7 +45,7 @@ namespace robotlib
         {
             if (pair.key_->getName().compare(key->getName()) == 0)
             {
-                return pair.data_;
+                return *pair.data_;
             }
         }
         throw std::range_error("key not found");
@@ -57,7 +57,7 @@ namespace robotlib
         for (auto &pair : *this)
         {
             if (pair.key_->getName().compare(key->getName()) == 0)
-                return pair.data_;
+                return *pair.data_;
         }
         throw std::range_error("key not found");
     }
@@ -68,7 +68,7 @@ namespace robotlib
         for (Pair &pair : *this)
         {
             if (pair.key_->getName().compare(key_name) == 0)
-                return pair.data_;
+                return *pair.data_;
         }
         throw std::range_error("key not found");
     }
@@ -79,7 +79,7 @@ namespace robotlib
         for (auto &pair : *this)
         {
             if (pair.key_->getName().compare(key_name) == 0)
-                return pair.data_;
+                return *pair.data_;
         }
         throw std::range_error("key not found");
     }
@@ -91,8 +91,8 @@ namespace robotlib
 
         for (auto i{0}; i < num_data_; i++)
         {
-            data_[i].key_ = rhs.data_[i].key_;
-            data_[i].data_ = rhs.data_[i].data_;
+            data_array_[i].key_ = rhs.data_array_[i].key_;
+            data_array_[i].data_ = rhs.data_array_[i].data_;
         }
     }
 
@@ -101,19 +101,29 @@ namespace robotlib
     {
         for (auto i{0}; i < num_data_; i++)
         {
-            data_[i].data_ = value;
+            *(data_array_[i].data_) = value;
         }
     }
 
+    template <class Key, class Data>    
+    DataMap<Key, Data>& DataMap<Key, Data>::operator=(const DataMap<Key, Data> &rhs)
+    {
+        if (&rhs != this)
+        {
+            copydata(rhs);
+        }
+        return *this;
+    }
+
     // template <class Key, class Data>    
-    // DataMap<Key, Data>& DataMap<Key, Data>::operator=(const DataMap<Key, Data> &rhs)
+    // DataMap<Key, Data>::DataMap(const DataMap<Key, Data> &rhs)
     // {
     //     if (&rhs != this)
     //     {
     //         copydata(rhs);
     //     }
-    //     return *this;
     // }
+
 
     template <class Key, class Data>
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &defaultValue)
@@ -130,11 +140,11 @@ namespace robotlib
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const int num_data) : num_data_(num_data)
     {
-        this->data_ = new Pair[this->num_data_];
+        this->data_array_ = new Pair[this->num_data_];
     }
 
     template <class Key, class Data>
-    DataMap<Key, Data>::DataMap() : num_data_(0), data_(nullptr) //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
+    DataMap<Key, Data>::DataMap() : num_data_(0), data_array_(nullptr) //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
     {
     }
 
@@ -143,24 +153,24 @@ namespace robotlib
     {
         num_data_ = data.getSize();
 
-        if (data_ != nullptr)
+        if (data_array_ != nullptr)
         {
-            delete[] data_;
+            delete[] data_array_;
         }
 
-        data_ = new Pair[num_data_];
+        data_array_ = new Pair[num_data_];
 
         copydata(data);
     }
 
     template <class Key, class Data>
-    const typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data &data) const 
+    const typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) const 
     { 
         return Pair(key, data); 
     } //shared_pointers?}
     
     template <class Key, class Data>
-    typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data &data) 
+    typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) 
     { 
         return Pair(key, data); //shared_pointers?}
     }             

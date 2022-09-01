@@ -39,16 +39,8 @@ namespace robotlib
     // Create a joint state
     robotlib::JointState RobotBase::makeJointState(const double value) const
     {
-        robotlib::JointState joint_state(this->getLegs());
-
-        for (auto leg : *this->getLegs())
-        {
-            JointDataMap<double> *jdm;
-            jdm = new JointDataMap<double>(leg, value);
-            std::shared_ptr<JointDataMap<double>> ptr(jdm);
-            joint_state[leg] = ptr;
-        }
-
+        robotlib::JointState joint_state(this->getLegs(), value);
+        
         return joint_state;
     } // NRT
 

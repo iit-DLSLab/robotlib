@@ -14,35 +14,41 @@ namespace robotlib
 
     // Create a leg data map pair
     template <class Data>
-    LegDataMap<Data> RobotBase::makeLegDataMap(const Data &data) const
+    LegDataMap<Data> RobotBase::makeLegDataMap(const std::shared_ptr<Data> data) const
     { 
         return LegDataMap<Data>(this->getLegs(), data); 
     } // NRT
+
+    template <class Data>
+    LegDataMap<Data> RobotBase::makeLegDataMap(const Data &data) const
+    { 
+        return LegDataMap<Data>(this->getLegs(), std::make_shared<Data>(data)); 
+    }
 
     // Create a link data map pair
     template <class Data>
     LinkDataMap<Data> RobotBase::makeLinkDataMap() 
     { 
-        return LinkDataMap<Data>(this); 
+        return LinkDataMap<Data>(std::shared_ptr<RobotBase>(this)); 
     } // NRT
 
     template <class Data>
-    LinkDataMap<Data> RobotBase::makeLinkDataMap(const Data &data) 
+    LinkDataMap<Data> RobotBase::makeLinkDataMap(const std::shared_ptr<Data> data) 
     { 
-        return LinkDataMap<Data>(this, data); 
-    } // NRT
+        return LinkDataMap<Data>(std::shared_ptr<RobotBase>(this), data); 
+    }
 
     // Create a joint data map pair
     template <class Data>
     JointDataMap<Data> RobotBase::makeJointDataMap() 
     { 
-        return JointDataMap<Data>(this); 
+        return JointDataMap<Data>(std::shared_ptr<RobotBase>(this)); 
     } // NRT
 
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMap(const Data &data) 
+    JointDataMap<Data> RobotBase::makeJointDataMap(const std::shared_ptr<Data> data) 
     { 
-        return JointDataMap<Data>(this, data); 
+        return JointDataMap<Data>(std::shared_ptr<RobotBase>(this), data); 
     } // NRT
 
     // Create a joint data map pair
@@ -54,7 +60,7 @@ namespace robotlib
 
     // Create a joint data map pair
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) 
+    JointDataMap<Data> RobotBase::makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data) 
     { 
         return JointDataMap<Data>(leg, data); 
     } // NRT

@@ -9,13 +9,13 @@ namespace robotlib
 
     double& JointState::operator[](const std::shared_ptr<Joint> joint)
     {
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            for (auto joint_pair : *leg_pair.data_) //iterate over the JointDataMap
             {
                 if (joint_pair.key_->getName().compare(joint->getName()) == 0)
                 {
-                    return joint_pair.data_;
+                    return *(joint_pair.data_);
                 }
             }
         }
@@ -24,13 +24,13 @@ namespace robotlib
 
     const double& JointState::operator[](const std::shared_ptr<Joint> joint) const
     {
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            for (auto joint_pair : *leg_pair.data_) //iterate over the JointDataMap
             {
                 if (joint_pair.key_->getName().compare(joint->getName()) == 0)
                 {
-                    return joint_pair.data_;
+                    return *(joint_pair.data_);
                 }
             }
         }
@@ -49,37 +49,25 @@ namespace robotlib
     JointState& JointState::operator=(const std::vector<double> data)
     {
         int i = 0;
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                joint_pair.data_ = data[i++];
+                *(joint_pair.data_) = data[i++];
             }
         }
         return *this;
     }
 
-    // JointState& JointState::operator=(const JointState &other)
-    // {
-    //     for (auto &leg_pair : *this)
-    //     {
-    //         for(auto &joint_pair: *leg_pair.data_)
-    //         {   
-    //             joint_pair.data_ = other[joint_pair.key_];
-    //         }
-    //     }
-    //     return *this;
-    // }
-
     JointState JointState::operator-(const JointState &other)
     {
         JointState out(*this);
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                out[joint_pair.key_] = joint_pair.data_ - other[joint_pair.key_];
+                out[joint_pair.key_] = *(joint_pair.data_) - other[joint_pair.key_];
             }
         }
         return out;
@@ -87,11 +75,11 @@ namespace robotlib
 
     JointState &JointState::operator-=(const JointState &other)
     {
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                joint_pair.data_ -= other[joint_pair.key_];
+                *(joint_pair.data_) -= other[joint_pair.key_];
             }
         }
         return *this;
@@ -101,11 +89,11 @@ namespace robotlib
     {
         JointState out(*this);
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                out[joint_pair.key_] = joint_pair.data_ + other[joint_pair.key_];
+                out[joint_pair.key_] = *(joint_pair.data_) + other[joint_pair.key_];
             }
         }
         return out;
@@ -113,11 +101,11 @@ namespace robotlib
 
     JointState&JointState::operator+=(const JointState &other)
     {
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                joint_pair.data_ += other[joint_pair.key_];
+                *(joint_pair.data_) += other[joint_pair.key_];
             }
         }
         return *this;
@@ -125,10 +113,10 @@ namespace robotlib
 
     JointState& JointState::operator<< (double val)
     {
-        Iterator<DataMap<LimbBase, std::shared_ptr<JointDataMap<double>>>::Pair> legIt = this->begin();
+        auto legIt = this->begin();
         jointIt = legIt->data_->begin();
 
-        jointIt->data_ = val;
+        *(jointIt->data_) = val;
 
         return *this;
     }
@@ -155,7 +143,7 @@ namespace robotlib
                         }
                     }
                     jointIt = joint_pair;
-                    jointIt->data_ = val;
+                    *(jointIt->data_) = val;
 
                     return *this;
                 }
@@ -169,11 +157,11 @@ namespace robotlib
         Eigen::VectorXd out(this->size());
 
         int i = 0;
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            for(auto joint_pair: *leg_pair.data_)
             {   
-                out[i] = joint_pair.data_;
+                out[i++] = *(joint_pair.data_);
             }
         }
         return out;
@@ -188,9 +176,9 @@ namespace robotlib
     {
         auto size{0};
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            for (auto joint_pair : *leg_pair.data_) //iterate over the JointDataMap
             {
                 size++;
             }
@@ -208,11 +196,11 @@ namespace robotlib
         double max_value{0};
         bool first_val{true};
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            for (auto joint_pair : *leg_pair.data_) //iterate over the JointDataMap
             {
-                double value = joint_pair.data_;
+                double value = *(joint_pair.data_);
                 if (first_val==true)
                 {
                     max_value = value;
@@ -240,11 +228,11 @@ namespace robotlib
         double min_value{0};
         bool first_val{true};
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            for (auto joint_pair : *leg_pair.data_) //iterate over the JointDataMap
             {
-                double value = joint_pair.data_;
+                double value = *(joint_pair.data_);
                 if (first_val==true)
                 {
                     min_value = value;
@@ -267,21 +255,21 @@ namespace robotlib
         std::cout << "JointState [Name - Value]" << std::endl;
         std::cout << "-------------------------" << std::endl;
 
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_)
+            for (auto joint_pair : *leg_pair.data_)
             {
-                std::cout << joint_pair.key_->getName() << " - " << joint_pair.data_ << std::endl;
+                std::cout << joint_pair.key_->getName() << " - " << *(joint_pair.data_) << std::endl;
             }
         }
     }
 
-    std::shared_ptr<JointDataMap<double>>& JointState::getLegJointState(const std::shared_ptr<LimbBase> leg) 
+    JointDataMap<double>& JointState::getLegJointState(const std::shared_ptr<LimbBase> leg) 
     { 
         return (*this)[leg->getName()]; 
     }
 
-    const std::shared_ptr<JointDataMap<double>>& JointState::getLegJointState(const std::shared_ptr<LimbBase> leg) const 
+    const JointDataMap<double>& JointState::getLegJointState(const std::shared_ptr<LimbBase> leg) const 
     { 
         return (*this)[leg->getName()]; 
     }
@@ -289,51 +277,75 @@ namespace robotlib
     JointState::~JointState(){}
 
     JointState::JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) 
-        : LegDataMap<std::shared_ptr<JointDataMap<double>>>(legs)
-        , jointIt(nullptr)
-    {}
-
-    JointState::JointState(std::shared_ptr<JointState> dataMap) 
-        : LegDataMap<std::shared_ptr<JointDataMap<double>>>(dataMap)
+        : LegDataMap<JointDataMap<double>>(legs)
         , jointIt(nullptr)
     {
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for(auto &joint_pair: *leg_pair.data_)
+            leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+            for (auto i = 0; i < leg_pair.data_->getSize(); i++)
+            {
+                leg_pair.data_->data_array_[i].data_ = std::shared_ptr<double>(new double(0));
+            }
+        }
+    }
+
+    JointState::JointState(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, double val) 
+        : LegDataMap<JointDataMap<double>>(legs)
+        , jointIt(nullptr)
+    {
+        for (auto leg_pair : *this)
+        {
+            leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+            for (auto i = 0; i < leg_pair.data_->getSize(); i++)
+            {
+                leg_pair.data_->data_array_[i].data_ = std::shared_ptr<double>(new double(val));
+            }
+        }
+    }
+
+    JointState::JointState(const JointState &other)
+        : LegDataMap<JointDataMap<double>>(other)
+        , jointIt(nullptr)
+    {
+        for (auto leg_pair : *this)
+        {
+            leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+            for (auto i = 0; i < leg_pair.data_->getSize(); i++)
             {   
-                joint_pair.data_ = (*dataMap)[joint_pair.key_];
+                *(leg_pair.data_->data_array_[i].data_) = other[leg_pair.data_->data_array_[i].key_];
             }
         }
     }
 
     JointState::operator std::vector<double>() const
     {
-        std::vector<double> msg;
+        std::vector<double> out;
 
-        msg.resize(this->size());
+        out.resize(this->size());
 
         int i = 0;
-        for (auto &leg_pair : *this)
+        for (auto leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_)
+            for (auto joint_pair : *leg_pair.data_)
             {
-                msg[i++] = joint_pair.data_;
+                out[i++] = *(joint_pair.data_);
             }
         }
 
-        return msg;
+        return out;
     }
 }
 
-robotlib::JointState operator*(const double &esc, const robotlib::JointState &vec)
+robotlib::JointState operator*(const double &esc, const robotlib::JointState &state)
 {
-    robotlib::JointState out(vec);
+    robotlib::JointState out(state);
 
-    for (auto leg_pair : vec)
+    for (auto leg_pair : state)
     {
-        for(auto &joint_pair: *leg_pair.data_)
+        for(auto joint_pair: *leg_pair.data_)
         {   
-            out[joint_pair.key_] = esc * joint_pair.data_;
+            out[joint_pair.key_] = esc * *(joint_pair.data_);
         }
     }
     return out;

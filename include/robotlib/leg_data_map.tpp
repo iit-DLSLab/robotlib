@@ -24,32 +24,34 @@ namespace robotlib
     }
 
     template <class Data>
-    LegDataMap<Data>::LegDataMap(std::shared_ptr<LegDataMap<Data>> dataMap) : DataMap<LimbBase, Data>(dataMap->getSize())
-    {
-        int count_data = 0;
-        for (auto &data_pair : *dataMap)
-        {
-            this->data_[count_data++] = this->createPair(data_pair.key_, Data());
-        }
-    }
-
-    template <class Data>
-    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) : DataMap<LimbBase, Data>(legs->size()) //TODO: remove it, leave only the constructor with data
+    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) 
+        : DataMap<LimbBase, Data>(legs->size()) //TODO: remove it, leave only the constructor with data
     {
         int count_data = 0;
         for (auto key : *legs)
         {
-            this->data_[count_data++] = this->createPair(key, Data()); //shared_pointers?
+            this->data_array_[count_data++] = this->createPair(key, nullptr);
         }
     }
 
     template <class Data>
-    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const Data &data) : DataMap<LimbBase, Data>(legs->size())
+    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const std::shared_ptr<Data> data) : DataMap<LimbBase, Data>(legs->size())
     {
         int count_data = 0;
         for (auto key : *legs)
         {
-            this->data_[count_data++] = this->createPair(key, data);
+            this->data_array_[count_data++] = this->createPair(key, data);
+        }
+    }
+
+    template <class Data>
+    LegDataMap<Data>::LegDataMap(const LegDataMap &other)
+        : DataMap<LimbBase, Data>(other.getSize())
+    {
+        int count_data = 0;
+        for (auto pair: other)
+        {
+            this->data_array_[count_data++] = this->createPair(pair.key_, nullptr);
         }
     }
 }

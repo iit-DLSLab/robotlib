@@ -8,17 +8,17 @@
 
 namespace robotlib
 {
-    int DataHelper::getRobotNumLinks(RobotBase *pRobot)
+    int DataHelper::getRobotNumLinks(std::shared_ptr<RobotBase> pRobot)
     {
         return pRobot->getNLINKS();
     }
 
-    int DataHelper::getRobotNumJoints(RobotBase *pRobot)
+    int DataHelper::getRobotNumJoints(std::shared_ptr<RobotBase> pRobot)
     {
         return pRobot->getNJOINTS();
     }
 
-    const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> DataHelper::getLegs(RobotBase *pRobot)
+    const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> DataHelper::getLegs(std::shared_ptr<RobotBase> pRobot)
     {
         return pRobot->getLegs();
     }
