@@ -15,19 +15,27 @@ public:
 
     virtual const std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
     {
+        joint->getName();
+
         return "jointToChildName";
     };
     virtual const std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
     {
+        joint->getName();
+
         return "jointToParentName";
     };
 
     virtual const std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
     {
+        link->getName();
+
         return "linkToChildName";
     };
     virtual const std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
     {
+        link->getName();
+
         return "linkToParentName";
     };
 };
