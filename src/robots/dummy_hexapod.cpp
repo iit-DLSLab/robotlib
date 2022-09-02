@@ -161,6 +161,10 @@ namespace robotlib
 										 const std::shared_ptr<Frame> origin,
 										 const std::shared_ptr<Frame> destination) override
 		{
+        	q.size();
+			origin->getName();
+			destination->getName();
+
 			return Eigen::Vector3d().setZero();
 		}
 
@@ -168,6 +172,10 @@ namespace robotlib
 											const std::shared_ptr<Frame> origin,
 											const std::shared_ptr<Frame> destination) override
 		{
+        	q.size();
+			origin->getName();
+			destination->getName();
+
 			return Eigen::Matrix3d().setZero();
 		}
 
@@ -240,13 +248,17 @@ namespace robotlib
 									 const std::shared_ptr<LimbBase> leg,
 									 Jacobian &footJac)
 		{
+			q.size();
+			leg->getName();
+
 			footJac.setZero();
 		}
 
 		virtual void updateLinearJacobian(const JointState &joints_positions,
 										  LegDataMap<Jacobian> &robot_jacobian)
 		{
-			std::cout << "Update Linear Jacobian" << std::endl;
+			joints_positions.size();
+			robot_jacobian.getSize();
 		}
 
 		LegDataMap<std::shared_ptr<Frame>> getFeet() override
@@ -268,7 +280,12 @@ namespace robotlib
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
 							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
 		{
-			std::cout << "Forward Kinematics" << std::endl;
+			joint_position.size();
+			joint_velocity.size();
+			joint_acceleration.size();
+			end_effector_position.getSize();
+			end_effector_velocity.getSize();
+			end_effector_acceleration.getSize();
 		}
 
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
@@ -278,7 +295,12 @@ namespace robotlib
 							   JointState &joint_velocity,
 							   JointState &joint_acceleration) override
 		{
-			std::cout << "Inverse Kinematics" << std::endl;
+			end_effector_position.getSize();
+			end_effector_velocity.getSize();
+			end_effector_acceleration.getSize();
+			joint_position.size();
+			joint_velocity.size();
+			joint_acceleration.size();
 		}
 
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
@@ -290,22 +312,29 @@ namespace robotlib
 							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
 							 JointState &tau_joints) override		   ///output
 		{
-			std::cout << "Inverse Dynamics" << std::endl;
+			robot_velocity.size();
+			robot_acceleration.size();
+			gravity_vector.size();
+			joint_position.size();
+			joint_velocity.size();
+			joint_acceleration.size();
+			wrench_base.size();
+			tau_joints.size();
 		}
 
 		double getRobotMass() const override
 		{
-			return 0;
+			return 0.0;
 		}
 
         double getTrunkMass() const override
 		{
-			return 0;
+			return 0.0;
 		}
 
 		double getLegsMass() const override
 		{
-			return 0;
+			return 0.0;
 		}
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
@@ -319,14 +348,14 @@ namespace robotlib
 
 		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
 		{
-			std::cout << "Get whole body COM 1" << std::endl;
+			joint_state.size();
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		}
 
         Eigen::Vector3d getLegContribution(const JointState &q) override
 		{
-			std::cout << "Get leg contribution" << std::endl;
+			q.size();
 
 			return Eigen::Vector3d::Zero();
 		}
@@ -335,7 +364,9 @@ namespace robotlib
 									   const Eigen::Vector3d & base_orient,
 									   const Eigen::Vector3d & base_pos) override
 		{
-			std::cout << "Get COM from base" << std::endl;
+			q.size();
+			base_orient.size();
+			base_pos.size();
 
 			return Eigen::Vector3d::Zero();
 		}
@@ -344,34 +375,40 @@ namespace robotlib
                                        const Eigen::Vector3d & base_orient,
                                        const Eigen::Vector3d & CoM) override
 		{
-			std::cout << "Get base from COM" << std::endl;
+			q.size();
+			base_orient.size();
+			CoM.size();
 
 			return Eigen::Vector3d::Zero();
 		}
 
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState & q,
-                                                       		   const JointState & qd) override
+                                                       const JointState & qd) override
 		{
-			std::cout << "Get whole body COM vel" << std::endl;
+			q.size();
+			qd.size();
 
 			return Eigen::Matrix<double, 6, 1>::Zero();		
 		}
 
         Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                 const Eigen::Matrix3d & rotationMx,
-                                                                 const JointState & q,
-                                                                 const JointState & qd) override
+                                                         const Eigen::Matrix3d & rotationMx,
+                                                         const JointState & q,
+                                                         const JointState & qd) override
 		{
-			std::cout << "Get whole body COM vel FB" << std::endl;
+			baseVel.size();
+			rotationMx.size();
+			q.size();
+			qd.size();
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		}
 
-		void setInvKinTimePeriod(const double& period){}
+		void setInvKinTimePeriod(const double& period){ std::cout << period << std::endl; }
 
-		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) {std::cout << "TODO\n";}
+		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) { trunk_com.size(); }
 
-		virtual void setTrunkMass(const double& trunk_mass){std::cout << "TODO\n";}
+		virtual void setTrunkMass(const double& trunk_mass){ std::cout << trunk_mass << std::endl; }
 		 
 	};
 } // namespace robotlib
@@ -408,4 +445,4 @@ extern "C" std::shared_ptr<robotlib::RobotBase> createRobot_t()
 	return std::make_shared<robotlib::DummyHexapod>(trunk, legs, arms);
 }
 
-extern "C" void destroyRobot_t(std::shared_ptr<robotlib::RobotBase> robot){}
+extern "C" void destroyRobot_t(std::shared_ptr<robotlib::RobotBase> robot){ robot->getName(); }
