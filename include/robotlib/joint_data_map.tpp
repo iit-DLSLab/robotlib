@@ -14,9 +14,9 @@ namespace robotlib
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
+        for (auto &leg : *DataHelper::getLegs(robot))
         {
-            for (auto key : *(leg->getJoints()))
+            for (auto &key : *(leg->getJoints()))
             {
                 this->data_array_[count_data++] = this->createPair(key, nullptr);
             }
@@ -28,9 +28,9 @@ namespace robotlib
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
+        for (auto &leg : *DataHelper::getLegs(robot))
         {
-            for (auto key : *(leg->getJoints()))
+            for (auto &key : *(leg->getJoints()))
             {
                 this->data_array_[count_data++] = this->createPair(key, data);
             }
@@ -41,7 +41,7 @@ namespace robotlib
     JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
     {
         int count_data = 0;
-        for (auto key : *(leg->getJoints()))
+        for (auto &key : *(leg->getJoints()))
         { 
             this->data_array_[count_data++] = this->createPair(key, nullptr);
         }
@@ -51,7 +51,7 @@ namespace robotlib
     JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data) : DataMap<Joint, Data>(leg->getNJoints())
     {
         int count_data = 0;
-        for (auto key : *(leg->getJoints()))
+        for (auto &key : *(leg->getJoints()))
         {
             this->data_array_[count_data++] = this->createPair(key, data);
         }
@@ -62,7 +62,7 @@ namespace robotlib
         : DataMap<Joint, Data>(other.getSize())
     {
         int count_data = 0;
-        for (auto pair : other)
+        for (auto &pair : other)
         {
             this->data_array_[count_data++] = this->createPair(pair.key_, nullptr);
         }

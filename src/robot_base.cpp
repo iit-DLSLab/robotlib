@@ -74,6 +74,11 @@ namespace robotlib
     {
         auto feetJac = this->makeLegDataMap<Jacobian>();
 
+        for (auto &leg_pair : feetJac)
+        {
+            leg_pair.data_ = std::shared_ptr<Jacobian>(new Jacobian(leg_pair.key_->getNJoints()));
+        }
+
         for (auto leg : *(this->getLegs()))
         {
             feetJac[leg].init(leg->getNJoints(), data);
