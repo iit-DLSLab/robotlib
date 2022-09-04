@@ -449,6 +449,12 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+
+    for (auto &leg_pair : footPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     auto q = dummy_quadruped->makeJointState();
 
     for (auto leg : *(dummy_quadruped->getLegs()))
