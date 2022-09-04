@@ -3,7 +3,7 @@
 
 #include "utils.hpp"
 #include "limb_base.hpp"
-
+#include <iostream>
 namespace robotlib
 {
     class RobotBase;
