@@ -237,6 +237,12 @@ namespace robotlib
 		{
 			auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
 
+
+			for (auto &leg_pair : feet)
+			{
+				leg_pair.data_ = std::make_shared<std::shared_ptr<Frame>>();
+			}
+
 			for (auto leg : *(this->getLegs()))
 			{
 				feet[leg] = std::make_shared<Link>("link");

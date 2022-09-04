@@ -10,19 +10,21 @@ namespace robotlib
     class LegDataMap : public DataMap<LimbBase, Data>
     {
         friend class RobotBase;
-    public:
-        using DataMap<LimbBase, Data>::operator=;
-        ~LegDataMap();
-        LegDataMap(const LegDataMap&);
 
+    public:
+        LegDataMap(const LegDataMap&);
+        ~LegDataMap();
+        
+        LegDataMap<Data> &operator=(const LegDataMap<Data> &);
+        using DataMap<LimbBase, Data>::operator=;
 
         /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
         void print();
 
     protected:
 
-        LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs); //TODO: remove it, leave only the constructor with data
-        LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const std::shared_ptr<Data> data);
+        LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>>); //TODO: remove it, leave only the constructor with data
+        LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>>, const Data &);
     };
 }
 

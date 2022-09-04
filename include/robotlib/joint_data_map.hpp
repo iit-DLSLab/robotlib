@@ -13,16 +13,19 @@ namespace robotlib
     {
         friend class RobotBase;
         friend class JointState;
+
     public:
-        using DataMap<Joint, Data>::operator=;
         JointDataMap(const JointDataMap&);
         ~JointDataMap();
 
+        JointDataMap<Data> &operator=(const JointDataMap<Data> &);
+        using DataMap<Joint, Data>::operator=;
+
     private:
-        JointDataMap(std::shared_ptr<RobotBase> robot);
-        JointDataMap(std::shared_ptr<RobotBase> robot, const std::shared_ptr<Data> data);
-        JointDataMap(const std::shared_ptr<LimbBase> leg);
-        JointDataMap(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data);
+        JointDataMap(RobotBase*);
+        JointDataMap(RobotBase*, const Data&);
+        JointDataMap(const std::shared_ptr<LimbBase>);
+        JointDataMap(const std::shared_ptr<LimbBase>, const Data&);
     };
 }
 

@@ -10,7 +10,7 @@ namespace robotlib
     JointDataMap<Data>::~JointDataMap(){}
 
     template <class Data>
-    JointDataMap<Data>::JointDataMap(std::shared_ptr<RobotBase> robot) 
+    JointDataMap<Data>::JointDataMap(RobotBase *robot) 
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
@@ -18,13 +18,13 @@ namespace robotlib
         {
             for (auto &key : *(leg->getJoints()))
             {
-                this->data_array_[count_data++] = this->createPair(key, nullptr);
+                this->data_array_[count_data++] = this->createPair(key);
             }
         }
     }
      
     template <class Data> 
-    JointDataMap<Data>::JointDataMap(std::shared_ptr<RobotBase> robot, const std::shared_ptr<Data> data) 
+    JointDataMap<Data>::JointDataMap(RobotBase *robot, const Data& data) 
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
@@ -38,17 +38,19 @@ namespace robotlib
     }
 
     template <class Data> 
-    JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
+    JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg) 
+        : DataMap<Joint, Data>(leg->getNJoints())
     {
         int count_data = 0;
         for (auto &key : *(leg->getJoints()))
         { 
-            this->data_array_[count_data++] = this->createPair(key, nullptr);
+            this->data_array_[count_data++] = this->createPair(key);
         }
     }
 
     template <class Data> 
-    JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data) : DataMap<Joint, Data>(leg->getNJoints())
+    JointDataMap<Data>::JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) 
+        : DataMap<Joint, Data>(leg->getNJoints())
     {
         int count_data = 0;
         for (auto &key : *(leg->getJoints()))
@@ -64,14 +66,20 @@ namespace robotlib
         int count_data = 0;
         for (auto &pair : other)
         {
-            this->data_array_[count_data++] = this->createPair(pair.key_, nullptr);
+            this->data_array_[count_data++] = this->createPair(pair.key_);
         }
     }
 
-    // template <class Data> 
-    // JointDataMap<Data>::JointDataMap() : DataMap<Joint, Data>() //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
-    // {
-    // }
+    template <class Data>
+    JointDataMap<Data> &JointDataMap<Data>::operator=(const JointDataMap<Data> &other)
+    {
+        int count_data = 0;
+        for (auto pair: other)
+        {
+            this->data_array_[count_data++] = pair;
+        }
+        return *this;
+    }
 }
 
 #include "joint_data_map.tpp"

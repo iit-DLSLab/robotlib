@@ -11,7 +11,8 @@ namespace robotlib
     template <class Key, class Data>
     DataMap<Key, Data>::~DataMap()
     {
-        delete[] data_array_;
+        if(data_array_ != nullptr)
+            delete[] data_array_;
     }
 
     template <class Key, class Data>
@@ -92,7 +93,7 @@ namespace robotlib
         for (auto i{0}; i < num_data_; i++)
         {
             data_array_[i].key_ = rhs.data_array_[i].key_;
-            data_array_[i].data_ = rhs.data_array_[i].data_;
+            *data_array_[i].data_ = *rhs.data_array_[i].data_;
         }
     }
 
@@ -163,17 +164,23 @@ namespace robotlib
         copydata(data);
     }
 
-    template <class Key, class Data>
-    const typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) const 
-    { 
-        return Pair(key, data); 
-    } //shared_pointers?}
+    // template <class Key, class Data>
+    // const typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data &data) const 
+    // { 
+    //     return Pair(key, data); 
+    // }
     
     template <class Key, class Data>
-    typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) 
+    typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data &data) 
     { 
-        return Pair(key, data); //shared_pointers?}
-    }             
+        return Pair(key, data);
+    }  
+
+    template <class Key, class Data>
+    typename DataMap<Key, Data>::Pair DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key) 
+    { 
+        return Pair(key);
+    }            
 }
 
 #endif //_ROBOTLIB_DATA_MAP_TPP_

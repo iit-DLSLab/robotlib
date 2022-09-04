@@ -8,15 +8,19 @@ namespace robotlib
     template <class Data>
     class LinkDataMap : public DataMap<Link, Data>
     {
+        friend class RobotBase;
 
     public:
-        using DataMap<Link, Data>::operator=;
-        friend class RobotBase;
+        LinkDataMap(const LinkDataMap&);
         ~LinkDataMap();
 
+        LinkDataMap<Data> &operator=(const LinkDataMap<Data> &);
+        using DataMap<Link, Data>::operator=;
+
     private:
-        LinkDataMap(const std::shared_ptr<RobotBase>);
-        LinkDataMap(const std::shared_ptr<RobotBase>, const std::shared_ptr<Data>);
+        LinkDataMap(const RobotBase*);
+        LinkDataMap(const RobotBase*, const Data&);
+        
     };
 }
 

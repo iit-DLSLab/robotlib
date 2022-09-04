@@ -9,30 +9,56 @@ namespace robotlib
     LinkDataMap<Data>::~LinkDataMap(){}
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(std::shared_ptr<RobotBase> robot) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
+    LinkDataMap<Data>::LinkDataMap(const RobotBase* robot) 
+        : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
+        for (auto &leg : *DataHelper::getLegs(robot))
         {
-            for (auto key : *(leg->getLinks()))
+            for (auto &key : *(leg->getLinks()))
             {
-                this->data_array_[count_data++] = this->createPair(key, nullptr);
+                this->data_array_[count_data++] = this->createPair(key);
             }
         }
     }
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(std::shared_ptr<RobotBase> robot, const std::shared_ptr<Data> data) : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
+    LinkDataMap<Data>::LinkDataMap(const RobotBase* robot, const Data &data) 
+        : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
+        for (auto &leg : *DataHelper::getLegs(robot))
         {
-            for (auto key : *(leg->getLinks()))
+            for (auto &key : *(leg->getLinks()))
             {
                 this->data_array_[count_data++] = this->createPair(key, data);
             }
         }
     }
+
+    template <class Data>
+    LinkDataMap<Data>::LinkDataMap(const LinkDataMap &other)
+        : DataMap<Joint, Data>(other.getSize())
+    {
+        int count_data = 0;
+        for (auto pair: other)
+        {
+            this->data_array_[count_data++] = this->createPair(pair.key_);
+        }
+    }
+
+    template <class Data>
+    LinkDataMap<Data> &LinkDataMap<Data>::operator=(const LinkDataMap<Data> &other)
+    {
+        int count_data = 0;
+        for (auto pair: other)
+        {
+            this->data_array_[count_data++] = pair;
+        }
+
+        return *this;
+    }
+
 }
 
 #endif //_ROBOTLIB_LINK_DATA_MAP_TPP_

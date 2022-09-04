@@ -30,12 +30,13 @@ namespace robotlib
         int count_data = 0;
         for (auto key : *legs)
         {
-            this->data_array_[count_data++] = this->createPair(key, nullptr);
+            this->data_array_[count_data++] = this->createPair(key);
         }
     }
 
     template <class Data>
-    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const std::shared_ptr<Data> data) : DataMap<LimbBase, Data>(legs->size())
+    LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const Data &data) 
+        : DataMap<LimbBase, Data>(legs->size())
     {
         int count_data = 0;
         for (auto key : *legs)
@@ -51,8 +52,20 @@ namespace robotlib
         int count_data = 0;
         for (auto pair: other)
         {
-            this->data_array_[count_data++] = this->createPair(pair.key_, nullptr);
+            this->data_array_[count_data++] = this->createPair(pair.key_);
         }
+    }
+
+    template <class Data>
+    LegDataMap<Data> &LegDataMap<Data>::operator=(const LegDataMap<Data> &other)
+    {
+        int count_data = 0;
+        for (auto pair: other)
+        {
+            this->data_array_[count_data++] = pair;
+        }
+
+        return *this;
     }
 }
 

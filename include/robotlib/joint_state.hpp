@@ -26,6 +26,7 @@ namespace robotlib
         const double &operator[](const std::shared_ptr<Joint> joint) const;
         JointState &operator=(const double data);
         JointState &operator=(const std::vector<double> data);
+        JointState &operator=(const JointState &);
 
         JointState operator+(const JointState &other);
         JointState &operator+=(const JointState &other);

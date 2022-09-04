@@ -10,9 +10,11 @@ namespace robotlib
 
     class Jacobian : public Map
     {
-    public:
         friend class RobotBase;
-
+        template <class Data> 
+        friend class LegDataMap;
+    public:
+        
         template <class Data> friend class LegDataMap;
         template <class Key, class Data> friend class DataMap;
         friend class Pair;

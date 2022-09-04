@@ -139,29 +139,28 @@ namespace robotlib
 
         // Create a leg data map pair
         template <class Data>
-        LegDataMap<Data> makeLegDataMap(const std::shared_ptr<Data>) const;
-
-        template <class Data>
         LegDataMap<Data> makeLegDataMap(const Data&) const;
 
         // Create a link data map pair
         template <class Data>
         LinkDataMap<Data> makeLinkDataMap(); // NRT
+        
         template <class Data>
-        LinkDataMap<Data> makeLinkDataMap(const std::shared_ptr<Data>); // NRT
+        LinkDataMap<Data> makeLinkDataMap(const Data&); // NRT
 
         // Create a joint data map pair
         template <class Data>
         JointDataMap<Data> makeJointDataMap(); // NRT
+
         template <class Data>
-        JointDataMap<Data> makeJointDataMap(const std::shared_ptr<Data>); // NRT
+        JointDataMap<Data> makeJointDataMap(const Data&); // NRT
 
         // Create a joint data map pair
         template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg); // NRT
+        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase>); // NRT
         // Create a joint data map pair
         template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const std::shared_ptr<Data> data); // NRT
+        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data&); // NRT
 
         // TODO
         Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest); // NRT

@@ -475,6 +475,11 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     auto footPosCopy = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
 
+    for (auto &leg_pair : footPosCopy)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     for (auto legCopy : *(dummy_quadruped->getLegs()))
     {
         Eigen::Vector3d posCopy(5, 5, 5);
@@ -493,6 +498,12 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
     /// LegDataMap Copy AssignAll
 
     auto footPosAssign = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+
+    for (auto &leg_pair : footPosAssign)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+    
     auto qAssign = dummy_quadruped->makeJointState();
 
     footPosAssign = Eigen::Vector3d().setOnes();
@@ -704,6 +715,11 @@ TEST(RobotBaseUnitTests, LinkDataMap)
 
     auto linkPos = dummy_quadruped->makeLinkDataMap<Eigen::Vector3d>();
 
+    for (auto &leg_pair : linkPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     Eigen::Vector3d p;
     p.setZero();
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -733,6 +749,11 @@ TEST(RobotBaseUnitTests, JointDataMap)
     //...
 
     auto jointPos = dummy_quadruped->makeJointDataMap<Eigen::Vector3d>();
+
+    for (auto &leg_pair : jointPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
 
     Eigen::Vector3d p;
     p.setZero();
@@ -868,9 +889,9 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
     // Eigen::Vector3d data;
     // data.setOnes();
 
-    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(std::make_shared<double>(data));
-    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(std::make_shared<double>(data));
-    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(std::make_shared<double>(data));
+    auto leg_dm = dummy_quadruped->makeLegDataMap<type>(data);
+    auto link_dm = dummy_quadruped->makeLinkDataMap<type>(data);
+    auto joint_dm = dummy_quadruped->makeJointDataMap<type>(data);
     auto jacobian_dm = dummy_quadruped->makeFeetJacobian(data_double);
 
     std::cout << "leg_dm\n";
@@ -941,7 +962,7 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
         // using Type = Eigen::Vector3d;
         // Type value{0, 0, 0};
 
-        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, std::shared_ptr<Type>(&value));
+        auto joint_dm_per_leg_default_data = dummy_quadruped->makeJointDataMapPerLeg<Type>(leg, value);
 
         for (auto pair : joint_dm_per_leg_default_data)
         {
