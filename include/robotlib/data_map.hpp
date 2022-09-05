@@ -39,6 +39,14 @@ namespace robotlib
                 return *this;
             }
 
+            virtual Pair &operator=(const std::shared_ptr<Pair> rhs)
+            {
+                this->key_ = rhs->key_;
+                this->data_ = rhs->data_;
+
+                return *this;
+            }
+
             std::shared_ptr<Key> key_;
             std::shared_ptr<Data> data_;
 
@@ -98,8 +106,8 @@ namespace robotlib
         virtual void init(const DataMap &data);
 
         // const Pair createPair(const std::shared_ptr<Key> key, const Data&) const; //shared_pointers?}
-        Pair createPair(const std::shared_ptr<Key> key, const Data&);
-        Pair createPair(const std::shared_ptr<Key> key);
+        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key> key, const Data&);
+        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key> key);
 
         int num_data_;
         Pair *data_array_;

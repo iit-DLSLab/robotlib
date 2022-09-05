@@ -57,6 +57,7 @@ bool malloc_is_used { false };
 bool calloc_is_used { false };
 bool realloc_is_used { false };
 bool free_is_used { false };
+bool free_null_is_used { false };
 
 // ** Implementation **
 void* malloc (size_t size)
@@ -147,11 +148,19 @@ void free_hook (void* ptr, void *caller)
   // deactivate hooks for logging
   free_hook_active = false;
 
+  if(ptr == nullptr)
+  {
+    free_null_is_used = true;
+  }
+  else
+  {
+    free_is_used = true;
+  }
+
   free(ptr);
 
   // do logging
-  free_is_used = true;
-
+  
   // Debug print
   // printf("free\n");
 
@@ -187,6 +196,9 @@ void is_dynamic_memory_used(const bool malloc_value, const bool calloc_value, co
   EXPECT_EQ(calloc_is_used, calloc_value);
   EXPECT_EQ(realloc_is_used, realloc_value);
   EXPECT_EQ(free_is_used, free_value);
+
+  if(free_null_is_used)
+    std::cout << "WARNING: Free was used to dealloc memory with nullptr content" << std::endl;
 }
 
 #endif // _ROBOTLIB_DYNAMIC_MEMORY_HOOKS_HPP_

@@ -17,9 +17,9 @@ namespace robotlib
         std::cout << "LegDataMap [Name - Value]" << std::endl;
         std::cout << "-------------------------" << std::endl;
 
-        for (auto leg_pair : *this)
+        for (auto &leg_pair : *this)
         {
-            std::cout << leg_pair.key_->getName() << " - " << leg_pair.data_ << std::endl;
+            std::cout << leg_pair.key_->getName() << " - " << *leg_pair.data_ << std::endl;
         }
     }
 
