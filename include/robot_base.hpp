@@ -453,7 +453,7 @@ namespace robotlib
                     }
                 }
             }
-
+            // FIX ME (& with shared_ptr)
             std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
             const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 
@@ -865,6 +865,10 @@ namespace robotlib
 
         virtual Eigen::Vector3d getRobotCoM() = 0;
 
+        /**
+		 * @brief Compute whole body com in base frame
+		 * @return com offset
+		 */
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
 
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) = 0;
