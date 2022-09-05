@@ -372,6 +372,17 @@ namespace robotlib
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
+		
+		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const JointState &q,
+                                                                 const JointState &qd,
+                                                                 const Eigen::Vector3d offset_com)
+		{	
+			std::cout << "Get whole body COM vel FB, with com offset as input" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();
+		}
 
 		void setInvKinTimePeriod(const double& period)
 		{};
