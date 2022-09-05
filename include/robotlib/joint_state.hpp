@@ -24,14 +24,14 @@ namespace robotlib
 
         double &operator[](const std::shared_ptr<Joint> joint);
         const double &operator[](const std::shared_ptr<Joint> joint) const;
-        JointState &operator=(const double data);
-        JointState &operator=(const std::vector<double> data);
-        JointState &operator=(const JointState &);
+        JointState &operator=(const double&);
+        JointState &operator=(const std::vector<double>&);
+        JointState &operator=(const JointState&);
 
-        JointState operator+(const JointState &other);
-        JointState &operator+=(const JointState &other);
-        JointState operator-(const JointState &other);
-        JointState &operator-=(const JointState &other);
+        JointState operator+(const JointState&);
+        JointState &operator+=(const JointState&);
+        JointState operator-(const JointState&);
+        JointState &operator-=(const JointState&);
 
         operator std::vector<double>() const;
 
@@ -71,5 +71,6 @@ namespace robotlib
 } //namespace robotlib
 
 robotlib::JointState operator*(const double&, const robotlib::JointState&);
+robotlib::JointState operator*(const Eigen::VectorXd &vec, const robotlib::JointState &state);
 
 #endif //_ROBOTLIB_JOINT_STATE_HPP_

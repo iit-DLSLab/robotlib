@@ -37,7 +37,7 @@ namespace robotlib
         throw std::range_error("key not found");
     }
 
-    JointState& JointState::operator=(const double data)
+    JointState& JointState::operator=(const double &data)
     {
         for (auto &leg_pair : *this)
         {
@@ -46,8 +46,10 @@ namespace robotlib
         return *this;
     }
 
-    JointState& JointState::operator=(const std::vector<double> data)
+    JointState& JointState::operator=(const std::vector<double> &data)
     {
+        //assert (this.size() == data.size());
+
         int i = 0;
         for (auto &leg_pair : *this)
         {
@@ -360,6 +362,24 @@ robotlib::JointState operator*(const double &esc, const robotlib::JointState &st
         for(auto &joint_pair: *leg_pair.data_)
         {   
             out[joint_pair.key_] = esc * *(joint_pair.data_);
+        }
+    }
+    return out;
+}
+
+robotlib::JointState operator*(const Eigen::VectorXd &vec, const robotlib::JointState &state)
+{
+
+    assert (vec.size() == state.size());
+
+    robotlib::JointState out(state);
+
+    int i = 0;
+    for (auto &leg_pair : state)
+    {
+        for(auto &joint_pair: *leg_pair.data_)
+        {   
+            out[joint_pair.key_] = vec[i++] * *(joint_pair.data_);
         }
     }
     return out;
