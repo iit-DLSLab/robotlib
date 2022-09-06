@@ -260,6 +260,24 @@ namespace robotlib
 			return feet;
 		}
 
+		void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override
+		{
+			joint_position.size();
+			end_effector_position.getSize();
+		}
+
+        void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                               const robotlib::RobotBase::JointState &joint_velocity,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) override
+		{
+			joint_position.size();
+			joint_velocity.size();
+			end_effector_position.getSize();
+			end_effector_velocity.getSize();
+		}
+
 		void forwardKinematics(const JointState &joint_position,
 							   const JointState &joint_velocity,
 							   const JointState &joint_acceleration,
