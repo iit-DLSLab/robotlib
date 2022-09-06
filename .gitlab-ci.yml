@@ -42,7 +42,7 @@ test:
     - echo "Test stage started"
     - cd build/tests
     - make -j$(nproc) main_tests
-    - ./tests/main_tests
+    - ./main_tests
   dependencies:
     - build
 
