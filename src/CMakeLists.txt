@@ -32,7 +32,7 @@ target_include_directories(robotlib
 )
 
 install(
-	DIRECTORY 	include/
+	DIRECTORY 	${PROJECT_SOURCE_DIR}/include/
 	DESTINATION /usr/include
 	COMPONENT  	"robotlib_dev"
 )
