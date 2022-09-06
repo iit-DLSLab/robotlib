@@ -35,10 +35,10 @@ void* realloc (void* ptr, size_t size);
 void free (void* ptr);
 
 // ** Hook functions **
-void* malloc_hook (size_t size, void *caller);
-void* calloc_hook (size_t size_1, size_t size_2, void *caller);
-void* realloc_hook (void* ptr, size_t size, void *caller);
-void free_hook (void* ptr, void *caller);
+void* malloc_hook (size_t size);
+void* calloc_hook (size_t size_1, size_t size_2);
+void* realloc_hook (void* ptr, size_t size);
+void free_hook (void* ptr);
 
 // ** Utility functions **
 void activate_hooks();
@@ -61,34 +61,34 @@ bool free_is_used { false };
 // ** Implementation **
 void* malloc (size_t size)
 {
-  void *caller = __builtin_return_address(0);
+  // void *caller = __builtin_return_address(0);
   if (malloc_hook_active)
-    return malloc_hook(size, caller);
+    return malloc_hook(size);
   return __libc_malloc(size);
 }
 void* calloc (size_t size_1, size_t size_2)
 {
-  void *caller = __builtin_return_address(0);
+  // void *caller = __builtin_return_address(0);
   if (calloc_hook_active)
-    return calloc_hook(size_1, size_2, caller);
+    return calloc_hook(size_1, size_2);
   return __libc_calloc(size_1, size_2);
 }
 void* realloc (void* ptr, size_t size)
 {
-  void *caller = __builtin_return_address(0);
+  // void *caller = __builtin_return_address(0);
   if (realloc_hook_active)
-    return realloc_hook(ptr, size, caller);
+    return realloc_hook(ptr, size);
   return __libc_realloc(ptr, size);
 }
 void free (void* ptr)
 {
-  void *caller = __builtin_return_address(0);
+  // void *caller = __builtin_return_address(0);
   if (free_hook_active)
-    return free_hook(ptr, caller);
+    return free_hook(ptr);
   return __libc_free(ptr);
 }
 
-void* malloc_hook (size_t size, void *caller)
+void* malloc_hook (size_t size)
 {
   void *result;
 
@@ -108,7 +108,7 @@ void* malloc_hook (size_t size, void *caller)
 
   return result;
 }
-void* calloc_hook (size_t size_1, size_t size_2, void *caller)
+void* calloc_hook (size_t size_1, size_t size_2)
 {
   void *result;
 
@@ -125,7 +125,7 @@ void* calloc_hook (size_t size_1, size_t size_2, void *caller)
 
   return result;
 }
-void* realloc_hook (void* ptr, size_t size, void *caller)
+void* realloc_hook (void* ptr, size_t size)
 {
   void *result;
 
@@ -142,7 +142,7 @@ void* realloc_hook (void* ptr, size_t size, void *caller)
 
   return result;
 }
-void free_hook (void* ptr, void *caller)
+void free_hook (void* ptr)
 {
   // deactivate hooks for logging
   free_hook_active = false;

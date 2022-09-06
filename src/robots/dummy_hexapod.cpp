@@ -330,6 +330,11 @@ namespace robotlib
                                         Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                         JointState &tau_joints)              ///output
 		{
+			gravity_vector.size();
+			wrench_base.size();
+			joint_position.getSize();
+			tau_joints.getSize();
+
 			std::cout << "Gravity compensation" << std::endl;
 		}
 

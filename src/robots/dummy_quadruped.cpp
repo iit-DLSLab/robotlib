@@ -317,6 +317,11 @@ namespace robotlib
                                         Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                         JointState &tau_joints)              ///output
 		{
+			gravity_vector.size();
+			wrench_base.size();
+			joint_position.getSize();
+			tau_joints.getSize();
+
 			std::cout << "Gravity compensation" << std::endl;
 		}
 
@@ -406,6 +411,10 @@ namespace robotlib
                                                                  const Eigen::Matrix3d & rotationMx,
                                                                  const JointState & q) override
 		{
+			baseVel.size();
+			rotationMx.size();
+			q.size();
+			
 			std::cout << "Get whole body COM vel FB - without joint influence" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
@@ -415,10 +424,15 @@ namespace robotlib
                                                                  const Eigen::Matrix3d &rotationMx,
                                                                  const Eigen::Vector3d offset_com)
 		{	
+			baseVel.size();
+			rotationMx.size();
+			offset_com.size();
+			
 			std::cout << "Get whole body COM vel FB, with com offset as input, without considering joint influence" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();
 		}
+
 		void setInvKinTimePeriod(const double& period){std::cout << period << std::endl;};
 
 		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) { trunk_com.size(); }
