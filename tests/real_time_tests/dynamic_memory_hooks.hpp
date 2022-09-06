@@ -29,34 +29,34 @@ extern "C" void *__libc_realloc(void* ptr, size_t size);
 extern "C" void __libc_free(void* ptr);
 
 // ** Redefinition of malloc, calloc, realloc, free functions ** 
-void* malloc (size_t size);
-void* calloc (size_t size_1, size_t size_2);
-void* realloc (void* ptr, size_t size);
-void free (void* ptr);
+inline void* malloc (size_t size);
+inline void* calloc (size_t size_1, size_t size_2);
+inline void* realloc (void* ptr, size_t size);
+inline void free (void* ptr);
 
 // ** Hook functions **
-void* malloc_hook (size_t size);
-void* calloc_hook (size_t size_1, size_t size_2);
-void* realloc_hook (void* ptr, size_t size);
-void free_hook (void* ptr);
+inline void* malloc_hook (size_t size);
+inline void* calloc_hook (size_t size_1, size_t size_2);
+inline void* realloc_hook (void* ptr, size_t size);
+inline void free_hook (void* ptr);
 
 // ** Utility functions **
-void activate_hooks();
-void deactivate_hooks();
-void reset_variables_checking_use_of_dynamic_memory();
-void is_dynamic_memory_used(const bool malloc_value, const bool calloc_value, const bool realloc_value, const bool free_value);
+inline void activate_hooks();
+inline void deactivate_hooks();
+inline void reset_variables_checking_use_of_dynamic_memory();
+inline void is_dynamic_memory_used(const bool malloc_value, const bool calloc_value, const bool realloc_value, const bool free_value);
 
 // ** Variables to activate/deactivate hook functions **
-bool malloc_hook_active { false };
-bool calloc_hook_active { false };
-bool realloc_hook_active { false };
-bool free_hook_active { false };
+inline bool malloc_hook_active { false };
+inline bool calloc_hook_active { false };
+inline bool realloc_hook_active { false };
+inline bool free_hook_active { false };
 
 // ** Variables to check dynamic memory allocation/deallocation/reallocation **
-bool malloc_is_used { false };
-bool calloc_is_used { false };
-bool realloc_is_used { false };
-bool free_is_used { false };
+inline bool malloc_is_used { false };
+inline bool calloc_is_used { false };
+inline bool realloc_is_used { false };
+inline bool free_is_used { false };
 
 // ** Implementation **
 void* malloc (size_t size)
