@@ -384,11 +384,9 @@ namespace robotlib
 		
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &rotationMx,
-                                                                 const JointState &q,
-                                                                 const JointState &qd,
                                                                  const Eigen::Vector3d offset_com)
 		{	
-			std::cout << "Get whole body COM vel FB, with com offset as input" << std::endl;
+			std::cout << "Get whole body COM vel FB, with com offset as input, without considering joint influence" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();
 		}
