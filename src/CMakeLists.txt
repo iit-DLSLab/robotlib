@@ -36,7 +36,7 @@ install(
 	DESTINATION
 		/usr/include
 	COMPONENT
-		"robotlib"
+		"robotlib_dev"
 	FILES_MATCHING
 		PATTERN "*.h"
 		PATTERN "*.hpp"
