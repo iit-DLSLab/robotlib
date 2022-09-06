@@ -1,16 +1,14 @@
-#include "robot_base.hpp"
-// TODO: Change this include
-#include "../src/robots/dummy_quadruped.cpp"
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 
 void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map)
 {
-    float r = 3;
-    float c = 4;
-    int count = 0;
-    for (int i = 0; i < r; ++i)
+    float r {3}, c {4};
+
+    int count {0};
+    for (int i {0}; i < r; ++i)
     {
-        for (int j = 0; j < c; ++j)
+        for (int j {0}; j < c; ++j)
         {
             map(i, j) = count;
             count++;
@@ -21,7 +19,7 @@ void setMap(Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>> map
 TEST(EigenMapTest, setMap)
 {
     /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped = std::make_shared<robotlib::DummyQuadruped>();
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto name_dq = dummy_quadruped->getName();
 
@@ -33,7 +31,7 @@ TEST(EigenMapTest, setMap)
     ASSERT_EQ(typeid(name_dq).name(), typeid(name_gt).name());
 
     double *array = new double[9];
-    for (int i = 0; i < 9; i++)
+    for (int i {0}; i < 9; i++)
     {
         array[i] = i;
     }

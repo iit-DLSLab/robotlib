@@ -1,12 +1,10 @@
-// TODO: Change this include
 #include <gtest/gtest.h>
-
 #include "leg.hpp"
 #include "joint.hpp"
 #include "link.hpp"
 
-const unsigned int NJOINTS = 20;
-const unsigned int NLINKS = 15;
+const unsigned int NJOINTS {20};
+const unsigned int NLINKS {15};
 
 class RobotLeg : public robotlib::Leg<NJOINTS, NLINKS>
 {
@@ -17,19 +15,27 @@ public:
 
     virtual const std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
     {
+        joint->getName();
+
         return "jointToChildName";
     };
     virtual const std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
     {
+        joint->getName();
+
         return "jointToParentName";
     };
 
     virtual const std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
     {
+        link->getName();
+
         return "linkToChildName";
     };
     virtual const std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
     {
+        link->getName();
+
         return "linkToParentName";
     };
 };
@@ -43,13 +49,13 @@ TEST(LimbUnitTests, getName)
     std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints;
     std::array<std::shared_ptr<robotlib::Link>, NLINKS> links;
 
-    for (int i = 0; i < NJOINTS; ++i)
+    for (unsigned int i {0}; i < NJOINTS; ++i)
     {
         std::string name{"joint_" + std::to_string(i)};
         joint_names.push_back(name);
         joints[i] = std::make_shared<robotlib::Joint>(name);
     }
-    for (int i = 0; i < NLINKS; ++i)
+    for (unsigned int i {0}; i < NLINKS; ++i)
     {
         std::string name{"link_" + std::to_string(i)};
         link_names.push_back(name);
@@ -58,7 +64,7 @@ TEST(LimbUnitTests, getName)
 
     RobotLeg leg("leg_1", joints, links);
 
-    int i = 0;
+    int i {0};
     for (auto link : *leg.getLinks())
     {
         EXPECT_EQ(link->getName(), link_names[i]);
@@ -123,10 +129,4 @@ TEST(LimbUnitTests, getJoint_string)
 TEST(LimbUnitTests, getEndEffector)
 {
     std::cout << "TODO\n";
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

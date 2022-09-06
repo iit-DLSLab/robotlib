@@ -50,7 +50,7 @@ namespace robotlib
 		 * @brief Get the mass of the trunk
 		 * @return const double
 		 */
-		const double getMass() const;
+		double getMass() const;
 
 		/**
 		 * @brief Get the inertia of the trunk

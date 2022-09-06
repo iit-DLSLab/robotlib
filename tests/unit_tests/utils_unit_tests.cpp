@@ -6,8 +6,8 @@ TEST(UtilsUnitTests, Containers)
 {
     std::cout << "Testing correct storing for non share pointer data...\n";
 
-    const int N = 10;
-    double value = 1;
+    const int N {10};
+    double value {1};
     std::array<double, N> data;
 
     for (auto &d : data)
@@ -36,10 +36,4 @@ TEST(UtilsUnitTests, Containers)
     {
         EXPECT_EQ(*d, value);
     }
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

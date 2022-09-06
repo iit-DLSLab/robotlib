@@ -1,7 +1,5 @@
-#include "robot_base.hpp"
-#include "robot_factory.hpp"
 #include <gtest/gtest.h>
-
+#include "robot_factory.hpp"
 
 // In order to do the tests you need in install the dummy robots.
 // To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
@@ -59,7 +57,7 @@ TEST(RobotBaseUnitTests, getLeg)
     /// Ground truth
     std::array<std::string, 4> legs_gt{{"LF", "RF", "LH", "RH"}};
 
-    int count_legs = 0;
+    int count_legs {0};
     for (auto legs_dq : *dummy_quadruped->getLegs())
     {
         /// Assert conditions
@@ -507,7 +505,7 @@ TEST(RobotBaseUnitTests, jointStateOperators)
     /// Dummy quadruped
     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     auto q = dummy_quadruped->makeJointState();
-    double value_gt = 10;
+    double value_gt {10};
     
     /// Operator[]
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -543,7 +541,7 @@ TEST(RobotBaseUnitTests, jointStateOperators)
 
     // Dummy check: Checking that q and q2 does not point to the same memory
     std::cout << "Testing = operator does not allow variables to point to same memory\n";
-    double value{5};
+    double value {5};
     auto joint{dummy_quadruped->getJoint("LF_HAA")};
     q[joint] = value;
     EXPECT_NE(value, q2[joint]);
@@ -925,14 +923,14 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
 
         auto joint_dm_per_leg = dummy_quadruped->makeJointDataMapPerLeg<double>(leg);
 
-        int it = 0;
+        int it {0};
         for (auto pair : joint_dm_per_leg)
         {
             EXPECT_EQ(joint_names[it], pair.key_->getName());
             it++;
         }
         using Type = double;
-        Type value = 1;
+        Type value {1};
         // using Type = Eigen::Vector3d;
         // Type value{0, 0, 0};
 
@@ -962,7 +960,7 @@ TEST(RobotBaseUnitTests, getLegJointState)
 
         auto joint_state_per_leg = joint_state.getLegJointState(leg); //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
 
-        int it = 0;
+        int it {0};
         for (auto pair : *joint_state_per_leg)
         {
             EXPECT_EQ(joint_names_gt[it], pair.key_->getName());
@@ -1014,10 +1012,10 @@ TEST(RobotBaseUnitTests, getJointLimits)
     auto tau_max = dummy_quadruped->makeJointState();
 
     // Ground truth for the dummy quadruped
-    const double q_min_gt = 0;
-    const double q_max_gt = 90;
-    const double qd_max_gt = 3;
-    const double tau_max_gt = 5;
+    const double q_min_gt {0};
+    const double q_max_gt {90};
+    const double qd_max_gt {3};
+    const double tau_max_gt {5};
 
     dummy_quadruped->getMinJointAngle(q_min);
     dummy_quadruped->getMaxJointAngle(q_max);
@@ -1045,7 +1043,7 @@ TEST(RobotBaseUnitTests, minJointValue)
     auto q = dummy_quadruped->makeJointState();
 
     // Ground truth for the dummy quadruped
-    const double q_min_gt = -10;
+    const double q_min_gt {-10};
     q[dummy_quadruped->getJoint("LF_HAA")] = q_min_gt;
     q[dummy_quadruped->getJoint("LF_HFE")] = 10;
     q[dummy_quadruped->getJoint("LH_HAA")] = 5;
@@ -1068,12 +1066,4 @@ TEST(RobotBaseUnitTests, maxJointValue)
     q[dummy_quadruped->getJoint("LH_HAA")] = 5;
     
     EXPECT_EQ(q.max(), q_max_gt);
-}
-
-
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

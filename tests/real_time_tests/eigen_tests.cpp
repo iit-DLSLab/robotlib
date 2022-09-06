@@ -1,6 +1,6 @@
-#include "dynamic_memory_hooks.hpp"
-#include <Eigen/Dense>
 #include <gtest/gtest.h>
+#include <Eigen/Dense>
+#include "dynamic_memory_hooks.hpp"
 
 TEST(RealTimeTest, eigen_multiplication_dynamic_matrices)
 {
@@ -130,11 +130,11 @@ TEST(RealTimeTest, eigen_multiplication_map_matrices)
     const int n_rows {25};
     const int n_cols {25};
     const int n_data {n_rows*n_cols};
-    double* data_A = new double[n_data];
-    double* data_B = new double[n_data];
-    double* data_C = new double[n_data];
+    double* data_A {new double[n_data]};
+    double* data_B {new double[n_data]};
+    double* data_C {new double[n_data]};
 
-    for (int i=0; i< n_data; i++)
+    for (int i {0}; i< n_data; i++)
     {
         data_A[i] = 1.0;
         data_B[i] = 1.0;

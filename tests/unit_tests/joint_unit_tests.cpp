@@ -7,8 +7,8 @@
  */
 
 #include <gtest/gtest.h>
+#include "robot_factory.hpp"
 #include "joint.hpp"
-#include "../src/robots/dummy_quadruped.cpp" /// TODO: Remove cpp inclusion
 
 /**
  * @brief Set of unit tests for Joint::getName function
@@ -51,12 +51,12 @@ TEST(JointUnitTests, getName)
       * @test Dummy Quadruped - Limbs (legs) joints names
       */
      {
-          std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+          std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
           std::array<std::array<std::string, 3>, 4> joints_names{{{"LF_HAA", "LF_HFE", "LF_KFE"},
                                                                   {"RF_HAA", "RF_HFE", "RF_KFE"},
                                                                   {"LH_HAA", "LH_HFE", "LH_KFE"},
                                                                   {"RH_HAA", "RH_HFE", "RH_KFE"}}};
-          unsigned int i{0}, j{0};
+          unsigned int i {0}, j {0};
           for (auto leg : *(dummy_quadruped->getLegs()))
           {
                for (auto leg_joint : *(leg->getJoints()))
@@ -79,7 +79,7 @@ TEST(JointUnitTests, getParent)
       * @test Dummy Quadruped - Joint parent compared according to its names only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
      const auto joint_lf_haa = dummy_quadruped->getJoint("LF_HAA");
      const std::shared_ptr<robotlib::Link> joint_lf_haa_parent = std::make_shared<robotlib::Link>("TRUNK");
@@ -135,7 +135,7 @@ TEST(JointUnitTests, getChild)
       * @test Dummy Quadruped - Joint child compared according to its names only
       * /// TODO: Overload operator= to compare Link objects directly
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
      const auto joint_lf_haa = dummy_quadruped->getJoint("LF_HAA");
      const std::shared_ptr<robotlib::Link> joint_lf_haa_child = std::make_shared<robotlib::Link>("LF_ASSEMBLY");
@@ -216,12 +216,12 @@ TEST(JointUnitTests, setLimits_getLimits)
      /**
       * @test Joint limits compared with a ground truth
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped = createRobot_t();
+     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
-     const double q_min_gt = 0;
-     const double q_max_gt = 90;
-     const double qd_max_gt = 3;
-     const double tau_max_gt = 5;
+     const double q_min_gt {0};
+     const double q_max_gt {90};
+     const double qd_max_gt {3};
+     const double tau_max_gt {5};
 
      for (auto leg : *(dummy_quadruped->getLegs()))
      {
@@ -233,10 +233,4 @@ TEST(JointUnitTests, setLimits_getLimits)
                EXPECT_EQ(tau_max_gt, leg_joint->getMaxEffort());
           }
      }
-}
-
-int main(int argc, char **argv)
-{
-     ::testing::InitGoogleTest(&argc, argv);
-     return RUN_ALL_TESTS();
 }
