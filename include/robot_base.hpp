@@ -763,25 +763,6 @@ namespace robotlib
                                        const robotlib::RobotBase::JointState &joint_velocity,
                                        robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) = 0;
-        /**
-        * @brief Forward kinematics.
-        *
-        * It computes end effector position, velocity and acceleration.
-        *
-        * @param[in] joint_position joints position
-        * @param[in] joint_velocity joints velocity
-        * @param[in] joint_acceleration joints acceleration
-        * @param[out] end_effector_position end effectors position
-        * @param[out] end_effector_velocity end effectors velocity
-        * @param[out] end_effector_acceleration end effectors acceleration
-        *
-        */
-        virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
-                                       const JointState &joint_velocity,
-                                       const JointState &joint_acceleration,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
 
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,

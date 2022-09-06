@@ -278,21 +278,6 @@ namespace robotlib
 			end_effector_velocity.getSize();
 		}
 
-		void forwardKinematics(const JointState &joint_position,
-							   const JointState &joint_velocity,
-							   const JointState &joint_acceleration,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
-		{
-			joint_position.size();
-			joint_velocity.size();
-			joint_acceleration.size();
-			end_effector_position.getSize();
-			end_effector_velocity.getSize();
-			end_effector_acceleration.getSize();
-		}
-
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
