@@ -886,7 +886,7 @@ namespace robotlib
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState &q,
                                                                const JointState &qd) = 0;
         /**
-		 * @brief Compute whole body com velocity in world frame
+		 * @brief Compute whole body com velocity in world frame, considering joint influence
          * @param baseVel base velocity in base frame
          * @param rotationMx rotation matrix of base frame expressed in world frame
          * @param q joints angle
@@ -898,7 +898,18 @@ namespace robotlib
                                                                  const JointState &q,
                                                                  const JointState &qd) = 0;
         /**
-         * @brief Compute whole body com velocity in world frame, without recomputing the com offset
+		 * @brief Compute whole body com velocity in world frame without considering joint influence
+         * @param baseVel base velocity in base frame
+         * @param rotationMx rotation matrix of base frame expressed in world frame
+         * @param q joints angle
+         * @param qd joints velocity
+		 * @return com velocity in world frame
+		 */
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                        const Eigen::Matrix3d &rotationMx,
+                                                        const JointState &q) = 0;
+        /**
+         * @brief Compute whole body com velocity in world frame, without recomputing the com offset, and without considering joint influence
          * @param baseVel base velocity in base frame
          * @param rotationMx rotation matrix of base frame expressed in world frame
          * @param q joints angle
@@ -908,8 +919,6 @@ namespace robotlib
          */
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &rotationMx,
-                                                                 const JointState &q,
-                                                                 const JointState &qd,
                                                                  const Eigen::Vector3d offset_com) = 0;
 
         // ** SET FUNCTIONS **
