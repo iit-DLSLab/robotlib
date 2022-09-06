@@ -368,7 +368,16 @@ namespace robotlib
                                                                  const JointState & q,
                                                                  const JointState & qd) override
 		{
-			std::cout << "Get whole body COM vel FB" << std::endl;
+			std::cout << "Get whole body COM vel FB - considering joint influence" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();	
+		};
+
+		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
+                                                                 const Eigen::Matrix3d & rotationMx,
+                                                                 const JointState & q) override
+		{
+			std::cout << "Get whole body COM vel FB - without joint influence" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
