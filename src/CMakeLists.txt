@@ -20,8 +20,8 @@ add_executable(robot_info
 
 target_link_libraries(robot_info
 	PRIVATE
-	${PROJECT_NAME}
-	${CMAKE_DL_LIBS}
+		${PROJECT_NAME}
+		${CMAKE_DL_LIBS}
 )
 
 target_include_directories(robotlib 
