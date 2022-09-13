@@ -306,6 +306,13 @@ namespace robotlib
 			joint_acceleration.size();
 		}
 
+		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       JointState &joint_position) override
+		{
+			end_effector_position.getSize();
+			joint_position.size();
+		}
+
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
 							 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
 							 const Eigen::Matrix<double, 6, 1> &gravity_vector,

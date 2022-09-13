@@ -763,16 +763,38 @@ namespace robotlib
                                        const robotlib::RobotBase::JointState &joint_velocity,
                                        robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) = 0;
-
+        /**
+        * @brief Inverse kinematics.
+        *
+        * It computes joint position, velocity and acceleration from end-effector position, velocity and acceleration.
+        *
+        * @param[in] end_effector_position end effectors position
+        * @param[in] end_effector_velocity end effectors velocity
+        * @param[in] end_effector_accceleration end effectors acceleration
+        * @param[out] joint_position joints position
+        * @param[out] joint_velocity joints velocity
+        * @param[out] joint_acceleration joints acceleration
+        *
+        */
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) = 0;
+        /**
+        * @brief Inverse kinematics.
+        *
+        * It computes joint position from end-effector position.
+        *
+        * @param[in] end_effector_position end effectors position
+        * @param[out] joint_position joints position
+        *
+        */
+        virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       JointState &joint_position) = 0;
 
         // ** INVERSE DYNAMICS ** 
-
         virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                      const Eigen::Matrix<double, 6, 1> &robot_acceleration,
                                      const Eigen::Matrix<double, 6, 1> &gravity_vector,
