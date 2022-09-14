@@ -1,30 +1,32 @@
-variables:
-  REGISTRY: server-harbor:80
+# ==============================================================================
+# Environment setup
+# ==============================================================================
+image: server-harbor:80/dls2/dls2-dev:latest
 
-image: $REGISTRY/clones/ubuntu:20.04
-
+before_script:
+  - source /root/dls_gitlab_ci/gitlab-script.sh
+    
+# ==============================================================================
+# Stages
+# ==============================================================================
 stages:
   - build
   - test
   - package
   - deploy
 
-before_script:
-  - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update
-  - apt-get install -y --no-install-recommends build-essential curl lsb-release cmake libeigen3-dev libgtest-dev
-
-
+# ------------------------------------------------------------------------------
+# Build Stage
+# ------------------------------------------------------------------------------
 build:
   stage: build
   tags:
     - dls
   script:
-    - echo "Build stage started"
     - mkdir build
     - cd build
     - cmake ..
-    - make -j$(nproc) install
+    - make -j$(nproc)
     # Make robots libraries visible for test stage
     - cp /usr/lib/robots/* tests/
   artifacts:
@@ -39,7 +41,6 @@ test:
   tags: 
     - dls
   script:
-    - echo "Test stage started"
     - cd build/tests
     - make -j$(nproc) main_tests
     - ./main_tests
@@ -71,13 +72,11 @@ deploy:
   tags:
     - dls
   script:
-    - echo "Deploy stage started"
     - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
     - source make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$(cat build/CI_JOB_ID) tag=latest release=$(lsb_release -cs) > out.json
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
     - package
-
   only:
     - master
     - develop_dls2
