@@ -104,7 +104,7 @@ namespace robotlib
 
 			setChildrenOfTrunk(std::make_shared<Container<std::shared_ptr<Joint>, NLEGS>>(children));
 
-			setParentOfLink(trunk_, nullptr);
+			setParentOfLink(trunk, nullptr);
 
 			for (auto leg : *(this->getLegs()))
 			{

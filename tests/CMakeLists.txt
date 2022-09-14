@@ -4,6 +4,7 @@ add_executable(main_tests
 	main_tests.cpp
 	unit_tests/arm_unit_tests.cpp
 	unit_tests/data_map_unit_tests.cpp
+	unit_tests/dummy_robot_unit_tests.cpp
 	unit_tests/dyn_params_unit_tests.cpp
 	unit_tests/joint_unit_tests.cpp
 	unit_tests/leg_unit_tests.cpp
