@@ -28,7 +28,7 @@ build:
     - cmake ..
     - make -j$(nproc)
     # Make robots libraries visible for test stage
-    - cp src/robots/* tests/
+    - cp src/robots/*.so tests/
   artifacts:
     paths:
       - build/*
