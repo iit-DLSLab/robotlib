@@ -238,6 +238,14 @@ namespace robotlib
     }
 
     template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS, int NJOINTSLEG, int NLINKSLEG>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NARMS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                                                                                                RobotBase::JointState &joint_position)
+    {
+        end_effector_position.getSize();
+        joint_position.size();
+    }
+
+    template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NARMS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                                                     const Eigen::Matrix<double, 6, 1> &robot_acceleration,
                                                                     const Eigen::Matrix<double, 6, 1> &gravity_vector,
