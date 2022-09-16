@@ -67,6 +67,35 @@ namespace robotlib
 
         return *this;
     }
+
+    template <class Data>
+    LegDataMap<Data> &LegDataMap<Data>::operator=(const std::vector<Data> &data)
+    {
+        //assert (this.size() == data.size());
+
+        int i = 0;
+        for (auto &pair : *this)
+        {
+            *(pair.data_) = data[i++];
+        }
+        return *this;
+    }
+
+    template <class Data>
+    LegDataMap<Data>::operator std::vector<Data>() const
+    {
+        std::vector<Data> out;
+
+        out.resize(this->getSize());
+
+        int i = 0;
+        for (auto &pair : *this)
+        {
+            out[i++] = *(pair.data_);
+        }
+
+        return out;
+    }
 }
 
 #endif //_ROBOTLIB_LEG_DATA_MAP_TPP_

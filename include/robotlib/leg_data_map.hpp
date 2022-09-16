@@ -15,8 +15,12 @@ namespace robotlib
         LegDataMap(const LegDataMap&);
         ~LegDataMap();
         
-        LegDataMap<Data> &operator=(const LegDataMap<Data> &);
+        LegDataMap<Data> &operator=(const LegDataMap<Data>&);
+        LegDataMap<Data> &operator=(const std::vector<Data>&);
+
         using DataMap<LimbBase, Data>::operator=;
+
+        operator std::vector<Data>() const;
 
         /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
         void print();

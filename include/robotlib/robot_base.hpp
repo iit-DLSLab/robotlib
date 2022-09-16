@@ -182,6 +182,8 @@ namespace robotlib
                                        LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const = 0;
 
+        virtual robotlib::LegDataMap<Eigen::Vector3d> forwardKinematics(const robotlib::JointState &) const = 0;
+
         // ** INVERSE KINEMATICS ** 
         
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
@@ -189,7 +191,9 @@ namespace robotlib
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
-                                       JointState &joint_acceleration) const = 0;                              
+                                       JointState &joint_acceleration) const = 0;   
+
+        virtual JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Matrix<double, 3, 1>>& ) const = 0;                           
 
         // ** INVERSE DYNAMICS ** 
 
