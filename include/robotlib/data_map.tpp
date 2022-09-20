@@ -116,15 +116,20 @@ namespace robotlib
         return *this;
     }
 
-    // template <class Key, class Data>    
-    // DataMap<Key, Data>::DataMap(const DataMap<Key, Data> &rhs)
-    // {
-    //     if (&rhs != this)
-    //     {
-    //         copydata(rhs);
-    //     }
-    // }
+    template <class Key, class Data>    
+    DataMap<Key, Data>& DataMap<Key, Data>::operator=(const std::vector<Data> &rhs)
+    {
+        
+        assert(this->getSize() == rhs.size());
 
+        for (long unsigned int i{0}; i < rhs.size(); i++)
+        {
+            *data_array_[i].data_ = rhs[i];
+        }
+
+        
+        return *this;
+    }
 
     template <class Key, class Data>
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &defaultValue)

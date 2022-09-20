@@ -50,7 +50,7 @@ namespace robotlib
         : DataMap<LimbBase, Data>(other.getSize())
     {
         int count_data = 0;
-        for (auto pair: other)
+        for (auto &pair: other)
         {
             this->data_array_[count_data++] = this->createPair(pair.key_);
         }

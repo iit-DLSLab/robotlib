@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "limb_base.hpp"
 #include <iostream>
+#include <vector>
 namespace robotlib
 {
     class RobotBase;
@@ -96,6 +97,8 @@ namespace robotlib
         virtual DataMap &operator=(const DataMap &rhs);
 
         virtual DataMap &operator=(const Data &defaultValue);
+
+        virtual DataMap &operator=(const std::vector<Data>&);
 
         virtual int getSize() const;
 
