@@ -46,13 +46,13 @@ namespace robotlib
     }
 
     template <class Data>
-    LegDataMap<Data>::LegDataMap(const LegDataMap &other)
+    LegDataMap<Data>::LegDataMap(const LegDataMap<Data> &other)
         : DataMap<LimbBase, Data>(other.getSize())
     {
         int count_data = 0;
         for (auto &pair: other)
         {
-            this->data_array_[count_data++] = this->createPair(pair.key_);
+            this->data_array_[count_data++] = pair;
         }
     }
 
@@ -60,7 +60,7 @@ namespace robotlib
     LegDataMap<Data> &LegDataMap<Data>::operator=(const LegDataMap<Data> &other)
     {
         int count_data = 0;
-        for (auto pair: other)
+        for (auto &pair: other)
         {
             this->data_array_[count_data++] = pair;
         }

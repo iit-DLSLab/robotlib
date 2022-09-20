@@ -278,6 +278,13 @@ namespace robotlib
 			std::cout << "Inverse Kinematics" << std::endl;
 		};
 
+        JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Matrix<double, 3, 1>>& ) const override
+        {
+			std::cout << "Inverse Kinematics" << std::endl;
+            robotlib::JointState out(this->makeJointState());
+            return out;
+		};
+
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
 							 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
 							 const Eigen::Matrix<double, 6, 1> &gravity_vector,

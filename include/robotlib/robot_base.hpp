@@ -193,6 +193,8 @@ namespace robotlib
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) const = 0;   
 
+        virtual JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Matrix<double, 3, 1>>& ) const = 0;
+
         // ** INVERSE DYNAMICS ** 
 
         virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
