@@ -261,6 +261,13 @@ namespace robotlib
 			std::cout << "Forward Kinematics" << std::endl;
 		};
 
+        robotlib::LegDataMap<Eigen::Vector3d> forwardKinematics(const robotlib::JointState &joint_position) const override
+        {
+            robotlib::LegDataMap<Eigen::Vector3d> out(this->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero()));
+            std::cout << "Forward Kinematics" << std::endl;
+            return out;        
+        }
+
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
 							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
