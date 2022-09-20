@@ -120,7 +120,7 @@ namespace robotlib
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const std::vector<Data> &rhs)
     {
         
-        assert(this->getSize() == rhs.size());
+        assert(this->getSize() == (int) rhs.size());
 
         for (long unsigned int i{0}; i < rhs.size(); i++)
         {
