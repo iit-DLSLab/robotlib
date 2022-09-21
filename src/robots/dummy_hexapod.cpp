@@ -260,12 +260,26 @@ namespace robotlib
 			return feet;
 		};
 
+        void forwardKinematics(const JointState &joint_position,
+							   LegDataMap<Eigen::Vector3d> &end_effector_position) const override
+		{
+			std::cout << "Forward Kinematics" << std::endl;
+		};
+
+        void forwardKinematics(const JointState &joint_position,
+							   const JointState &joint_velocity,
+							   LegDataMap<Eigen::Vector3d> &end_effector_position,
+							   LegDataMap<Eigen::Vector3d> &end_effector_velocity) const override
+		{
+			std::cout << "Forward Kinematics" << std::endl;
+		};
+
 		void forwardKinematics(const JointState &joint_position,
 							   const JointState &joint_velocity,
 							   const JointState &joint_acceleration,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const override
+							   LegDataMap<Eigen::Vector3d> &end_effector_position,
+							   LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+							   LegDataMap<Eigen::Vector3d> &end_effector_acceleration) const override
 		{
 			std::cout << "Forward Kinematics" << std::endl;
 		};
@@ -277,9 +291,15 @@ namespace robotlib
             return out;        
         }
 
-		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+        void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+							   JointState &joint_position) const override
+		{
+			std::cout << "Inverse Kinematics" << std::endl;
+		};
+
+		void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+							   const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+							   const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
 							   JointState &joint_position,
 							   JointState &joint_velocity,
 							   JointState &joint_acceleration) const override
@@ -287,7 +307,7 @@ namespace robotlib
 			std::cout << "Inverse Kinematics" << std::endl;
 		};
 
-        JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Matrix<double, 3, 1>>& ) const override
+        JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Vector3d>& ) const override
         {
 			std::cout << "Inverse Kinematics" << std::endl;
             robotlib::JointState out(this->makeJointState());
@@ -323,18 +343,18 @@ namespace robotlib
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM() override
+		Eigen::Vector3d getWholeBodyCOM() override
 		{
 			std::cout << "Get whole body COM 2" << std::endl;
 
-			return Eigen::Matrix<double, 3, 1>::Zero();
+			return Eigen::Vector3d::Zero();
 		};
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const override
+		Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) const override
 		{
 			std::cout << "Get whole body COM 1" << std::endl;
 
-			return Eigen::Matrix<double, 3, 1>::Zero();
+			return Eigen::Vector3d::Zero();
 		};
 
         Eigen::Vector3d getLegContribution(const JointState &q) const override
@@ -363,12 +383,13 @@ namespace robotlib
 		};
 
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState & q,
-                                                       		   const JointState & qd) override
+                                                       const JointState & qd) override
 		{
 			std::cout << "Get whole body COM vel" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();		
 		};
+
 
         Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                  const Eigen::Matrix3d & rotationMx,
@@ -379,6 +400,24 @@ namespace robotlib
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
+
+        Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                         const Eigen::Matrix3d &rotationMx,
+                                                         const JointState &q) override
+        {
+            std::cout << "Get whole body COM vel FB" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();
+        }
+
+        Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                         const Eigen::Matrix3d &rotationMx,
+                                                         const Eigen::Vector3d offset_com) override
+        {
+            std::cout << "Get whole body COM vel FB" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();
+        }
 
         void setInvKinTimePeriod(const double& period) const override {}
 

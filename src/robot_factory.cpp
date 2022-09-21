@@ -20,6 +20,7 @@ namespace robotlib
 		else
 		{
 			const std::string error{library + " not found"};
+            std::cout << "### " << error << " ###" << std::endl;
 			throw error;
 		}
 

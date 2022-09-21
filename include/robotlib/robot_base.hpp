@@ -101,13 +101,13 @@ namespace robotlib
         virtual double getLegsMass() const = 0;
 
         // NB: eventually make the get function void for possible NRT issue
-        virtual const Eigen::Matrix<double, 3, 1>& getTrunkCOM() const = 0;
+        virtual const Eigen::Vector3d& getTrunkCOM() const = 0;
 
         virtual Eigen::Vector3d getRobotCoM() = 0;
 
-        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
+        virtual Eigen::Vector3d getWholeBodyCOM() = 0;
 
-        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) const = 0;
+        virtual Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) const = 0;
 
         virtual Eigen::Vector3d getLegContribution(const JointState &q) const = 0;
 
@@ -126,6 +126,14 @@ namespace robotlib
                                                                  const Eigen::Matrix3d &rotationMx,
                                                                  const JointState &q,
                                                                  const JointState &qd) = 0;
+
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const robotlib::JointState &q) = 0;
+
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const Eigen::Vector3d offset_com) = 0;
         
    
         // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
@@ -175,25 +183,36 @@ namespace robotlib
 
         // ** FORWARD KINEMATICS ** 
 
+        virtual void forwardKinematics(const robotlib::JointState &joint_position,
+                                       robotlib::LegDataMap<Eigen::Vector3d> &end_effector_position) const = 0;
+
+        virtual void forwardKinematics(const robotlib::JointState &joint_position,
+                                       const robotlib::JointState &joint_velocity,
+                                       robotlib::LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                       robotlib::LegDataMap<Eigen::Vector3d> &end_effector_velocity) const = 0;
+
         virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
                                        const JointState &joint_velocity,
                                        const JointState &joint_acceleration,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) const = 0;
+                                       LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                       LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+                                       LegDataMap<Eigen::Vector3d> &end_effector_acceleration) const = 0;
 
         virtual robotlib::LegDataMap<Eigen::Vector3d> forwardKinematics(const robotlib::JointState &) const = 0;
 
         // ** INVERSE KINEMATICS ** 
+
+        virtual void inverseKinematics(const robotlib::LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                robotlib::JointState &joint_position) const = 0;
         
-        virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+                                       const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) const = 0;   
 
-        virtual JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Matrix<double, 3, 1>>& ) const = 0;
+        virtual JointState inverseKinematics(const robotlib::LegDataMap<Eigen::Vector3d>& ) const = 0;
 
         // ** INVERSE DYNAMICS ** 
 
