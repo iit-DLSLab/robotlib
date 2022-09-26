@@ -19,16 +19,17 @@
 
 namespace robotlib
 {
-    template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS, int NJOINTSLEG, int NLINKSLEG>
+    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     class DummyRobotCreator
     {
     public:
         class DummyRobot : public Robot<NJOINTS, NLINKS, NLEGS, NARMS>
         {
         public:
-            DummyRobot(const std::shared_ptr<Trunk> trunk,
-              const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
-              const std::array<std::shared_ptr<LimbBase>, NARMS> arms);
+            DummyRobot(const std::string &name,
+                       const std::shared_ptr<Trunk> trunk,
+                       const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
+                       const std::array<std::shared_ptr<LimbBase>, NARMS> arms);
             ~DummyRobot();
 
             virtual Eigen::Vector3d getFramePosition(const RobotBase::JointState &q,
@@ -146,14 +147,17 @@ namespace robotlib
             virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) override;
 
             virtual void setTrunkMass(const double& trunk_mass) override;
+        private:
+            std::shared_ptr<Trunk> trunk_;
         };
 
         class DummyLeg : public Leg<NJOINTSLEG, NLINKSLEG>
         {
         public:
-        DummyLeg(const std::string &name,
-            const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &joints,
-            const std::array<std::shared_ptr<Link>, NLINKSLEG> &links);
+        DummyLeg(const std::string &leg_name,
+                 const std::string &trunk_name,
+                 const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
+                 const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
             ~DummyLeg();
 
         virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
@@ -165,15 +169,15 @@ namespace robotlib
         virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
 
       private:
-        const std::map<std::string, std::pair<std::string, std::string>> jointMap;
-        const std::map<std::string, std::pair<std::string, std::string>> linkMap;
+        std::map<std::string, std::pair<std::string, std::string>> joints_map_{};
+        std::map<std::string, std::pair<std::string, std::string>> links_map_{};
         };
 
-		    DummyRobotCreator();
+		DummyRobotCreator();
         ~DummyRobotCreator();
 
-        std::shared_ptr<DummyRobotCreator::DummyLeg> makeLeg(const std::string &legName);
-        std::shared_ptr<RobotBase> createDummyRobot();
+        /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names (+ Trunk)] */
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + NARMS + NJOINTS + NLINKS)> &components_names);
     };
 } // namespace robotlib
 

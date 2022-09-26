@@ -254,7 +254,7 @@ namespace robotlib
 
 			for (auto leg : *(this->getLegs()))
 			{
-				feet[leg] = std::make_shared<Link>("link");
+				feet[leg] = std::make_shared<Link>("");
 			}
 
 			return feet;
