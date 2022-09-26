@@ -33,39 +33,39 @@ namespace robotlib
             ~DummyRobot();
 
             virtual Eigen::Vector3d getFramePosition(const RobotBase::JointState &q,
-                                                    const std::shared_ptr<Frame> origin,
-                                                    const std::shared_ptr<Frame> destination) override;
+                                                     const std::shared_ptr<Frame> origin,
+                                                     const std::shared_ptr<Frame> destination) override;
 
             virtual Eigen::Matrix3d getFrameOrientation(const RobotBase::JointState &q,
                                                         const std::shared_ptr<Frame> origin,
                                                         const std::shared_ptr<Frame> destination) override;
 
             virtual Eigen::Matrix4d getFramePose(const RobotBase::JointState &q,
-                                                const std::shared_ptr<Frame> origin,
-                                                const std::shared_ptr<Frame> destination) override;
+                                                 const std::shared_ptr<Frame> origin,
+                                                 const std::shared_ptr<Frame> destination) override;
 
             virtual Eigen::Vector3d getFootPosition(const RobotBase::JointState &q,
                                                     const std::shared_ptr<Frame> foot) override;
 
             virtual Eigen::Matrix3d getFootOrientation(const RobotBase::JointState &q,
-                                                      const std::shared_ptr<Frame> foot) override;
+                                                       const std::shared_ptr<Frame> foot) override;
 
             virtual Eigen::Matrix4d getFootPose(const RobotBase::JointState &q,
                                                 const std::shared_ptr<Frame> foot) override;
 
             virtual void getFootPosition(const RobotBase::JointState &q,
-                                        const std::shared_ptr<LimbBase> leg,
-                                        Eigen::Vector3d &footPos) override;
+                                         const std::shared_ptr<LimbBase> leg,
+                                         Eigen::Vector3d &footPos) override;
 
             virtual Eigen::Matrix3d getFootOrientation(const RobotBase::JointState &q,
-                                                      const std::shared_ptr<LimbBase> leg) override;
+                                                       const std::shared_ptr<LimbBase> leg) override;
 
             virtual Eigen::Matrix4d getFootPose(const RobotBase::JointState &q,
                                                 const std::shared_ptr<LimbBase> leg) override;
 
             virtual void getFootJacobian(const RobotBase::JointState &q,
-                                        const std::shared_ptr<LimbBase> leg,
-                                        RobotBase::Jacobian &footJac) override;
+                                         const std::shared_ptr<LimbBase> leg,
+                                         RobotBase::Jacobian &footJac) override;
 
             virtual void updateLinearJacobian(const RobotBase::JointState &joints_positions,
                                               RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian) override;
@@ -73,36 +73,36 @@ namespace robotlib
             virtual RobotBase::LegDataMap<std::shared_ptr<Frame>> getFeet() override;
 
             virtual void forwardKinematics(const RobotBase::JointState &joint_position,
-                                          RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override;
+                                           RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override;
 
             virtual void forwardKinematics(const RobotBase::JointState &joint_position,
-                                          const RobotBase::JointState &joint_velocity,
-                                          RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                          RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) override;
+                                           const RobotBase::JointState &joint_velocity,
+                                           RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                           RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) override;
 
             virtual void inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                          const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                          const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                          RobotBase::JointState &joint_position,
-                                          RobotBase::JointState &joint_velocity,
-                                          RobotBase::JointState &joint_acceleration) override;
+                                           const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                           const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                           RobotBase::JointState &joint_position,
+                                           RobotBase::JointState &joint_velocity,
+                                           RobotBase::JointState &joint_acceleration) override;
 
             virtual void inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                            RobotBase::JointState &joint_position) override;
 
             virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
-                                        const Eigen::Matrix<double, 6, 1> &robot_acceleration,
-                                        const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                        const RobotBase::JointState &joint_position,
-                                        const RobotBase::JointState &joint_velocity,
-                                        const RobotBase::JointState &joint_acceleration,
-                                        Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-                                        RobotBase::JointState &tau_joints) override;		   ///output
+                                         const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                         const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                         const RobotBase::JointState &joint_position,
+                                         const RobotBase::JointState &joint_velocity,
+                                         const RobotBase::JointState &joint_acceleration,
+                                         Eigen::Matrix<double, 6, 1> &wrench_base,      ///output
+                                         RobotBase::JointState &tau_joints) override;	///output
 
             virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                     const RobotBase::JointState &joint_position,
                                                     Eigen::Matrix<double, 6, 1> &wrench_base,     ///output
-                                                    RobotBase::JointState &tau_joints) override;             ///output
+                                                    RobotBase::JointState &tau_joints) override;  ///output
 
             virtual double getRobotMass() const override;
 
@@ -119,28 +119,28 @@ namespace robotlib
             virtual Eigen::Vector3d getLegContribution(const RobotBase::JointState &q) override;
 
             virtual Eigen::Vector3d getCoMFromBase(const RobotBase::JointState & q,
-                                                  const Eigen::Vector3d & base_orient,
-                                                  const Eigen::Vector3d & base_pos) override;
+                                                   const Eigen::Vector3d & base_orient,
+                                                   const Eigen::Vector3d & base_pos) override;
 
             virtual Eigen::Vector3d getBaseFromCoM(const RobotBase::JointState & q,
-                                                  const Eigen::Vector3d & base_orient,
-                                                  const Eigen::Vector3d & CoM) override;
+                                                   const Eigen::Vector3d & base_orient,
+                                                   const Eigen::Vector3d & CoM) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const RobotBase::JointState & q,
-                                                                  const RobotBase::JointState & qd) override;
+                                                                   const RobotBase::JointState & qd) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                    const Eigen::Matrix3d & rotationMx,
-                                                                    const RobotBase::JointState & q,
-                                                                    const RobotBase::JointState & qd) override;
+                                                                     const Eigen::Matrix3d & rotationMx,
+                                                                     const RobotBase::JointState & q,
+                                                                     const RobotBase::JointState & qd) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                    const Eigen::Matrix3d & rotationMx,
-                                                                    const RobotBase::JointState & q) override;
+                                                                     const Eigen::Matrix3d & rotationMx,
+                                                                     const RobotBase::JointState & q) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                    const Eigen::Matrix3d &rotationMx,
-                                                                    const Eigen::Vector3d offset_com) override;
+                                                                     const Eigen::Matrix3d &rotationMx,
+                                                                     const Eigen::Vector3d offset_com) override;
 
             virtual void setInvKinTimePeriod(const double& period) override;
 
@@ -158,7 +158,7 @@ namespace robotlib
                  const std::string &trunk_name,
                  const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
                  const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
-            ~DummyLeg();
+        ~DummyLeg();
 
         virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
 

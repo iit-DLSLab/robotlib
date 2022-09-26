@@ -84,8 +84,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFramePosition(const RobotBase::JointState &q,
-                                                                                const std::shared_ptr<Frame> origin,
-                                                                                const std::shared_ptr<Frame> destination)
+                                                                                                                          const std::shared_ptr<Frame> origin,
+                                                                                                                          const std::shared_ptr<Frame> destination)
     {
         q.size();
         origin->getName();
@@ -96,8 +96,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFrameOrientation(const RobotBase::JointState &q,
-                                                                                   const std::shared_ptr<Frame> origin,
-                                                                                   const std::shared_ptr<Frame> destination)
+                                                                                                                             const std::shared_ptr<Frame> origin,
+                                                                                                                             const std::shared_ptr<Frame> destination)
     {
         q.size();
         origin->getName();
@@ -108,8 +108,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFramePose(const RobotBase::JointState &q,
-                                                                            const std::shared_ptr<Frame> origin,
-                                                                            const std::shared_ptr<Frame> destination)
+                                                                                                                      const std::shared_ptr<Frame> origin,
+                                                                                                                      const std::shared_ptr<Frame> destination)
     {
         Eigen::Matrix4d frame_pose{};
         frame_pose.setZero();
@@ -123,21 +123,21 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
-                                                                               const std::shared_ptr<Frame> foot)
+                                                                                                                         const std::shared_ptr<Frame> foot)
     {
         return this->getFramePosition(q, this->getLink(trunk_->getName()), foot);
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
-                                                                                  const std::shared_ptr<Frame> foot)
+                                                                                                                            const std::shared_ptr<Frame> foot)
     {
         return this->getFrameOrientation(q, this->getLink(trunk_->getName()), foot);
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPose(const RobotBase::JointState &q,
-                                                                           const std::shared_ptr<Frame> foot)
+                                                                                                                     const std::shared_ptr<Frame> foot)
     {
         Eigen::Matrix4d foot_pose{};
         foot_pose.setZero();
@@ -151,22 +151,22 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
-                                                                    const std::shared_ptr<LimbBase> leg,
-                                                                    Eigen::Vector3d &footPos)
+                                                                                                              const std::shared_ptr<LimbBase> leg,
+                                                                                                              Eigen::Vector3d &footPos)
     {
         footPos = this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
-                                                                                  const std::shared_ptr<LimbBase> leg)
+                                                                                                                            const std::shared_ptr<LimbBase> leg)
     {
         return this->getFrameOrientation(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPose(const RobotBase::JointState &q,
-                                                                           const std::shared_ptr<LimbBase> leg)
+                                                                                                                     const std::shared_ptr<LimbBase> leg)
     {
         Eigen::Matrix4d foot_pose{};
         foot_pose.setZero();
@@ -180,8 +180,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootJacobian(const RobotBase::JointState &q,
-                                                                    const std::shared_ptr<LimbBase> leg,
-                                                                    RobotBase::Jacobian &footJac)
+                                                                                                              const std::shared_ptr<LimbBase> leg,
+                                                                                                              RobotBase::Jacobian &footJac)
     {
         q.size();
         leg->getName();
@@ -191,7 +191,7 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::updateLinearJacobian(const RobotBase::JointState &joints_positions,
-                                                                         RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian)
+                                                                                                                   RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian)
     {
         joints_positions.size();
         robot_jacobian.getSize();
@@ -212,7 +212,7 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
-                                                                      RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position)
+                                                                                                                RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position)
     {
         joint_position.size();
         end_effector_position.getSize();
@@ -220,9 +220,9 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
-                                                                      const RobotBase::JointState &joint_velocity,
-                                                                      RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                                                      RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity)
+                                                                                                                const RobotBase::JointState &joint_velocity,
+                                                                                                                RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                                                                                                RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity)
     {
         joint_position.size();
         joint_velocity.size();
@@ -232,11 +232,11 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                                                      const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                                                      const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
-                                                                      RobotBase::JointState &joint_position,
-                                                                      RobotBase::JointState &joint_velocity,
-                                                                      RobotBase::JointState &joint_acceleration)
+                                                                                                                const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
+                                                                                                                const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
+                                                                                                                RobotBase::JointState &joint_position,
+                                                                                                                RobotBase::JointState &joint_velocity,
+                                                                                                                RobotBase::JointState &joint_acceleration)
     {
         end_effector_position.getSize();
         end_effector_velocity.getSize();
@@ -256,13 +256,13 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
-                                                                    const Eigen::Matrix<double, 6, 1> &robot_acceleration,
-                                                                    const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                                                    const RobotBase::JointState &joint_position,
-                                                                    const RobotBase::JointState &joint_velocity,
-                                                                    const RobotBase::JointState &joint_acceleration,
-                                                                    Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-                                                                    RobotBase::JointState &tau_joints)		  ///output
+                                                                                                              const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                                                                                              const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                                                                              const RobotBase::JointState &joint_position,
+                                                                                                              const RobotBase::JointState &joint_velocity,
+                                                                                                              const RobotBase::JointState &joint_acceleration,
+                                                                                                              Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                                                                                              RobotBase::JointState &tau_joints)		  ///output
     {
         robot_velocity.size();
         robot_acceleration.size();
@@ -276,9 +276,9 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                                                               const RobotBase::JointState &joint_position,
-                                                                               Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-                                                                               RobotBase::JointState &tau_joints)        ///output
+                                                                                                                         const RobotBase::JointState &joint_position,
+                                                                                                                         Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                                                                                                         RobotBase::JointState &tau_joints)        ///output
     {
         gravity_vector.size();
         wrench_base.size();
@@ -305,7 +305,10 @@ namespace robotlib
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getRobotCoM() { return Eigen::Vector3d().setZero(); }
+    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getRobotCoM() 
+    { 
+        return Eigen::Vector3d().setZero(); 
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix<double, 3, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOM()
@@ -331,8 +334,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getCoMFromBase(const RobotBase::JointState & q,
-                                                                              const Eigen::Vector3d & base_orient,
-                                                                              const Eigen::Vector3d & base_pos)
+                                                                                                                        const Eigen::Vector3d & base_orient,
+                                                                                                                        const Eigen::Vector3d & base_pos)
     {
         q.size();
         base_orient.size();
@@ -343,8 +346,8 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getBaseFromCoM(const RobotBase::JointState & q,
-                                                                              const Eigen::Vector3d & base_orient,
-                                                                              const Eigen::Vector3d & CoM)
+                                                                                                                        const Eigen::Vector3d & base_orient,
+                                                                                                                        const Eigen::Vector3d & CoM)
     {
         q.size();
         base_orient.size();
@@ -355,7 +358,7 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVel(const RobotBase::JointState & q,
-                                                                                              const RobotBase::JointState & qd)
+                                                                                                                                        const RobotBase::JointState & qd)
     {
         q.size();
         qd.size();
@@ -365,9 +368,9 @@ namespace robotlib
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                const Eigen::Matrix3d & rotationMx,
-                                                                                                const RobotBase::JointState & q,
-                                                                                                const RobotBase::JointState & qd)
+                                                                                                                                          const Eigen::Matrix3d & rotationMx,
+                                                                                                                                          const RobotBase::JointState & q,
+                                                                                                                                          const RobotBase::JointState & qd)
     {
         baseVel.size();
         rotationMx.size();
@@ -375,24 +378,24 @@ namespace robotlib
         qd.size();
         
         return Eigen::Matrix<double, 6, 1>::Zero();	
-    };
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                const Eigen::Matrix3d & rotationMx,
-                                                                                                const RobotBase::JointState & q)
+                                                                                                                                          const Eigen::Matrix3d & rotationMx,
+                                                                                                                                          const RobotBase::JointState & q)
     {
         baseVel.size();
         rotationMx.size();
         q.size();
 
         return Eigen::Matrix<double, 6, 1>::Zero();	
-    };
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                                                const Eigen::Matrix3d &rotationMx,
-                                                                                                const Eigen::Vector3d offset_com)
+                                                                                                                                          const Eigen::Matrix3d &rotationMx,
+                                                                                                                                          const Eigen::Vector3d offset_com)
     {	
         baseVel.size();
         rotationMx.size();
@@ -404,13 +407,22 @@ namespace robotlib
     }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setInvKinTimePeriod(const double& period){std::cout << period << std::endl;};
+    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setInvKinTimePeriod(const double& period)
+    {
+        std::cout << period << std::endl;
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkCom(const Eigen::Vector3d &trunk_com) { trunk_com.size(); }
+    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkCom(const Eigen::Vector3d &trunk_com) 
+    {
+        trunk_com.size();
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkMass(const double& trunk_mass){ std::cout << trunk_mass << std::endl; }
+    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkMass(const double& trunk_mass)
+    { 
+        std::cout << trunk_mass << std::endl; 
+    }
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
     DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::DummyLeg(const std::string &leg_name,
