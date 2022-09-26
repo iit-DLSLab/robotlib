@@ -13,9 +13,8 @@ TEST(RobotBaseRealTimeTests, create_robot)
     // ** Define robot **
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
     deactivate_hooks();
-    is_dynamic_memory_used(true, true, false, true); // malloc, calloc, realloc, free 
+    is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free 
     std::cout << "free seems to be called few times w.r.t. malloc one. TODO: understand why.\nTo verify: uncomment prints in malloc and free hooks.\n";
-  
 }
 
 TEST(RobotBaseRealTimeTests, getLegs)
@@ -32,10 +31,4 @@ TEST(RobotBaseRealTimeTests, getLegs)
     }
     deactivate_hooks();
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free   
-}
-
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

@@ -260,19 +260,22 @@ namespace robotlib
 			return feet;
 		}
 
-		void forwardKinematics(const JointState &joint_position,
-							   const JointState &joint_velocity,
-							   const JointState &joint_acceleration,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-							   LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) override
+		void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override
+		{
+			joint_position.size();
+			end_effector_position.getSize();
+		}
+
+        void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                               const robotlib::RobotBase::JointState &joint_velocity,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                               robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) override
 		{
 			joint_position.size();
 			joint_velocity.size();
-			joint_acceleration.size();
 			end_effector_position.getSize();
 			end_effector_velocity.getSize();
-			end_effector_acceleration.getSize();
 		}
 
 		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
@@ -288,6 +291,13 @@ namespace robotlib
 			joint_position.size();
 			joint_velocity.size();
 			joint_acceleration.size();
+		}
+
+		void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       JointState &joint_position) override
+		{
+			end_effector_position.getSize();
+			joint_position.size();
 		}
 
 		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
@@ -307,6 +317,19 @@ namespace robotlib
 			joint_acceleration.size();
 			wrench_base.size();
 			tau_joints.size();
+		}
+
+        void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                        const JointState &joint_position,
+                                        Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                        JointState &tau_joints)              ///output
+		{
+			gravity_vector.size();
+			wrench_base.size();
+			joint_position.getSize();
+			tau_joints.getSize();
+
+			std::cout << "Gravity compensation" << std::endl;
 		}
 
 		double getRobotMass() const override
@@ -385,11 +408,39 @@ namespace robotlib
 			rotationMx.size();
 			q.size();
 			qd.size();
+			
+			std::cout << "Get whole body COM vel FB - considering joint influence" << std::endl;
 
 			return Eigen::Matrix<double, 6, 1>::Zero();	
+		};
+
+		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
+                                                                 const Eigen::Matrix3d & rotationMx,
+                                                                 const JointState & q) override
+		{
+			baseVel.size();
+			rotationMx.size();
+			q.size();
+			
+			std::cout << "Get whole body COM vel FB - without joint influence" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();	
+		};
+
+		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const Eigen::Vector3d offset_com)
+		{	
+			baseVel.size();
+			rotationMx.size();
+			offset_com.size();
+			
+			std::cout << "Get whole body COM vel FB, with com offset as input, without considering joint influence" << std::endl;
+
+			return Eigen::Matrix<double, 6, 1>::Zero();
 		}
 
-		void setInvKinTimePeriod(const double& period){ std::cout << period << std::endl; }
+		void setInvKinTimePeriod(const double& period){std::cout << period << std::endl;};
 
 		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) { trunk_com.size(); }
 

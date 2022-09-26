@@ -103,7 +103,7 @@ namespace robotlib
             {
                 assert(this->getSize() == rhs.getSize());
 
-                for (auto i {0}; i < num_data_; i++)
+                for (auto i{0}; i < num_data_; i++)
                 {
                     data_[i].key_ = rhs.data_[i].key_;
                     data_[i].data_ = rhs.data_[i].data_;
@@ -112,7 +112,7 @@ namespace robotlib
 
             virtual void assignAll(const Data &value)
             {
-                for (auto i {0}; i < num_data_; i++)
+                for (auto i{0}; i < num_data_; i++)
                 {
                     data_[i].data_ = value;
                 }
@@ -189,7 +189,7 @@ namespace robotlib
         protected:
             LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS()) //TODO: remove it, leave only the constructor with data
             {
-                int count_data {0};
+                int count_data = 0;
                 for (auto key : *robot->getLegs())
                 {
                     this->data_[count_data] = this->createPair(key, Data()); //shared_pointers?
@@ -199,7 +199,7 @@ namespace robotlib
 
             LegDataMap(RobotBase *robot, const Data &data) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
-                int count_data {0};
+                int count_data = 0;
                 for (auto key : *robot->getLegs())
                 {
                     this->data_[count_data] = this->createPair(key, data);
@@ -220,7 +220,7 @@ namespace robotlib
         private:
             LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(robot->getNLINKS())
             {
-                int count_data {0};
+                int count_data = 0;
                 for (auto leg : *(robot->getLegs()))
                 {
                     for (auto key : *(leg->getLinks()))
@@ -232,7 +232,7 @@ namespace robotlib
             }
             LinkDataMap(RobotBase *robot, const Data &data) : DataMap<Link, Data>(robot->getNLINKS())
             {
-                int count_data {0};
+                int count_data = 0;
                 for (auto leg : *(robot->getLegs()))
                 {
                     for (auto key : *(leg->getLinks()))
@@ -257,7 +257,7 @@ namespace robotlib
         private:
             JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
-                int count_data {0};
+                int count_data = 0;
 
                 for (auto leg : *(robot->getLegs()))
                 {
@@ -270,7 +270,7 @@ namespace robotlib
             }
             JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
-                int count_data {0};
+                int count_data = 0;
 
                 for (auto leg : *(robot->getLegs()))
                 {
@@ -283,7 +283,7 @@ namespace robotlib
             }
             JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
             {
-                int count_data {0};
+                int count_data = 0;
 
                 for (auto key : *(leg->getJoints()))
                 {
@@ -293,7 +293,7 @@ namespace robotlib
             }
             JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : DataMap<Joint, Data>(leg->getNJoints())
             {
-                int count_data {0};
+                int count_data = 0;
 
                 for (auto key : *(leg->getJoints()))
                 {
@@ -453,7 +453,7 @@ namespace robotlib
                     }
                 }
             }
-
+            // FIX ME (& with shared_ptr)
             std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
             const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 
@@ -560,7 +560,7 @@ namespace robotlib
                 }
                 else
                 {
-                    for (int i {0}; i < 6 * nJoints_; ++i)
+                    for (int i = 0; i < 6 * nJoints_; ++i)
                     {
                         data_[i] = other.data_[i];
                     }
@@ -605,7 +605,7 @@ namespace robotlib
             {
                 // Data initialization (6: linear and angular part of the jacobian)
                 data_ = new double[6 * nJoints_];
-                for (int i {0}; i < 6 * nJoints_; ++i)
+                for (int i = 0; i < 6 * nJoints_; ++i)
                 {
                     data_[i] = data;
                 }
@@ -644,7 +644,7 @@ namespace robotlib
                 nJoints_ = nJoints;
 
                 data_ = new double[6 * nJoints_];
-                for (int i {0}; i < 6 * nJoints_; ++i)
+                for (int i = 0; i < 6 * nJoints_; ++i)
                 {
                     data_[i] = init_value;
                 }
@@ -737,22 +737,64 @@ namespace robotlib
             return feetJac;
         };
 
-        virtual void forwardKinematics(const JointState &joint_position, // TODO: In Ant Controller the JointState is an Eigen::Matrix<double, 18, 1>
-                                       const JointState &joint_velocity,
-                                       const JointState &joint_acceleration,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
-                                       LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration) = 0;
-
+        /**
+        * @brief Forward kinematics.
+        *
+        * It computes end effector position only.
+        *
+        * @param[in] joint_position joints position
+        * @param[out] end_effector_position end effector position
+        *
+        */
+        virtual void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                                       robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) = 0;
+        /**
+        * @brief Forward kinematics.
+        *
+        * It computes end effector position and velocity.
+        *
+        * @param[in] joint_position joints position
+        * @param[in] joint_velocity joints velocity
+        * @param[out] end_effector_position end effectors position
+        * @param[out] end_effector_velocity end effectors velocity
+        *
+        */
+        virtual void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
+                                       const robotlib::RobotBase::JointState &joint_velocity,
+                                       robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity) = 0;
+        /**
+        * @brief Inverse kinematics.
+        *
+        * It computes joint position, velocity and acceleration from end-effector position, velocity and acceleration.
+        *
+        * @param[in] end_effector_position end effectors position
+        * @param[in] end_effector_velocity end effectors velocity
+        * @param[in] end_effector_accceleration end effectors acceleration
+        * @param[out] joint_position joints position
+        * @param[out] joint_velocity joints velocity
+        * @param[out] joint_acceleration joints acceleration
+        *
+        */
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) = 0;
+        /**
+        * @brief Inverse kinematics.
+        *
+        * It computes joint position from end-effector position.
+        *
+        * @param[in] end_effector_position end effectors position
+        * @param[out] joint_position joints position
+        *
+        */
+        virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+                                       JointState &joint_position) = 0;
 
         // ** INVERSE DYNAMICS ** 
-
         virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                      const Eigen::Matrix<double, 6, 1> &robot_acceleration,
                                      const Eigen::Matrix<double, 6, 1> &gravity_vector,
@@ -761,6 +803,23 @@ namespace robotlib
                                      const JointState &joint_acceleration,
                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                      JointState &tau_joints) = 0;              ///output
+        
+        /**
+        * @brief Function to compute gravity terms.
+        * 
+        * Instead of using the inverseDynamics function, you can use this function to compute gravity terms. In this way you can define an optimized * version of their computation, avoiding unnecessary computational cost provided by the inverse dynamics function
+        * 
+        * @param[in] gravity_vector gravity vector
+        * @param[in] joint_position joint angle
+        * @param[out] wrench_base wrench of the base
+        * @param[out] tau_joints tau of each joint
+        * 
+        * \remark{NOT REAL TIME / REAL TIME depending on glue code}
+        */
+        virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                      const JointState &joint_position,
+                                                      Eigen::Matrix<double, 6, 1> &wrench_base, ///output
+                                                      JointState &tau_joints) = 0;              ///output
 
         // ** GET FUNCTIONS **
 
@@ -848,6 +907,10 @@ namespace robotlib
 
         virtual Eigen::Vector3d getRobotCoM() = 0;
 
+        /**
+		 * @brief Compute whole body com in base frame
+		 * @return com offset
+		 */
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
 
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) = 0;
@@ -864,12 +927,41 @@ namespace robotlib
 
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState &q,
                                                                const JointState &qd) = 0;
-
+        /**
+		 * @brief Compute whole body com velocity in world frame, considering joint influence
+         * @param baseVel base velocity in base frame
+         * @param rotationMx rotation matrix of base frame expressed in world frame
+         * @param q joints angle
+         * @param qd joints velocity
+		 * @return com velocity in world frame
+		 */
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &rotationMx,
                                                                  const JointState &q,
                                                                  const JointState &qd) = 0;
-
+        /**
+		 * @brief Compute whole body com velocity in world frame without considering joint influence
+         * @param baseVel base velocity in base frame
+         * @param rotationMx rotation matrix of base frame expressed in world frame
+         * @param q joints angle
+         * @param qd joints velocity
+		 * @return com velocity in world frame
+		 */
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                        const Eigen::Matrix3d &rotationMx,
+                                                        const JointState &q) = 0;
+        /**
+         * @brief Compute whole body com velocity in world frame, without recomputing the com offset, and without considering joint influence
+         * @param baseVel base velocity in base frame
+         * @param rotationMx rotation matrix of base frame expressed in world frame
+         * @param q joints angle
+         * @param qd joints velocity
+         * @param qd com offset in base frame
+         * @return com velocity in world frame
+         */
+        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const Eigen::Vector3d offset_com) = 0;
 
         // ** SET FUNCTIONS **
 

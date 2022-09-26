@@ -14,7 +14,7 @@ add_executable(main_tests
 	unit_tests/utils_unit_tests.cpp
 	#real_time_tests/eigen_tests.cpp
 	real_time_tests/jacobian_tests.cpp
-	#real_time_tests/robot_base_tests.cpp
+	real_time_tests/robot_base_tests.cpp
 	generic_tests/eigen_map.cpp
 )
 
