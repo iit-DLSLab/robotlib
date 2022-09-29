@@ -154,30 +154,30 @@ namespace robotlib
         class DummyLeg : public Leg<NJOINTSLEG, NLINKSLEG>
         {
         public:
-        DummyLeg(const std::string &leg_name,
-                 const std::string &trunk_name,
-                 const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
-                 const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
-        ~DummyLeg();
+            DummyLeg(const std::string &leg_name,
+                    const std::string &trunk_name,
+                    const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
+                    const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
+            ~DummyLeg();
 
-        virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
+            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
 
-        virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
+            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
 
-        virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const override;
+            virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const override;
 
-        virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
+            virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
 
       private:
-        std::map<std::string, std::pair<std::string, std::string>> joints_map_{};
-        std::map<std::string, std::pair<std::string, std::string>> links_map_{};
+            std::map<std::string, std::pair<std::string, std::string>> joints_map_{};
+            std::map<std::string, std::pair<std::string, std::string>> links_map_{};
         };
 
-		DummyRobotCreator();
+        DummyRobotCreator();
         ~DummyRobotCreator();
 
-        /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names (+ Trunk)] */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + NARMS + NJOINTS + NLINKS)> &components_names);
+        /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (1 + NLEGS + NARMS + NJOINTS + NLINKS + 1)> &components_names);
     };
 } // namespace robotlib
 

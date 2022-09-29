@@ -58,6 +58,17 @@ namespace robotlib
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
         {
                 trunk_->setChildren(children);
+
+                if(children == nullptr || children->size() < 0 || children->size() > 1)
+                        trunk_->setChild(nullptr);
+                else if(children->size() == 1)
+                {
+                        /// TODO: Substitue the for loop with the operator[] for ContainerBase
+                        for (auto joint : *(trunk_->getChildren()))
+                        {
+                                trunk_->setChild(joint);
+                        }
+                }
         };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
@@ -75,7 +86,15 @@ namespace robotlib
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child)
         {
+
                 link->setChild(child);
+                link->setChildren(nullptr);
+
+                if(child != nullptr)
+                {
+                        std::array<std::shared_ptr<Joint>, 1> children{child};
+                        link->setChildren(std::make_shared<Container<std::shared_ptr<Joint>, 1>>(children));
+                }
         }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>

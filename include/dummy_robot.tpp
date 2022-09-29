@@ -47,6 +47,7 @@ namespace robotlib
             {
                 const std::string child_name {leg->jointToChildName(joint)};
                 Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfJoint(joint, Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(child_name));
+
                 const std::string parent_name {leg->jointToParentName(joint)};
                 Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfJoint(joint, Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(parent_name));
             }
@@ -400,8 +401,6 @@ namespace robotlib
         baseVel.size();
         rotationMx.size();
         offset_com.size();
-        
-        std::cout << "Get whole body COM vel FB, with com offset as input, without considering joint influence" << std::endl;
 
         return Eigen::Matrix<double, 6, 1>::Zero();
     }
@@ -497,7 +496,7 @@ namespace robotlib
     DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::~DummyRobotCreator(){}
 
     template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    std::shared_ptr<RobotBase> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::createDummyRobot(const std::array<std::string, (2 + NLEGS + NARMS + NJOINTS + NLINKS)> &components_names)
+    std::shared_ptr<RobotBase> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::createDummyRobot(const std::array<std::string, (1 + NLEGS + NARMS + NJOINTS + NLINKS + 1)> &components_names)
     {
         const std::string name{components_names.front()};
 

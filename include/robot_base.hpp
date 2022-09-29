@@ -975,6 +975,25 @@ namespace robotlib
 		 */
         virtual void setInvKinTimePeriod(const double& period) = 0;
 
+        // ** ROBOT INFORMATION **
+
+        void printRobotHierarchy()
+        {
+            for(auto leg: *this->getLegs())
+            {
+                std::cout << "\n" << leg->getName() << std::endl;
+
+                for(auto joint : *leg->getJoints())
+                {
+                    std::cout << leg->jointToParentName(joint) << " --> " << joint->getName() << " --> " << leg->jointToChildName(joint) << std::endl;
+                }
+
+                for(auto link : *leg->getLinks())
+                {
+                    std::cout << leg->linkToParentName(link) << " --> " << link->getName() << " --> " << leg->linkToChildName(link) << std::endl;
+                }
+            }
+        }
 
         // ** PLUGIN TYPEDEFS ** 
 
