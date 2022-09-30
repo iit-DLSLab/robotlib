@@ -39,13 +39,14 @@ build:
 test:
   stage: test
   tags: 
-    - dls
+    - dls  
+  before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update
+  - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - echo "Test stage started"
     - cd build
-    - cmake .. -DBUILD_TESTING=On
-    - make -j$(nproc)
-    - cp src/robots/*.so tests/
     - make check
   artifacts:
     paths:
