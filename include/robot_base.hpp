@@ -844,6 +844,8 @@ namespace robotlib
 
         virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
 
+        virtual const std::shared_ptr<LimbBase> getArm(const std::string &name) = 0;
+
         virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
         virtual void getMinJointAngle(JointState &q_min) = 0;
@@ -981,7 +983,7 @@ namespace robotlib
         {
             for(auto leg: *this->getLegs())
             {
-                std::cout << "\n" << leg->getName() << std::endl;
+                std::cout << "\nLeg: " << leg->getName() << std::endl;
 
                 for(auto joint : *leg->getJoints())
                 {
@@ -991,6 +993,21 @@ namespace robotlib
                 for(auto link : *leg->getLinks())
                 {
                     std::cout << leg->linkToParentName(link) << " --> " << link->getName() << " --> " << leg->linkToChildName(link) << std::endl;
+                }
+            }
+
+            for(auto arm: *this->getArms())
+            {
+                std::cout << "\nArm: " << arm->getName() << std::endl;
+
+                for(auto joint : *arm->getJoints())
+                {
+                    std::cout << arm->jointToParentName(joint) << " --> " << joint->getName() << " --> " << arm->jointToChildName(joint) << std::endl;
+                }
+
+                for(auto link : *arm->getLinks())
+                {
+                    std::cout << arm->linkToParentName(link) << " --> " << link->getName() << " --> " << arm->linkToChildName(link) << std::endl;
                 }
             }
         }

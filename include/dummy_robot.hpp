@@ -14,6 +14,7 @@
 
 #include "robot.hpp"
 #include "leg.hpp"
+#include "arm.hpp"
 #include "dyn_params.hpp"
 #include <iostream>
 
@@ -173,11 +174,35 @@ namespace robotlib
             std::map<std::string, std::pair<std::string, std::string>> links_map_{};
         };
 
+        class DummyArm : public Arm<NJOINTSARM, NLINKSARM>
+        {
+        public:
+            DummyArm(const std::string &arm_name,
+                    const std::string &trunk_name,
+                    const std::array<std::shared_ptr<Joint>, NJOINTSARM> &arm_joints,
+                    const std::array<std::shared_ptr<Link>, NLINKSARM> &arm_links);
+            ~DummyArm();
+
+            /// TODO: We should avoid to duplicate methods and maps for both DummyLeg and DummyArm
+
+            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
+
+            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
+
+            virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const override;
+
+            virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
+
+      private:
+            std::map<std::string, std::pair<std::string, std::string>> joints_map_{};
+            std::map<std::string, std::pair<std::string, std::string>> links_map_{};
+        };
+
         DummyRobotCreator();
         ~DummyRobotCreator();
 
-        /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (1 + NJOINTS + NLINKS + NLEGS + NARMS + 1)> &components_names);
+        /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NJOINTS + NLINKS + NLEGS + NARMS)> &components_names);
     };
 } // namespace robotlib
 

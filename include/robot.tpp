@@ -14,16 +14,10 @@ namespace robotlib
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLegs() const
-        {
-                return legs_;
-        };
+        const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLegs() const { return legs_; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms() const
-        {
-                return arms_;
-        };
+        const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms() const { return arms_; };
 
         // template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>      /// NB: TODO
         // const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNextLeg(const std::shared_ptr<LimbBase>& leg){
@@ -40,10 +34,7 @@ namespace robotlib
         // }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS()
-        {
-                return NLEGS;
-        };
+        const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() { return NLEGS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() { return NARMS; };
@@ -131,6 +122,12 @@ namespace robotlib
                                 if (link != nullptr)
                                         return link;
                         }
+                        for (auto arm : *(this->getArms()))
+                        {
+                                std::shared_ptr<Link> link = arm->getLink(name);
+                                if (link != nullptr)
+                                        return link;
+                        }
                 }
 
                 std::cout << "LINK NOT FOUND FROM THE INPUT NAME " << name << std::endl;
@@ -146,6 +143,12 @@ namespace robotlib
                 for (auto leg : *(this->getLegs()))
                 {
                         std::shared_ptr<Joint> joint = leg->getJoint(name);
+                        if (joint != nullptr)
+                                return joint;
+                }
+                for (auto arm : *(this->getArms()))
+                {
+                        std::shared_ptr<Joint> joint = arm->getJoint(name);
                         if (joint != nullptr)
                                 return joint;
                 }
@@ -167,6 +170,18 @@ namespace robotlib
                 return std::shared_ptr<LimbBase>(nullptr);
         }
 
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const std::string &name)
+        {
+                for (auto arm : *(this->getArms()))
+                {
+                        if (arm->getName().compare(name) == 0)
+                                return arm;
+                }
+                std::cout << "ARM NOT FOUND FROM THE INPUT NAME " << name << std::endl;
+                std::cout << "Returning a nullptr... " << std::endl;
+                return std::shared_ptr<LimbBase>(nullptr);
+        }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMinJointAngle(JointState &q_min)
