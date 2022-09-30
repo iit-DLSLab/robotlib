@@ -19,7 +19,7 @@
 
 namespace robotlib
 {
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS = 0, unsigned int NJOINTSARM = 0, unsigned int NLINKSARM = 0>
     class DummyRobotCreator
     {
     public:
@@ -177,7 +177,7 @@ namespace robotlib
         ~DummyRobotCreator();
 
         /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (1 + NLEGS + NARMS + NJOINTS + NLINKS + 1)> &components_names);
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (1 + NJOINTS + NLINKS + NLEGS + NARMS + 1)> &components_names);
     };
 } // namespace robotlib
 

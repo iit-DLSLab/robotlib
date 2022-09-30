@@ -20,9 +20,11 @@ TEST(DummyRobotUnitTests, test)
       * 0 arms
       * 3 joints per leg
       * 3 links per leg
+      * 0 joints per arm
+      * 0 links per arm
       */
      {
-          robotlib::DummyRobotCreator<4, 0, 12, 12, 3, 3> dummy_robot_creator;
+          robotlib::DummyRobotCreator<12, 12, 4, 3, 3> dummy_robot_creator;
 
           /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
           std::array<std::string, 30> components_names{"Dummy Robot",
@@ -156,9 +158,11 @@ TEST(DummyRobotUnitTests, test)
       * 0 arms
       * 1 joint per leg
       * 1 link per leg
+      * 0 joints per arm
+      * 0 links per arm
       */
      {
-          robotlib::DummyRobotCreator<4, 0, 4, 4, 1, 1> dummy_robot_creator;
+          robotlib::DummyRobotCreator<4, 4, 4, 1, 1> dummy_robot_creator;
 
           /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
           std::array<std::string, 14> components_names{"Dummy Robot",
@@ -234,9 +238,11 @@ TEST(DummyRobotUnitTests, test)
       * 0 arms
       * 1 joint
       * 1 link
+      * 0 joints per arm
+      * 0 links per arm
       */
      {
-          robotlib::DummyRobotCreator<1, 0, 1, 1, 1, 1> dummy_robot_creator;
+          robotlib::DummyRobotCreator<1, 1, 1, 1, 1> dummy_robot_creator;
 
           /* Component names = [Robot name | Leg names | Arms names | Joint names | Link names | Trunk name] */
           std::array<std::string, 5> components_names{"Dummy Robot",

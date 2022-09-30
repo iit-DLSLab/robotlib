@@ -13,8 +13,8 @@
 
 namespace robotlib
 {
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::DummyRobot(const std::string &name,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::DummyRobot(const std::string &name,
                                                                                                     const std::shared_ptr<Trunk> trunk,
                                                                                                     const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
                                                                                                     const std::array<std::shared_ptr<LimbBase>, NARMS> arms)
@@ -80,11 +80,11 @@ namespace robotlib
         }
 	}
     
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::~DummyRobot(){}
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::~DummyRobot(){}
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFramePosition(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFramePosition(const RobotBase::JointState &q,
                                                                                                                           const std::shared_ptr<Frame> origin,
                                                                                                                           const std::shared_ptr<Frame> destination)
     {
@@ -95,8 +95,8 @@ namespace robotlib
         return Eigen::Vector3d().setZero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFrameOrientation(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFrameOrientation(const RobotBase::JointState &q,
                                                                                                                              const std::shared_ptr<Frame> origin,
                                                                                                                              const std::shared_ptr<Frame> destination)
     {
@@ -107,8 +107,8 @@ namespace robotlib
         return Eigen::Matrix3d().setZero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFramePose(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix4d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFramePose(const RobotBase::JointState &q,
                                                                                                                       const std::shared_ptr<Frame> origin,
                                                                                                                       const std::shared_ptr<Frame> destination)
     {
@@ -122,22 +122,22 @@ namespace robotlib
         return frame_pose;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
                                                                                                                          const std::shared_ptr<Frame> foot)
     {
         return this->getFramePosition(q, this->getLink(trunk_->getName()), foot);
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
                                                                                                                             const std::shared_ptr<Frame> foot)
     {
         return this->getFrameOrientation(q, this->getLink(trunk_->getName()), foot);
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPose(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix4d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPose(const RobotBase::JointState &q,
                                                                                                                      const std::shared_ptr<Frame> foot)
     {
         Eigen::Matrix4d foot_pose{};
@@ -150,23 +150,23 @@ namespace robotlib
         return foot_pose;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
                                                                                                               const std::shared_ptr<LimbBase> leg,
                                                                                                               Eigen::Vector3d &footPos)
     {
         footPos = this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootOrientation(const RobotBase::JointState &q,
                                                                                                                             const std::shared_ptr<LimbBase> leg)
     {
         return this->getFrameOrientation(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix4d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootPose(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix4d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPose(const RobotBase::JointState &q,
                                                                                                                      const std::shared_ptr<LimbBase> leg)
     {
         Eigen::Matrix4d foot_pose{};
@@ -179,8 +179,8 @@ namespace robotlib
         return foot_pose;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFootJacobian(const RobotBase::JointState &q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootJacobian(const RobotBase::JointState &q,
                                                                                                               const std::shared_ptr<LimbBase> leg,
                                                                                                               RobotBase::Jacobian &footJac)
     {
@@ -190,16 +190,16 @@ namespace robotlib
         footJac.setZero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::updateLinearJacobian(const RobotBase::JointState &joints_positions,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::updateLinearJacobian(const RobotBase::JointState &joints_positions,
                                                                                                                    RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian)
     {
         joints_positions.size();
         robot_jacobian.getSize();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    RobotBase::LegDataMap<std::shared_ptr<Frame>> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getFeet()
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    RobotBase::LegDataMap<std::shared_ptr<Frame>> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFeet()
     {
         auto feet = this->template makeLegDataMap<std::shared_ptr<Frame>>();
 
@@ -211,16 +211,16 @@ namespace robotlib
         return feet;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
                                                                                                                 RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position)
     {
         joint_position.size();
         end_effector_position.getSize();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
                                                                                                                 const RobotBase::JointState &joint_velocity,
                                                                                                                 RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                                                                                                 RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity)
@@ -231,8 +231,8 @@ namespace robotlib
         end_effector_velocity.getSize();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                                                                                                 const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
                                                                                                                 const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_acceleration,
                                                                                                                 RobotBase::JointState &joint_position,
@@ -247,16 +247,16 @@ namespace robotlib
         joint_acceleration.size();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::inverseKinematics(const RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                                                                                                 RobotBase::JointState &joint_position)
     {
         end_effector_position.getSize();
         joint_position.size();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                                                                                               const Eigen::Matrix<double, 6, 1> &robot_acceleration,
                                                                                                               const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                                                                               const RobotBase::JointState &joint_position,
@@ -275,8 +275,8 @@ namespace robotlib
         tau_joints.size();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                                                                                          const RobotBase::JointState &joint_position,
                                                                                                                          Eigen::Matrix<double, 6, 1> &wrench_base, ///output
                                                                                                                          RobotBase::JointState &tau_joints)        ///output
@@ -287,54 +287,54 @@ namespace robotlib
         tau_joints.getSize();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    double DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getRobotMass() const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    double DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getRobotMass() const
     {
         return 0.0;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    double DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getTrunkMass() const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    double DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getTrunkMass() const
     {
         return 0.0;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    double DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getLegsMass() const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    double DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getLegsMass() const
     {
         return 0.0;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getRobotCoM() 
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getRobotCoM()
     { 
         return Eigen::Vector3d().setZero(); 
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOM()
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM()
     {
         return Eigen::Matrix<double, 3, 1>::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOM(const RobotBase::JointState &joint_state)
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM(const RobotBase::JointState &joint_state)
     {
         joint_state.size();
 
         return Eigen::Matrix<double, 3, 1>::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getLegContribution(const RobotBase::JointState &q)
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getLegContribution(const RobotBase::JointState &q)
     {
         q.size();
 
         return Eigen::Vector3d::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getCoMFromBase(const RobotBase::JointState & q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getCoMFromBase(const RobotBase::JointState & q,
                                                                                                                         const Eigen::Vector3d & base_orient,
                                                                                                                         const Eigen::Vector3d & base_pos)
     {
@@ -345,8 +345,8 @@ namespace robotlib
         return Eigen::Vector3d::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Vector3d DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getBaseFromCoM(const RobotBase::JointState & q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getBaseFromCoM(const RobotBase::JointState & q,
                                                                                                                         const Eigen::Vector3d & base_orient,
                                                                                                                         const Eigen::Vector3d & CoM)
     {
@@ -357,8 +357,8 @@ namespace robotlib
         return Eigen::Vector3d::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVel(const RobotBase::JointState & q,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVel(const RobotBase::JointState & q,
                                                                                                                                         const RobotBase::JointState & qd)
     {
         q.size();
@@ -367,8 +367,8 @@ namespace robotlib
         return Eigen::Matrix<double, 6, 1>::Zero();		
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                                                                                           const Eigen::Matrix3d & rotationMx,
                                                                                                                                           const RobotBase::JointState & q,
                                                                                                                                           const RobotBase::JointState & qd)
@@ -381,8 +381,8 @@ namespace robotlib
         return Eigen::Matrix<double, 6, 1>::Zero();	
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                                                                                           const Eigen::Matrix3d & rotationMx,
                                                                                                                                           const RobotBase::JointState & q)
     {
@@ -393,8 +393,8 @@ namespace robotlib
         return Eigen::Matrix<double, 6, 1>::Zero();	
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                                                                                           const Eigen::Matrix3d &rotationMx,
                                                                                                                                           const Eigen::Vector3d offset_com)
     {	
@@ -405,26 +405,26 @@ namespace robotlib
         return Eigen::Matrix<double, 6, 1>::Zero();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setInvKinTimePeriod(const double& period)
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::setInvKinTimePeriod(const double& period)
     {
         std::cout << period << std::endl;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkCom(const Eigen::Vector3d &trunk_com) 
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::setTrunkCom(const Eigen::Vector3d &trunk_com)
     {
         trunk_com.size();
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    void DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot::setTrunkMass(const double& trunk_mass)
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::setTrunkMass(const double& trunk_mass)
     { 
         std::cout << trunk_mass << std::endl; 
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::DummyLeg(const std::string &leg_name,
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::DummyLeg(const std::string &leg_name,
                                                                                                 const std::string &trunk_name,
                                                                                                 const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
                                                                                                 const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links) 
@@ -454,49 +454,49 @@ namespace robotlib
         links_map_.insert(std::pair<std::string, std::pair<std::string, std::string>>((leg_links.at(NLINKSLEG-1))->getName(), link_no_child));
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::~DummyLeg(){}
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::~DummyLeg(){}
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    const std::string DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::jointToChildName(const std::shared_ptr<Joint> joint) const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToChildName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string child_name {joints_map_.find(joint_name)->second.second}; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
         return child_name;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    const std::string DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::jointToParentName(const std::shared_ptr<Joint> joint) const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToParentName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string parent_name {joints_map_.find(joint_name)->second.first};
         return parent_name;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    const std::string DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::linkToChildName(const std::shared_ptr<Link> link) const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToChildName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string child_name {links_map_.find(link_name)->second.second};
         return child_name;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    const std::string DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg::linkToParentName(const std::shared_ptr<Link> link) const
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToParentName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string parent_name {links_map_.find(link_name)->second.first};
         return parent_name;
     }
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobotCreator(){}
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobotCreator(){}
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::~DummyRobotCreator(){}
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::~DummyRobotCreator(){}
 
-    template <unsigned int NLEGS, unsigned int NARMS, int NJOINTS, int NLINKS, int NJOINTSLEG, int NLINKSLEG>
-    std::shared_ptr<RobotBase> DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::createDummyRobot(const std::array<std::string, (1 + NLEGS + NARMS + NJOINTS + NLINKS + 1)> &components_names)
+    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
+    std::shared_ptr<RobotBase> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::createDummyRobot(const std::array<std::string, (1 + NJOINTS + NLINKS + NLEGS + NARMS + 1)> &components_names)
     {
         const std::string name{components_names.front()};
 
@@ -521,9 +521,9 @@ namespace robotlib
                 legs_links.at(i).at(j) = std::make_shared<Link>(components_names.at((i*NJOINTSLEG)+(j+1+NLEGS+NARMS+NJOINTS)));
             }
 
-            legs.at(i) = std::make_shared<DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyLeg>(components_names.at(i+1), components_names.back(), legs_joints.at(i), legs_links.at(i));
+            legs.at(i) = std::make_shared<DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg>(components_names.at(i+1), components_names.back(), legs_joints.at(i), legs_links.at(i));
         }
 
-        return std::make_shared<DummyRobotCreator<NLEGS, NARMS, NJOINTS, NLINKS, NJOINTSLEG, NLINKSLEG>::DummyRobot>(name, trunk, legs, arms);
+        return std::make_shared<DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot>(name, trunk, legs, arms);
     }
 } // namespace robotlib
