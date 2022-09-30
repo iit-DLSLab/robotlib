@@ -43,6 +43,9 @@ test:
   script:
     - echo "Test stage started"
     - cd build
+    - cmake .. -DBUILD_TESTING=On
+    - make -j$(nproc)
+    - cp src/robots/*.so tests/
     - make check
   artifacts:
     paths:
