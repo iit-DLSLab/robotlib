@@ -17,8 +17,11 @@ set(CMAKE_CSS_STANDARD_REQUIRED True)
 add_compile_options(
 	-std=c++17
 	-fPIC
-	-Wall -Wextra -Wpedantic # Enable warnings
-	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
+	$<$<CONFIG:Debug>:-g> #Those options are enabled is a Debug configuration is set
+	$<$<CONFIG:Debug>:-Wall>
+	$<$<CONFIG:Debug>:-Wextra>
+	$<$<CONFIG:Debug>:-pedantic>
+	$<$<CONFIG:Release>:-O3>
 )
 
 message("\n***********Building robotlib library***********\n")
@@ -37,11 +40,8 @@ if (BUILD_TESTING)
 	enable_testing()
 	include(RobotlibGoogleTest)
 	add_compile_options(
-		$<$<CONFIG:Debug>:-g>
-		-Wall -Wextra -pedantic # Enable warnings
-		#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
+		-fsanitize=leak,address,undefined #Enable LeakSanitizer, AddressSanitizer, UndefinedBehaviorSanitizer 
 	)
-	#add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 endif()
 
