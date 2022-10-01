@@ -48,6 +48,7 @@ TEST(RealTimeTest, print_function)
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
     feet_jacobians.print();
+    deactivate_hooks();
     is_dynamic_memory_used(true, false, false, true); // malloc, calloc, realloc, free
 }
 
@@ -64,5 +65,6 @@ TEST(RealTimeTest, equal_operator)
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
     feet_jacobians = feet_jacobians_2;
+    deactivate_hooks();
     is_dynamic_memory_used(false, false, false, false); // malloc, calloc, realloc, free
 }
