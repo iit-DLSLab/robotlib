@@ -1,6 +1,8 @@
 # Minimum CMake version working in Ubuntu 20.04
 cmake_minimum_required(VERSION 3.7.0)
 project(robotlib)
+message("\n***********Building robotlib library***********\n")
+
 option(BUILD_TESTING "" OFF)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CTest)
@@ -12,8 +14,6 @@ find_package(Eigen3 REQUIRED NO_MODULE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CSS_STANDARD_REQUIRED True)
 
-
-
 add_compile_options(
 	-std=c++17
 	-fPIC
@@ -24,15 +24,10 @@ add_compile_options(
 	$<$<CONFIG:Release>:-O3>
 )
 
-message("\n***********Building robotlib library***********\n")
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/include
 	SYSTEM
 )
-
-
-
-
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
