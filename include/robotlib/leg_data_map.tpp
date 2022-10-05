@@ -52,7 +52,7 @@ namespace robotlib
         int count_data = 0;
         for (auto &pair: other)
         {
-            this->data_array_[count_data++] = pair;
+            this->data_array_[count_data++] = this->createPair(pair);
         }
     }
 
@@ -62,7 +62,8 @@ namespace robotlib
         int count_data = 0;
         for (auto &pair: other)
         {
-            this->data_array_[count_data++] = pair;
+            this->data_array_[count_data].key_ = pair.key_;
+            *this->data_array_[count_data++].data_ = *pair.data_;
         }
 
         return *this;

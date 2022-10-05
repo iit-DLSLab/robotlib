@@ -66,7 +66,7 @@ namespace robotlib
         int count_data = 0;
         for (auto &pair : other)
         {
-            this->data_array_[count_data++] = this->createPair(pair.key_);
+            this->data_array_[count_data++] = this->createPair(pair);
         }
     }
 
@@ -74,9 +74,16 @@ namespace robotlib
     JointDataMap<Data> &JointDataMap<Data>::operator=(const JointDataMap<Data> &other)
     {
         int count_data = 0;
-        for (auto pair: other)
+        for (auto &pair: other)
         {
-            this->data_array_[count_data++] = pair;
+            this->data_array_[count_data].key_ = pair.key_;
+            if (this->data_array_[count_data].data_ == nullptr)
+            {
+                this->data_array_[count_data].data_ = std::shared_ptr<Data>(new Data(*pair.data_));
+            }
+            else{
+                *this->data_array_[count_data++].data_ = *pair.data_;
+            }
         }
         return *this;
     }

@@ -108,9 +108,9 @@ namespace robotlib
 
         virtual void init(const DataMap &data);
 
-        // const Pair createPair(const std::shared_ptr<Key> key, const Data&) const; //shared_pointers?}
-        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key> key, const Data&);
-        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key> key);
+        std::shared_ptr<DataMap::Pair> createPair(const Pair&);
+        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>, const Data&);
+        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>);
 
         int num_data_;
         Pair *data_array_;

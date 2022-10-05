@@ -324,10 +324,22 @@ namespace robotlib
     {
         for (auto &leg_pair : *this)
         {
-            leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+            if(leg_pair.data_ == nullptr)
+            {
+                leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+            }
+
+
             for (auto &joint_pair : *leg_pair.data_)
             {
-                joint_pair.data_ = std::shared_ptr<double>(new double(rhs[joint_pair.key_]));
+                if(joint_pair.data_ == nullptr)
+                {
+                    joint_pair.data_ = std::shared_ptr<double>(new double(rhs[joint_pair.key_]));
+                }
+                else
+                {
+                    *joint_pair.data_ = rhs[joint_pair.key_];
+                }
             }
         }
 
