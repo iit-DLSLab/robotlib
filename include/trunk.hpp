@@ -63,7 +63,7 @@ namespace robotlib
 		 * @return const DynParams
 		 */
 		const DynParams &getDynParams() const;
-	
+
 	private:
 
 		/**

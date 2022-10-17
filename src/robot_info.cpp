@@ -66,6 +66,20 @@ namespace robotlib
             count_joints++;
         }
         std::cout << '\n';
+
+        std::cout << "\n*** JOINTS FOR EACH ARM OF " << robot->getName() << " ***" << std::endl;
+        for (auto arm : *robot->getArms())
+        {
+            std::cout << arm->getName() << ":  ";
+            int count_joints {0};
+            for (auto joint : *arm->getJoints())
+            {
+                std::cout << joint->getName() << ", ";
+            }
+            std::cout << '\n';
+            count_joints++;
+        }
+        std::cout << '\n';
     }
 } // namespace robotlib
 
