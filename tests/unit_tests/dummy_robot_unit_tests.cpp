@@ -7,7 +7,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "dummy_robot.hpp"
+#include "dummy_robot/dummy_robot.hpp"
 
 /**
  * @brief Set of unit tests for DummyRobot
