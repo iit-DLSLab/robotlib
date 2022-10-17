@@ -15,7 +15,6 @@ TEST(RobotBaseRealTimeTests, create_robot)
     deactivate_hooks();
     is_dynamic_memory_used(true, true, false, true); // malloc, calloc, realloc, free 
     std::cout << "free seems to be called few times w.r.t. malloc one. TODO: understand why.\nTo verify: uncomment prints in malloc and free hooks.\n";
-  
 }
 
 TEST(RobotBaseRealTimeTests, getLegs)

@@ -54,6 +54,17 @@ namespace robotlib
 		 * @return const std::shared_ptr<Joint>
 		 */
 		const std::shared_ptr<Joint> getChild() const;
+		/**
+		 * @brief Get the Link children object, that is a ContainerBase of Joint objects
+		 * @return const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>>
+		 */
+		  /// TODO:
+          /// - getChildren could invoke getChild when it contains a single element
+          /// - getChildren should not require a user to write a for loop (it should be done automatically from Robotlib and hidden)
+          ///   and should return an easier data structure (e.g. a std::array)
+          /// - both getChild and getChildren can return a nullptr. However, only getChildren can give a segfault because to access
+          ///   its elements you need the annoying iteration over the ContainerBase structure
+		const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
 
 	protected:
 		/**

@@ -17,9 +17,28 @@ namespace robotlib
 
 	Link::~Link(){}
 
+	/// TODO:
+	// 0 children - restituisci messaggio + nullptr + gestisci il segfault
+	// 1 children - restituisci children con 1 elemento (quando si fa setChild bisogna anche aggiornare i children)
+	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
+	// segnalare i possibili segmentation fault da gestire
+
 	const std::string Link::getName() const { return name_; }
 	const std::shared_ptr<Joint> Link::getParent() const { return parent_; }
-	const std::shared_ptr<Joint> Link::getChild() const { return child_; }
+	const std::shared_ptr<Joint> Link::getChild() const
+	{
+		if(child_ != nullptr)
+			return child_;
+		else
+			return nullptr;
+	}
+	const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
+	{
+		if((children_ != nullptr) && (children_->size() > 0))
+			return children_;
+		else
+			throw std::runtime_error ("RUNTIME ERROR: The link has no children");
+	}
 
 	void Link::setParent(const std::shared_ptr<Joint> parent) { parent_ = parent; }
 	void Link::setChild(const std::shared_ptr<Joint> child) { child_ = child; }

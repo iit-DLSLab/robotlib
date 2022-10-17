@@ -29,6 +29,7 @@ namespace robotlib
 		virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
 		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
 		virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
+		virtual const std::shared_ptr<LimbBase> getArm(const std::string &name) override;
 
         virtual void getMinJointAngle(JointState &q_min) override;
         virtual void getMaxJointAngle(JointState &q_max) override;
@@ -43,9 +44,9 @@ namespace robotlib
 		const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs_; //! Legs of the robot
 		const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms_; //! Arms of the robot
 
-		void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 		void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
 		void setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child);
+		void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 
 		void setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent);
 		void setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent);
