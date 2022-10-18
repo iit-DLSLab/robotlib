@@ -20,7 +20,7 @@ namespace robotlib
     {
     public:
         RobotBase(const std::string &name) : name_(name){};
-        ~RobotBase(){};
+        virtual ~RobotBase(){};
 
         template <class Key, class Data>
         class DataMap
