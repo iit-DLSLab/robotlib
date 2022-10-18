@@ -25,7 +25,7 @@ build:
     - mkdir build
     - cd build
     # Enable gcov/lcov from command line
-    - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
+    - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" .. -DBUILD_TESTING=On
     - make -j$(nproc) install
     - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
@@ -39,11 +39,15 @@ build:
 test:
   stage: test
   tags: 
-    - dls
+    - dls  
+  before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update
+  - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - echo "Test stage started"
-    - cd build/tests
-    - ./main_tests
+    - cd build
+    - make check
   artifacts:
     paths:
       - build/tests/CMakeFiles/*
