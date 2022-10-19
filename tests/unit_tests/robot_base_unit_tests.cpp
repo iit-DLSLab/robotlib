@@ -210,7 +210,7 @@ TEST(RobotBaseUnitTests, getFeet)
     foot_pose_gt.setZero();
     foot_pose_gt(3, 3) = 1;
 
-    for (const auto leg : *(dummy_quadruped->getLegs()))
+    for (const auto &leg : *(dummy_quadruped->getLegs()))
     {
         Eigen::Matrix4d foot_pose_dq{};
         foot_pose_dq.setZero();
