@@ -15,16 +15,6 @@ add_compile_options(
 #add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
 
 # ==============================================================================
-# Setup the repository
-# ==============================================================================
-# This will perfom task such as setting up the git hooks for anyone who uses
-# this project
-execute_process(
-	COMMAND           ./setup.sh
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-# ==============================================================================
 # Calculate correct project version number
 # ==============================================================================
 # Read in the current version
@@ -54,7 +44,17 @@ string(JOIN "." PROJECT_VERSION
 	${PROJECT_VERSION_PATCH}
 )
 unset(VERSION_ARRAY) # delete aray of version strings
-message(STATUS "PID ROJECT VERSION ${PROJECT_VERSION}")
+message(STATUS "ROBOTLIB ROJECT VERSION ${PROJECT_VERSION}")
+
+# ==============================================================================
+# Setup the repository
+# ==============================================================================
+# This will perfom task such as setting up the git hooks for anyone who uses
+# this project
+execute_process(
+	COMMAND           ./setup.sh
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
@@ -66,14 +66,13 @@ include_directories(
 
 if(CODE_TO_COMPILE STREQUAL "Limb")
 	message("\n***********Building only the Limb related code***********\n")
-	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/limb/CMakeLists.txt)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/chunks/limb/CMakeLists.txt)
 
 elseif(CODE_TO_COMPILE STREQUAL "utils")
 	message("\n***********Building only the utils related code***********\n")
-	include(${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists_chunks/utils/CMakeLists.txt)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/chunks/utils/CMakeLists.txt)
 	
 else()
-	message("\n***********Building the entire robotlib library***********\n")
 	include_directories(
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 		SYSTEM
