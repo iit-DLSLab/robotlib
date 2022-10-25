@@ -16,7 +16,7 @@ Through the common interface, it is therefore possible to keep one single contro
 
 In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue code respectively of Aliengo and Crex.
 
-![Robotlib](doxygen/Robotlib.png)
+![Robotlib](doc/Robotlib.png)
 
 Notice that the robot states are decoupled from the hierarchical robot structure. This means that a robot object does not store any robot state like joint configuration, joint velocities, stance status per leg etc. It provides instead data structures that can be used to define robot states when implementing a controller.
 
@@ -24,9 +24,6 @@ There are several advantages of using an architecture abstraction layer like Rob
 Robotlib is written in C++17 to be fast and portable. It is compatible with the most adopted robotics libraries and is real-time safe.
 
 ## Installation and usage
-
-<!-- TODO -->
-<!-- How to clone and build Robotlib -->
 ### Dependencies
 Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
 
@@ -42,6 +39,22 @@ You just need to substitue the *X* value with the chosen CMake version.
 
 **GTest**
 * `sudo apt install libgtest-dev`
+
+To install Robotlib:
+- Clone the repository
+
+    `git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git`
+- Create the build folder and install it
+
+    `mkdir build`
+
+    `cd build`
+
+    `cmake ..`
+
+    `make install`
+
+
 
 <!-- How to clone and build Glue layers -->
 <!-- How to buid and install it -->
