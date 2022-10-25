@@ -8,8 +8,8 @@ Robotlib is based on a factory design pattern that allows the creation of object
 However, polymorphisms per se is not enough to achieve a plug-in based architecture. Here is why dlopen API comes in handy. The dlopen API, allows to dynamically load shared libraries representing the concrete implementation of the interface, i.e. robot specific libraries. This is achieved by defining 2 class factory functions inside the interface, defined as extern "C" to avoid name mangling. One function creates a class instance, the other one allows to destroy it.
 
 With this architecture you just need to:
-- Write your controller based on Robotlib
-- Implement the Glue code, that is the robot specific libraries
+- Write your controller based on **Robotlib**
+- Implement the **Glue code**, that is the robot specific libraries
 - Loading at runtime the robot library associated to the robot you want to control
 
 Through the common interface, it is therefore possible to keep one single controller implementation for controlling robots with different morphologies.
@@ -82,13 +82,13 @@ Then compile the code
 ## Usage
 <!--TODO-->
 ## Documentation
-The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder `doc` and execute the following command
+The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
 
     doxygen robotlib_doxygen.conf
 
 Latex and html files will be generated according to the instructions provided in the configuration file robotlib_doxygen.conf. 
 
-To access to the html documentation, just double click on the file `index.html` stored in the folder `doc/html`: it will open the file in your browser.
+To access to the html documentation, just double click on the file *index.html* stored in the folder *doc/html*: it will open the file in your browser.
 
 To view the inheritance graph, once the html file is opended in your browser, go in the Classes section and click on the Class Hierarchy tab.
 
