@@ -16,7 +16,7 @@ Through the common interface, it is therefore possible to keep one single contro
 
 In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue code respectively of Aliengo and Crex.
 
-![Robotlib](doxygen/Robotlib.png)
+![Robotlib](doc/Robotlib.png)
 
 Notice that the robot states are decoupled from the hierarchical robot structure. This means that a robot object does not store any robot state like joint configuration, joint velocities, stance status per leg etc. It provides instead data structures that can be used to define robot states when implementing a controller.
 
