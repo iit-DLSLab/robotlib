@@ -81,9 +81,21 @@ Then compile the code
 <!-- Important nomenclatures if not clear (e.g. RT / NRT) -->
 
 ## Tests
+The tests are based on GoogleTests: the Google's C++ test framework. The tests relies on glue codes associated to dummy robots generated with the only purpose of testing.
 
-<!-- TODO -->
-<!-- How to build and run tests -->
+To run tests
+
+    mkdir build
+
+    cd build
+
+    cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=On
+
+    make install
+
+    make check
+
+Notice that you need to install Robotlib such that the tests can easily loading at run time the shared libraries associated to dummy robots.
 
 ## Pipeline status
 
