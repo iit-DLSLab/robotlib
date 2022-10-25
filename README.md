@@ -16,50 +16,63 @@ Through the common interface, it is therefore possible to keep one single contro
 
 In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue code respectively of Aliengo and Crex.
 
-![Robotlib](doc/Robotlib.png)
+![Robotlib](doxygen/Robotlib.png)
 
 Notice that the robot states are decoupled from the hierarchical robot structure. This means that a robot object does not store any robot state like joint configuration, joint velocities, stance status per leg etc. It provides instead data structures that can be used to define robot states when implementing a controller.
 
 There are several advantages of using an architecture abstraction layer like Robotlib. For example, with Robotlib, robot-specific structures are hidden from the controllers and state estimators, making them more modular and easier to implement. The structure allows controllers and state estimators to be written only once, and then the framework can dynamically load different robots. The abstraction layer also provides an easy way to switch backend libraries that compute the kinematics and dynamics without affecting the rest of the framework.
 Robotlib is written in C++17 to be fast and portable. It is compatible with the most adopted robotics libraries and is real-time safe.
 
-## Installation and usage
+## Installation
 ### Dependencies
-Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
+Robotlib has been developed and tested on a x86_64 version of Ubuntu 16.04 (Xenial Xerus), Ubunutu 18.04 (Bionic Beaver) and Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
 
-**CMake** (3.7.0 is the minimum version) - You can download the chosen version and install it through:
-* `wget https://cmake.org/files/v3.X/cmake-3.X.X-Linux-x86_64.tar.gz`
-* `tar xf cmake-3.X.X-Linux-x86_64.tar.gz`
-* `export PATH="$PATH:/home/dls_user/cmake-3.X.X-Linux-x86_64/bin"`
+**CMake** (3.7.0 is the minimum version for Ubuntu 20.04, 3.1.0 is the one for the other versions) - You can download the chosen version and install it through
 
-You just need to substitue the *X* value with the chosen CMake version.
+    wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
+    tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
+    export PATH="$PATH:/home/dls_user/cmake-3.<X>.<X>-Linux-x86_64/bin"
+
+You just need to substitue \<X> with the chosen CMake version.
 
 **Eigen3**
-* `sudo apt install libeigen3-dev` 
+
+    sudo apt install libeigen3-dev
 
 **GTest**
-* `sudo apt install libgtest-dev`
 
-To install Robotlib:
-- Clone the repository
+    sudo apt install libgtest-dev
 
-    `git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git`
-- Create the build folder and install it
+### Building
+To build Robotlib, clone this repository
+* For Ubuntu 20.04
 
-    `mkdir build`
+    git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git
 
-    `cd build`
+* For Ubuntu 18.04
 
-    `cmake ..`
+    git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git -b bionic-develop
 
-    `make install`
+* For Ubuntu 16.04
 
+    git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git -b xenial-develop
 
+Then compile the code
+
+    mkdir build
+
+    cd build
+
+    cmake ..
+
+    make install
 
 <!-- How to clone and build Glue layers -->
 <!-- How to buid and install it -->
 <!-- How to run robot_info -->
 
+## Usage
+<!--TODO-->
 ## Documentation
 
 <!-- TODO -->
