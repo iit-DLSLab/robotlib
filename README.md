@@ -109,7 +109,7 @@ To run tests
 
     make check
 
-Notice that you need to install Robotlib such that the tests can easily loading at run time the shared libraries associated to dummy robots.
+Notice that you need to install Robotlib such that the tests can easily load at run time the shared libraries associated to dummy robots.
 
 ## Pipeline status
 
