@@ -17,7 +17,7 @@ set(CMAKE_CSS_STANDARD_REQUIRED True)
 add_compile_options(
 	-std=c++17
 	-fPIC
-	#Those options are enabled is a Debug configuration is set
+	#Those options are enabled if a Debug configuration is set
 	$<$<CONFIG:Debug>:-g>
 	$<$<CONFIG:Debug>:-Wall>
 	$<$<CONFIG:Debug>:-Wextra>
