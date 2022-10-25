@@ -63,7 +63,7 @@ Then compile the code
 
     cd build
 
-    cmake ..
+    cmake .. -DCMAKE_BUILD_TYPE=Release
 
     make install
 
