@@ -75,12 +75,80 @@ Then compile the code
 
     make install
 
-<!-- How to clone and build Glue layers -->
-<!-- How to buid and install it -->
-<!-- How to run robot_info -->
-
 ## Usage
-<!--TODO-->
+Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here-TODO](TODO) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
+
+If you don't want to install any glue code but you just want to play aroud with Robotlib you can use one of the dummy robots defined in Robotlib: a dummy quadruped or a dummy hexapod. Their glue code is already installed when you install Robotlib.
+
+We can now have a look at an example of using Robotlib. First of all we need to create a robot object, loading at run time the shared library associated to the robot we want to control
+
+    // Instantiate the robot object
+    std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+
+With the openRobot function, the shared library associated to the dummy quadruped robots is loaded at runtime. The real object type is masquerade by the Robotlib interface, and therefore the robot object is used to get robot information and data structures and to use utility functions.
+
+Some robot functions can be accessed through the robot object, for example
+
+    // Print some robot information
+    std::cout << robot->getName() << std::endl;
+    std::cout << robot->getNLEGS() << std::endl;
+    std::cout << robot->getNJOINTS() << std::endl;
+
+Suppose now that you want a variable storing the stance status of each leg. You can define a leg data map object in this way
+
+    // Define and populate a leg data map object
+    robotlib::RobotBase::LegDataMap<bool> stance_status {robot->makeLegDataMap<bool>(false)}; // or auto stance_status {robot->makeLegDataMap<double>(0.0)};
+
+The LegDataMap object can be seen as a list of pairs: each pair associates a stored data to a leg. 
+
+Notice that the constructor of the LegDataMap class produces not real time operations. With the aim of letting the user managing more carefully not real time operations, the LegDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LegDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with non real time operations (that is, it allocates dynamic memory).
+
+Let's now populate the stance_status variable
+
+    for(std::shared_ptr<robotlib::LimbBase>  leg: *robot->getLegs()) //or for(auto leg : *robot->getLegs())
+    {
+        stance_status[leg] = true; //or stance_status[leg->getName()] = true;
+        std::cout << leg->getName() << " leg, stored data: " << stance_status[leg] << std::endl;
+    }
+
+As you can see in the code above, we use iterators to iterate over a set of legs got from the robot object. In Robotlib there is no way to access to data structures by index. You can access to data by either a class instance or by string. For example, if you want to access to the stance status associated to the left front leg you can do it in one of the following ways
+
+    bool stance {stance_status[robotlib->getLeg("LF")]};
+    //or
+    stance = stance_status["LF"];
+
+The getLeg function returns a std::shared_ptr<LimbBase> object, that is used to access to the associated data stored in the variable stance_status.
+
+As another example of data type that can be associated to legs consider the following example
+
+    // Define and populate a leg data map objectof jacobians; each jacobian is associated to a leg
+    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{dummy_quadruped->makeFootJacobian(foot)};
+    for (auto leg : *(robot->getLegs()))
+    {
+        std::cout << "Foot jacobian per " << leg->getName() << " leg: " << std::endl;
+        feet_jacobian[leg] << 10, 10, 10,
+            20, 20, 20,
+            30, 30, 30,
+            40, 40, 40,
+            50, 50, 50,
+            60, 60, 60;
+        std::cout << feet_jacobian[leg] << std::endl;
+    }
+
+In this example we have used the function makeFeetJacobian (making non real time operations) to create a jacobian object for each leg.
+
+Finally consider the following example to compute the forward kinematics for each leg.
+
+    // Forward kinematics
+    robotlib::RobotBase::JointState q_input{robot->makeJointState(0)};
+    robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> foot_position{robot->makeLegDataMap<Eigen::Matrix<double, 3, 1>>(Eigen::Matrix<double, 3, 1>::Zero())};
+    robot->forwardKinematics(q_input, foot_position);
+
+The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable with the output of the forward kinematics. This is an example of virtual function defined in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
+
+
+
+<!-- How to run robot_info -->
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
 
