@@ -121,7 +121,7 @@ package:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - cd build
     - make package
