@@ -78,7 +78,7 @@ Then compile the code
 ## Usage
 Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here-TODO](TODO) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
 
-If you don't want to install any glue code but you just want to play aroud with Robotlib you can use one of the dummy robots defined in Robotlib: a dummy quadruped or a dummy hexapod. Their glue code is already installed when you install Robotlib.
+If you don't want to install any glue code but you just want to play aroud with Robotlib you can use one of the dummy robots defined in Robotlib: a dummy quadruped or a dummy hexapod. Their (dummy) glue code is already installed when you install Robotlib.
 
 We can now have a look at an example of using Robotlib. First of all we need to create a robot object, loading at run time the shared library associated to the robot we want to control
 
@@ -87,7 +87,7 @@ We can now have a look at an example of using Robotlib. First of all we need to 
 
 With the openRobot function, the shared library associated to the dummy quadruped robots is loaded at runtime. The real object type is masquerade by the Robotlib interface, and therefore the robot object is used to get robot information and data structures and to use utility functions.
 
-Some robot functions can be accessed through the robot object, for example
+Some robot information can be accessed through the robot object, for example
 
     // Print some robot information
     std::cout << robot->getName() << std::endl;
@@ -97,9 +97,9 @@ Some robot functions can be accessed through the robot object, for example
 Suppose now that you want a variable storing the stance status of each leg. You can define a leg data map object in this way
 
     // Define and populate a leg data map object
-    robotlib::RobotBase::LegDataMap<bool> stance_status {robot->makeLegDataMap<bool>(false)}; // or auto stance_status {robot->makeLegDataMap<double>(0.0)};
+    robotlib::RobotBase::LegDataMap<bool> stance_status {robot->makeLegDataMap<bool>(false)}; // or auto stance_status {robot->makeLegDataMap<bool>(0.0)};
 
-The LegDataMap object can be seen as a list of pairs: each pair associates a stored data to a leg. 
+The LegDataMap object can be seen as a list of pairs: each pair associates a stored data to a leg.
 
 Notice that the constructor of the LegDataMap class produces not real time operations. With the aim of letting the user managing more carefully not real time operations, the LegDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LegDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with non real time operations (that is, it allocates dynamic memory).
 
@@ -117,7 +117,7 @@ As you can see in the code above, we use iterators to iterate over a set of legs
     //or
     stance = stance_status["LF"];
 
-The getLeg function returns a std::shared_ptr<LimbBase> object, that is used to access to the associated data stored in the variable stance_status.
+where "LF" is the name associated to the left front leg. The getLeg function returns a std::shared_ptr\<LimbBase> object, that is used to access to the associated data stored in the variable stance_status.
 
 As another example of data type that can be associated to legs consider the following example
 
@@ -144,7 +144,7 @@ Finally consider the following example to compute the forward kinematics for eac
     robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> foot_position{robot->makeLegDataMap<Eigen::Matrix<double, 3, 1>>(Eigen::Matrix<double, 3, 1>::Zero())};
     robot->forwardKinematics(q_input, foot_position);
 
-The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable with the output of the forward kinematics. This is an example of virtual function defined in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
+The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function defined in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
 
 
 
