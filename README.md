@@ -146,9 +146,19 @@ Finally consider the following example to compute the forward kinematics for eac
 
 The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function defined in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
 
+Finally, you can run an executable to show robot information. The executable is called *robot_info* and it is generated in the *build/src* folder after building Robotilb. The executable can be run as follows
 
+    ./robot_info <robot_library> --info
 
-<!-- How to run robot_info -->
+For example
+
+    ./robot_info dummy-quadruped --info
+
+or in case of Aliengo robot
+
+    ./robot_info aliengolib --info
+
+where *aliengolib* is the name of the glue code library for Aliengo.
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
 
