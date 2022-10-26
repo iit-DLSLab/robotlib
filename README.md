@@ -10,7 +10,7 @@ However, polymorphisms per se is not enough to achieve a plug-in based architect
 With this architecture you just need to:
 - Write your controller based on **Robotlib**
 - Implement the **Glue code**, that is the robot specific libraries
-- Loading at runtime the robot library associated to the robot you want to control
+- **Loading at runtime** the robot library associated to the robot you want to control
 
 Through the common interface, it is therefore possible to keep one single controller implementation for controlling robots with different morphologies.
 
@@ -137,7 +137,7 @@ As another example of data type that can be associated to legs consider the foll
 
 In this example we have used the function makeFeetJacobian (making non real time operations) to create a jacobian object for each leg.
 
-Finally consider the following example to compute the forward kinematics for each leg.
+Consider now the following example to compute the forward kinematics for each leg
 
     // Forward kinematics
     robotlib::RobotBase::JointState q_input{robot->makeJointState(0)};
@@ -158,7 +158,7 @@ or in case of Aliengo robot
 
     ./robot_info aliengolib --info
 
-where *aliengolib* is the name of the glue code library for Aliengo.
+where *aliengolib* is the name of the installed glue code library for Aliengo.
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
 
@@ -186,8 +186,6 @@ To run tests
     make install
 
     make check
-
-Notice that you need to install Robotlib such that the tests can easily load at run time the shared libraries associated to dummy robots.
 
 ## Pipeline status
 
