@@ -33,9 +33,9 @@ Robotlib is written in C++17 to be fast and portable. It is compatible with the 
 
 ## Installation
 ### Dependencies
-Robotlib has been developed and tested on a x86_64 version of Ubuntu 16.04 (Xenial Xerus), Ubunutu 18.04 (Bionic Beaver) and Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
+Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
 
-**CMake** (3.7.0 is the minimum version for Ubuntu 20.04, 3.1.0 is the one for the other versions) - You can download the chosen version and install it through
+**CMake** (3.7.0 is the minimum version for Ubuntu 20.04) - You can download the chosen version and install it through
 
     wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
     tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
@@ -52,20 +52,9 @@ You just need to substitue \<X> with the chosen CMake version.
     sudo apt install libgtest-dev
 
 ### Building
-To build Robotlib, clone this repository
-* For Ubuntu 20.04
+To build Robotlib, clone the latest version of this repository and compile the package using
 
     git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git
-
-* For Ubuntu 18.04
-
-    git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git -b bionic-develop
-
-* For Ubuntu 16.04
-
-    git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git -b xenial-develop
-
-Then compile the code
 
     mkdir build
 
