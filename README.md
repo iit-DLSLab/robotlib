@@ -9,7 +9,7 @@ However, polymorphisms per se is not enough to achieve a plug-in based architect
 
 With this architecture you just need to:
 - Write your controller based on **Robotlib**
-- Implement the **Glue code**, that is the robot specific libraries
+- Implement the **glue code**, that is the robot specific libraries
 - **Loading at runtime** the robot library associated to the robot you want to control
 
 Through the common interface, it is therefore possible to keep one single controller implementation for controlling robots with different morphologies.
@@ -35,11 +35,11 @@ Robotlib is written in C++17 to be fast and portable. It is compatible with the 
 ### Dependencies
 Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
 
-**CMake** (3.7.0 is the minimum version for Ubuntu 20.04) - You can download the chosen version and install it through
+**CMake** (3.8.0 is the minimum version for C++17 standard) - You can download the chosen version and install it through
 
     wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
     tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
-    export PATH="$PATH:/home/dls_user/cmake-3.<X>.<X>-Linux-x86_64/bin"
+    export PATH="$PATH:<path where you extracted cmake>/cmake-3.<X>.<X>-Linux-x86_64/bin"
 
 You just need to substitue \<X> with the chosen CMake version.
 
@@ -56,6 +56,8 @@ To build Robotlib, clone the latest version of this repository and compile the p
 
     git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git
 
+    cd robotlib
+
     mkdir build
 
     cd build
@@ -63,6 +65,10 @@ To build Robotlib, clone the latest version of this repository and compile the p
     cmake .. -DCMAKE_BUILD_TYPE=Release
 
     make install
+
+If you get error when executing the `cmake` command, you might need to do
+
+    sudo apt install build-essential
 
 ## Usage
 Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here-TODO](TODO) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
@@ -75,6 +81,11 @@ We can now have a look at an example of using Robotlib. First of all we need to 
     std::shared_ptr<robotlib::RobotBase> robot {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
 With the openRobot function, the shared library associated to the dummy quadruped robots is loaded at runtime. The real object type is masquerade by the Robotlib interface, and therefore the robot object is used to get robot information and data structures and to use utility functions.
+
+If you wanted to load the aliengo glue code, you just would need to install it and then you could load it with
+
+    // Instantiate the Aliengo robot object
+    std::shared_ptr<robotlib::RobotBase> aliengo {robotlib::RobotFactory::openRobot("aliengolib")};
 
 Some robot information can be accessed through the robot object, for example
 
@@ -148,6 +159,8 @@ or in case of Aliengo robot
     ./robot_info aliengolib --info
 
 where *aliengolib* is the name of the installed glue code library for Aliengo.
+
+A final remark about the *openRobot* funtion. When it takes only one argument, this function calls the *createRobot_t* factory function defined in the glue code to create the robot object. This function may or may not use an urdf as source of kinematic and dynamic robot information. But the *openRobot* function can also take a second argument identyfing the robot urdf in string format. In this case, the *createRobotWithUrdf_t* factory function (which need to be defined in the glue code too) is called instead. In this way the user can provide also a custom urdf as source of robot information. 
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
 
@@ -161,6 +174,7 @@ To view the inheritance graph, once the html file is opended in your browser, go
 
 Notice that in the doxygen documentation for each function it is also specified if it can be executed in real time or not.
 
+For other examples, you can have look at the tests provided in the *tests* folder. 
 ## Tests
 The tests are based on GoogleTests: the Google's C++ test framework. The tests relies on glue codes associated to dummy robots generated with the only purpose of testing.
 
