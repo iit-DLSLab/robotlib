@@ -81,7 +81,6 @@ namespace robotlib
 	const int NLINKS_TOT {12};
 	const int NLEGS {4};
 	const int NARMS {0};
-	const int NCHILDRENS {NLEGS};
 
 	class DummyQuadruped : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 	{

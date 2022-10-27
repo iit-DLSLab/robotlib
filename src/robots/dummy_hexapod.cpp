@@ -93,7 +93,6 @@ namespace robotlib
 	const int NLINKS_TOT {18};
 	const int NLEGS {6};
 	const int NARMS {0};
-	const int NCHILDRENS {NLEGS};
 	class DummyHexapod : public Robot<NJOINTS_TOT, NLINKS_TOT, NLEGS, NARMS>
 	{
 	public:
