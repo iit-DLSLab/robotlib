@@ -1,5 +1,5 @@
 # Minimum CMake version working in Ubuntu 20.04
-cmake_minimum_required(VERSION 3.7.0)
+cmake_minimum_required(VERSION 3.8.0)
 project(robotlib)
 message("\n***********Building robotlib library***********\n")
 
