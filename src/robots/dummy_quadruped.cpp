@@ -95,14 +95,13 @@ namespace robotlib
 				  std::make_shared<const Container<std::shared_ptr<LimbBase>, NARMS>>(arms))
 
 		{
+			// 1. Set hierarchical structure
 			std::array<std::shared_ptr<Joint>, NLEGS> children;
 			children[0] = getJoint("LF_HAA");
 			children[1] = getJoint("RF_HAA");
 			children[2] = getJoint("LH_HAA");
 			children[3] = getJoint("RH_HAA");
-
 			setChildrenOfTrunk(std::make_shared<Container<std::shared_ptr<Joint>, NLEGS>>(children));
-
 			setParentOfLink(trunk, nullptr);
 
 			for (auto leg : *(this->getLegs()))
@@ -128,7 +127,7 @@ namespace robotlib
 				}
 			}
 
-			// Set joint limits (dummy limits are used here)
+			// 2. Set joint limits (dummy limits are used here)
 			const double q_min {0};
 			const double q_max {90};
 			const double qd_max {3};
