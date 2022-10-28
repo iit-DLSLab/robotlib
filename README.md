@@ -126,12 +126,12 @@ As another example of data type that can be associated to legs consider the foll
     for (auto leg : *(robot->getLegs()))
     {
         std::cout << "Foot jacobian per " << leg->getName() << " leg: " << std::endl;
-        feet_jacobian[leg] << 10, 10, 10,
-            20, 20, 20,
-            30, 30, 30,
-            40, 40, 40,
-            50, 50, 50,
-            60, 60, 60;
+        feet_jacobian[leg] << 1, 0, 0,
+            0, 1, 0,
+            0, 0, 1,
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1;
         std::cout << feet_jacobian[leg] << std::endl;
     }
 
@@ -144,7 +144,7 @@ Consider now the following example to compute the forward kinematics for each le
     robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> foot_position{robot->makeLegDataMap<Eigen::Matrix<double, 3, 1>>(Eigen::Matrix<double, 3, 1>::Zero())};
     robot->forwardKinematics(q_input, foot_position);
 
-The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function defined in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
+The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function declared in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
 
 Finally, you can run an executable to show robot information. The executable is called *robot_info* and it is generated in the *build/src* folder after building Robotilb. The executable can be run as follows
 
