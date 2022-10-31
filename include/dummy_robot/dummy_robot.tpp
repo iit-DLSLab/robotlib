@@ -221,35 +221,11 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootJacobian(const RobotBase::JointState &q,
-                                                                                                              const std::shared_ptr<LimbBase> leg,
-                                                                                                              RobotBase::Jacobian &footJac)
-    {
-        q.size();
-        leg->getName();
-
-        footJac.setZero();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::updateLinearJacobian(const RobotBase::JointState &joints_positions,
                                                                                                                    RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian)
     {
         joints_positions.size();
         robot_jacobian.getSize();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    RobotBase::LegDataMap<std::shared_ptr<Frame>> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFeet()
-    {
-        auto feet = this->template makeLegDataMap<std::shared_ptr<Frame>>();
-
-        for (auto leg : *(this->getLegs()))
-        {
-            feet[leg] = std::make_shared<Link>("");
-        }
-
-        return feet;
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
@@ -347,18 +323,6 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getRobotCoM()
-    { 
-        return Eigen::Vector3d().setZero(); 
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM()
-    {
-        return Eigen::Matrix<double, 3, 1>::Zero();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM(const RobotBase::JointState &joint_state)
     {
         joint_state.size();
@@ -396,16 +360,6 @@ namespace robotlib
         CoM.size();
 
         return Eigen::Vector3d::Zero();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVel(const RobotBase::JointState & q,
-                                                                                                                                        const RobotBase::JointState & qd)
-    {
-        q.size();
-        qd.size();
-
-        return Eigen::Matrix<double, 6, 1>::Zero();		
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>

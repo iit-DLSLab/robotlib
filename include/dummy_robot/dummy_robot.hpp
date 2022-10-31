@@ -64,14 +64,8 @@ namespace robotlib
             virtual Eigen::Matrix4d getFootPose(const RobotBase::JointState &q,
                                                 const std::shared_ptr<LimbBase> leg) override;
 
-            virtual void getFootJacobian(const RobotBase::JointState &q,
-                                         const std::shared_ptr<LimbBase> leg,
-                                         RobotBase::Jacobian &footJac) override;
-
             virtual void updateLinearJacobian(const RobotBase::JointState &joints_positions,
                                               RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian) override;
-
-            virtual RobotBase::LegDataMap<std::shared_ptr<Frame>> getFeet() override;
 
             virtual void forwardKinematics(const RobotBase::JointState &joint_position,
                                            RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override;
@@ -111,10 +105,6 @@ namespace robotlib
 
             virtual double getLegsMass() const override;
 
-            virtual Eigen::Vector3d getRobotCoM() override;
-
-            virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() override;
-
             virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const RobotBase::JointState &joint_state) override;
 
             virtual Eigen::Vector3d getLegContribution(const RobotBase::JointState &q) override;
@@ -127,13 +117,7 @@ namespace robotlib
                                                    const Eigen::Vector3d & base_orient,
                                                    const Eigen::Vector3d & CoM) override;
 
-            virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const RobotBase::JointState & q,
-                                                                   const RobotBase::JointState & qd) override;
-
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                     const Eigen::Matrix3d & rotationMx,
-                                                                     const RobotBase::JointState & q,
-                                                                     const RobotBase::JointState & qd) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                      const Eigen::Matrix3d & rotationMx,

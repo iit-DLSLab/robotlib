@@ -229,33 +229,11 @@ namespace robotlib
 			return foot_pose;
 		}
 
-		virtual void getFootJacobian(const JointState &q,
-									 const std::shared_ptr<LimbBase> leg,
-									 Jacobian &footJac)
-		{
-			q.size();
-			leg->getName();
-
-			footJac.setZero();
-		}
-
 		virtual void updateLinearJacobian(const JointState &joints_positions,
 										  LegDataMap<Jacobian> &robot_jacobian)
 		{
 			joints_positions.size();
 			robot_jacobian.getSize();
-		}
-
-		LegDataMap<std::shared_ptr<Frame>> getFeet() override
-		{
-			auto feet = this->makeLegDataMap<std::shared_ptr<Frame>>();
-
-			for (auto leg : *(this->getLegs()))
-			{
-				feet[leg] = std::make_shared<Link>("");
-			}
-
-			return feet;
 		}
 
 		void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
@@ -345,13 +323,6 @@ namespace robotlib
 			return 0.0;
 		}
 
-		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
-
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM() override
-		{
-			return Eigen::Matrix<double, 3, 1>::Zero();
-		}
-
 		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
 		{
 			joint_state.size();
@@ -387,30 +358,6 @@ namespace robotlib
 
 			return Eigen::Vector3d::Zero();
 		}
-
-		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState & q,
-                                                       const JointState & qd) override
-		{
-			q.size();
-			qd.size();
-
-			return Eigen::Matrix<double, 6, 1>::Zero();		
-		}
-
-        Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                         const Eigen::Matrix3d & rotationMx,
-                                                         const JointState & q,
-                                                         const JointState & qd) override
-		{
-			baseVel.size();
-			rotationMx.size();
-			q.size();
-			qd.size();
-			
-			std::cout << "Get whole body COM vel FB - considering joint influence" << std::endl;
-
-			return Eigen::Matrix<double, 6, 1>::Zero();	
-		};
 
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
                                                                  const Eigen::Matrix3d & rotationMx,

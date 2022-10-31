@@ -770,32 +770,6 @@ namespace robotlib
         template <class Data>
         JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) { return JointDataMap<Data>(leg, data); }
 
-        // TODO
-        Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
-        {
-            std::cout << "makeJacobian function: TODO\n";
-            return Jacobian(1);
-        };
-
-        // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<Frame> frame) // NRT
-        {
-            // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
-
-            // const LimbBase *l = foot.getParentLimb();
-            // const int nJoints = l->getNJoints();
-
-            // return Jacobian(nJoints);
-            std::cout << "makeFootJacobian-Input: foot function: TODO\n";
-            return Jacobian(1);
-        };
-
-        // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0) // NRT
-        {
-            return Jacobian(leg->getNJoints(), data);
-        };
-
         /*!
          * @brief Function to create a LegDataMap object, associating a Jacobian to each leg.
          * @details
@@ -947,8 +921,6 @@ namespace robotlib
          */
         virtual const int getNLINKS() = 0;
 
-        // virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) = 0;    ///TODO: required for the print inside CGaitTimerHex::run() of Ant Controller
-
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a shared pointer to a ContainerBase object.
@@ -994,8 +966,6 @@ namespace robotlib
          * \remark{TODO}
          */
         virtual const std::shared_ptr<LimbBase> getArm(const std::string &name) = 0;
-
-        virtual LegDataMap<std::shared_ptr<Frame>> getFeet() = 0;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -1182,7 +1152,6 @@ namespace robotlib
         virtual void updateLinearJacobian(const JointState &joint_position,
                                           LegDataMap<Jacobian> &robot_jacobian) = 0;
 
-        virtual Eigen::Vector3d getRobotCoM() = 0;
         /*!
          * @brief Get total robot mass.
          * @return total robot mass.
@@ -1190,11 +1159,6 @@ namespace robotlib
          */
         virtual double getRobotMass() const = 0; //TODO: implement it in Robotlib
 
-        /**
-		 * @brief Compute whole body com in base frame
-		 * @return com offset
-		 */
-        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM() = 0;
         /*!
          * @brief Get trunk mass.
          * @return trunk mass.
@@ -1258,15 +1222,6 @@ namespace robotlib
                                                const Eigen::Vector3d &base_orient,
                                                const Eigen::Vector3d &com) = 0;
 
-        virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVel(const JointState &q,
-                                                               const JointState &qd) = 0;
-        /**
-		 * @brief Compute whole body com velocity in world frame, considering joint influence
-         * @param baseVel base velocity in base frame
-         * @param rotationMx rotation matrix of base frame expressed in world frame
-         * @param q joints angle
-         * @param qd joints velocity
-		 * @return com velocity in world frame
         /*!
          * @brief Compute whole body CoM velocity in world frame.
          * @param[in] baseVel base velocity in base frame.
