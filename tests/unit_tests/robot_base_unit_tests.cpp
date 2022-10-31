@@ -367,7 +367,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        dummy_quadruped->getFootPosition(q, leg, footPos[leg]);
+        footPos[leg] = dummy_quadruped->getFootPosition(q, leg);
         Eigen::Vector3d pos(10, 20, 30);
         footPos[leg] = pos;
     }

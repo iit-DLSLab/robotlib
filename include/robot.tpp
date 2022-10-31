@@ -233,7 +233,7 @@ namespace robotlib
 
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        const Eigen::Matrix<double, 3, 1>& Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
+        const Eigen::Matrix<double, 3, 1> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
         {
                 return trunk_->getCoM();
         };

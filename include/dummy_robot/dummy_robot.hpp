@@ -54,9 +54,8 @@ namespace robotlib
             virtual Eigen::Matrix4d getFootPose(const RobotBase::JointState &q,
                                                 const std::shared_ptr<Frame> foot) override;
 
-            virtual void getFootPosition(const RobotBase::JointState &q,
-                                         const std::shared_ptr<LimbBase> leg,
-                                         Eigen::Vector3d &footPos) override;
+            virtual Eigen::Vector3d getFootPosition(const RobotBase::JointState &q,
+                                         const std::shared_ptr<LimbBase> leg) override;
 
             virtual Eigen::Matrix3d getFootOrientation(const RobotBase::JointState &q,
                                                        const std::shared_ptr<LimbBase> leg) override;
@@ -118,13 +117,11 @@ namespace robotlib
                                                    const Eigen::Vector3d & CoM) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-
-            virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                     const Eigen::Matrix3d & rotationMx,
+                                                                     const Eigen::Matrix3d &R,
                                                                      const RobotBase::JointState & q) override;
 
             virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                     const Eigen::Matrix3d &rotationMx,
+                                                                     const Eigen::Matrix3d &R,
                                                                      const Eigen::Vector3d offset_com) override;
 
             virtual void setInvKinTimePeriod(const double& period) override;

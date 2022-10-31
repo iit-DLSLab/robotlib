@@ -217,11 +217,10 @@ namespace robotlib
 			return foot_pose;
 		}
 
-		void getFootPosition(const JointState &q,
-							 const std::shared_ptr<LimbBase> leg,
-							 Eigen::Vector3d &footPos)
+		Eigen::Vector3d getFootPosition(const JointState &q,
+							 const std::shared_ptr<LimbBase> leg)
 		{
-			footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
+			return this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 		}
 
 		Eigen::Matrix3d getFootOrientation(const JointState &q,
@@ -249,7 +248,6 @@ namespace robotlib
 			joints_positions.size();
 			robot_jacobian.getSize();
 		}
-
 
 		void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
                                robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) override
@@ -377,11 +375,11 @@ namespace robotlib
 		}
 
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                 const Eigen::Matrix3d & rotationMx,
+                                                                 const Eigen::Matrix3d & R,
                                                                  const JointState & q) override
 		{
 			baseVel.size();
-			rotationMx.size();
+			R.size();
 			q.size();
 
 			std::cout << "Get whole body COM vel FB - without joint influence" << std::endl;
@@ -390,11 +388,11 @@ namespace robotlib
 		};
 		
 		Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                 const Eigen::Matrix3d &rotationMx,
+                                                                 const Eigen::Matrix3d &R,
                                                                  const Eigen::Vector3d offset_com)
 		{	
 			baseVel.size();
-			rotationMx.size();
+			R.size();
 			offset_com.size();
 			
 			std::cout << "Get whole body COM vel FB, with com offset as input, without considering joint influence" << std::endl;

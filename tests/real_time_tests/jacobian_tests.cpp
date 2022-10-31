@@ -11,7 +11,7 @@ TEST(RealTimeTest, constructor)
     // Dynamic memory allocation/deallocation have to take place
     reset_variables_checking_use_of_dynamic_memory();
     activate_hooks();
-    robotlib::RobotBase::Jacobian foot_jacobian {robot->makeFootJacobian(robot->getLink("LF_LOWERLEG"))};
+    robotlib::RobotBase::Jacobian foot_jacobian {robot->makeFeetJacobian()};
     deactivate_hooks();
     is_dynamic_memory_used(true, false, false, false); // malloc, calloc, realloc, free
 }

@@ -192,11 +192,10 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
-                                                                                                              const std::shared_ptr<LimbBase> leg,
-                                                                                                              Eigen::Vector3d &footPos)
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
+    const std::shared_ptr<LimbBase> leg)
     {
-        footPos = this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
+        return this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
@@ -364,25 +363,11 @@ namespace robotlib
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                                                          const Eigen::Matrix3d & rotationMx,
-                                                                                                                                          const RobotBase::JointState & q,
-                                                                                                                                          const RobotBase::JointState & qd)
-    {
-        baseVel.size();
-        rotationMx.size();
-        q.size();
-        qd.size();
-        
-        return Eigen::Matrix<double, 6, 1>::Zero();	
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                                                          const Eigen::Matrix3d & rotationMx,
+                                                                                                                                          const Eigen::Matrix3d & R,
                                                                                                                                           const RobotBase::JointState & q)
     {
         baseVel.size();
-        rotationMx.size();
+        R.size();
         q.size();
 
         return Eigen::Matrix<double, 6, 1>::Zero();	
@@ -390,11 +375,11 @@ namespace robotlib
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                                                                                          const Eigen::Matrix3d &rotationMx,
-                                                                                                                                          const Eigen::Vector3d offset_com)
+                                                 const Eigen::Matrix3d &R,
+                                                 const Eigen::Vector3d offset_com)
     {	
         baseVel.size();
-        rotationMx.size();
+        R.size();
         offset_com.size();
 
         return Eigen::Matrix<double, 6, 1>::Zero();
