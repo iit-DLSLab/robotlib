@@ -8,9 +8,9 @@ namespace robotlib
 	{
 		std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-		if (std::filesystem::exists("/usr/lib/robots/" + library))
+		if (std::filesystem::exists("/usr/lib/" + library))
 		{
-			lib_path = "/usr/lib/robots/" + library;
+			lib_path = "/usr/lib/" + library;
 		}
 
 		else if (std::filesystem::exists("./" + library))
@@ -52,9 +52,9 @@ namespace robotlib
 	{
 		std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-		if (std::filesystem::exists("/usr/lib/robots/" + library))
+		if (std::filesystem::exists("/usr/lib/" + library))
 		{
-			lib_path = "/usr/lib/robots/" + library;
+			lib_path = "/usr/lib/" + library;
 		}
 
 		else if (std::filesystem::exists("./" + library))
