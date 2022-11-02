@@ -61,35 +61,60 @@ namespace robotlib
         class DataMap
         {
         private:
+            /*!
+             * @brief Pair class.
+             * @details
+             * This class is introduces because of the private constructors of the data structures defined in Robotlib.
+             */
             class Pair
             {
             public:
-                friend class RobotBase;
+                friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the Pair class.
 
-                virtual Pair &operator=(const Pair &rhs)
+                /*!
+                 * @brief Equal operator.
+                 * @param[in] pair Pair object whose key-data pair is assigned to the object pointed by *this*.
+                 * @return reference to the Pair object pointed by *this*.
+                 * \remark{TODO}
+                 */
+                virtual Pair &operator=(const Pair &pair)
                 {
-                    this->key_ = rhs.key_;
-                    this->data_ = rhs.data_;
+                    this->key_ = pair.key_;
+                    this->data_ = pair.data_;
                     return *this;
                 }
 
-                std::shared_ptr<Key> key_;
-                Data data_;
-
+                /*!
+                 * @brief Destructor.
+                 * \remark{TODO}
+                 */
                 ~Pair(){};
 
+                std::shared_ptr<Key> key_;  //!< key to which associate a data.
+                Data data_; //!< data to be associated to a key.
+
             private:
+                /*!
+                 * @brief Constructor.
+                 * @param[in] key shared pointer pointing to the key.
+                 * @param[in] data data to be associated to the key.
+                 * \remark{TODO}
+                 */
                 Pair(const std::shared_ptr<Key> key, const Data &data) : key_(key), data_(data){};
+
+                /*!
+                 * @brief Empty constructor.
+                 * \remark{REAL TIME}
+                 */
                 Pair(){};
             };
 
         public:
-            friend class RobotBase;
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the DataMap class.
 
             /*!
             * @brief Destructor.
-            * @details
-            * The Destructor is public.
+            * \remark{NOT REAL TIME}
             */
             virtual ~DataMap()
             {
@@ -99,6 +124,7 @@ namespace robotlib
             /*!
              * @brief Begin function to be used with iterators.
              * @return iterator object pointing to the first data of the data_ array.
+             * \remark{TODO}
              */
             virtual Iterator<Pair> begin() { return Iterator<Pair>(&data_[0]); }
 
@@ -107,12 +133,14 @@ namespace robotlib
              * @details
              * Implementation for constant objects.
              * @return iterator object pointing to the first data of the data_ array.
+             * \remark{TODO}
              */
             virtual Iterator<const Pair> begin() const { return Iterator<const Pair>(&data_[0]); }
 
             /*!
              * @brief End function to be used with iterators.
              * @return iterator object pointing to the last data of the data_ array.
+             * \remark{TODO}
              */
             virtual Iterator<Pair> end() { return Iterator<Pair>(&data_[num_data_]); }
 
@@ -121,10 +149,19 @@ namespace robotlib
              * @details
              * Implementation for constant objects.
              * @return iterator object pointing to the last data of the data_ array.
+             * \remark{TODO}
              */
             virtual Iterator<const Pair> end() const { return Iterator<const Pair>(&data_[num_data_]); }
 
-            virtual Data &operator[](const std::shared_ptr<Key> key) // q: shared_ptr or & ?
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * This function allows to access to the data associated to the key in input.
+             * @param[in] key shared pointer pointing to the key.
+             * @return reference to the data associated to the key.
+             * \remark{TODO}
+             */
+            virtual Data &operator[](const std::shared_ptr<Key> key)
             {
                 for (Pair &pair : *this)
                 {
@@ -135,7 +172,17 @@ namespace robotlib
                 }
             };
 
-            virtual const Data &operator[](const std::shared_ptr<Key> key) const // q: shared_ptr or & ?
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * This function allows to access to the data associated to the key in input.
+             * 
+             * Implementation for constant objects.
+             * @param[in] key shared pointer pointing to the key.
+             * @return reference to the data associated to the key.
+             * \remark{TODO}
+             */
+            virtual const Data &operator[](const std::shared_ptr<Key> key) const
             {
                 for (auto &pair : *this)
                 {
@@ -144,6 +191,14 @@ namespace robotlib
                 }
             };
 
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * This function allows to access to the data associated to the key whose name is given in input.
+             * @param[in] key_name name of the key.
+             * @return reference to the data associated to the key.
+             * \remark{TODO}
+             */
             virtual Data &operator[](const std::string &key_name)
             {
                 for (Pair &pair : *this)
@@ -153,6 +208,16 @@ namespace robotlib
                 }
             };
 
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * It allows to access to the data associated to the key whose name is given in input.
+             * 
+             * Implementation for constant objects.
+             * @param[in] key_name name of the key.
+             * @return reference to the data associated to the key.
+             * \remark{TODO}
+             */
             virtual const Data &operator[](const std::string &key_name) const
             {
                 for (auto &pair : *this)
@@ -162,17 +227,27 @@ namespace robotlib
                 }
             };
 
-            virtual void copydata(const DataMap &rhs)
+            /*!
+             * @brief Copying keys and data from another DataMap object.
+             * @param[in] key_name name of the key.
+             * \remark{TODO}
+             */
+            virtual void copydata(const DataMap &data_map)
             {
-                assert(this->getSize() == rhs.getSize());
+                assert(this->getSize() == data_map.getSize());
 
                 for (auto i{0}; i < num_data_; i++)
                 {
-                    data_[i].key_ = rhs.data_[i].key_;
-                    data_[i].data_ = rhs.data_[i].data_;
+                    data_[i].key_ = data_map.data_[i].key_;
+                    data_[i].data_ = data_map.data_[i].data_;
                 }
             }
 
+            /*!
+             * @brief Assigning a value to all the keys of the DataMap object.
+             * @param[in] value value to be assigned to all the keys.
+             * \remark{TODO}
+             */
             virtual void assignAll(const Data &value)
             {
                 for (auto i{0}; i < num_data_; i++)
@@ -181,63 +256,101 @@ namespace robotlib
                 }
             }
 
-            virtual DataMap &operator=(const DataMap &rhs)
+            /*!
+             * @brief Equal operator.
+             * @param[in] data_map DataMap object whose key-data pairs are assigned to the object pointed by *this*.
+             * @return reference to the DataMap object pointed by *this*.
+             * \remark{TODO}
+             */
+            virtual DataMap &operator=(const DataMap &data_map)
             {
-                if (&rhs != this)
+                if (&data_map != this)
                 {
-                    copydata(rhs);
+                    copydata(data_map);
                 }
                 return *this;
             }
 
-            virtual DataMap &operator=(const Data &defaultValue)
+            /*!
+             * @brief Equal operator.
+             * @details
+             * It assigns the value in input to all the keys.
+             * @param[in] data_map DataMap object whose key-data pairs are assigned to the object pointed by *this*.
+             * @return reference to the DataMap object pointed by *this*.
+             * \remark{TODO}
+             */
+            virtual DataMap &operator=(const Data &value)
             {
-                assignAll(defaultValue);
+                assignAll(value);
                 return *this;
             }
 
+            /*!
+             * @brief Get number of pairs stored by the DataMap object.
+             * @return number of pairs stored by the DataMap object.
+             * \remark{TODO}
+             */
             virtual int getSize() const { return num_data_; };
 
         protected:
+            /*!
+             * @brief DataMap constructor.
+             * @param[in] num_data number of pairs to be stored.
+             * \remark{NOT REAL TIME}
+             */
             DataMap(const int num_data) : num_data_(num_data)
             {
                 this->data_ = new Pair[this->num_data_];
             }
 
-            DataMap() : num_data_(0), data_(nullptr) //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
-            {
-            }
+            /*!
+             * @brief Create a Pair object.
+             * @param[in] key shared pointer pointing to the key.
+             * @param[in] data data to be associated to the key.
+             * @return Pair object.
+             * \remark{TODO}
+             */
+            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }
 
-            virtual void init(const DataMap &data)
-            {
-                num_data_ = data.getSize();
+            /*!
+             * @brief Create a Pair object.
+             * @details
+             * Implementation for constant objects.
+             * @param[in] key shared pointer pointing to the key.
+             * @param[in] data data to be associated to the key.
+             * @return Pair object.
+             * \remark{TODO}
+             */
+            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); }
 
-                if (data_ != nullptr)
-                {
-                    delete[] data_;
-                }
-
-                data_ = new Pair[num_data_];
-
-                copydata(data);
-            }
-
-            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //TODO: shared_pointers?}
-            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }             //TODO: shared_pointers?}
-
-            int num_data_;
-            Pair *data_;
+            int num_data_; //!< number of pairs.
+            Pair *data_; //!< pointer pointing to the array of pairs.
         };
+
+        /*!
+         * @brief LegDataMap class.
+         * @details
+         * This templated class is used to store data for each leg.
+         * @tparam Data class of the data associated to legs.
+         */
         template <class Data>
         class LegDataMap : public DataMap<LimbBase, Data>
         {
         public:
             using DataMap<LimbBase, Data>::operator=;
-            friend class RobotBase;
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the LegDataMap class.
 
+            /*!
+             * @brief Destructor.
+             * \remark{TODO}
+             */
             virtual ~LegDataMap(){};
 
             /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
+            /*!
+             * @brief Print LegDataMap information.
+             * \remark{TODO}
+             */
             virtual void print()
             {
                 std::cout << "LegDataMap [Name - Value]" << std::endl;
@@ -250,16 +363,27 @@ namespace robotlib
             }
 
         protected:
-            LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS()) //TODO: remove it, leave only the constructor with data
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of legs.
+             * \remark{TODO}
+             */
+            LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
                 int count_data = 0;
                 for (auto key : *robot->getLegs())
                 {
-                    this->data_[count_data] = this->createPair(key, Data()); //shared_pointers?
+                    this->data_[count_data] = this->createPair(key, Data());
                     count_data++;
                 }
             }
 
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of legs.
+             * @param[in] data data to be associated to each leg.
+             * \remark{TODO}
+             */
             LegDataMap(RobotBase *robot, const Data &data) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
                 int count_data = 0;
@@ -271,17 +395,32 @@ namespace robotlib
             }
         };
 
+        /*!
+         * @brief LinkDataMap class.
+         * @details
+         * This templated class is used to store data for each link.
+         * @tparam Data class of the data associated to link.
+         */
         template <class Data>
         class LinkDataMap : public DataMap<Link, Data>
         {
 
         public:
             using DataMap<Link, Data>::operator=;
-            friend class RobotBase;
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the LinkDataMap class.
 
+            /*!
+             * @brief Destructor.
+             * \remark{TODO}
+             */
             virtual ~LinkDataMap(){};
 
         private:
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of links.
+             * \remark{TODO}
+             */
             LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(robot->getNLINKS())
             {
                 int count_data = 0;
@@ -294,6 +433,13 @@ namespace robotlib
                     }
                 }
             }
+
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of links.
+             * @param[in] data data to be associated to each link.
+             * \remark{TODO}
+             */
             LinkDataMap(RobotBase *robot, const Data &data) : DataMap<Link, Data>(robot->getNLINKS())
             {
                 int count_data = 0;
@@ -308,17 +454,33 @@ namespace robotlib
             }
         };
 
+        /*!
+         * @brief JointDataMap class.
+         * @details
+         * This templated class is used to store data for each joint.
+         * @tparam Data class of the data associated to joint.
+         */
         template <class Data>
         class JointDataMap : public DataMap<Joint, Data>
         {
 
         public:
             using DataMap<Joint, Data>::operator=;
-            friend class RobotBase;
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
 
+            /*!
+             * @brief Destructor.
+             * \remark{TODO}
+             */
             virtual ~JointDataMap(){};
 
         private:
+
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of joints.
+             * \remark{TODO}
+             */
             JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
                 int count_data = 0;
@@ -332,6 +494,13 @@ namespace robotlib
                     }
                 }
             }
+
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be used to get the number of links.
+             * @param[in] data data to be associated to each joint.
+             * \remark{TODO}
+             */
             JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
                 int count_data = 0;
@@ -345,6 +514,14 @@ namespace robotlib
                     }
                 }
             }
+
+            /*!
+             * @brief Constructor.
+             * @details
+             * It creates a JointDataMap object to associate data to each joint of the leg in input.
+             * @param[in] leg shared pointer to the leg object to be used to get its number of joints.
+             * \remark{TODO}
+             */
             JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
             {
                 int count_data = 0;
@@ -355,6 +532,15 @@ namespace robotlib
                     count_data++;
                 }
             }
+
+             /*!
+              * @brief Constructor.
+              * @details
+              * It creates a JointDataMap object to associate data to each joint of the leg in input.
+              * @param[in] leg shared pointer to the leg object to be used to get its number of joints.
+              * @param[in] data data to be associated to each joint of the leg.
+              * \remark{TODO}
+              */
             JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : DataMap<Joint, Data>(leg->getNJoints())
             {
                 int count_data = 0;
@@ -365,16 +551,27 @@ namespace robotlib
                     count_data++;
                 }
             }
-            JointDataMap() : DataMap<Joint, Data>() //TO BE USED IF AND ONLY IF THE init FUNCTION WANTS TO BE USED!
-            {
-            }
         };
+
+        /*!
+         * @brief JointState class.
+         * @details
+         * A joint state is stored as a LegDataMap object, and a JointDataMap object is associated to each leg.
+         */
         class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>>
         {
         public:
-            friend class RobotBase;
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
             using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * This function allows to access to the data associated to the joint in input.
+             * @param[in] joint shared pointer pointing to the joint.
+             * @return reference to the data associated to the joint.
+             * \remark{TODO}
+             */
             virtual double &operator[](const std::shared_ptr<Joint> joint)
             {
                 for (auto &leg_pair : *this)
@@ -389,6 +586,16 @@ namespace robotlib
                 }
             };
 
+            /*!
+             * @brief Square brackets operator.
+             * @details
+             * This function allows to access to the data associated to the joint in input.
+             * 
+             * Implementation for constant objects.
+             * @param[in] joint shared pointer pointing to the joint.
+             * @return reference to the data associated to the joint.
+             * \remark{TODO}
+             */
             virtual const double &operator[](const std::shared_ptr<Joint> joint) const
             {
                 for (auto &leg_pair : *this)
@@ -403,6 +610,30 @@ namespace robotlib
                 }
             };
 
+            /*!
+             * @brief Equal operator.
+             * @param[in] joint_state JointState object whose data is assigned to the object pointed by *this*.
+             * @return reference to the JointState object pointed by *this*.
+             * \remark{TODO}
+             */
+           virtual JointState &operator=(const JointState &joint_state)
+            {
+                for (auto &leg_pair : *this)
+                {
+                    for(auto &joint_pair: *leg_pair.data_)
+                    {   
+                        joint_pair.data_ = joint_state[joint_pair.key_];
+                    }
+                }
+                return *this;
+            }
+
+            /*!
+             * @brief Equal operator.
+             * @param[in] data data to be assigned to the object pointed by *this*.
+             * @return reference to the JointState object pointed by *this*.
+             * \remark{TODO}
+             */
             virtual JointState &operator=(const double data)
             {
                 for (auto leg_pair : *this)
@@ -412,27 +643,23 @@ namespace robotlib
                 return *this;
             }
 
-           virtual JointState &operator=(const JointState &other)
-            {
-                for (auto &leg_pair : *this)
-                {
-                    for(auto &joint_pair: *leg_pair.data_)
-                    {   
-                        joint_pair.data_ = other[joint_pair.key_];
-                    }
-                }
-                return *this;
-            }
-
+            /*!
+             * @brief Set all values of the object pointed by *this* to 0.
+             * \remark{TODO}
+             */
             virtual void setZero() { *this = 0; }
 
+            /*!
+             * @brief Get the dimension of the joint state.
+             * \remark{TODO}
+             */
             virtual int size() const
             {
                 auto size{0};
 
                 for (auto &leg_pair : *this)
                 {
-                    for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+                    for (auto &joint_pair : *leg_pair.data_)
                     {
                         size++;
                     }
@@ -442,8 +669,8 @@ namespace robotlib
             }
 
             /*!
-             * @brief Return the max value of the joint state
-             * @return double
+             * @brief Return the maximum value of the joint state.
+             * @return maximum value of the joint state.
              */
            virtual double max()
             {
@@ -474,8 +701,8 @@ namespace robotlib
 
 
             /*!
-             * @brief Return the min value of the joint state
-             * @return double
+             * @brief Return the minimum value of the joint state.
+             * @return minimum value of the joint state.
              */
             virtual double min()
             {
@@ -504,6 +731,9 @@ namespace robotlib
                 return min_value;
             }
 
+            /*!
+             * @brief Print joint state information.
+             */
             virtual void print()
             {
                 std::cout << "JointState [Name - Value]" << std::endl;
@@ -517,12 +747,33 @@ namespace robotlib
                     }
                 }
             }
+
+            /*!
+             * @brief Get the joint state associated to the leg in input.
+             * @param[in] leg shared pointer pointing to the leg.
+             * @return shared pointer pointing to the JointDataMap object associated to the leg in input.
+             */
             std::shared_ptr<JointDataMap<double>> getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
+
+            /*!
+             * @brief Get the joint state associated to the leg in input.
+             * @details
+             * Implementation for constant objects.
+             * @param[in] leg shared pointer pointing to the leg.
+             * @return shared pointer pointing to the JointDataMap object associated to the leg in input.
+             */
             std::shared_ptr<JointDataMap<double>> getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 
+            /*!
+             * @brief Destructor.
+             */
             ~JointState(){};
 
         private:
+            /*!
+             * @brief Constructor.
+             * @param[in] robot robot object to be passesd to the LegDataMap constructor.
+             */
             JointState(RobotBase *robot) : LegDataMap<std::shared_ptr<JointDataMap<double>>>(robot){};
         };
 
@@ -533,21 +784,15 @@ namespace robotlib
          *        arbitrary number of joints. 
          * @details
          * It inherits from Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class to handle matrix operations 
-         * easily. Its dimension is 6 X #joints, where 6 stands for the linear and angular part of the jacobian. The number of joints is arbitrary, 
-         * which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb 
-         * having a different number of joints.
+         * easily. Its dimension is 6 X #joints, where 6 stands for the linear and angular part of the jacobian. #joints is the number of joints and it is arbitrary, which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb where each of them can have a different number of joints.
          * 
-         * This class provides also functions to access only to linear and angular part of the jacobian plus all eigen functions inherited from the 
-         * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
-         * 
-         * All the constructors produce NRT operations and are private, letting only a RobotBase object to use them. The user is therefore forced to 
-         * use a RobotBase object to create a Jacobian one, with the purpose of letting the user managing more carefully NRT operations.
+         * This class provides also functions to access only to linear and angular part of the jacobian plus of course all the eigen functions inherited from the Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
          */
         class Jacobian : public Map
         {
         public:
             
-            friend class RobotBase; //!< RobotBase is a friend class to let it uses the private costructors of the Jacobian class
+            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructors of the Jacobian class
 
             /*!
 		    * @brief Destructor.
@@ -567,12 +812,11 @@ namespace robotlib
              * 
              * This means that once you do auto linear_jacobian = jacobian.getLinearJacobian(), if you change linear_jacobian it will change also the 
              * linear part of the jacobian object accordingly.
-             * @return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
+             * @return linear part of the jacobian.
              * \remark{REAL TIME}
 		     */
             Map getLinearJacobian()
             {
-                // This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
                 return Map(this->data(), 3, nJoints_);
             };
 
@@ -584,33 +828,32 @@ namespace robotlib
              * 
              * This means that once you do auto angular_jacobian = jacobian.getAngularJacobian(), if you change angular_jacobian it will change also 
              * the angular part of the jacobian object accordingly.
-             * @return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
+             * @return angular part of the jacobian.
              * \remark{REAL TIME}
 		     */
             Map getAngularJacobian()
             {
                 int linear_jacobian_size{3 * nJoints_};
-                // This operation returns a new Map of angular Jacobian and also updates the angular part of the complete Jacobian
                 return Map(this->data() + linear_jacobian_size, 3, nJoints_);
             };
 
             /*!
-		     * @brief Equal operator. It gets the angular part of the jacobian.
+		     * @brief Equal operator.
              * @details
              * The equality is performed over the data structure stored internally.
-             * @param[in] other Jacobian object to compare with
-             * @return Jacobian&
+             * @param[in] jacobian Jacobian object whose values are set to the object pointed by *this*.
+             * @return reference to the object pointed by *this*.
              * \remark{REAL TIME}
 		     */
-            Jacobian &operator=(const Jacobian &other)
+            Jacobian &operator=(const Jacobian &jacobian)
             {
-                if (nJoints_ != other.nJoints_)
+                if (nJoints_ != jacobian.nJoints_)
                 {
                     throw std::invalid_argument("CANNOT USE = OPERATOR FOR JACOBIANS WITH DIFFERENT SIZE. First size: 6x" 
-                                            + std::to_string(nJoints_) +", second size: 6x" + std::to_string(other.nJoints_));
+                                            + std::to_string(nJoints_) +", second size: 6x" + std::to_string(jacobian.nJoints_));
                 }
 
-                if (other.data_ == nullptr)
+                if (jacobian.data_ == nullptr)
                 {
                     data_ = nullptr;
                 }
@@ -618,7 +861,7 @@ namespace robotlib
                 {
                     for (int i = 0; i < 6 * nJoints_; ++i)
                     {
-                        data_[i] = other.data_[i];
+                        data_[i] = jacobian.data_[i];
                     }
                 }
 
@@ -650,13 +893,12 @@ namespace robotlib
              * @details
              * This constructor is used to create a Jacobian object given the number of joints and a default value. When using this constructor, the 
              * init function is not needed.
-             * @param nJoints number of joints
-             * @param data value used to initialize the jacobian
+             * @param nJoints number of joints.
+             * @param data value used to initialize the jacobian.
              * \remark{NOT REAL TIME}
 		     */
             Jacobian(const int nJoints, const double data = 0.0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
             {
-                // Data initialization (6: linear and angular part of the jacobian)
                 data_ = new double[6 * nJoints_];
                 for (int i = 0; i < 6 * nJoints_; ++i)
                 {
@@ -680,12 +922,10 @@ namespace robotlib
              * have different sizes.
              * @details
              * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
-             * To make real-time code, we created fixed size data structures, like the LegDataMap class, that does not allow you to dinamically change 
-             * its length.
-             * Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb 
-             * specific jacobian.
-             * @param nJoints number of joints 
-             * @param init_value value used to initialize the jacobian
+             * 
+             * To make real-time code, fixed-size data structures are defined in Robotlib, like the LegDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
+             * @param nJoints number of joints.
+             * @param init_value value used to initialize the jacobian.
              * \remark{NOT REAL TIME}
 		     */
             void init(const int nJoints, const double init_value = 0.0)
@@ -703,7 +943,6 @@ namespace robotlib
             int nJoints_;   //!< Number of joints
             double *data_;  //!< Squashed matrix
         };
-
 
         /*!
          * @brief Function to create a JointState object.
@@ -1364,7 +1603,7 @@ namespace robotlib
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
     protected:
-        const std::string name_; //!< Robot name
+        const std::string name_; //!< robot name
     };
 } // namespace robotlib
 
