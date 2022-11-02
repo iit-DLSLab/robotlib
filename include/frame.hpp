@@ -32,7 +32,7 @@ namespace robotlib
 		 * @brief Get the name of the Frame
 		 * @return const std::string
 		 */
-        virtual const std::string getName() const = 0;
+        virtual std::string getName() const = 0;
 
     protected:
         const std::string name_{};

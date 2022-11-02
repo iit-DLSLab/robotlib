@@ -13,26 +13,26 @@ public:
              const std::array<std::shared_ptr<robotlib::Link>, NLINKS> links)
         : Leg<NJOINTS, NLINKS>(name, joints, links){};
 
-    virtual const std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
+    virtual std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         joint->getName();
 
         return "jointToChildName";
     };
-    virtual const std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
+    virtual std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         joint->getName();
 
         return "jointToParentName";
     };
 
-    virtual const std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
+    virtual std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
     {
         link->getName();
 
         return "linkToChildName";
     };
-    virtual const std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
+    virtual std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
     {
         link->getName();
 

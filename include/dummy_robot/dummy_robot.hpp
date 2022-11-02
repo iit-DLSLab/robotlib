@@ -142,13 +142,13 @@ namespace robotlib
                     const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
             ~DummyLeg();
 
-            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
+            virtual std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
 
-            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
+            virtual std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
 
-            virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const override;
+            virtual std::string linkToChildName(const std::shared_ptr<Link> link) const override;
 
-            virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
+            virtual std::string linkToParentName(const std::shared_ptr<Link> link) const override;
 
       private:
             std::map<std::string, std::pair<std::string, std::string>> joints_map_{};
@@ -166,13 +166,13 @@ namespace robotlib
 
             /// TODO: We should avoid to duplicate methods and maps for both DummyLeg and DummyArm
 
-            virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
+            virtual std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
 
-            virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
+            virtual std::string jointToParentName(const std::shared_ptr<Joint> joint) const override;
 
-            virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const override;
+            virtual std::string linkToChildName(const std::shared_ptr<Link> link) const override;
 
-            virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const override;
+            virtual std::string linkToParentName(const std::shared_ptr<Link> link) const override;
 
       private:
             std::map<std::string, std::pair<std::string, std::string>> joints_map_{};

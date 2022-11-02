@@ -64,7 +64,7 @@ namespace robotlib
 
         //TODO: define [] operator using a string as input (it implies that all the possible Data classes have a getName function)
 
-        virtual const int size() const = 0;
+        virtual int size() const = 0;
     };
 
     template <class Data, unsigned int N>
@@ -78,7 +78,7 @@ namespace robotlib
         virtual Iterator<const Data> begin() const override;
         virtual Iterator<const Data> end() const override;
 
-        virtual const int size() const override;
+        virtual int size() const override;
 
     protected:
         const std::array<Data, N> data_;

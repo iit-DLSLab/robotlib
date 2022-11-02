@@ -24,5 +24,5 @@ namespace robotlib
 	Iterator<const Data> Container<Data, N>::end() const { return Iterator<const Data>(&data_[N]); };
 
 	template <class Data, unsigned int N>
-	const int Container<Data, N>::size() const { return data_.size(); };
+	int Container<Data, N>::size() const { return data_.size(); };
 } // namespace robotlib

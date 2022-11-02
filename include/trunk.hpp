@@ -38,13 +38,13 @@ namespace robotlib
 		 * @brief Get the name of the Trunk
 		 * @return const std::string
 		 */
-		virtual const std::string getName() const override;
+		virtual std::string getName() const override;
 
 		/**
 		 * @brief Get the center of mass of the trunk
 		 * @return const Eigen::Vector3d
 		 */
-		const Eigen::Vector3d &getCoM() const;
+		Eigen::Vector3d getCoM() const;
 
 		/**
 		 * @brief Get the mass of the trunk
@@ -56,13 +56,13 @@ namespace robotlib
 		 * @brief Get the inertia of the trunk
 		 * @return const Eigen::Matrix3d
 		 */
-		const Eigen::Matrix3d &getInertia() const;
+		Eigen::Matrix3d getInertia() const;
 
 		/**
 		 * @brief Get the dynamic parameters of the trunk
 		 * @return const DynParams
 		 */
-		const DynParams &getDynParams() const;
+		DynParams getDynParams() const;
 
 	private:
 

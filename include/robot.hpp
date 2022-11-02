@@ -18,25 +18,25 @@ namespace robotlib
 
 		// virtual const std::shared_ptr<LimbBase> getNextLeg(const std::shared_ptr<LimbBase>& leg) override;	/// NB: TODO
 
-		virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const override;
-		virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const override;
+		virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const override;
+		virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const override;
 
-		virtual const int getNLEGS() override;
-		virtual const int getNARMS() override;
-		virtual const int getNJOINTS() override;
-		virtual const int getNLINKS() override;
+		virtual int getNLEGS() override;
+		virtual int getNARMS() override;
+		virtual int getNJOINTS() override;
+		virtual int getNLINKS() override;
 
-		virtual const std::shared_ptr<Link> getLink(const std::string &name) override;
-		virtual const std::shared_ptr<Joint> getJoint(const std::string &name) override;
-		virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
-		virtual const std::shared_ptr<LimbBase> getArm(const std::string &name) override;
+		virtual std::shared_ptr<Link> getLink(const std::string &name) override;
+		virtual std::shared_ptr<Joint> getJoint(const std::string &name) override;
+		virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
+		virtual std::shared_ptr<LimbBase> getArm(const std::string &name) override;
 
         virtual void getMinJointAngle(JointState &q_min) override;
         virtual void getMaxJointAngle(JointState &q_max) override;
         virtual void getMaxJointVelocity(JointState &qd_max) override;
         virtual void getMaxJointEffort(JointState &tau_max) override;
 
-		virtual const Eigen::Matrix<double, 3, 1> getTrunkCOM() const override;
+		virtual Eigen::Matrix<double, 3, 1> getTrunkCOM() const override;
 
 	protected:
 		const std::shared_ptr<Trunk> trunk_; //! Trunk of the robot

@@ -43,17 +43,17 @@ namespace robotlib
 		 * @brief Get the name of the Link
 		 * @return const std::string
 		 */
-		virtual const std::string getName() const override;
+		virtual std::string getName() const override;
 		/**
 		 * @brief Get the Link parent object, that is a Joint object
 		 * @return const std::shared_ptr<Joint>
 		 */
-		const std::shared_ptr<Joint> getParent() const;
+		std::shared_ptr<Joint> getParent() const;
 		/**
 		 * @brief Get the Link child object, that is a Joint object
 		 * @return const std::shared_ptr<Joint>
 		 */
-		const std::shared_ptr<Joint> getChild() const;
+		std::shared_ptr<Joint> getChild() const;
 		/**
 		 * @brief Get the Link children object, that is a ContainerBase of Joint objects
 		 * @return const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>>
@@ -64,7 +64,7 @@ namespace robotlib
           ///   and should return an easier data structure (e.g. a std::array)
           /// - both getChild and getChildren can return a nullptr. However, only getChildren can give a segfault because to access
           ///   its elements you need the annoying iteration over the ContainerBase structure
-		const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
+		std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
 
 	protected:
 		/**

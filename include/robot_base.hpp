@@ -196,7 +196,7 @@ namespace robotlib
                 return *this;
             }
 
-            virtual const int getSize() const { return num_data_; };
+            virtual int getSize() const { return num_data_; };
 
         protected:
             DataMap(const int num_data) : num_data_(num_data)
@@ -222,7 +222,7 @@ namespace robotlib
                 copydata(data);
             }
 
-            const Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //shared_pointers?}
+            Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //shared_pointers?}
             Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }             //shared_pointers?}
 
             int num_data_;
@@ -425,7 +425,7 @@ namespace robotlib
 
             void setZero() { *this = 0; }
 
-            const int size() const
+            int size() const
             {
                 auto size{0};
 
@@ -516,9 +516,8 @@ namespace robotlib
                     }
                 }
             }
-            // FIX ME (& with shared_ptr)
-            std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
-            const std::shared_ptr<JointDataMap<double>> &getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
+            std::shared_ptr<JointDataMap<double>> getLegJointState(const std::shared_ptr<LimbBase> leg) { return (*this)[leg->getName()]; }
+            std::shared_ptr<JointDataMap<double>> getLegJointState(const std::shared_ptr<LimbBase> leg) const { return (*this)[leg->getName()]; }
 
             ~JointState(){};
 
@@ -933,42 +932,42 @@ namespace robotlib
          * @return number of robot's legs.
          * \remark{TODO}
          */
-        virtual const int getNLEGS() = 0;
+        virtual int getNLEGS() = 0;
 
         /*!
          * @brief Get number of robot's arms.
          * @return number of robot's arms.
          * \remark{TODO}
          */
-        virtual const int getNARMS() = 0;
+        virtual int getNARMS() = 0;
 
         /*!
          * @brief Get number of robot's joints.
          * @return number of robot's joints.
          * \remark{TODO}
          */
-        virtual const int getNJOINTS() = 0;
+        virtual int getNJOINTS() = 0;
 
         /*!
          * @brief Get number of robot's links.
          * @return number of robot's links.
          * \remark{TODO}
          */
-        virtual const int getNLINKS() = 0;
+        virtual int getNLINKS() = 0;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a shared pointer to a ContainerBase object.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
+        virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a shared pointer to a ContainerBase object.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
+        virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
         /*!
          * @brief Get robot's link from link's name.
@@ -976,7 +975,7 @@ namespace robotlib
          * @return a shared pointer pointing to the link.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<Link> getLink(const std::string &name) = 0;
+        virtual std::shared_ptr<Link> getLink(const std::string &name) = 0;
 
         /*!
          * @brief Get robot's joint from joint's name.
@@ -984,7 +983,7 @@ namespace robotlib
          * @return a shared pointer pointing to the joint.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
+        virtual std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
         /*!
          * @brief Get robot's leg from leg's name.
@@ -992,7 +991,7 @@ namespace robotlib
          * @return a shared pointer pointing to the leg.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
+        virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
 
         /*!
          * @brief Get robot's arm from arm's name.
@@ -1000,7 +999,7 @@ namespace robotlib
          * @return a shared pointer pointing to the arm.
          * \remark{TODO}
          */
-        virtual const std::shared_ptr<LimbBase> getArm(const std::string &name) = 0;
+        virtual std::shared_ptr<LimbBase> getArm(const std::string &name) = 0;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -1213,7 +1212,7 @@ namespace robotlib
          * @return trunk's CoM.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
-        virtual const Eigen::Matrix<double, 3, 1> getTrunkCOM() const = 0;
+        virtual Eigen::Matrix<double, 3, 1> getTrunkCOM() const = 0;
 
         // virtual Eigen::Vector3d getRobotCoM() = 0;
 

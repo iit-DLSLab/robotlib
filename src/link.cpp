@@ -23,16 +23,16 @@ namespace robotlib
 	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
 	// segnalare i possibili segmentation fault da gestire
 
-	const std::string Link::getName() const { return name_; }
-	const std::shared_ptr<Joint> Link::getParent() const { return parent_; }
-	const std::shared_ptr<Joint> Link::getChild() const
+	std::string Link::getName() const { return name_; }
+	std::shared_ptr<Joint> Link::getParent() const { return parent_; }
+	std::shared_ptr<Joint> Link::getChild() const
 	{
 		if(child_ != nullptr)
 			return child_;
 		else
 			return nullptr;
 	}
-	const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
+	std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
 	{
 		if((children_ != nullptr) && (children_->size() > 0))
 			return children_;

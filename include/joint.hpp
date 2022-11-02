@@ -40,17 +40,17 @@ namespace robotlib
 		 * @brief Get the name of the Joint
 		 * @return const std::string
 		 */
-		virtual const std::string getName() const override;
+		virtual std::string getName() const override;
 		/**
 		 * @brief Get the Joint parent object, that is a Link object
 		 * @return const std::shared_ptr<Link>
 		 */
-		const std::shared_ptr<Link> getParent() const;
+		std::shared_ptr<Link> getParent() const;
 		/**
 		 * @brief Get the Joint child object, that is a Link object
 		 * @return const std::shared_ptr<Link>
 		 */
-		const std::shared_ptr<Link> getChild() const;
+		std::shared_ptr<Link> getChild() const;
 
 		/**
 		 * @brief Get the Joint minimum angle

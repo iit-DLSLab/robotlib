@@ -44,28 +44,28 @@ namespace robotlib
 					   {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
 					   {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}}){}
 
-		virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const
+		virtual std::string jointToChildName(const std::shared_ptr<Joint> joint) const
 		{
 			const std::string joint_name {joint->getName()};
 			const std::string child_name {jointMap.find(joint_name)->second.second}; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
 			return child_name;
 		}
 
-		virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const
+		virtual std::string jointToParentName(const std::shared_ptr<Joint> joint) const
 		{
 			const std::string joint_name {joint->getName()};
 			const std::string parent_name {jointMap.find(joint_name)->second.first};
 			return parent_name;
 		}
 
-		virtual const std::string linkToChildName(const std::shared_ptr<Link> link) const
+		virtual std::string linkToChildName(const std::shared_ptr<Link> link) const
 		{
 			const std::string link_name {link->getName()};
 			const std::string child_name {linkMap.find(link_name)->second.second};
 			return child_name;
 		}
 
-		virtual const std::string linkToParentName(const std::shared_ptr<Link> link) const
+		virtual std::string linkToParentName(const std::shared_ptr<Link> link) const
 		{
 			const std::string link_name {link->getName()};
 			const std::string parent_name {linkMap.find(link_name)->second.first};
