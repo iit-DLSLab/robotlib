@@ -50,6 +50,13 @@ namespace robotlib
          */
         virtual ~RobotBase(){};
 
+        /*!
+         * @brief DataMap class.
+         * @details
+         * This templated class is a wrap around a list of Pair objects, storing a data for each key.
+         * @tparam Key class of the keys to which associate data.
+         * @tparam Data class of the data associated to keys.
+         */
         template <class Key, class Data>
         class DataMap
         {
@@ -78,15 +85,43 @@ namespace robotlib
 
         public:
             friend class RobotBase;
+
+            /*!
+            * @brief Destructor.
+            * @details
+            * The Destructor is public.
+            */
             virtual ~DataMap()
             {
                 delete[] data_;
             };
 
+            /*!
+             * @brief Begin function to be used with iterators.
+             * @return iterator object pointing to the first data of the data_ array.
+             */
             virtual Iterator<Pair> begin() { return Iterator<Pair>(&data_[0]); }
+
+            /*!
+             * @brief Begin function to be used with iterators.
+             * @details
+             * Implementation for constant objects.
+             * @return iterator object pointing to the first data of the data_ array.
+             */
+            virtual Iterator<const Pair> begin() const { return Iterator<const Pair>(&data_[0]); }
+
+            /*!
+             * @brief End function to be used with iterators.
+             * @return iterator object pointing to the last data of the data_ array.
+             */
             virtual Iterator<Pair> end() { return Iterator<Pair>(&data_[num_data_]); }
 
-            virtual Iterator<const Pair> begin() const { return Iterator<const Pair>(&data_[0]); }
+            /*!
+             * @brief End function to be used with iterators.
+             * @details
+             * Implementation for constant objects.
+             * @return iterator object pointing to the last data of the data_ array.
+             */
             virtual Iterator<const Pair> end() const { return Iterator<const Pair>(&data_[num_data_]); }
 
             virtual Data &operator[](const std::shared_ptr<Key> key) // q: shared_ptr or & ?
