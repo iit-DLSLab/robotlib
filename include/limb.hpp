@@ -64,12 +64,12 @@ namespace robotlib
        * @brief Get the joints of the Limb
        * @return const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>>
        */
-      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const { return joints_; };
+      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const override { return joints_; };
       /**
        * @brief Get the links of the Limb
        * @return const std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> 
        */
-      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const { return links_; };
+      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const override { return links_; };
 
    protected:
       const std::shared_ptr<const Container<std::shared_ptr<Joint>, NJOINTS>> joints_;

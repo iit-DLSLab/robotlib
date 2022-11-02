@@ -37,7 +37,7 @@ namespace robotlib
 		 * @brief Get the name of the LimbBase
 		 * @return const std::string
 		 */
-      std::string getName() const;
+      virtual std::string getName() const;
       /**
        * @brief Get the number of links of the Limb
        * @return const int

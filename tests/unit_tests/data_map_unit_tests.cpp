@@ -184,20 +184,20 @@ TEST(JacobianUnitTests, print)
             feet_jacobian[leg].print();
         }
 
-        for (auto leg : *(dummy_quadruped->getLegs()))
-        {
-            feet_jacobian[leg] <<
-                11, 22, 33,
-                44, 55, 66,
-                77, 88, 99,
-                111, 222, 333,
-                444, 555, 666,
-                777, 888, 999;
-        }
+        // for (auto leg : *(dummy_quadruped->getLegs()))
+        // {
+        //     feet_jacobian[leg] <<
+        //         11, 22, 33,
+        //         44, 55, 66,
+        //         77, 88, 99,
+        //         111, 222, 333,
+        //         444, 555, 666,
+        //         777, 888, 999;
+        // }
 
-        for(auto leg: *dummy_quadruped->getLegs())
-        {
-            feet_jacobian[leg].print();
-        }
+        // for(auto leg: *dummy_quadruped->getLegs())
+        // {
+        //     feet_jacobian[leg].print();
+        // }
      }
 }

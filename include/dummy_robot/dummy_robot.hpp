@@ -31,7 +31,8 @@ namespace robotlib
                        const std::shared_ptr<Trunk> trunk,
                        const std::array<std::shared_ptr<LimbBase>, NLEGS> legs,
                        const std::array<std::shared_ptr<LimbBase>, NARMS> arms);
-            ~DummyRobot();
+
+            virtual ~DummyRobot();
 
             virtual Eigen::Vector3d getFramePosition(const RobotBase::JointState &q,
                                                      const std::shared_ptr<Frame> origin,
@@ -140,7 +141,8 @@ namespace robotlib
                     const std::string &trunk_name,
                     const std::array<std::shared_ptr<Joint>, NJOINTSLEG> &leg_joints,
                     const std::array<std::shared_ptr<Link>, NLINKSLEG> &leg_links);
-            ~DummyLeg();
+
+            virtual ~DummyLeg();
 
             virtual std::string jointToChildName(const std::shared_ptr<Joint> joint) const override;
 
@@ -162,7 +164,8 @@ namespace robotlib
                     const std::string &trunk_name,
                     const std::array<std::shared_ptr<Joint>, NJOINTSARM> &arm_joints,
                     const std::array<std::shared_ptr<Link>, NLINKSARM> &arm_links);
-            ~DummyArm();
+
+            virtual ~DummyArm();
 
             /// TODO: We should avoid to duplicate methods and maps for both DummyLeg and DummyArm
 
@@ -180,7 +183,7 @@ namespace robotlib
         };
 
         DummyRobotCreator();
-        ~DummyRobotCreator();
+        virtual ~DummyRobotCreator();
 
         /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
         std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NJOINTS + NLINKS + NLEGS + NARMS)> &components_names);

@@ -29,23 +29,23 @@ namespace robotlib
 				  const double mass,
 				  const Eigen::Matrix3d &inertia);
 
-		~DynParams();
+		virtual ~DynParams();
 
 		/**
 		 * @brief Get the center of mass of the robot
 		 * @return const Eigen::Vector3d
 		 */
-		Eigen::Vector3d getCoM() const;
+		virtual Eigen::Vector3d getCoM() const;
 		/**
 		 * @brief Get the mass of the robot
 		 * @return const double
 		 */
-		double getMass() const;
+		virtual double getMass() const;
 		/**
 		 * @brief Get the inertia of the robot
 		 * @return const Eigen::Matrix3d
 		 */
-		Eigen::Matrix3d getInertia() const;
+		virtual Eigen::Matrix3d getInertia() const;
 
 	private:
 		const Eigen::Vector3d com_;

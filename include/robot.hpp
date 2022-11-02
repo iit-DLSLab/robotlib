@@ -44,15 +44,15 @@ namespace robotlib
 		const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs_; //! Legs of the robot
 		const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms_; //! Arms of the robot
 
-		void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
-		void setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child);
-		void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
+		virtual void setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child);
+		virtual void setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child);
+		virtual void setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 
-		void setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent);
-		void setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent);
+		virtual void setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent);
+		virtual void setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent);
 
 
-		void setJointLimits(const std::shared_ptr<Joint> joint, 
+		virtual void setJointLimits(const std::shared_ptr<Joint> joint, 
 							const double q_min, 
 							const double q_max, 
 							const double qd_max, 

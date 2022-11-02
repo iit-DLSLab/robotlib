@@ -48,12 +48,12 @@ namespace robotlib
 		 * @brief Get the Link parent object, that is a Joint object
 		 * @return const std::shared_ptr<Joint>
 		 */
-		std::shared_ptr<Joint> getParent() const;
+		virtual std::shared_ptr<Joint> getParent() const;
 		/**
 		 * @brief Get the Link child object, that is a Joint object
 		 * @return const std::shared_ptr<Joint>
 		 */
-		std::shared_ptr<Joint> getChild() const;
+		virtual std::shared_ptr<Joint> getChild() const;
 		/**
 		 * @brief Get the Link children object, that is a ContainerBase of Joint objects
 		 * @return const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>>
@@ -64,7 +64,7 @@ namespace robotlib
           ///   and should return an easier data structure (e.g. a std::array)
           /// - both getChild and getChildren can return a nullptr. However, only getChildren can give a segfault because to access
           ///   its elements you need the annoying iteration over the ContainerBase structure
-		std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
+		virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
 
 	protected:
 		/**
@@ -72,19 +72,19 @@ namespace robotlib
 		 * @param children the Link children to be set
 		 * @return void
 		 */
-		void setChildren(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
+		virtual void setChildren(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
 		/**
 		 * @brief Set the Link parent object, that is a Joint object
 		 * @param parent the Link parent to be set
 		 * @return void
 		 */
-		void setParent(const std::shared_ptr<Joint> parent);
+		virtual void setParent(const std::shared_ptr<Joint> parent);
 		/**
 		 * @brief Set the Link child object, that is a Joint object
 		 * @param child the Link child to be set
 		 * @return void
 		 */
-		void setChild(const std::shared_ptr<Joint> child);
+		virtual void setChild(const std::shared_ptr<Joint> child);
 
 		std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children_;
 		std::shared_ptr<Joint> parent_;

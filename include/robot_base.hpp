@@ -222,8 +222,8 @@ namespace robotlib
                 copydata(data);
             }
 
-            Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //shared_pointers?}
-            Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }             //shared_pointers?}
+            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); } //TODO: shared_pointers?}
+            virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }             //TODO: shared_pointers?}
 
             int num_data_;
             Pair *data_;
@@ -235,10 +235,10 @@ namespace robotlib
             using DataMap<LimbBase, Data>::operator=;
             friend class RobotBase;
 
-            ~LegDataMap(){};
+            virtual ~LegDataMap(){};
 
             /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
-            void print()
+            virtual void print()
             {
                 std::cout << "LegDataMap [Name - Value]" << std::endl;
                 std::cout << "-------------------------" << std::endl;
@@ -278,7 +278,8 @@ namespace robotlib
         public:
             using DataMap<Link, Data>::operator=;
             friend class RobotBase;
-            ~LinkDataMap(){};
+
+            virtual ~LinkDataMap(){};
 
         private:
             LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(robot->getNLINKS())
@@ -315,7 +316,7 @@ namespace robotlib
             using DataMap<Joint, Data>::operator=;
             friend class RobotBase;
 
-            ~JointDataMap(){};
+            virtual ~JointDataMap(){};
 
         private:
             JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
@@ -374,7 +375,7 @@ namespace robotlib
             friend class RobotBase;
             using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
-            double &operator[](const std::shared_ptr<Joint> joint)
+            virtual double &operator[](const std::shared_ptr<Joint> joint)
             {
                 for (auto &leg_pair : *this)
                 {
@@ -388,7 +389,7 @@ namespace robotlib
                 }
             };
 
-            const double &operator[](const std::shared_ptr<Joint> joint) const
+            virtual const double &operator[](const std::shared_ptr<Joint> joint) const
             {
                 for (auto &leg_pair : *this)
                 {
@@ -402,7 +403,7 @@ namespace robotlib
                 }
             };
 
-            JointState &operator=(const double data)
+            virtual JointState &operator=(const double data)
             {
                 for (auto leg_pair : *this)
                 {
@@ -411,7 +412,7 @@ namespace robotlib
                 return *this;
             }
 
-            JointState &operator=(const JointState &other)
+           virtual JointState &operator=(const JointState &other)
             {
                 for (auto &leg_pair : *this)
                 {
@@ -423,9 +424,9 @@ namespace robotlib
                 return *this;
             }
 
-            void setZero() { *this = 0; }
+            virtual void setZero() { *this = 0; }
 
-            int size() const
+            virtual int size() const
             {
                 auto size{0};
 
@@ -444,7 +445,7 @@ namespace robotlib
              * @brief Return the max value of the joint state
              * @return double
              */
-            double max()
+           virtual double max()
             {
                 double max_value{0};
                 bool first_val{true};
@@ -476,7 +477,7 @@ namespace robotlib
              * @brief Return the min value of the joint state
              * @return double
              */
-            double min()
+            virtual double min()
             {
                 double min_value{0};
                 bool first_val{true};
@@ -503,7 +504,7 @@ namespace robotlib
                 return min_value;
             }
 
-            void print()
+            virtual void print()
             {
                 std::cout << "JointState [Name - Value]" << std::endl;
                 std::cout << "-------------------------" << std::endl;
@@ -922,7 +923,7 @@ namespace robotlib
          * @return robot name.
          * \remark{TODO}
          */
-        std::string getName()
+        virtual std::string getName()
         {
             return name_;
         };
@@ -1213,8 +1214,6 @@ namespace robotlib
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix<double, 3, 1> getTrunkCOM() const = 0;
-
-        // virtual Eigen::Vector3d getRobotCoM() = 0;
 
         /*!
          * @brief Compute whole body CoM in base frame.
