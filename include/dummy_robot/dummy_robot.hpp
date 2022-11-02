@@ -104,7 +104,7 @@ namespace robotlib
 
             virtual double getLegsMass() const override;
 
-            virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const RobotBase::JointState &joint_state) override;
+            virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const RobotBase::JointState &joint_position) override;
 
             virtual Eigen::Vector3d getLegContribution(const RobotBase::JointState &q) override;
 

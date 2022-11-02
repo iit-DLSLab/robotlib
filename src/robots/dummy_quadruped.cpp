@@ -322,9 +322,9 @@ namespace robotlib
 			return 0.0;
 		}
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_position) override
 		{
-			joint_state.size();
+			joint_position.size();
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		}

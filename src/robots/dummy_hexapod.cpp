@@ -338,9 +338,9 @@ namespace robotlib
 
 		Eigen::Vector3d getRobotCoM() { return Eigen::Vector3d().setZero(); }
 
-		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) override
+		Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_position) override
 		{
-			joint_state.size();
+			joint_position.size();
 
 			return Eigen::Matrix<double, 3, 1>::Zero();
 		}

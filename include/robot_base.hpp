@@ -1219,11 +1219,11 @@ namespace robotlib
 
         /*!
          * @brief Compute whole body CoM in base frame.
-         * @param[in] joint_state angles of the joints.
+         * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
-        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_state) = 0;
+        virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_position) = 0;
 
         /*!
          * @brief Compute CoM legs contribution in base frame.
