@@ -148,6 +148,7 @@ namespace robotlib
             virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) override;
 
             virtual void setTrunkMass(const double& trunk_mass) override;
+
         private:
             std::shared_ptr<Trunk> trunk_;
         };
