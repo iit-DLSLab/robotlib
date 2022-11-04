@@ -7,8 +7,40 @@
  */
 
 #include <gtest/gtest.h>
-#include "robot_factory.hpp"
-#include "link.hpp"
+#include "dummy_robot/dummy_robot.hpp"
+
+/**
+ * @test Dummy robot created with the following structure:
+ * 1 leg
+ * 2 joints per leg
+ * 2 links per leg
+ */
+robotlib::DummyRobotCreator<2, 2, 1, 2, 2> dummy_robot_creator;
+
+/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
+std::array<std::string, 7> components_names{"Dummy Robot",
+                                            "TRUNK",
+                                            "Leg",
+                                            "Leg_joint_1", "Leg_joint_2",
+                                            "Leg_link_1", "Leg_link_2"};
+
+/**
+ * @test Dummy robot created with the following structure:
+ * 2 legs
+ * 1 joints per leg
+ * 1 links per leg
+ */
+robotlib::DummyRobotCreator<2, 2, 2, 1, 1> dummy_robot_creator_2;
+
+/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
+std::array<std::string, 8> components_names_2{"Dummy Robot",
+                                              "TRUNK",
+                                              "Robot leg",
+                                              "Robot leg2",
+                                              "Leg_joint_1",
+                                              "Leg_joint_2",
+                                              "Leg_link_1",
+                                              "Leg_link_2"};
 
 /**
  * @brief Set of unit tests for Link::getName function
@@ -20,52 +52,47 @@ TEST(LinkUnitTests, getName)
       */
      {
           robotlib::Link link{"link_test"};
-          ASSERT_EQ(link.getName(), "link_test");
+          EXPECT_EQ(link.getName(), "link_test");
      }
 
      /**
       * @test Link name with two separate words
       */
      {
-          robotlib::Link link_two_words_name{"link test"};
-          ASSERT_EQ(link_two_words_name.getName(), "link test");
+          robotlib::Link link{"link test"};
+          EXPECT_EQ(link.getName(), "link test");
      }
 
      /**
       * @test Link name with an empty string
       */
      {
-          robotlib::Link link_empty_name{""};
-          ASSERT_EQ(link_empty_name.getName(), "");
+          robotlib::Link link{""};
+          EXPECT_EQ(link.getName(), "");
      }
 
      /**
       * @test Link name with a single space character
       */
      {
-          robotlib::Link link_single_space_name{" "};
-          ASSERT_EQ(link_single_space_name.getName(), " ");
+          robotlib::Link link{" "};
+          EXPECT_EQ(link.getName(), " ");
      }
 
      /**
-      * @test Dummy Quadruped - Limbs (legs) links names
+      * @test Dummy robot links names
       */
      {
-          std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-          std::array<std::array<std::string, 3>, 4> links_names{{{"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"},
-                                                                 {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"},
-                                                                 {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"},
-                                                                 {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}}};
-          unsigned int i {0}, j {0};
-          for (auto leg : *(dummy_quadruped->getLegs()))
+          auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+          unsigned int i {0};
+          for (auto leg : *(dummy_robot->getLegs()))
           {
-               for (auto leg_link : *(leg->getLinks()))
+               for (auto link : *(leg->getLinks()))
                {
-                    ASSERT_EQ(leg_link->getName(), links_names.at(i).at(j));
-                    j++;
+                    EXPECT_EQ(link->getName(), components_names.at(5+i));
+                    i++;
                }
-               i++;
-               j = 0;
           }
      }
 }
@@ -76,54 +103,21 @@ TEST(LinkUnitTests, getName)
 TEST(LinkUnitTests, getParent)
 {
      /**
-      * @test Dummy Quadruped - Joint parent compared according to its name only
-      * /// TODO: Overload operator= to compare Link objects directly
+      * @test Get the two links parents and check their names
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+     {
+          auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-     const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_lf_assembly_parent = std::make_shared<robotlib::Joint>("LF_HAA");
-     const auto link_lf_upperleg = dummy_quadruped->getLink("LF_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lf_upperleg_parent = std::make_shared<robotlib::Joint>("LF_HFE");
-     const auto link_lf_lowerleg = dummy_quadruped->getLink("LF_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lf_lowerleg_parent = std::make_shared<robotlib::Joint>("LF_KFE");
-
-     const auto link_rf_assembly = dummy_quadruped->getLink("RF_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_rf_assembly_parent = std::make_shared<robotlib::Joint>("RF_HAA");
-     const auto link_rf_upperleg = dummy_quadruped->getLink("RF_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rf_upperleg_parent = std::make_shared<robotlib::Joint>("RF_HFE");
-     const auto link_rf_lowerleg = dummy_quadruped->getLink("RF_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rf_lowerleg_parent = std::make_shared<robotlib::Joint>("RF_KFE");
-
-     const auto link_lh_assembly = dummy_quadruped->getLink("LH_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_lh_assembly_parent = std::make_shared<robotlib::Joint>("LH_HAA");
-     const auto link_lh_upperleg = dummy_quadruped->getLink("LH_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lh_upperleg_parent = std::make_shared<robotlib::Joint>("LH_HFE");
-     const auto link_lh_lowerleg = dummy_quadruped->getLink("LH_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lh_lowerleg_parent = std::make_shared<robotlib::Joint>("LH_KFE");
-
-     const auto link_rh_assembly = dummy_quadruped->getLink("RH_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_rh_assembly_parent = std::make_shared<robotlib::Joint>("RH_HAA");
-     const auto link_rh_upperleg = dummy_quadruped->getLink("RH_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rh_upperleg_parent = std::make_shared<robotlib::Joint>("RH_HFE");
-     const auto link_rh_lowerleg = dummy_quadruped->getLink("RH_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rh_lowerleg_parent = std::make_shared<robotlib::Joint>("RH_KFE");
-
-     ASSERT_EQ(link_lf_assembly->getParent()->getName(), link_lf_assembly_parent->getName());
-     ASSERT_EQ(link_lf_upperleg->getParent()->getName(), link_lf_upperleg_parent->getName());
-     ASSERT_EQ(link_lf_lowerleg->getParent()->getName(), link_lf_lowerleg_parent->getName());
-
-     ASSERT_EQ(link_rf_assembly->getParent()->getName(), link_rf_assembly_parent->getName());
-     ASSERT_EQ(link_rf_upperleg->getParent()->getName(), link_rf_upperleg_parent->getName());
-     ASSERT_EQ(link_rh_lowerleg->getParent()->getName(), link_rh_lowerleg_parent->getName());
-
-     ASSERT_EQ(link_lh_assembly->getParent()->getName(), link_lh_assembly_parent->getName());
-     ASSERT_EQ(link_lh_upperleg->getParent()->getName(), link_lh_upperleg_parent->getName());
-     ASSERT_EQ(link_lf_lowerleg->getParent()->getName(), link_lf_lowerleg_parent->getName());
-
-     ASSERT_EQ(link_rh_assembly->getParent()->getName(), link_rh_assembly_parent->getName());
-     ASSERT_EQ(link_rh_upperleg->getParent()->getName(), link_rh_upperleg_parent->getName());
-     ASSERT_EQ(link_rh_lowerleg->getParent()->getName(), link_rh_lowerleg_parent->getName());
+          unsigned int i {0};
+          for (auto leg : *(dummy_robot->getLegs()))
+          {
+               for (auto link : *(leg->getLinks()))
+               {
+                    EXPECT_EQ((link->getParent())->getName(), components_names.at(3+i));
+                    i++;
+               }
+          }
+     }
 }
 
 /**
@@ -132,87 +126,80 @@ TEST(LinkUnitTests, getParent)
 TEST(LinkUnitTests, getChild)
 {
      /**
-      * @test Dummy Quadruped - Joint child compared according to its names only
-      * /// TODO: Overload operator= to compare Link objects directly
+      * @test Get the two links children and check their names
       */
-     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+     {
+          auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-     const auto link_lf_assembly = dummy_quadruped->getLink("LF_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_lf_assembly_child = std::make_shared<robotlib::Joint>("LF_HFE");
-     const auto link_lf_upperleg = dummy_quadruped->getLink("LF_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lf_upperleg_child = std::make_shared<robotlib::Joint>("LF_KFE");
-     const auto link_lf_lowerleg = dummy_quadruped->getLink("LF_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lf_lowerleg_child = std::make_shared<robotlib::Joint>("");
-
-     const auto link_rf_assembly = dummy_quadruped->getLink("RF_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_rf_assembly_child = std::make_shared<robotlib::Joint>("RF_HFE");
-     const auto link_rf_upperleg = dummy_quadruped->getLink("RF_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rf_upperleg_child = std::make_shared<robotlib::Joint>("RF_KFE");
-     const auto link_rf_lowerleg = dummy_quadruped->getLink("RF_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rf_lowerleg_child = std::make_shared<robotlib::Joint>("");
-
-     const auto link_lh_assembly = dummy_quadruped->getLink("LH_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_lh_assembly_child = std::make_shared<robotlib::Joint>("LH_HFE");
-     const auto link_lh_upperleg = dummy_quadruped->getLink("LH_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lh_upperleg_child = std::make_shared<robotlib::Joint>("LH_KFE");
-     const auto link_lh_lowerleg = dummy_quadruped->getLink("LH_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_lh_lowerleg_child = std::make_shared<robotlib::Joint>("");
-
-     const auto link_rh_assembly = dummy_quadruped->getLink("RH_ASSEMBLY");
-     const std::shared_ptr<robotlib::Joint> link_rh_assembly_child = std::make_shared<robotlib::Joint>("RH_HFE");
-     const auto link_rh_upperleg = dummy_quadruped->getLink("RH_UPPERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rh_upperleg_child = std::make_shared<robotlib::Joint>("RH_KFE");
-     const auto link_rh_lowerleg = dummy_quadruped->getLink("RH_LOWERLEG");
-     const std::shared_ptr<robotlib::Joint> link_rh_lowerleg_child = std::make_shared<robotlib::Joint>("");
-
-     ASSERT_EQ(link_lf_assembly->getChild()->getName(), link_lf_assembly_child->getName());
-     ASSERT_EQ(link_lf_upperleg->getChild()->getName(), link_lf_upperleg_child->getName());
-     /// TODO: if getName() is called on nullptr (no parent/child as shared_ptr<Joint/Link>) you get segmentation fault.
-     /// We should avoid this and return an empty string as name
-     ASSERT_EQ(link_lf_lowerleg->getChild(), nullptr);
-
-     ASSERT_EQ(link_rf_assembly->getChild()->getName(), link_rf_assembly_child->getName());
-     ASSERT_EQ(link_rf_upperleg->getChild()->getName(), link_rf_upperleg_child->getName());
-     ASSERT_EQ(link_rh_lowerleg->getChild(), nullptr);
-
-     ASSERT_EQ(link_lh_assembly->getChild()->getName(), link_lh_assembly_child->getName());
-     ASSERT_EQ(link_lh_upperleg->getChild()->getName(), link_lh_upperleg_child->getName());
-     ASSERT_EQ(link_lf_lowerleg->getChild(), nullptr);
-
-     ASSERT_EQ(link_rh_assembly->getChild()->getName(), link_rh_assembly_child->getName());
-     ASSERT_EQ(link_rh_upperleg->getChild()->getName(), link_rh_upperleg_child->getName());
-     ASSERT_EQ(link_rh_lowerleg->getChild(), nullptr);
+          unsigned int i {0};
+          for (auto leg : *(dummy_robot->getLegs()))
+          {
+               for (auto link : *(leg->getLinks()))
+               {
+                    if((link->getName()).compare(components_names.at(6)) != 0)
+                         EXPECT_EQ((link->getChild())->getName(), components_names.at(4));
+                    else
+                         EXPECT_EQ(link->getChild(), nullptr);
+               }
+          }
+     }
 }
 
 /**
- * @brief Set of unit tests for Link::setParent function
+ * @brief Set of unit tests for Link::getChildren function
  */
-TEST(LinkUnitTests, setParent)
+TEST(LinkUnitTests, getChildren)
 {
      /**
-      * @test Dummy Quadruped - Set of link parent
-      * /// TODO: implement the unit tests. Set method is private
+      * @test Iterate over the links children (one child for each link)
       */
-}
+     {
+          auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-/**
- * @brief Set of unit tests for Link::setChild function
- */
-TEST(LinkUnitTests, setChild)
-{
-     /**
-      * @test Dummy Quadruped - Set of link child
-      * /// TODO: implement the unit tests. Set method is private
-      */
-}
+          unsigned int i {0};
+          for (auto leg : *(dummy_robot->getLegs()))
+          {
+               for (auto link : *(leg->getLinks()))
+               {
+                    if((link->getName()).compare(components_names.at(6)) != 0)
+                         EXPECT_EQ((link->getChildren())->size(), 1);
+                    else
+                         EXPECT_EQ(link->getChildren(), nullptr);
+               }
+          }
+     }
 
-/**
- * @brief Set of unit tests for Link::setChildren function
- */
-TEST(LinkUnitTests, setChildren)
-{
      /**
-      * @test Dummy Quadruped - Set of link children
-      * /// TODO: implement the unit tests. Set method is private
+      * @test Iterate over the link (trunk) children (case with one child)
       */
+     {
+          auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+          auto trunk_link{dummy_robot->getLink(components_names.at(1))};
+
+          EXPECT_EQ((trunk_link->getChildren()->size()), 1);
+
+          for (auto trunk_child : *(trunk_link->getChildren()))
+          {
+               EXPECT_EQ(trunk_child->getName(), components_names.at(3));
+          }
+     }
+
+     /**
+      * @test Iterate over the link (trunk) children (case with two children)
+      */
+     {
+          auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
+
+          auto trunk_link{dummy_robot->getLink(components_names_2.at(1))};
+
+          EXPECT_EQ((trunk_link->getChildren()->size()), 2);
+
+          unsigned int i{0};
+          for (auto trunk_child : *(trunk_link->getChildren()))
+          {
+               EXPECT_EQ(trunk_child->getName(), components_names_2.at(4+i));
+               i++;
+          }
+     }
 }

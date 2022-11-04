@@ -25,19 +25,18 @@ namespace robotlib
 
 	const std::string Link::getName() const { return name_; }
 	const std::shared_ptr<Joint> Link::getParent() const { return parent_; }
-	const std::shared_ptr<Joint> Link::getChild() const
-	{
-		if(child_ != nullptr)
-			return child_;
-		else
-			return nullptr;
-	}
+	const std::shared_ptr<Joint> Link::getChild() const { return child_; }
+
 	const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
 	{
 		if((children_ != nullptr) && (children_->size() > 0))
 			return children_;
 		else
-			throw std::runtime_error ("RUNTIME ERROR: The link has no children");
+		{
+			//throw std::runtime_error ("RUNTIME ERROR: The link has no children");		// This is blocking
+			//std::cout << "RUNTIME ERROR: The link has no children" << std::endl;		// This does not handle the error
+			return nullptr;
+		}
 	}
 
 	void Link::setParent(const std::shared_ptr<Joint> parent) { parent_ = parent; }
