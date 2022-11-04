@@ -1,15 +1,29 @@
 # Robotlib
 
 ## Overview
+Robotlib is a modular and generic robot software interface that allows the same locomotion framework to run on robots with different morphologies. It was implemented within the project [ANT](https://www.dfki.de/en/web/research/projects-and-publications/project/ant/) as a generic software module to interface with robots having different morphologies: the quadruped Aliengo and the hexapod Crex. For more detail about the project, read the paper [Towards a generic navigation and locomotion control system for legged space exploration](https://az659834.vo.msecnd.net/eventsairwesteuprod/production-atpi-public/7bfd9084af194454bbc98fa9c9d7b648).
 
-<!-- TODO -->
-<!-- What is and what is the Glue layer -->
-<!-- Schemes/images to show connections -->
+Robotlib is based on a factory design pattern that allows the creation of objects (i.e. robot objects) without exposing it to the client, leading to a modular architecture, plug-in based, exploiting polymorphisms and dlopen API. It provides a templated robot morphology that defines the hierarchical structure of limbs with associated kinematic and dynamic data. Additionally, it provides virtual and utility functions for the robot kinematics, dynamics, and jacobians. Each robot-specific library inherits the Robotlib interface to implement the particular morphology, kinematics, and dynamics of each different robot. Thanks to polymorphisms, it is possible to use the interface to access the deepest robot specific implementation of functions declared or defined in Robotlib.
+
+However, polymorphisms per se is not enough to achieve a plug-in based architecture. Here is why dlopen API comes in handy. The dlopen API, allows to dynamically load shared libraries representing the concrete implementation of the interface, i.e. robot specific libraries. This is achieved by defining 2 class factory functions inside the interface, defined as extern "C" to avoid name mangling. One function creates a class instance, the other one allows to destroy it.
+
+With this architecture you just need to:
+- Write your controller based on Robotlib
+- Implement the Glue code, that is the robot specific libraries
+- Loading at runtime the robot library associated to the robot you want to control
+
+Through the common interface, it is therefore possible to keep one single controller implementation for controlling robots with different morphologies.
+
+In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue code respectively of Aliengo and Crex.
+
+![Robotlib](doc/Robotlib.png)
+
+Notice that the robot states are decoupled from the hierarchical robot structure. This means that a robot object does not store any robot state like joint configuration, joint velocities, stance status per leg etc. It provides instead data structures that can be used to define robot states when implementing a controller.
+
+There are several advantages of using an architecture abstraction layer like Robotlib. For example, with Robotlib, robot-specific structures are hidden from the controllers and state estimators, making them more modular and easier to implement. The structure allows controllers and state estimators to be written only once, and then the framework can dynamically load different robots. The abstraction layer also provides an easy way to switch backend libraries that compute the kinematics and dynamics without affecting the rest of the framework.
+Robotlib is written in C++17 to be fast and portable. It is compatible with the most adopted robotics libraries and is real-time safe.
 
 ## Installation and usage
-
-<!-- TODO -->
-<!-- How to clone and build Robotlib -->
 ### Dependencies
 Robotlib has been developed and tested on a x86_64 version of Ubuntu 18.04 (Bionic Beaver). The dependencies for building and installing the library are the following:
 
@@ -33,6 +47,20 @@ Once installed the *libgtest-dev* library, there could still be an error during 
 * `sudo cmake .. && make -j$(nproc)`
 * `sudo cp libgtest* /usr/lib/`
 * `cd .. && rm -rf build`
+
+To install Robotlib:
+- Clone the repository
+
+    `git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git`
+- Create the build folder and install it
+
+    `mkdir build`
+
+    `cd build`
+
+    `cmake ..`
+
+    `make install`
 
 <!-- How to clone and build Glue layers -->
 <!-- How to buid and install it -->

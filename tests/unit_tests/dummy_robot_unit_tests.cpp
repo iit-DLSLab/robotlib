@@ -65,90 +65,90 @@ TEST(DummyRobotUnitTests, test)
                LF_link_3      RF_link_3      LH_link_3      RH_link_3
           */
 
-          ASSERT_EQ(dummy_robot->getNLEGS(), 4);
-          ASSERT_EQ(dummy_robot->getNARMS(), 0);
-          ASSERT_EQ(dummy_robot->getNJOINTS(), 12);
-          ASSERT_EQ(dummy_robot->getNLINKS(), 12);
+          EXPECT_EQ(dummy_robot->getNLEGS(), 4);
+          EXPECT_EQ(dummy_robot->getNARMS(), 0);
+          EXPECT_EQ(dummy_robot->getNJOINTS(), 12);
+          EXPECT_EQ(dummy_robot->getNLINKS(), 12);
 
-          ASSERT_EQ(dummy_robot->getName(), "Dummy Robot");
+          EXPECT_EQ(dummy_robot->getName(), "Dummy Robot");
 
           unsigned int i{0}, j{0}, k{0};
           for (auto leg : *(dummy_robot->getLegs()))
           {
-               ASSERT_EQ(leg->getName(), components_names.at(2+i));
+               EXPECT_EQ(leg->getName(), components_names.at(2+i));
                i++;
 
                for (auto joint : *(leg->getJoints()))
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(6+j));
+                    EXPECT_EQ(joint->getName(), components_names.at(6+j));
                     j++;
                }
 
                for (auto link : *(leg->getLinks()))
                {
-                    ASSERT_EQ(link->getName(), components_names.at(18+k));
+                    EXPECT_EQ(link->getName(), components_names.at(18+k));
                     k++;
                }
           }
 
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_2")->getParent()->getName(), "LF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_3")->getParent()->getName(), "LF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_2")->getParent()->getName(), "RF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_3")->getParent()->getName(), "RF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_2")->getParent()->getName(), "LH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_3")->getParent()->getName(), "LH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_2")->getParent()->getName(), "RH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_3")->getParent()->getName(), "RH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_2")->getParent()->getName(), "LF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_3")->getParent()->getName(), "LF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_2")->getParent()->getName(), "RF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_3")->getParent()->getName(), "RF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_2")->getParent()->getName(), "LH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_3")->getParent()->getName(), "LH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_2")->getParent()->getName(), "RH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_3")->getParent()->getName(), "RH_link_2");
 
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_1")->getChild()->getName(), "LF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_2")->getChild()->getName(), "LF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_3")->getChild()->getName(), "LF_link_3");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_1")->getChild()->getName(), "RF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_2")->getChild()->getName(), "RF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_3")->getChild()->getName(), "RF_link_3");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_2")->getChild()->getName(), "LH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_3")->getChild()->getName(), "LH_link_3");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_2")->getChild()->getName(), "RH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_3")->getChild()->getName(), "RH_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_1")->getChild()->getName(), "LF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_2")->getChild()->getName(), "LF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_3")->getChild()->getName(), "LF_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_1")->getChild()->getName(), "RF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_2")->getChild()->getName(), "RF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_3")->getChild()->getName(), "RF_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_2")->getChild()->getName(), "LH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_3")->getChild()->getName(), "LH_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_2")->getChild()->getName(), "RH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_3")->getChild()->getName(), "RH_link_3");
 
-          ASSERT_EQ(dummy_robot->getLink("LF_link_1")->getParent()->getName(), "LF_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("LF_link_2")->getParent()->getName(), "LF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LF_link_3")->getParent()->getName(), "LF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_1")->getParent()->getName(), "RF_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_2")->getParent()->getName(), "RF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_3")->getParent()->getName(), "RF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_2")->getParent()->getName(), "LH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_3")->getParent()->getName(), "LH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_2")->getParent()->getName(), "RH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_3")->getParent()->getName(), "RH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_1")->getParent()->getName(), "LF_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_2")->getParent()->getName(), "LF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_3")->getParent()->getName(), "LF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_1")->getParent()->getName(), "RF_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_2")->getParent()->getName(), "RF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_3")->getParent()->getName(), "RF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_2")->getParent()->getName(), "LH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_3")->getParent()->getName(), "LH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_2")->getParent()->getName(), "RH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_3")->getParent()->getName(), "RH_joint_3");
 
-          ASSERT_EQ(dummy_robot->getLink("LF_link_1")->getChild()->getName(), "LF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LF_link_2")->getChild()->getName(), "LF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("LF_link_3")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("RF_link_1")->getChild()->getName(), "RF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_2")->getChild()->getName(), "RF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_3")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getChild()->getName(), "LH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_2")->getChild()->getName(), "LH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_3")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getChild()->getName(), "RH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_2")->getChild()->getName(), "RH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("LF_link_1")->getChild()->getName(), "LF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_2")->getChild()->getName(), "LF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("RF_link_1")->getChild()->getName(), "RF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_2")->getChild()->getName(), "RF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getChild()->getName(), "LH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_2")->getChild()->getName(), "LH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getChild()->getName(), "RH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_2")->getChild()->getName(), "RH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_3")->getChild(), nullptr);
 
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
           i = 0;
           for (auto joint : *(dummy_robot->getLink("TRUNK")->getChildren()))
           {
-               ASSERT_EQ(joint->getName(), components_names.at(6+i));
+               EXPECT_EQ(joint->getName(), components_names.at(6+i));
                i=i+3;
           }
      }
@@ -179,56 +179,56 @@ TEST(DummyRobotUnitTests, test)
 
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          ASSERT_EQ(dummy_robot->getNLEGS(), 4);
-          ASSERT_EQ(dummy_robot->getNARMS(), 0);
-          ASSERT_EQ(dummy_robot->getNJOINTS(), 4);
-          ASSERT_EQ(dummy_robot->getNLINKS(), 4);
+          EXPECT_EQ(dummy_robot->getNLEGS(), 4);
+          EXPECT_EQ(dummy_robot->getNARMS(), 0);
+          EXPECT_EQ(dummy_robot->getNJOINTS(), 4);
+          EXPECT_EQ(dummy_robot->getNLINKS(), 4);
 
-          ASSERT_EQ(dummy_robot->getName(), "Dummy Robot");
+          EXPECT_EQ(dummy_robot->getName(), "Dummy Robot");
 
           unsigned int i{0};
           for (auto leg : *(dummy_robot->getLegs()))
           {
-               ASSERT_EQ(leg->getName(), components_names.at(2+i));
+               EXPECT_EQ(leg->getName(), components_names.at(2+i));
 
                for (auto joint : *(leg->getJoints()))
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(6+i));
+                    EXPECT_EQ(joint->getName(), components_names.at(6+i));
                }
 
                for (auto link : *(leg->getLinks()))
                {
-                    ASSERT_EQ(link->getName(), components_names.at(10+i));
+                    EXPECT_EQ(link->getName(), components_names.at(10+i));
                }
                i++;
           }
 
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
 
-          ASSERT_EQ(dummy_robot->getJoint("LF_joint_1")->getChild()->getName(), "LF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RF_joint_1")->getChild()->getName(), "RF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LF_joint_1")->getChild()->getName(), "LF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RF_joint_1")->getChild()->getName(), "RF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
 
-          ASSERT_EQ(dummy_robot->getLink("LF_link_1")->getParent()->getName(), "LF_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("RF_link_1")->getParent()->getName(), "RF_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("LF_link_1")->getParent()->getName(), "LF_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("RF_link_1")->getParent()->getName(), "RF_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
 
-          ASSERT_EQ(dummy_robot->getLink("LF_link_1")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("RF_link_1")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("LF_link_1")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("RF_link_1")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getChild(), nullptr);
 
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
           i = 0;
           for (auto joint : *(dummy_robot->getLink("TRUNK")->getChildren()))
           {
-               ASSERT_EQ(joint->getName(), components_names.at(6+i));
+               EXPECT_EQ(joint->getName(), components_names.at(6+i));
                i++;
           }
      }
@@ -253,38 +253,38 @@ TEST(DummyRobotUnitTests, test)
 
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          ASSERT_EQ(dummy_robot->getNLEGS(), 1);
-          ASSERT_EQ(dummy_robot->getNARMS(), 0);
-          ASSERT_EQ(dummy_robot->getNJOINTS(), 1);
-          ASSERT_EQ(dummy_robot->getNLINKS(), 1);
+          EXPECT_EQ(dummy_robot->getNLEGS(), 1);
+          EXPECT_EQ(dummy_robot->getNARMS(), 0);
+          EXPECT_EQ(dummy_robot->getNJOINTS(), 1);
+          EXPECT_EQ(dummy_robot->getNLINKS(), 1);
 
-          ASSERT_EQ(dummy_robot->getName(), "Dummy Robot");
+          EXPECT_EQ(dummy_robot->getName(), "Dummy Robot");
 
           for (auto leg : *(dummy_robot->getLegs()))
           {
-               ASSERT_EQ(leg->getName(), components_names.at(2));
+               EXPECT_EQ(leg->getName(), components_names.at(2));
 
                for (auto joint : *(leg->getJoints()))
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(3));
+                    EXPECT_EQ(joint->getName(), components_names.at(3));
                }
 
                for (auto link : *(leg->getLinks()))
                {
-                    ASSERT_EQ(link->getName(), components_names.at(4));
+                    EXPECT_EQ(link->getName(), components_names.at(4));
                }
 
           }
 
-          ASSERT_EQ(dummy_robot->getJoint("CL_joint")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("CL_joint")->getChild()->getName(), "CL_link");
-          ASSERT_EQ(dummy_robot->getLink("CL_link")->getParent()->getName(), "CL_joint");
-          ASSERT_EQ(dummy_robot->getLink("CL_link")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getChild()->getName(), "CL_joint");
+          EXPECT_EQ(dummy_robot->getJoint("CL_joint")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("CL_joint")->getChild()->getName(), "CL_link");
+          EXPECT_EQ(dummy_robot->getLink("CL_link")->getParent()->getName(), "CL_joint");
+          EXPECT_EQ(dummy_robot->getLink("CL_link")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getChild()->getName(), "CL_joint");
           for (auto joint : *(dummy_robot->getLink("TRUNK")->getChildren()))
           {
-               ASSERT_EQ(joint->getName(), components_names.at(3));
+               EXPECT_EQ(joint->getName(), components_names.at(3));
           }
      }
      /**
@@ -317,28 +317,28 @@ TEST(DummyRobotUnitTests, test)
 
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          ASSERT_EQ(dummy_robot->getNLEGS(), 3);
-          ASSERT_EQ(dummy_robot->getNARMS(), 2);
-          ASSERT_EQ(dummy_robot->getNJOINTS(), 13);
-          ASSERT_EQ(dummy_robot->getNLINKS(), 13);
+          EXPECT_EQ(dummy_robot->getNLEGS(), 3);
+          EXPECT_EQ(dummy_robot->getNARMS(), 2);
+          EXPECT_EQ(dummy_robot->getNJOINTS(), 13);
+          EXPECT_EQ(dummy_robot->getNLINKS(), 13);
 
-          ASSERT_EQ(dummy_robot->getName(), "Dummy Robot");
+          EXPECT_EQ(dummy_robot->getName(), "Dummy Robot");
 
           unsigned int i{0}, j{0}, k{0};
           for (auto leg : *(dummy_robot->getLegs()))
           {
-               ASSERT_EQ(leg->getName(), components_names.at(2+i));
+               EXPECT_EQ(leg->getName(), components_names.at(2+i));
                i++;
 
                for (auto joint : *(leg->getJoints()))
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(5+j));
+                    EXPECT_EQ(joint->getName(), components_names.at(5+j));
                     j++;
                }
 
                for (auto link : *(leg->getLinks()))
                {
-                    ASSERT_EQ(link->getName(), components_names.at(14+k));
+                    EXPECT_EQ(link->getName(), components_names.at(14+k));
                     k++;
                }
           }
@@ -346,75 +346,75 @@ TEST(DummyRobotUnitTests, test)
           i = 0; j = 0; k = 0;
           for (auto arm : *(dummy_robot->getArms()))
           {
-               ASSERT_EQ(arm->getName(), components_names.at(23+i));
+               EXPECT_EQ(arm->getName(), components_names.at(23+i));
                i++;
 
                for (auto joint : *(arm->getJoints()))
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(25+j));
+                    EXPECT_EQ(joint->getName(), components_names.at(25+j));
                     j++;
                }
 
                for (auto link : *(arm->getLinks()))
                {
-                    ASSERT_EQ(link->getName(), components_names.at(29+k));
+                    EXPECT_EQ(link->getName(), components_names.at(29+k));
                     k++;
                }
           }
 
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_2")->getParent()->getName(), "LH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_3")->getParent()->getName(), "LH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_2")->getParent()->getName(), "CF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_3")->getParent()->getName(), "CF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_2")->getParent()->getName(), "RH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_3")->getParent()->getName(), "RH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_2")->getParent()->getName(), "LH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_3")->getParent()->getName(), "LH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_2")->getParent()->getName(), "CF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_3")->getParent()->getName(), "CF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getParent()->getName(), "TRUNK");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_2")->getParent()->getName(), "RH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_3")->getParent()->getName(), "RH_link_2");
 
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_2")->getChild()->getName(), "LH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("LH_joint_3")->getChild()->getName(), "LH_link_3");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_1")->getChild()->getName(), "CF_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_2")->getChild()->getName(), "CF_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("CF_joint_3")->getChild()->getName(), "CF_link_3");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_2")->getChild()->getName(), "RH_link_2");
-          ASSERT_EQ(dummy_robot->getJoint("RH_joint_3")->getChild()->getName(), "RH_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_1")->getChild()->getName(), "LH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_2")->getChild()->getName(), "LH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("LH_joint_3")->getChild()->getName(), "LH_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_1")->getChild()->getName(), "CF_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_2")->getChild()->getName(), "CF_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("CF_joint_3")->getChild()->getName(), "CF_link_3");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_1")->getChild()->getName(), "RH_link_1");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_2")->getChild()->getName(), "RH_link_2");
+          EXPECT_EQ(dummy_robot->getJoint("RH_joint_3")->getChild()->getName(), "RH_link_3");
 
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_2")->getParent()->getName(), "LH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_3")->getParent()->getName(), "LH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("CF_link_1")->getParent()->getName(), "CF_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("CF_link_2")->getParent()->getName(), "CF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("CF_link_3")->getParent()->getName(), "CF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_2")->getParent()->getName(), "RH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_3")->getParent()->getName(), "RH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getParent()->getName(), "LH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_2")->getParent()->getName(), "LH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_3")->getParent()->getName(), "LH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("CF_link_1")->getParent()->getName(), "CF_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("CF_link_2")->getParent()->getName(), "CF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("CF_link_3")->getParent()->getName(), "CF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getParent()->getName(), "RH_joint_1");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_2")->getParent()->getName(), "RH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_3")->getParent()->getName(), "RH_joint_3");
 
-          ASSERT_EQ(dummy_robot->getLink("LH_link_1")->getChild()->getName(), "LH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_2")->getChild()->getName(), "LH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("LH_link_3")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("CF_link_1")->getChild()->getName(), "CF_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("CF_link_2")->getChild()->getName(), "CF_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("CF_link_3")->getChild(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("RH_link_1")->getChild()->getName(), "RH_joint_2");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_2")->getChild()->getName(), "RH_joint_3");
-          ASSERT_EQ(dummy_robot->getLink("RH_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("LH_link_1")->getChild()->getName(), "LH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_2")->getChild()->getName(), "LH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("LH_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("CF_link_1")->getChild()->getName(), "CF_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("CF_link_2")->getChild()->getName(), "CF_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("CF_link_3")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("RH_link_1")->getChild()->getName(), "RH_joint_2");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_2")->getChild()->getName(), "RH_joint_3");
+          EXPECT_EQ(dummy_robot->getLink("RH_link_3")->getChild(), nullptr);
 
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
-          ASSERT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getParent(), nullptr);
+          EXPECT_EQ(dummy_robot->getLink("TRUNK")->getChild(), nullptr);
           i = 0; j = 0;
           for (auto joint : *(dummy_robot->getLink("TRUNK")->getChildren()))
           {
                if(i <= 8)
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(5+i));
+                    EXPECT_EQ(joint->getName(), components_names.at(5+i));
                     i=i+3;
                }
                else
                {
-                    ASSERT_EQ(joint->getName(), components_names.at(25+j));
+                    EXPECT_EQ(joint->getName(), components_names.at(25+j));
                     j=j+2;
                }
           }
