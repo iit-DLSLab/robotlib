@@ -28,6 +28,7 @@
 namespace robotlib
 {
     /*!
+     * \class RobotBase
      * @brief RobotBase class.
      * @details
      * This class represents a generic abstract robot.  It provides data structures such as LegDataMap, JointDataMap, JointState and Jacobian classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like forwardKinematics, inverseKinematics and inverseDynamics.
@@ -69,7 +70,8 @@ namespace robotlib
             class Pair
             {
             public:
-                friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the Pair class.
+                //! RobotBase is a friend class to let it use the private costructor of the Pair class.
+                friend class RobotBase;
 
                 /*!
                  * @brief Equal operator.
@@ -89,9 +91,12 @@ namespace robotlib
                  * \remark{TODO}
                  */
                 ~Pair(){};
+                
+                //! Key to which associate a data.
+                std::shared_ptr<Key> key_;
 
-                std::shared_ptr<Key> key_;  //!< key to which associate a data.
-                Data data_; //!< data to be associated to a key.
+                //! Data to be associated to a key.
+                Data data_;
 
             private:
                 /*!
@@ -110,7 +115,8 @@ namespace robotlib
             };
 
         public:
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the DataMap class.
+            //! RobotBase is a friend class to let it use the private costructor of the DataMap class.
+            friend class RobotBase;
 
             /*!
             * @brief Destructor.
@@ -229,7 +235,7 @@ namespace robotlib
 
             /*!
              * @brief Copying keys and data from another DataMap object.
-             * @param[in] key_name name of the key.
+             * @param[in] data_map DataMap object.
              * \remark{TODO}
              */
             virtual void copydata(const DataMap &data_map)
@@ -275,7 +281,7 @@ namespace robotlib
              * @brief Equal operator.
              * @details
              * It assigns the value in input to all the keys.
-             * @param[in] data_map DataMap object whose key-data pairs are assigned to the object pointed by *this*.
+             * @param[in] value value to be assigned to all the keys of the DataMap object.
              * @return reference to the DataMap object pointed by *this*.
              * \remark{TODO}
              */
@@ -323,8 +329,11 @@ namespace robotlib
              */
             virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); }
 
-            int num_data_; //!< number of pairs.
-            Pair *data_; //!< pointer pointing to the array of pairs.
+            //! Number of pairs.
+            int num_data_;
+
+            //! Pointer pointing to the array of pairs.
+            Pair *data_;
         };
 
         /*!
@@ -337,8 +346,10 @@ namespace robotlib
         class LegDataMap : public DataMap<LimbBase, Data>
         {
         public:
+            //! RobotBase is a friend class to let it use the private costructor of the LegDataMap class.
+            friend class RobotBase;
+
             using DataMap<LimbBase, Data>::operator=;
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the LegDataMap class.
 
             /*!
              * @brief Destructor.
@@ -406,8 +417,10 @@ namespace robotlib
         {
 
         public:
+            //! RobotBase is a friend class to let it use the private costructor of the LinkDataMap class.
+            friend class RobotBase;
+
             using DataMap<Link, Data>::operator=;
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the LinkDataMap class.
 
             /*!
              * @brief Destructor.
@@ -465,8 +478,10 @@ namespace robotlib
         {
 
         public:
+            //! RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
+            friend class RobotBase;
+
             using DataMap<Joint, Data>::operator=;
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
 
             /*!
              * @brief Destructor.
@@ -561,7 +576,9 @@ namespace robotlib
         class JointState : public LegDataMap<std::shared_ptr<JointDataMap<double>>>
         {
         public:
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
+            //! RobotBase is a friend class to let it use the private costructor of the JointDataMap class.
+            friend class RobotBase;
+
             using LegDataMap<std::shared_ptr<JointDataMap<double>>>::operator[];
 
             /*!
@@ -651,6 +668,7 @@ namespace robotlib
 
             /*!
              * @brief Get the dimension of the joint state.
+             * @return size of the joint state.
              * \remark{TODO}
              */
             virtual int size() const
@@ -777,22 +795,23 @@ namespace robotlib
             JointState(RobotBase *robot) : LegDataMap<std::shared_ptr<JointDataMap<double>>>(robot){};
         };
 
+        //! Alias for Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>.
         using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
-        
+
         /*!
          * @brief Jacobian class. This class allows the definition of jacobian matrices, divided in linear and angular parts, for a robot having an 
          *        arbitrary number of joints. 
          * @details
          * It inherits from Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class to handle matrix operations 
-         * easily. Its dimension is 6 X #joints, where 6 stands for the linear and angular part of the jacobian. #joints is the number of joints and it is arbitrary, which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb where each of them can have a different number of joints.
+         * easily. Its dimension is 6 X num_joints, where 6 stands for the linear and angular part of the jacobian. num_joints is the number of joints and it is arbitrary, which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb where each of them can have a different number of joints.
          * 
          * This class provides also functions to access only to linear and angular part of the jacobian plus of course all the eigen functions inherited from the Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
          */
         class Jacobian : public Map
         {
         public:
-            
-            friend class RobotBase; //!< RobotBase is a friend class to let it use the private costructors of the Jacobian class
+            //! RobotBase is a friend class to let it use the private costructors of the Jacobian class.
+            friend class RobotBase;
 
             /*!
 		    * @brief Destructor.
@@ -940,13 +959,17 @@ namespace robotlib
                 new (this) Map(data_, 6, nJoints_);
             }
 
-            int nJoints_;   //!< Number of joints
-            double *data_;  //!< Squashed matrix
+            //! Number of joints.
+            int nJoints_;
+
+            //! Squashed matrix.
+            double *data_;
         };
 
         /*!
          * @brief Function to create a JointState object.
          * @param[in] value value used to initialize the joint state.
+         * @return joint state.
          * \remark{NOT REAL TIME}
          */
         JointState makeJointState(const double value = 0.0)
@@ -967,6 +990,7 @@ namespace robotlib
         /*!
          * @brief Function to create a LegDataMap object object.
          * @tparam Data data type associated to each leg.
+         * @return LegDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -976,6 +1000,7 @@ namespace robotlib
          * @brief Function to create a LegDataMap object.
          * @tparam Data data type associated to each leg.
          * @param[in] data data used to initialize the LegDataMap object.
+         * @return LegDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -984,6 +1009,7 @@ namespace robotlib
         /*!
          * @brief Function to create a LinkDataMap object.
          * @tparam Data data type associated to each link.
+         * @return LinkDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -993,6 +1019,7 @@ namespace robotlib
          * @brief Function to create a LinkDataMap object.
          * @tparam Data data type associated to each link.
          * @param[in] data data used to initialize the LinkDataMap object.
+         * @return LinkDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -1003,6 +1030,7 @@ namespace robotlib
          * @details
          * This function creates a data structure to associate data to each joint of the robot.
          * @tparam Data data type associated to each joint.
+         * @return JointDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -1014,6 +1042,7 @@ namespace robotlib
          * This function creates a data structure to associate data to each joint of the robot.
          * @tparam Data data type associated to each joint.
          * @param[in] data data used to initialize the JointDataMap object.
+         * @return JointDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -1025,7 +1054,7 @@ namespace robotlib
          * This function creates a data structure to associate data to each joint of the leg in input.
          * @tparam Data data type associated to each joint.
          * @param[in] leg leg whose joints are used to create the JointDataMap object.
-         *  
+         * @return JointDataMap<Data> object.  
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -1038,7 +1067,7 @@ namespace robotlib
          * @tparam Data data type associated to each joint.
          * @param[in] leg leg whose joints are used to create the JointDataMap object.
          * @param[in] data data used to initialize the JointDataMap object.
-         *  
+         * @return JointDataMap<Data> object.
          * \remark{NOT REAL TIME}
          */
         template <class Data>
@@ -1047,9 +1076,9 @@ namespace robotlib
         /*!
          * @brief Function to create a LegDataMap object, associating a Jacobian to each leg.
          * @details
-         * Each Jacobian has dimention 6x#n_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; #n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
-         * @param[in] leg leg whose joints are used to create the JointDataMap object.
+         * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
          * @param[in] data data used to initialize the JointDataMap object.
+         * @return LegDataMap<Jacobian> object.
          * \remark{NOT REAL TIME}
          */
         LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0)
@@ -1094,7 +1123,7 @@ namespace robotlib
         *
          * @param[in] end_effector_position position of each end effector (foot) in base frame.
          * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * @param[in] end_effector_accceleration acceleration of each end effector (foot) in base frame.
+         * @param[in] end_effector_acceleration acceleration of each end effector (foot) in base frame.
          * @param[out] joint_position angle of each joint.
          * @param[out] joint_velocity velocity of each joint.
          * @param[out] joint_acceleration acceleration of each joint.
@@ -1311,7 +1340,7 @@ namespace robotlib
 
         /*!
          * @brief Get position of the destination frame expressed in the origin one.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame position expressed in origin one.
@@ -1323,7 +1352,7 @@ namespace robotlib
 
         /*!
          * @brief Get orientation of the destination frame expressed in the origin one.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame orientation expressed in origin one.
@@ -1335,7 +1364,7 @@ namespace robotlib
 
         /*!
          * @brief Get pose of the destination frame expressed in the origin one.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame pose expressed in origin one.
@@ -1347,7 +1376,7 @@ namespace robotlib
 
         /*!
          * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot position expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1359,7 +1388,7 @@ namespace robotlib
          * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot position.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot position expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1369,7 +1398,7 @@ namespace robotlib
 
         /*!
          * @brief Get foot orientation expressed in trunk frame.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot orientation expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1381,7 +1410,7 @@ namespace robotlib
          * @brief Get foot orientation with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot orientation.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot orientation expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1391,7 +1420,7 @@ namespace robotlib
 
         /*!
          * @brief Get foot pose expressed in trunk frame.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot pose expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1403,7 +1432,7 @@ namespace robotlib
          * @brief Get foot pose with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot pose.
-         * @param[in] joint angles of the joints.
+         * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot pose expressed in trunk frame.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
@@ -1526,9 +1555,10 @@ namespace robotlib
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
+
         /*!
          * @brief Set trunk's mass.
-         * @param[in] trunk_com mass of trunk to be set.
+         * @param[in] trunk_mass mass of trunk to be set.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void setTrunkMass(const double& trunk_mass) = 0;
@@ -1594,16 +1624,19 @@ namespace robotlib
          * @param[in] robot_urdf the urdf of the robot in string format.
          * \remark{NOT REAL TIME}
 		 */
+
         typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string& robot_urdf);
 
          /*!
          * @brief Factory function to destroy the robot object.
          * \remark{NOT REAL TIME}
 		 */
+
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
     protected:
-        const std::string name_; //!< robot name
+        //! Robot name.
+        const std::string name_;
     };
 } // namespace robotlib
 
