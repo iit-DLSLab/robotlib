@@ -39,15 +39,11 @@ namespace robotlib
         /*!
          * @brief Constructor.
          * @param[in] name name of the robot
-         *  
-         * \remark{NOT REAL TIME}
          */
         RobotBase(const std::string &name) : name_(name){};
 
         /*!
          * @brief Destructor.
-         *  
-         * \remark{NOT REAL TIME}
          */
         virtual ~RobotBase(){};
 
@@ -77,7 +73,6 @@ namespace robotlib
                  * @brief Equal operator.
                  * @param[in] pair Pair object whose key-data pair is assigned to the object pointed by *this*.
                  * @return reference to the Pair object pointed by *this*.
-                 * \remark{TODO}
                  */
                 virtual Pair &operator=(const Pair &pair)
                 {
@@ -88,7 +83,6 @@ namespace robotlib
 
                 /*!
                  * @brief Destructor.
-                 * \remark{TODO}
                  */
                 ~Pair(){};
                 
@@ -103,13 +97,11 @@ namespace robotlib
                  * @brief Constructor.
                  * @param[in] key shared pointer pointing to the key.
                  * @param[in] data data to be associated to the key.
-                 * \remark{TODO}
                  */
                 Pair(const std::shared_ptr<Key> key, const Data &data) : key_(key), data_(data){};
 
                 /*!
                  * @brief Empty constructor.
-                 * \remark{REAL TIME}
                  */
                 Pair(){};
             };
@@ -120,7 +112,6 @@ namespace robotlib
 
             /*!
             * @brief Destructor.
-            * \remark{NOT REAL TIME}
             */
             virtual ~DataMap()
             {
@@ -130,7 +121,6 @@ namespace robotlib
             /*!
              * @brief Begin function to be used with iterators.
              * @return iterator object pointing to the first data of the data_ array.
-             * \remark{TODO}
              */
             virtual Iterator<Pair> begin() { return Iterator<Pair>(&data_[0]); }
 
@@ -139,14 +129,12 @@ namespace robotlib
              * @details
              * Implementation for constant objects.
              * @return iterator object pointing to the first data of the data_ array.
-             * \remark{TODO}
              */
             virtual Iterator<const Pair> begin() const { return Iterator<const Pair>(&data_[0]); }
 
             /*!
              * @brief End function to be used with iterators.
              * @return iterator object pointing to the last data of the data_ array.
-             * \remark{TODO}
              */
             virtual Iterator<Pair> end() { return Iterator<Pair>(&data_[num_data_]); }
 
@@ -155,7 +143,6 @@ namespace robotlib
              * @details
              * Implementation for constant objects.
              * @return iterator object pointing to the last data of the data_ array.
-             * \remark{TODO}
              */
             virtual Iterator<const Pair> end() const { return Iterator<const Pair>(&data_[num_data_]); }
 
@@ -165,7 +152,6 @@ namespace robotlib
              * This function allows to access to the data associated to the key in input.
              * @param[in] key shared pointer pointing to the key.
              * @return reference to the data associated to the key.
-             * \remark{TODO}
              */
             virtual Data &operator[](const std::shared_ptr<Key> key)
             {
@@ -186,7 +172,6 @@ namespace robotlib
              * Implementation for constant objects.
              * @param[in] key shared pointer pointing to the key.
              * @return reference to the data associated to the key.
-             * \remark{TODO}
              */
             virtual const Data &operator[](const std::shared_ptr<Key> key) const
             {
@@ -203,7 +188,6 @@ namespace robotlib
              * This function allows to access to the data associated to the key whose name is given in input.
              * @param[in] key_name name of the key.
              * @return reference to the data associated to the key.
-             * \remark{TODO}
              */
             virtual Data &operator[](const std::string &key_name)
             {
@@ -222,7 +206,6 @@ namespace robotlib
              * Implementation for constant objects.
              * @param[in] key_name name of the key.
              * @return reference to the data associated to the key.
-             * \remark{TODO}
              */
             virtual const Data &operator[](const std::string &key_name) const
             {
@@ -236,7 +219,6 @@ namespace robotlib
             /*!
              * @brief Copying keys and data from another DataMap object.
              * @param[in] data_map DataMap object.
-             * \remark{TODO}
              */
             virtual void copydata(const DataMap &data_map)
             {
@@ -252,7 +234,6 @@ namespace robotlib
             /*!
              * @brief Assigning a value to all the keys of the DataMap object.
              * @param[in] value value to be assigned to all the keys.
-             * \remark{TODO}
              */
             virtual void assignAll(const Data &value)
             {
@@ -266,7 +247,6 @@ namespace robotlib
              * @brief Equal operator.
              * @param[in] data_map DataMap object whose key-data pairs are assigned to the object pointed by *this*.
              * @return reference to the DataMap object pointed by *this*.
-             * \remark{TODO}
              */
             virtual DataMap &operator=(const DataMap &data_map)
             {
@@ -283,7 +263,6 @@ namespace robotlib
              * It assigns the value in input to all the keys.
              * @param[in] value value to be assigned to all the keys of the DataMap object.
              * @return reference to the DataMap object pointed by *this*.
-             * \remark{TODO}
              */
             virtual DataMap &operator=(const Data &value)
             {
@@ -294,7 +273,6 @@ namespace robotlib
             /*!
              * @brief Get number of pairs stored by the DataMap object.
              * @return number of pairs stored by the DataMap object.
-             * \remark{TODO}
              */
             virtual int getSize() const { return num_data_; };
 
@@ -302,7 +280,6 @@ namespace robotlib
             /*!
              * @brief DataMap constructor.
              * @param[in] num_data number of pairs to be stored.
-             * \remark{NOT REAL TIME}
              */
             DataMap(const int num_data) : num_data_(num_data)
             {
@@ -314,7 +291,6 @@ namespace robotlib
              * @param[in] key shared pointer pointing to the key.
              * @param[in] data data to be associated to the key.
              * @return Pair object.
-             * \remark{TODO}
              */
             virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) { return Pair(key, data); }
 
@@ -325,7 +301,6 @@ namespace robotlib
              * @param[in] key shared pointer pointing to the key.
              * @param[in] data data to be associated to the key.
              * @return Pair object.
-             * \remark{TODO}
              */
             virtual Pair createPair(const std::shared_ptr<Key> key, const Data &data) const { return Pair(key, data); }
 
@@ -353,14 +328,12 @@ namespace robotlib
 
             /*!
              * @brief Destructor.
-             * \remark{TODO}
              */
             virtual ~LegDataMap(){};
 
             /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
             /*!
              * @brief Print LegDataMap information.
-             * \remark{TODO}
              */
             virtual void print()
             {
@@ -377,7 +350,6 @@ namespace robotlib
             /*!
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of legs.
-             * \remark{TODO}
              */
             LegDataMap(RobotBase *robot) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
@@ -393,7 +365,6 @@ namespace robotlib
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of legs.
              * @param[in] data data to be associated to each leg.
-             * \remark{TODO}
              */
             LegDataMap(RobotBase *robot, const Data &data) : DataMap<LimbBase, Data>(robot->getNLEGS())
             {
@@ -424,7 +395,6 @@ namespace robotlib
 
             /*!
              * @brief Destructor.
-             * \remark{TODO}
              */
             virtual ~LinkDataMap(){};
 
@@ -432,7 +402,6 @@ namespace robotlib
             /*!
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of links.
-             * \remark{TODO}
              */
             LinkDataMap(RobotBase *robot) : DataMap<Link, Data>(robot->getNLINKS())
             {
@@ -451,7 +420,6 @@ namespace robotlib
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of links.
              * @param[in] data data to be associated to each link.
-             * \remark{TODO}
              */
             LinkDataMap(RobotBase *robot, const Data &data) : DataMap<Link, Data>(robot->getNLINKS())
             {
@@ -485,7 +453,6 @@ namespace robotlib
 
             /*!
              * @brief Destructor.
-             * \remark{TODO}
              */
             virtual ~JointDataMap(){};
 
@@ -494,7 +461,6 @@ namespace robotlib
             /*!
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of joints.
-             * \remark{TODO}
              */
             JointDataMap(RobotBase *robot) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
@@ -514,7 +480,6 @@ namespace robotlib
              * @brief Constructor.
              * @param[in] robot robot object to be used to get the number of links.
              * @param[in] data data to be associated to each joint.
-             * \remark{TODO}
              */
             JointDataMap(RobotBase *robot, const Data &data) : DataMap<Joint, Data>(robot->getNJOINTS())
             {
@@ -535,7 +500,6 @@ namespace robotlib
              * @details
              * It creates a JointDataMap object to associate data to each joint of the leg in input.
              * @param[in] leg shared pointer to the leg object to be used to get its number of joints.
-             * \remark{TODO}
              */
             JointDataMap(const std::shared_ptr<LimbBase> leg) : DataMap<Joint, Data>(leg->getNJoints())
             {
@@ -554,7 +518,6 @@ namespace robotlib
               * It creates a JointDataMap object to associate data to each joint of the leg in input.
               * @param[in] leg shared pointer to the leg object to be used to get its number of joints.
               * @param[in] data data to be associated to each joint of the leg.
-              * \remark{TODO}
               */
             JointDataMap(const std::shared_ptr<LimbBase> leg, const Data &data) : DataMap<Joint, Data>(leg->getNJoints())
             {
@@ -587,7 +550,6 @@ namespace robotlib
              * This function allows to access to the data associated to the joint in input.
              * @param[in] joint shared pointer pointing to the joint.
              * @return reference to the data associated to the joint.
-             * \remark{TODO}
              */
             virtual double &operator[](const std::shared_ptr<Joint> joint)
             {
@@ -611,7 +573,6 @@ namespace robotlib
              * Implementation for constant objects.
              * @param[in] joint shared pointer pointing to the joint.
              * @return reference to the data associated to the joint.
-             * \remark{TODO}
              */
             virtual const double &operator[](const std::shared_ptr<Joint> joint) const
             {
@@ -631,7 +592,6 @@ namespace robotlib
              * @brief Equal operator.
              * @param[in] joint_state JointState object whose data is assigned to the object pointed by *this*.
              * @return reference to the JointState object pointed by *this*.
-             * \remark{TODO}
              */
            virtual JointState &operator=(const JointState &joint_state)
             {
@@ -649,7 +609,6 @@ namespace robotlib
              * @brief Equal operator.
              * @param[in] data data to be assigned to the object pointed by *this*.
              * @return reference to the JointState object pointed by *this*.
-             * \remark{TODO}
              */
             virtual JointState &operator=(const double data)
             {
@@ -662,14 +621,12 @@ namespace robotlib
 
             /*!
              * @brief Set all values of the object pointed by *this* to 0.
-             * \remark{TODO}
              */
             virtual void setZero() { *this = 0; }
 
             /*!
              * @brief Get the dimension of the joint state.
              * @return size of the joint state.
-             * \remark{TODO}
              */
             virtual int size() const
             {
@@ -815,7 +772,6 @@ namespace robotlib
 
             /*!
 		    * @brief Destructor.
-            * \remark{NOT REAL TIME}
 		    */
             ~Jacobian()
             {
@@ -832,7 +788,6 @@ namespace robotlib
              * This means that once you do auto linear_jacobian = jacobian.getLinearJacobian(), if you change linear_jacobian it will change also the 
              * linear part of the jacobian object accordingly.
              * @return linear part of the jacobian.
-             * \remark{REAL TIME}
 		     */
             Map getLinearJacobian()
             {
@@ -848,7 +803,6 @@ namespace robotlib
              * This means that once you do auto angular_jacobian = jacobian.getAngularJacobian(), if you change angular_jacobian it will change also 
              * the angular part of the jacobian object accordingly.
              * @return angular part of the jacobian.
-             * \remark{REAL TIME}
 		     */
             Map getAngularJacobian()
             {
@@ -862,7 +816,6 @@ namespace robotlib
              * The equality is performed over the data structure stored internally.
              * @param[in] jacobian Jacobian object whose values are set to the object pointed by *this*.
              * @return reference to the object pointed by *this*.
-             * \remark{REAL TIME}
 		     */
             Jacobian &operator=(const Jacobian &jacobian)
             {
@@ -891,7 +844,6 @@ namespace robotlib
 		     * @brief Print function.
              * @details
              * It prints the Jacobian object.
-             * \remark{NOT REAL TIME}
 		     */
             void print()
             {
@@ -914,7 +866,6 @@ namespace robotlib
              * init function is not needed.
              * @param nJoints number of joints.
              * @param data value used to initialize the jacobian.
-             * \remark{NOT REAL TIME}
 		     */
             Jacobian(const int nJoints, const double data = 0.0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
             {
@@ -932,7 +883,6 @@ namespace robotlib
              * @details
              * This constructor is used to create a LegDataMap<Jacobian> object, with "empty" jacobians. Each jacobian may have different sizes, and 
              * the init function is used to initialize each of them.
-             * \remark{REAL TIME}
              */
             Jacobian() : Map(NULL, 0, 0), nJoints_(0), data_(nullptr){};
 
@@ -942,10 +892,9 @@ namespace robotlib
              * @details
              * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
              * 
-             * To make real-time code, fixed-size data structures are defined in Robotlib, like the LegDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
+             * To avoid dynamic memory allocation, fixed-size data structures are defined in Robotlib, like the LegDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
              * @param nJoints number of joints.
              * @param init_value value used to initialize the jacobian.
-             * \remark{NOT REAL TIME}
 		     */
             void init(const int nJoints, const double init_value = 0.0)
             {
@@ -970,7 +919,6 @@ namespace robotlib
          * @brief Function to create a JointState object.
          * @param[in] value value used to initialize the joint state.
          * @return joint state.
-         * \remark{NOT REAL TIME}
          */
         JointState makeJointState(const double value = 0.0)
         {
@@ -991,7 +939,6 @@ namespace robotlib
          * @brief Function to create a LegDataMap object object.
          * @tparam Data data type associated to each leg.
          * @return LegDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         LegDataMap<Data> makeLegDataMap() { return LegDataMap<Data>(this); }
@@ -1001,7 +948,6 @@ namespace robotlib
          * @tparam Data data type associated to each leg.
          * @param[in] data data used to initialize the LegDataMap object.
          * @return LegDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         LegDataMap<Data> makeLegDataMap(const Data &data) { return LegDataMap<Data>(this, data); }
@@ -1010,7 +956,6 @@ namespace robotlib
          * @brief Function to create a LinkDataMap object.
          * @tparam Data data type associated to each link.
          * @return LinkDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         LinkDataMap<Data> makeLinkDataMap() { return LinkDataMap<Data>(this); }
@@ -1020,7 +965,6 @@ namespace robotlib
          * @tparam Data data type associated to each link.
          * @param[in] data data used to initialize the LinkDataMap object.
          * @return LinkDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         LinkDataMap<Data> makeLinkDataMap(const Data &data) { return LinkDataMap<Data>(this, data); }
@@ -1031,7 +975,6 @@ namespace robotlib
          * This function creates a data structure to associate data to each joint of the robot.
          * @tparam Data data type associated to each joint.
          * @return JointDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         JointDataMap<Data> makeJointDataMap() { return JointDataMap<Data>(this); }
@@ -1043,7 +986,6 @@ namespace robotlib
          * @tparam Data data type associated to each joint.
          * @param[in] data data used to initialize the JointDataMap object.
          * @return JointDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         JointDataMap<Data> makeJointDataMap(const Data &data) { return JointDataMap<Data>(this, data); }
@@ -1054,8 +996,7 @@ namespace robotlib
          * This function creates a data structure to associate data to each joint of the leg in input.
          * @tparam Data data type associated to each joint.
          * @param[in] leg leg whose joints are used to create the JointDataMap object.
-         * @return JointDataMap<Data> object.  
-         * \remark{NOT REAL TIME}
+         * @return JointDataMap<Data> object.
          */
         template <class Data>
         JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg) { return JointDataMap<Data>(leg); }
@@ -1068,7 +1009,6 @@ namespace robotlib
          * @param[in] leg leg whose joints are used to create the JointDataMap object.
          * @param[in] data data used to initialize the JointDataMap object.
          * @return JointDataMap<Data> object.
-         * \remark{NOT REAL TIME}
          */
         template <class Data>
         JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) { return JointDataMap<Data>(leg, data); }
@@ -1079,7 +1019,6 @@ namespace robotlib
          * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
          * @param[in] data data used to initialize the JointDataMap object.
          * @return LegDataMap<Jacobian> object.
-         * \remark{NOT REAL TIME}
          */
         LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0)
         {
@@ -1098,7 +1037,6 @@ namespace robotlib
           * It computes the position of each end effector (foot) expressed in base frame.
           * @param[in] joint_position angle of each joint.
           * @param[out] end_effector_position position of each end effector (foot) in base frame.
-          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
           */
         virtual void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
                                        robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position) = 0;
@@ -1110,7 +1048,6 @@ namespace robotlib
          * @param[in] joint_velocity velocity of each joint.
          * @param[out] end_effector_position position of each end effector (foot) in base frame.
          * @param[out] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void forwardKinematics(const robotlib::RobotBase::JointState &joint_position,
                                        const robotlib::RobotBase::JointState &joint_velocity,
@@ -1127,7 +1064,6 @@ namespace robotlib
          * @param[out] joint_position angle of each joint.
          * @param[out] joint_velocity velocity of each joint.
          * @param[out] joint_acceleration acceleration of each joint.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_velocity,
@@ -1141,7 +1077,6 @@ namespace robotlib
          * It computes the angle of each joint from the position of each end effector expressed in base frame.
          * @param[in] end_effector_position position of each end effector (foot) in base frame.
          * @param[out] joint_position angle of each joint.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void inverseKinematics(const LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position,
                                        JointState &joint_position) = 0;
@@ -1158,7 +1093,6 @@ namespace robotlib
          * @param[in] joint_acceleration acceleration of each joint.
          * @param[out] wrench_base wrench applied to the base.
          * @param[out] tau_joints torque of each joint.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
                                      const Eigen::Matrix<double, 6, 1> &robot_acceleration,
@@ -1177,7 +1111,6 @@ namespace robotlib
          * @param[in] joint_position angle of each joint.
          * @param[out] wrench_base wrench applied to the base.
          * @param[out] tau_joints torque of each joint.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                       const JointState &joint_position,
@@ -1189,7 +1122,6 @@ namespace robotlib
         /*!
          * @brief Get robot name.
          * @return robot name.
-         * \remark{TODO}
          */
         virtual std::string getName()
         {
@@ -1199,42 +1131,36 @@ namespace robotlib
         /*!
          * @brief Get number of robot's legs.
          * @return number of robot's legs.
-         * \remark{TODO}
          */
         virtual int getNLEGS() = 0;
 
         /*!
          * @brief Get number of robot's arms.
          * @return number of robot's arms.
-         * \remark{TODO}
          */
         virtual int getNARMS() = 0;
 
         /*!
          * @brief Get number of robot's joints.
          * @return number of robot's joints.
-         * \remark{TODO}
          */
         virtual int getNJOINTS() = 0;
 
         /*!
          * @brief Get number of robot's links.
          * @return number of robot's links.
-         * \remark{TODO}
          */
         virtual int getNLINKS() = 0;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a shared pointer to a ContainerBase object.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a shared pointer to a ContainerBase object.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
 
@@ -1242,7 +1168,6 @@ namespace robotlib
          * @brief Get robot's link from link's name.
          * @param[in] name name of the link.
          * @return a shared pointer pointing to the link.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<Link> getLink(const std::string &name) = 0;
 
@@ -1250,7 +1175,6 @@ namespace robotlib
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
          * @return a shared pointer pointing to the joint.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<Joint> getJoint(const std::string &name) = 0;
 
@@ -1258,7 +1182,6 @@ namespace robotlib
          * @brief Get robot's leg from leg's name.
          * @param[in] name name of the leg.
          * @return a shared pointer pointing to the leg.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) = 0;
 
@@ -1266,7 +1189,6 @@ namespace robotlib
          * @brief Get robot's arm from arm's name.
          * @param[in] name name of the arm.
          * @return a shared pointer pointing to the arm.
-         * \remark{TODO}
          */
         virtual std::shared_ptr<LimbBase> getArm(const std::string &name) = 0;
 
@@ -1275,7 +1197,6 @@ namespace robotlib
          * @details
          * A reference to a JointState instance is passed as input and it is set with the lower limits of the joints' angles. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] q_min a joint state object to be filled with the lower limits of the joints' angles.
-         * \remark{TODO}
          */
         virtual void getMinJointAngle(JointState &q_min) = 0;
 
@@ -1284,7 +1205,6 @@ namespace robotlib
          * @details
          * A reference to a JointState instance is passed as input and it is set with the upper limits of the joints' angles. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] q_max a joint state object to be filled with the upper limits of the joints' angles.
-         * \remark{TODO}
          */
         virtual void getMaxJointAngle(JointState &q_max) = 0;
 
@@ -1293,7 +1213,6 @@ namespace robotlib
          * @details
          * A reference to a JointState instance is passed as input and it is set with the maximum velocity limits of the joints.This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] qd_max a joint state object to be filled with the maximum velocity limits of the joints.
-         * \remark{TODO}
          */
         virtual void getMaxJointVelocity(JointState &qd_max) = 0;
 
@@ -1302,7 +1221,6 @@ namespace robotlib
          * @details
          * A reference to a JointState instance is passed as input and it is set with the maximum torque limits of the joints. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] tau_max a joint state object to be filled with the maximum torque limits of the joints.
-         * \remark{TODO}
          */
         virtual void getMaxJointEffort(JointState &tau_max) = 0;
 
@@ -1310,7 +1228,6 @@ namespace robotlib
          * @brief Get lower angle limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's lower angle limit.
-         * \remark{TODO}
          */
         virtual double getMinJointAngle(const std::shared_ptr<Joint> joint) { return joint->getMinAngle(); };
 
@@ -1318,7 +1235,6 @@ namespace robotlib
          * @brief Get upper angle limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's upper angle limit.
-         * \remark{TODO}
          */
         virtual double getMaxJointAngle(const std::shared_ptr<Joint> joint) { return joint->getMaxAngle(); };
 
@@ -1326,7 +1242,6 @@ namespace robotlib
          * @brief Get maximum velocity limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's maximum velocity limit.
-         * \remark{TODO}
          */
         virtual double getMaxJointVelocity(const std::shared_ptr<Joint> joint) { return joint->getMaxVelocity(); };
 
@@ -1334,7 +1249,6 @@ namespace robotlib
          * @brief Get maximum torque limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's maximum torque limit.
-         * \remark{TODO}
          */
         virtual double getMaxJointEffort(const std::shared_ptr<Joint> joint) { return joint->getMaxEffort(); };
 
@@ -1344,7 +1258,6 @@ namespace robotlib
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame position expressed in origin one.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getFramePosition(const JointState &q,
                                                  const std::shared_ptr<Frame> origin,
@@ -1356,7 +1269,6 @@ namespace robotlib
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame orientation expressed in origin one.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
                                                     const std::shared_ptr<Frame> origin,
@@ -1368,7 +1280,6 @@ namespace robotlib
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
          * @return destination frame pose expressed in origin one.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix4d getFramePose(const JointState &q,
                                              const std::shared_ptr<Frame> origin,
@@ -1379,7 +1290,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot position expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getFootPosition(const JointState &q,
                                                 const std::shared_ptr<Frame> foot) = 0;
@@ -1391,7 +1301,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot position expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getFootPosition(const JointState &q,
                                      const std::shared_ptr<LimbBase> leg) = 0;
@@ -1401,7 +1310,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot orientation expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                    const std::shared_ptr<Frame> foot) = 0;
@@ -1413,7 +1321,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot orientation expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                    const std::shared_ptr<LimbBase> leg) = 0;
@@ -1423,7 +1330,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] foot foot frame.
          * @return foot pose expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                             const std::shared_ptr<Frame> foot) = 0;
@@ -1435,7 +1341,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] leg leg corresponding to the foot.
          * @return foot pose expressed in trunk frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                             const std::shared_ptr<LimbBase> leg) = 0;
@@ -1450,7 +1355,6 @@ namespace robotlib
          * Each jacobian is associated to a leg. So it maps all the velocities of the leg's joints to foot velocity.
          * @param[in] joint_position angles of the joints.
          * @param[out] robot_jacobian a LegDataMap object, associating a jacobian to each leg.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void updateLinearJacobian(const JointState &joint_position,
                                           LegDataMap<Jacobian> &robot_jacobian) = 0;
@@ -1458,28 +1362,24 @@ namespace robotlib
         /*!
          * @brief Get total robot mass.
          * @return total robot mass.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual double getRobotMass() const = 0;
 
         /*!
          * @brief Get trunk mass.
          * @return trunk mass.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual double getTrunkMass() const = 0;
 
         /*!
          * @brief Get total legs' mass.
          * @return total legs' mass.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual double getLegsMass() const = 0;
 
         /*!
          * @brief Get the CoM of the trunk.
          * @return trunk's CoM.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix<double, 3, 1> getTrunkCOM() const = 0;
 
@@ -1487,7 +1387,6 @@ namespace robotlib
          * @brief Compute whole body CoM in base frame.
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix<double, 3, 1> getWholeBodyCOM(const JointState &joint_position) = 0;
 
@@ -1495,7 +1394,6 @@ namespace robotlib
          * @brief Compute CoM legs contribution in base frame.
          * @param[in] q angles of the joints.
          * @return CoM legs contribution in base frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getLegContribution(const JointState &q) = 0;
 
@@ -1505,7 +1403,6 @@ namespace robotlib
          * @param[in] base_orient base orientation in world frame.
          * @param[in] base_pos base position in world frame.
          * @return CoM position in world frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
                                                const Eigen::Vector3d &base_orient,
@@ -1517,7 +1414,6 @@ namespace robotlib
           * @param[in] base_orient base orientation in world frame.
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
-          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Vector3d getBaseFromCoM(const JointState &q,
                                                const Eigen::Vector3d &base_orient,
@@ -1529,7 +1425,6 @@ namespace robotlib
          * @param[in] R rotation matrix of base frame expressed in world frame.
          * @param[in] q angles of the joints.
          * @return CoM velocity in world frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
 		 */
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                 const Eigen::Matrix3d &R,
@@ -1541,7 +1436,6 @@ namespace robotlib
          * @param[in] R rotation matrix of base frame expressed in world frame.
          * @param[in] offset_com CoM offset in base frame.
          * @return CoM velocity in world frame.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &R,
@@ -1552,14 +1446,12 @@ namespace robotlib
         /*!
          * @brief Set trunk's CoM.
          * @param[in] trunk_com CoM of trunk to be set.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
 
         /*!
          * @brief Set trunk's mass.
          * @param[in] trunk_mass mass of trunk to be set.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
         virtual void setTrunkMass(const double& trunk_mass) = 0;
 
@@ -1568,7 +1460,6 @@ namespace robotlib
          * @details
          * This time period is the controller's loop time period. The time period needs to be set before calling the inverse kinematics.
          * @param[in] period period of the controller.
-         * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
 		 */
         virtual void setInvKinTimePeriod(const double& period) = 0;
 
@@ -1576,7 +1467,6 @@ namespace robotlib
 
 		/*!
 		 * @brief Print robot hierarchy.
-         * \remark{TODO}
 		 */
         virtual void printRobotHierarchy()
         {
@@ -1615,21 +1505,18 @@ namespace robotlib
 
         /*!
          * @brief Factory function to load at run-time the glue code, creating a robot object.
-         * \remark{NOT REAL TIME}
 		 */
         typedef std::shared_ptr<RobotBase> createRobot_t();
 
         /*!
          * @brief Factory function to load at run-time the glue code, with external urdf in input.
          * @param[in] robot_urdf the urdf of the robot in string format.
-         * \remark{NOT REAL TIME}
 		 */
 
         typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string& robot_urdf);
 
          /*!
          * @brief Factory function to destroy the robot object.
-         * \remark{NOT REAL TIME}
 		 */
 
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
