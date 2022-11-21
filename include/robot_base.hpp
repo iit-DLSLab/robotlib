@@ -1,7 +1,7 @@
 /*!
  * @file robot_base.hpp
  *
- * @brief RobotBase class definition and functions prototypes
+ * @brief RobotBase class definition and functions prototypes.
  *
  * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
  * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
@@ -28,7 +28,7 @@
 namespace robotlib
 {
     /*!
-     * \class RobotBase
+     * @class RobotBase
      * @brief RobotBase class.
      * @details
      * This class represents a generic abstract robot.  It provides data structures such as LegDataMap, JointDataMap, JointState and Jacobian classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like forwardKinematics, inverseKinematics and inverseDynamics.
@@ -43,7 +43,7 @@ namespace robotlib
          * \remark{NOT REAL TIME}
          */
         RobotBase(const std::string &name) : name_(name){};
-        
+
         /*!
          * @brief Destructor.
          *  
@@ -1273,7 +1273,7 @@ namespace robotlib
         /*!
          * @brief Get lower angle limit of each joint.
          * @details
-         * The constructor of the JointState class is not real-time. So, to make this function real time, a reference to a JointState instance is passed as input and it is set with the lower limits of the joints' angles. This is why this get function has a void return type.
+         * A reference to a JointState instance is passed as input and it is set with the lower limits of the joints' angles. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] q_min a joint state object to be filled with the lower limits of the joints' angles.
          * \remark{TODO}
          */
@@ -1282,7 +1282,7 @@ namespace robotlib
         /*!
          * @brief Get upper angle limit of each joint.
          * @details
-         * The constructor of the JointState class is not real-time. So, to make this function real time, a reference to a JointState instance is passed as input and it is set with the upper limits of the joints' angles. This is why this get function has a void return type.
+         * A reference to a JointState instance is passed as input and it is set with the upper limits of the joints' angles. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] q_max a joint state object to be filled with the upper limits of the joints' angles.
          * \remark{TODO}
          */
@@ -1291,7 +1291,7 @@ namespace robotlib
         /*!
          * @brief Get maximum velocity limit of each joint.
          * @details
-         * The constructor of the JointState class is not real-time. So, to make this function real time, a reference to a JointState instance is passed as input and it is set with the maximum velocity limits of the joints. This is why this get function has a void return type.
+         * A reference to a JointState instance is passed as input and it is set with the maximum velocity limits of the joints.This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] qd_max a joint state object to be filled with the maximum velocity limits of the joints.
          * \remark{TODO}
          */
@@ -1300,7 +1300,7 @@ namespace robotlib
         /*!
          * @brief Get maximum torque limit of each joint.
          * @details
-         * The constructor of the JointState class is not real-time. So, to make this function real time, a reference to a JointState instance is passed as input and it is set with the maximum torque limits of the joints. This is why this get function has a void return type.
+         * A reference to a JointState instance is passed as input and it is set with the maximum torque limits of the joints. This avoids returning a new JointState object, leading to dynamic memory allocation.
          * @param[out] tau_max a joint state object to be filled with the maximum torque limits of the joints.
          * \remark{TODO}
          */
@@ -1460,21 +1460,21 @@ namespace robotlib
          * @return total robot mass.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
-        virtual double getRobotMass() const = 0; //TODO: implement it in Robotlib
+        virtual double getRobotMass() const = 0;
 
         /*!
          * @brief Get trunk mass.
          * @return trunk mass.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
-        virtual double getTrunkMass() const = 0; //TODO: implement it in Robotlib
+        virtual double getTrunkMass() const = 0;
 
         /*!
          * @brief Get total legs' mass.
          * @return total legs' mass.
          * \remark{NOT REAL TIME or REAL TIME depending on glue code implementation}
          */
-        virtual double getLegsMass() const = 0; //TODO: implement it in Robotlib
+        virtual double getLegsMass() const = 0;
 
         /*!
          * @brief Get the CoM of the trunk.
