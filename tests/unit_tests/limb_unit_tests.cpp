@@ -6,19 +6,41 @@
 const unsigned int NJOINTS {20};
 const unsigned int NLINKS {15};
 
+/*!
+* @brief RobotLeg class.
+* @details
+* This class allows to create a robt leg having a specific morphology with the only purpose of testing Robotlib structures.
+*/
 class RobotLeg : public robotlib::Leg<NJOINTS, NLINKS>
 {
 public:
+    /*!
+    * @brief Constructor.
+    * @param[in] name name of the leg.
+    * @param[in] joints array of shared pointers pointing to leg's joints.
+    * @param[in] links array of shared pointers pointing to leg's links.
+    */
     RobotLeg(std::string name, const std::array<std::shared_ptr<robotlib::Joint>, NJOINTS> joints,
              const std::array<std::shared_ptr<robotlib::Link>, NLINKS> links)
         : Leg<NJOINTS, NLINKS>(name, joints, links){};
 
+    /*!
+    * @brief Get the name of the joint's child of the leg.
+    * @param[in] joint Joint object for which you get the name of the child.
+    * @return name of the joint's child.
+    */
     virtual std::string jointToChildName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         joint->getName();
 
         return "jointToChildName";
     };
+
+    /*!
+    * @brief Get the name of the joint's parent of the leg.
+    * @param[in] joint Joint object for which you get the name of the parent.
+    * @return name of the joint's parent. 
+    */
     virtual std::string jointToParentName(const std::shared_ptr<robotlib::Joint> joint) const
     {
         joint->getName();
@@ -26,12 +48,23 @@ public:
         return "jointToParentName";
     };
 
+    /*!
+    * @brief Get the name of the link's child of the leg.
+    * @param[in] link Link object for which you get the name of the child.
+    * @return name of the link's child.
+    */
     virtual std::string linkToChildName(const std::shared_ptr<robotlib::Link> link) const
     {
         link->getName();
 
         return "linkToChildName";
     };
+
+    /*!
+    * @brief Get the name of link's parent of the leg.
+    * @param[in] link Link object for which you get the name of the parent.
+    * @return name of the link's parent.
+    */
     virtual std::string linkToParentName(const std::shared_ptr<robotlib::Link> link) const
     {
         link->getName();
