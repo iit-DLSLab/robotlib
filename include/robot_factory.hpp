@@ -26,14 +26,14 @@ namespace robotlib
 	class RobotFactory
 	{
 	public:
-		/**
+		/*!
 		 * @brief Open the robot library using opendl.
        	 * @param robot_type name of the robot library to be opened.
 		 * @return share pointer pointing to the robot object.
 		 */
 		static std::shared_ptr<RobotBase> openRobot(const std::string &robot_type);
 
-		/**
+		/*!
 		 * @brief Open the robot library using opendl.
 		 * @details
 		 * This functions uses a robot urdf to load robot parameters.

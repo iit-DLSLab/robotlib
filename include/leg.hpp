@@ -16,7 +16,7 @@
 
 namespace robotlib
 {
-    /**
+    /*!
 	 * @brief Leg class.
 	 * @details
 	 * This templated class represents a generic robot leg and extends the class Limb.

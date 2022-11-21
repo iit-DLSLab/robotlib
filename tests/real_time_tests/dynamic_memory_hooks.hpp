@@ -1,4 +1,4 @@
-/**
+/*!
  * @brief Implementation of hook functions to check dynamic memory allocation/deallocation/reallocation for Eigen and non-Eigen structures.
  *         This implementation has some limitations:
  *           * __builtin_return_address is only avaiable for gcc compiler.
