@@ -12,10 +12,13 @@ namespace robotlib
 		{
 			lib_path = "/usr/lib/" + library;
 		}
-
 		else if (std::filesystem::exists("./" + library))
 		{
 			lib_path = "./" + library;
+		}
+		else if (std::filesystem::exists("/usr/lib/robots/" + library))
+		{
+			lib_path = "/usr/lib/robots/" + library;
 		}
 		else
 		{

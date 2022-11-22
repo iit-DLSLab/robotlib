@@ -1,4 +1,5 @@
 add_library(robotlib
+	SHARED
 	robot_info.cpp
 	robot_factory.cpp
 	joint.cpp
