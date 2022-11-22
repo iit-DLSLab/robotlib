@@ -3,8 +3,11 @@
  *
  * @brief Dummy robot class definition and functions prototypes. Used to create generic types of robots for tests
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetic order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -270,6 +273,8 @@ namespace robotlib
         * @brief DummyLeg class.
         * @details
         * This class allows to create a dummy leg having a specific morphology with the only purpose of testing Robotlib structures.
+        * @tparam NJOINTSLEG number of joints of the leg.
+        * @tparam NLINKSLEG number of links of the leg.
         */
         class DummyLeg : public Leg<NJOINTSLEG, NLINKSLEG>
         {

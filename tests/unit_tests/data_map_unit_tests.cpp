@@ -2,8 +2,11 @@
  * @file data_map_unit_tests.cpp
  * @brief Unit tests for DataMap, LegDataMap, LinkDataMap, JointDataMap, JointState classes
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetic order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  */
 
 #include <gtest/gtest.h>

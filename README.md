@@ -31,6 +31,8 @@ For a complete overview of the inheritance graph, you can check the class hierar
 There are several advantages of using an architecture abstraction layer like Robotlib. For example, with Robotlib, robot-specific structures are hidden from the controllers and state estimators, making them more modular and easier to implement. The structure allows controllers and state estimators to be written only once, and then the framework can dynamically load different robots. The abstraction layer also provides an easy way to switch backend libraries that compute the kinematics and dynamics without affecting the rest of the framework.
 Robotlib is written in C++17 to be fast and portable. It is compatible with the most adopted robotics libraries and is real-time safe.
 
+**Authors in alphabetic order**: Gianluca Cerilli, Geoff Fink and Marco Marchitto
+
 ## Installation
 ### Dependencies
 Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:

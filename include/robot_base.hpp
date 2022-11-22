@@ -3,8 +3,11 @@
  *
  * @brief RobotBase class definition and functions prototypes.
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetic order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -1512,13 +1515,11 @@ namespace robotlib
          * @brief Factory function to load at run-time the glue code, with external urdf in input.
          * @param[in] robot_urdf the urdf of the robot in string format.
 		 */
-
         typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string& robot_urdf);
 
          /*!
          * @brief Factory function to destroy the robot object.
 		 */
-
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
     protected:
