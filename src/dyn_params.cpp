@@ -3,8 +3,11 @@
  *
  * @brief DynParams class and functions implementation
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -22,7 +25,7 @@ namespace robotlib
 
 	DynParams::~DynParams(){}
 
-	const Eigen::Vector3d &DynParams::getCoM()  const { return com_; }
+	Eigen::Vector3d DynParams::getCoM()  const { return com_; }
 	double DynParams::getMass() const { return mass_; }
-	const Eigen::Matrix3d &DynParams::getInertia() const { return inertia_; }
+	Eigen::Matrix3d DynParams::getInertia() const { return inertia_; }
 } // namespace robotlib

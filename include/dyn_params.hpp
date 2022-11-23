@@ -1,10 +1,13 @@
-/**
+/*!
  * @file dyn_params.hpp
  *
- * @brief DynParams class definition and functions prototypes
+ * @brief DynParams class definition and functions prototypes.
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -17,39 +20,53 @@
 
 namespace robotlib
 {
-	/**
-	 * @brief DynParams class
+	/*!
+	 * @brief DynParams class.
 	 * @details
-	 * This class contains the methods used to get the robot dynamic parameters
+	 * This class stores the com, mass and inertia as dynamic parameters.
 	 */
 	class DynParams
 	{
 	public:
+		/*!
+         * @brief Constructor.
+         * @param[in] com center of mass.
+         * @param[in] mass mass.
+         * @param[in] inertia inertia.
+         */
 		DynParams(const Eigen::Vector3d &com,
 				  const double mass,
 				  const Eigen::Matrix3d &inertia);
 
-		~DynParams();
+	    /*!
+         * @brief Destructor.
+         */
+		virtual ~DynParams();
 
-		/**
-		 * @brief Get the center of mass of the robot
-		 * @return const Eigen::Vector3d
+		/*!
+		 * @brief Get the center of mass of the object to which those dynamic parameters are associated to.
+		 * @return center of mass.
 		 */
-		const Eigen::Vector3d &getCoM() const;
-		/**
-		 * @brief Get the mass of the robot
-		 * @return const double
+		virtual Eigen::Vector3d getCoM() const;
+
+		/*!
+		 * @brief Get the mass of the object to which those dynamic parameters are associated to.
+		 * @return mass.
 		 */
-		double getMass() const;
-		/**
-		 * @brief Get the inertia of the robot
-		 * @return const Eigen::Matrix3d
+		virtual double getMass() const;
+
+		/*!
+		 * @brief Get the inertia of mass of the object to which those dynamic parameters are associated to.
+		 * @return inertia.
 		 */
-		const Eigen::Matrix3d &getInertia() const;
+		virtual Eigen::Matrix3d getInertia() const;
 
 	private:
+		//! Center of mass.
 		const Eigen::Vector3d com_;
+		//! Mass.
 		const double mass_;
+		//! Inertia.
 		const Eigen::Matrix3d inertia_;
 	};
 } // namespace robotlib

@@ -1,10 +1,13 @@
-/**
+/*!
  * @file limb_base.hpp
  *
- * @brief LimbBase class definition and functions prototypes
+ * @brief LimbBase class definition and functions prototypes.
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -21,86 +24,105 @@ namespace robotlib
    class Link;
    class Joint;
 
-   /**
-	 * @brief LimbBase class
+   /*!
+	 * @brief LimbBase class.
 	 * @details
-	 * This class represent a generic robot Limb (Leg/Arm) and contains the virtual methods implemented in the Limb class
+	 * This class represents a generic robot Limb (Leg or Arm). It is an interface used to abstract a limb object, independently from the limb morphology.
 	 */
    class LimbBase
    {
    public:
+      /*!
+      * @brief Constructor.
+      * @param[in] name name of the limb.
+      */
       LimbBase(const std::string &name);
 
+      /*!
+      * @brief Destructor.
+      */
       virtual ~LimbBase();
 
-      /**
-		 * @brief Get the name of the LimbBase
-		 * @return const std::string
+      /*!
+		 * @brief Get the name of the limb.
+		 * @return name of the limb.
 		 */
-      const std::string getName() const;
-      /**
-       * @brief Get the number of links of the Limb
-       * @return const int
+      virtual std::string getName() const;
+
+      /*!
+       * @brief Get the number of the joints of the Limb.
+       * @return number of the limb's joints.
        */
-      virtual const int getNJoints() const = 0;
-      /**
-       * @brief Get the joints of the Limb
-       * @return const int
+      virtual int getNJoints() const = 0;
+
+      /*!
+       * @brief Get the number of the links of the limb.
+       * @return number of the limb's links.
        */
-      virtual const int getNLinks() const = 0;
-      /**
-       * @brief Get the Joint object associated to the name
-       * @param name name of the Joint object that is returned
-       * @return const std::shared_ptr<Joint> 
+      virtual int getNLinks() const = 0;
+
+      /*!
+       * @brief Get the Joint object associated to the joint name.
+       * @param[in] name name of the Joint object that is returned
+       * @return shared pointer pointing to the joint.
        */
-      virtual const std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
-      /**
-       * @brief Get the Link object associated to the name
-       * @param name name of the Link object that is returned
-       * @return const std::shared_ptr<Link> 
+      virtual std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
+
+      /*!
+       * @brief Get the Link object associated to the name.
+       * @param[in] name name of the Link object that is returned.
+       * @return shared pointer pointing to the link.
        */
-      virtual const std::shared_ptr<Link> getLink(const std::string &name) const = 0;
-      /**
-       * @brief Get the Link object correspondent to the Limb end-effector
-       * @return const std::shared_ptr<Link> 
+      virtual std::shared_ptr<Link> getLink(const std::string &name) const = 0;
+
+      /*!
+       * @brief Get the limb end-effector.
+       * @return shared pointer pointing to the limb end-effector. 
        */
-      virtual const std::shared_ptr<Link> getEndEffector() const = 0; //overridden by Limb class
-      /**
-       * @brief Get the joints of the Limb
-       * @return const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>>
+      virtual std::shared_ptr<Link> getEndEffector() const = 0;
+
+      /*!
+       * @brief Get the joints of the Limb.
+       * @return joints of the limb.
        */
-      virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const = 0;
-      /**
-       * @brief Get the links of the Limb
-       * @return const std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> 
+      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const = 0;
+
+      /*!
+       * @brief Get the links of the Limb.
+       * @return links of the limb.
        */
-      virtual const std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const = 0;
-      /**
-       * @brief Get the name of the Limb joint parent
-       * @param joint Joint object for which you get the name of the parent
-       * @return const std::string 
+      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const = 0;
+
+      /*!
+       * @brief Get the name of the joint's parent of the limb.
+       * @param[in] joint Joint object for which you get the name of the parent.
+       * @return name of the joint's parent. 
        */
-      virtual const std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0; /// overridden by Glue
-      /**
-       * @brief Get the name of the Limb joint child
-       * @param joint Joint object for which you get the name of the child
-       * @return const std::string 
+      virtual std::string jointToParentName(const std::shared_ptr<Joint> joint) const = 0;
+
+      /*!
+       * @brief Get the name of the joint's child of the limb.
+       * @param[in] joint Joint object for which you get the name of the child.
+       * @return name of the joint's child.
        */
-      virtual const std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0; /// overridden by Glue
-      /**
-       * @brief Get the name of the Limb link parent
-       * @param joint Link object for which you get the name of the parent
-       * @return const std::string 
+      virtual std::string jointToChildName(const std::shared_ptr<Joint> joint) const = 0;
+
+      /*!
+       * @brief Get the name of link's parent of the limb.
+       * @param[in] link Link object for which you get the name of the parent.
+       * @return name of the link's parent.
        */
-      virtual const std::string linkToParentName(const std::shared_ptr<Link> joint) const = 0; /// overridden by Glue
-      /**
-       * @brief Get the name of the Limb link child
-       * @param joint Link object for which you get the name of the child
-       * @return const std::string 
+      virtual std::string linkToParentName(const std::shared_ptr<Link> link) const = 0;
+
+      /*!
+       * @brief Get the name of the link's child of the limb.
+       * @param[in] link Link object for which you get the name of the child.
+       * @return name of the link's child.
        */
-      virtual const std::string linkToChildName(const std::shared_ptr<Link> joint) const = 0; /// overridden by Glue
+      virtual std::string linkToChildName(const std::shared_ptr<Link> link) const = 0; 
 
    private:
+      //! Name of the limb.
       const std::string name_;
    };
 } // namespace robotlib

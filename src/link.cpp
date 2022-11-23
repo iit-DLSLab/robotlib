@@ -3,8 +3,11 @@
  *
  * @brief Link class and functions implementation
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -23,17 +26,16 @@ namespace robotlib
 	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
 	// segnalare i possibili segmentation fault da gestire
 
-	const std::string Link::getName() const { return name_; }
-	const std::shared_ptr<Joint> Link::getParent() const { return parent_; }
-	const std::shared_ptr<Joint> Link::getChild() const { return child_; }
+	std::string Link::getName() const { return name_; }
+	std::shared_ptr<Joint> Link::getParent() const { return parent_; }
+	std::shared_ptr<Joint> Link::getChild() const {return child_;}
+	std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
 
-	const std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> Link::getChildren() const
 	{
 		if((children_ != nullptr) && (children_->size() > 0))
 			return children_;
 		else
 		{
-			//throw std::runtime_error ("RUNTIME ERROR: The link has no children");		// This is blocking
 			//std::cout << "RUNTIME ERROR: The link has no children" << std::endl;		// This does not handle the error
 			return nullptr;
 		}

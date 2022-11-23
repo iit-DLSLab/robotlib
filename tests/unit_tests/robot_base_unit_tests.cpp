@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "robot_factory.hpp"
 
-// In order to do the tests you need in install the dummy robots.
+// In order to do the tests you need to install the dummy robots.
 // To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
 
 TEST(RobotBaseUnitTests, getNLegs)
@@ -195,32 +195,6 @@ TEST(RobotBaseUnitTests, getJoint)
     ASSERT_EQ(typeid(*joint_dq), typeid(joint_gt));
 }
 
-TEST(RobotBaseUnitTests, getFeet)
-{
-    /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-    auto joint_state = dummy_quadruped->makeJointState();
-
-    auto feet_dq = dummy_quadruped->getFeet();
-
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt{};
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
-
-    for (const auto leg : *(dummy_quadruped->getLegs()))
-    {
-        Eigen::Matrix4d foot_pose_dq{};
-        foot_pose_dq.setZero();
-        foot_pose_dq = dummy_quadruped->getFootPose(joint_state, feet_dq[leg]);
-
-        /// Assert conditions
-        ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-        ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
-    }
-}
-
 // TODO
 //TEST(RobotBaseUnitTests, forwardKinematicsOne)
 //{
@@ -286,65 +260,6 @@ TEST(RobotBaseUnitTests, getName)
     /// Assert conditions
     ASSERT_EQ(name_dq, name_gt);
     ASSERT_EQ(typeid(name_dq), typeid(name_gt));
-}
-
-TEST(RobotBaseUnitTests, makeFootJacobian)
-{
-    /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-    auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
-
-    auto jacobian = dummy_quadruped->makeFootJacobian(foot);
-
-    // const int nJoints = foot.getParentLimb()->getNJoints();
-
-    // int count = 0;
-    // for (int i = 0; i < jacobian.rows(); ++i)
-    // {
-    //     for (int j = 0; j < jacobian.cols(); ++j)
-    //     {
-    //         jacobian(i, j) = count;
-    //         count++;
-    //     }
-    // }
-
-    // /// Ground truth
-    // double *data_gt = new double[6 * nJoints];
-    // for (int i = 0; i < 6 * nJoints; ++i)
-    // {
-    //     data_gt[i] = 0;
-    // }
-
-    // Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> jacobian_gt(data_gt, 6, nJoints);
-    // count = 0;
-    // for (int i = 0; i < jacobian_gt.rows(); ++i)
-    // {
-    //     for (int j = 0; j < jacobian_gt.cols(); ++j)
-    //     {
-    //         jacobian_gt(i, j) = count;
-    //         count++;
-    //     }
-    // }
-
-    // auto linearJacobian = jacobian.getLinearJacobian();
-    // auto angularJacobian = jacobian.getAngularJacobian();
-
-    // /// Assert conditions
-    // ASSERT_EQ(jacobian, jacobian_gt);
-    // ASSERT_EQ(jacobian.getLinearJacobian(), jacobian_gt.block(0, 0, 3, nJoints));
-    // ASSERT_EQ(jacobian.getAngularJacobian(), jacobian_gt.block(3, 0, 3, nJoints));
-    //ASSERT_EQ(typeid(jacobian), typeid(jacobian_gt));
-}
-
-TEST(RobotBaseUnitTests, makeJacobian)
-{
-    /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-    auto foot = dummy_quadruped->getLink("LF_UPPERLEG");
-
-    dummy_quadruped->makeJacobian(foot, foot);
 }
 
 TEST(RobotBaseUnitTests, joint_parent_child)
@@ -452,7 +367,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto leg : *(dummy_quadruped->getLegs()))
     {
-        dummy_quadruped->getFootPosition(q, leg, footPos[leg]);
+        footPos[leg] = dummy_quadruped->getFootPosition(q, leg);
         Eigen::Vector3d pos(10, 20, 30);
         footPos[leg] = pos;
     }
@@ -898,14 +813,6 @@ TEST(RobotBaseUnitTests, dataMap_constructor_with_initialization)
         std::cout << "***\n";
     }
     std::cout << "\n";
-}
-
-TEST(RobotBaseUnitTests, getRobotCoM)
-{
-    /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-    std::cout << dummy_quadruped->getRobotCoM() << std::endl;
 }
 
 TEST(RobotBaseUnitTests, JointDataMap_leg)

@@ -3,8 +3,11 @@
  *
  * @brief Dummy robot class and functions implementation
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -192,11 +195,10 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
-                                                                                                              const std::shared_ptr<LimbBase> leg,
-                                                                                                              Eigen::Vector3d &footPos)
+    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootPosition(const RobotBase::JointState &q,
+    const std::shared_ptr<LimbBase> leg)
     {
-        footPos = this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
+        return this->getFramePosition(q, this->getLink(trunk_->getName()), leg->getEndEffector());
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
@@ -221,17 +223,6 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFootJacobian(const RobotBase::JointState &q,
-                                                                                                              const std::shared_ptr<LimbBase> leg,
-                                                                                                              RobotBase::Jacobian &footJac)
-    {
-        q.size();
-        leg->getName();
-
-        footJac.setZero();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::updateLinearJacobian(const RobotBase::JointState &joints_positions,
                                                                                                                    RobotBase::LegDataMap<RobotBase::Jacobian> &robot_jacobian)
     {
@@ -240,21 +231,9 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    RobotBase::LegDataMap<std::shared_ptr<Frame>> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getFeet()
-    {
-        auto feet = this->template makeLegDataMap<std::shared_ptr<Frame>>();
-
-        for (auto leg : *(this->getLegs()))
-        {
-            feet[leg] = std::make_shared<Link>("");
-        }
-
-        return feet;
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::forwardKinematics(const RobotBase::JointState &joint_position,
-                                                                                                                RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position)
+    void DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::forwardKinematics(
+        const RobotBase::JointState &joint_position,
+        RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> &end_effector_position)
     {
         joint_position.size();
         end_effector_position.getSize();
@@ -347,21 +326,9 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Vector3d DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getRobotCoM()
-    { 
-        return Eigen::Vector3d().setZero(); 
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM()
+    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM(const RobotBase::JointState &joint_position)
     {
-        return Eigen::Matrix<double, 3, 1>::Zero();
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 3, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOM(const RobotBase::JointState &joint_state)
-    {
-        joint_state.size();
+        joint_position.size();
 
         return Eigen::Matrix<double, 3, 1>::Zero();
     }
@@ -399,36 +366,12 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVel(const RobotBase::JointState & q,
-                                                                                                                                        const RobotBase::JointState & qd)
-    {
-        q.size();
-        qd.size();
-
-        return Eigen::Matrix<double, 6, 1>::Zero();		
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                                                          const Eigen::Matrix3d & rotationMx,
-                                                                                                                                          const RobotBase::JointState & q,
-                                                                                                                                          const RobotBase::JointState & qd)
-    {
-        baseVel.size();
-        rotationMx.size();
-        q.size();
-        qd.size();
-        
-        return Eigen::Matrix<double, 6, 1>::Zero();	
-    }
-
-    template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> & baseVel,
-                                                                                                                                          const Eigen::Matrix3d & rotationMx,
+                                                                                                                                          const Eigen::Matrix3d & R,
                                                                                                                                           const RobotBase::JointState & q)
     {
         baseVel.size();
-        rotationMx.size();
+        R.size();
         q.size();
 
         return Eigen::Matrix<double, 6, 1>::Zero();	
@@ -436,11 +379,11 @@ namespace robotlib
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
     Eigen::Matrix<double, 6, 1> DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyRobot::getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                                                                                          const Eigen::Matrix3d &rotationMx,
-                                                                                                                                          const Eigen::Vector3d offset_com)
+                                                 const Eigen::Matrix3d &R,
+                                                 const Eigen::Vector3d offset_com)
     {	
         baseVel.size();
-        rotationMx.size();
+        R.size();
         offset_com.size();
 
         return Eigen::Matrix<double, 6, 1>::Zero();
@@ -499,7 +442,7 @@ namespace robotlib
     DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::~DummyLeg(){}
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToChildName(const std::shared_ptr<Joint> joint) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToChildName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string child_name {joints_map_.find(joint_name)->second.second}; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
@@ -507,7 +450,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToParentName(const std::shared_ptr<Joint> joint) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::jointToParentName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string parent_name {joints_map_.find(joint_name)->second.first};
@@ -515,7 +458,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToChildName(const std::shared_ptr<Link> link) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToChildName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string child_name {links_map_.find(link_name)->second.second};
@@ -523,7 +466,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToParentName(const std::shared_ptr<Link> link) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyLeg::linkToParentName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string parent_name {links_map_.find(link_name)->second.first};
@@ -565,7 +508,7 @@ namespace robotlib
     DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::~DummyArm(){}
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::jointToChildName(const std::shared_ptr<Joint> joint) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::jointToChildName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string child_name {joints_map_.find(joint_name)->second.second}; //find(.)->second get the pair (find(.)->first get the key...I'm sorry but it's the only way to have const member functions using const map variables)
@@ -573,7 +516,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::jointToParentName(const std::shared_ptr<Joint> joint) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::jointToParentName(const std::shared_ptr<Joint> joint) const
     {
         const std::string joint_name {joint->getName()};
         const std::string parent_name {joints_map_.find(joint_name)->second.first};
@@ -581,7 +524,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::linkToChildName(const std::shared_ptr<Link> link) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::linkToChildName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string child_name {links_map_.find(link_name)->second.second};
@@ -589,7 +532,7 @@ namespace robotlib
     }
 
     template <unsigned int NJOINTS, unsigned int NLINKS, unsigned int NLEGS, unsigned int NJOINTSLEG, unsigned int NLINKSLEG, unsigned int NARMS, unsigned int NJOINTSARM, unsigned int NLINKSARM>
-    const std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::linkToParentName(const std::shared_ptr<Link> link) const
+    std::string DummyRobotCreator<NJOINTS, NLINKS, NLEGS, NJOINTSLEG, NLINKSLEG, NARMS, NJOINTSARM, NLINKSARM>::DummyArm::linkToParentName(const std::shared_ptr<Link> link) const
     {
         const std::string link_name {link->getName()};
         const std::string parent_name {links_map_.find(link_name)->second.first};

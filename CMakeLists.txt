@@ -1,7 +1,6 @@
 # Minimum CMake version working in Ubuntu 20.04
-cmake_minimum_required(VERSION 3.7.0)
+cmake_minimum_required(VERSION 3.8.0)
 project(robotlib)
-message("\n***********Building robotlib library***********\n")
 
 option(BUILD_TESTING "" OFF)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -17,11 +16,8 @@ set(CMAKE_CSS_STANDARD_REQUIRED True)
 add_compile_options(
 	-std=c++17
 	-fPIC
-	#Those options are enabled is a Debug configuration is set
 	$<$<CONFIG:Debug>:-g>
-	$<$<CONFIG:Debug>:-Wall>
-	$<$<CONFIG:Debug>:-Wextra>
-	$<$<CONFIG:Debug>:-pedantic>
+	-Wall -Wextra -pedantic
 	$<$<CONFIG:Release>:-O3>
 )
 
