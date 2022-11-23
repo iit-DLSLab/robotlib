@@ -1,10 +1,13 @@
-/**
+/*!
  * @file frame.hpp
  *
- * @brief Frame class definition and functions prototypes
+ * @brief Frame class definition and functions prototypes.
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -16,25 +19,33 @@
 
 namespace robotlib
 {
-    /**
+    /*!
 	 * @brief Frame class
 	 * @details
-	 * This class represents a generic robot frame (joint/link) and is extended by Joint and Link classes
+	 * This class represents a generic robot frame (e.g. a joint or a link) and is extended by Joint and Link classes.
 	 */
     class Frame
     {
     public:
+        /*!
+         * @brief Constructor.
+         * @param[in] name name of the frame.
+         */
         Frame(const std::string &name) : name_(name){};
-        //Frame(const Eigen::Vector3d &p, const Eigen::Vector3d &ori)
+
+        /*!
+         * @brief Destructor.
+         */
         virtual ~Frame(){};
 
-        /**
-		 * @brief Get the name of the Frame
-		 * @return const std::string
+        /*!
+		 * @brief Get the name of the Frame.
+		 * @return name of the frame.
 		 */
-        virtual const std::string getName() const = 0;
+        virtual std::string getName() const = 0;
 
     protected:
+        //! Name of the frame.
         const std::string name_{};
     };
 } // namespace robotlib

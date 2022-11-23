@@ -47,7 +47,8 @@ install(
 		"robotlib"
 )
 
-install(FILES ../robotlib-config.cmake DESTINATION ${ROBOTLIB_INSTALL_CMAKE_LIB_DIR}/${CMAKE_PROJECT_NAME})
 install(EXPORT robotlib DESTINATION ${ROBOTLIB_INSTALL_CMAKE_LIB_DIR}/${CMAKE_PROJECT_NAME})
+
+install(FILES ../robotlib-config.cmake DESTINATION ${ROBOTLIB_INSTALL_CMAKE_LIB_DIR}/${CMAKE_PROJECT_NAME})
 
 add_subdirectory(robots)

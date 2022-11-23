@@ -20,6 +20,7 @@
  */
 robotlib::DummyRobotCreator<4, 4, 1, 2, 2, 1, 2, 2> dummy_robot_creator;
 
+//! Names of the components of the robot.
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
 std::array<std::string, 12> components_names{"Dummy Robot",
                                             "TRUNK",
@@ -413,7 +414,6 @@ TEST(LimbUnitTests, linkToChildName)
      {
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          unsigned int i{0};
           for (auto leg : *(dummy_robot->getLegs()))
           {
                for (auto link : *(leg->getLinks()))
@@ -432,7 +432,6 @@ TEST(LimbUnitTests, linkToChildName)
      {
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          unsigned int i{0};
           for (auto arm : *(dummy_robot->getArms()))
           {
                for (auto link : *(arm->getLinks()))

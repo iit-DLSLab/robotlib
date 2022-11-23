@@ -3,8 +3,11 @@
  *
  * @brief Trunk class and functions implementation
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  *
  * @bug No known bugs.
  */
@@ -20,14 +23,14 @@ namespace robotlib
 
 	Trunk::~Trunk(){}
 
-	const std::string Trunk::getName() const { return name_; }
+	std::string Trunk::getName() const { return name_; }
 
-	const Eigen::Vector3d & Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
+	Eigen::Vector3d Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
 
 	double Trunk::getMass() const { return dynamic_parameters_.getMass(); }
 	
-	const Eigen::Matrix3d &Trunk::getInertia() const {return dynamic_parameters_.getInertia(); }
+	Eigen::Matrix3d Trunk::getInertia() const {return dynamic_parameters_.getInertia(); }
 
-	const DynParams &Trunk::getDynParams() const { return dynamic_parameters_; }
+	DynParams Trunk::getDynParams() const { return dynamic_parameters_; }
 
 } // namespace robotlib

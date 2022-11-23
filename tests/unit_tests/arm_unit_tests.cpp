@@ -2,8 +2,11 @@
  * @file arm_unit_tests.cpp
  * @brief Unit tests for Arm class
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  */
 
 #include <gtest/gtest.h>
@@ -311,7 +314,6 @@ TEST(ArmUnitTests, linkToChildName)
      {
           auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-          unsigned int i{0};
           for (auto arm : *(dummy_robot->getArms()))
           {
                for (auto link : *(arm->getLinks()))
