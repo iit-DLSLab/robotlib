@@ -867,8 +867,8 @@ namespace robotlib
              * @details
              * This constructor is used to create a Jacobian object given the number of joints and a default value. When using this constructor, the 
              * init function is not needed.
-             * @param nJoints number of joints.
-             * @param data value used to initialize the jacobian.
+             * @param [in] nJoints number of joints.
+             * @param [in] data value used to initialize the jacobian.
 		     */
             Jacobian(const int nJoints, const double data = 0.0) : Map(NULL, 6, nJoints), nJoints_(nJoints)
             {
@@ -896,8 +896,8 @@ namespace robotlib
              * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
              * 
              * To avoid dynamic memory allocation, fixed-size data structures are defined in Robotlib, like the LegDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
-             * @param nJoints number of joints.
-             * @param init_value value used to initialize the jacobian.
+             * @param [in] nJoints number of joints.
+             * @param [in] init_value value used to initialize the jacobian.
 		     */
             void init(const int nJoints, const double init_value = 0.0)
             {

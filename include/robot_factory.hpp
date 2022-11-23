@@ -31,7 +31,7 @@ namespace robotlib
 	public:
 		/*!
 		 * @brief Open the robot library using opendl.
-       	 * @param robot_type name of the robot library to be opened.
+       	 * @param [in] robot_type name of the robot library to be opened.
 		 * @return share pointer pointing to the robot object.
 		 */
 		static std::shared_ptr<RobotBase> openRobot(const std::string &robot_type);
@@ -40,8 +40,8 @@ namespace robotlib
 		 * @brief Open the robot library using opendl.
 		 * @details
 		 * This functions uses a robot urdf to load robot parameters.
-       	 * @param robot_type name of the robot library to be opened.
-		 * @param robot_urdf robot urdf in string format
+       	 * @param [in] robot_type name of the robot library to be opened.
+		 * @param [in] robot_urdf robot urdf in string format
 		 * @return share pointer pointing to the robot object.
 		 */
 		static std::shared_ptr<RobotBase> openRobot(const std::string &robot_type, const std::string &robot_urdf);

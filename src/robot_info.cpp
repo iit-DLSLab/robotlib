@@ -86,8 +86,8 @@ namespace robotlib
 /**
  * @brief Main function called to display robots information
  *
- * @param argc this is the number of
- * @param argv
+ * @param [in] argc this is the number of
+ * @param [in] argv
  * @return int
  */
 int main(int argc, char *argv[])
