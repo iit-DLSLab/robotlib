@@ -151,8 +151,5 @@ deploy:
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
     - package
-<<<<<<< HEAD
   only:
     - master
-=======
->>>>>>> 7cebaac4cce017c7ac1c54ca0c468bfbd4a9639d
