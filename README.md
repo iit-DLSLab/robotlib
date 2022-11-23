@@ -73,7 +73,7 @@ If you get error when executing the `cmake` command, you might need to do
     sudo apt install build-essential
 
 ## Usage
-Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here-TODO](TODO) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
+Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here](https://gitlab.advr.iit.it/dls-lab/aliengo-commons/-/tree/develop_aliengolib/aliengolib#installation) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
 
 If you don't want to install any glue code but you just want to play aroud with Robotlib you can use one of the dummy robots defined in Robotlib: a dummy quadruped or a dummy hexapod. Their (dummy) glue code is already installed when you install Robotlib.
 
@@ -208,12 +208,5 @@ To run tests
 | :------------------: | :----------------: | :--------------------------: | :------------------------------: |
 | master | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) |
 
-<!-- TODO -->
-<!-- Actually, master is the release branch for Focal. We need releases for Bionic and Xenial as well -->
-
 ## Issues
-
-<!-- TODO -->
-<!-- You cannot have methods that return <X>DataMap or JointState etc... You need to pass these as reference -->
-<!-- Clean issue tracker and make some internal developments (like Agile tasks) private. Put there only known issues for public -->
 You can look for known issues, report bugs and ask for features implementation at the [issue tracker](https://gitlab.advr.iit.it/dls-lab/robotlib/-/issues).
