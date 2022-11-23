@@ -2,7 +2,7 @@
  * @file leg_unit_tests.cpp
  * @brief Unit tests for Leg class
  *
- * @authors Authors in alphabetic order:
+ * @authors Authors in alphabetical order:
  *
  *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
  *

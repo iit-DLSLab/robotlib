@@ -3,7 +3,7 @@
  *
  * @brief Dummy robot class definition and functions prototypes. Used to create generic types of robots for tests
  *
- * @authors Authors in alphabetic order:
+ * @authors Authors in alphabetical order:
  *
  *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
  *

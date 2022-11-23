@@ -2,7 +2,7 @@
  * @file dummy_robot_unit_tests.cpp
  * @brief Unit tests for DummyRobot class
  *
- * @authors Authors in alphabetic order:
+ * @authors Authors in alphabetical order:
  *
  *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
  *

@@ -3,7 +3,7 @@
  *
  * @brief File storing utility classes and structs.
  *
- * @authors Authors in alphabetic order:
+ * @authors Authors in alphabetical order:
  *
  *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
  *
