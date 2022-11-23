@@ -25,7 +25,7 @@ build:
     - mkdir build
     - cd build
     # Enable gcov/lcov from command line
-    - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" .. -DBUILD_TESTING=On
+    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=On -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
     - make -j$(nproc) install
     - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
@@ -121,7 +121,7 @@ package:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev
+    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - cd build
     - make package
@@ -151,5 +151,8 @@ deploy:
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
     - package
+<<<<<<< HEAD
   only:
     - master
+=======
+>>>>>>> 7cebaac4cce017c7ac1c54ca0c468bfbd4a9639d

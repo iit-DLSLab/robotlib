@@ -460,7 +460,6 @@ namespace robotlib
 		virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) { trunk_com.size(); }
 
 		virtual void setTrunkMass(const double& trunk_mass){ std::cout << trunk_mass << std::endl; }
-		 
 	};
 } // namespace robotlib
 
