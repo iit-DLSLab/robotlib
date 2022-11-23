@@ -14,7 +14,7 @@ With this architecture you just need to:
 
 Through the common interface, it is therefore possible to keep one single controller implementation for controlling robots with different morphologies.
 
-In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue code respectively of Aliengo and Crex.
+In the image below you can see an overview of how Robotlib and the robot specific libraries are integrated in a controller framework. Here Aliengolib and Crexlib are the glue codes respectively of Aliengo and Crex.
 
 ![Robotlib](doc/Robotlib.png)
 
@@ -22,7 +22,7 @@ Notice that the robot states are decoupled from the hierarchical robot structure
 
 In the following an overview of Robotlib main classes is provided:
 * **RobotFactory**: this class stores the static function **openRobot** used to load at runtime the glue code
-* **RobotBase**: this is the main class used as interface to glue code. It provides data structures such as **LegDataMap**, **JointDataMap**, **JointState** and **Jacobian** classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like **forwardKinematics**, **inverseKinematics** and **inverseDynamics**
+* **RobotBase**: this is the main class used as interface to the glue code. It provides data structures such as **LegDataMap**, **JointDataMap**, **JointState** and **Jacobian** classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like **forwardKinematics**, **inverseKinematics** and **inverseDynamics**
 * **LimbBase**: this is the class to interface with any kind of limb, no matter if it is a leg or arm
 * **Frame**: this class represents a generic frame, no matter if it is a joint or a link
 
@@ -101,9 +101,9 @@ Suppose now that you want a variable storing the stance status of each leg. You 
     // Define and populate a leg data map object
     robotlib::RobotBase::LegDataMap<bool> stance_status {robot->makeLegDataMap<bool>(false)}; // or auto stance_status {robot->makeLegDataMap<bool>(0.0)};
 
-The LegDataMap object can be seen as a list of pairs: each pair associates a stored data to a leg.
+The LegDataMap object is a list of pairs. Each pair associates the shared pointer of a leg to a data.
 
-Notice that the constructor of the LegDataMap class produces not real time operations. With the aim of letting the user managing more carefully not real time operations, the LegDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LegDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with non real time operations (that is, it allocates dynamic memory).
+Notice that the constructor of the LegDataMap class allocates dynamic memory. With the aim of letting the user managing more carefully dynamic memory allocation, the LegDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LegDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with dynamic memory allocation.
 
 Let's now populate the stance_status variable
 
@@ -123,7 +123,7 @@ where "LF" is the name associated to the left front leg. The getLeg function ret
 
 As another example of data type that can be associated to legs consider the following example
 
-    // Define and populate a leg data map objectof jacobians; each jacobian is associated to a leg
+    // Define and populate a leg data map object of jacobians; each jacobian is associated to a leg
     robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{dummy_quadruped->makeFootJacobian(foot)};
     for (auto leg : *(robot->getLegs()))
     {
@@ -137,7 +137,7 @@ As another example of data type that can be associated to legs consider the foll
         std::cout << feet_jacobian[leg] << std::endl;
     }
 
-In this example we have used the function makeFeetJacobian (making non real time operations) to create a jacobian object for each leg.
+In this example we have used the function makeFeetJacobian to create a jacobian object for each leg.
 
 Consider now the following example to compute the forward kinematics for each leg
 
@@ -173,8 +173,6 @@ Latex and html files will be generated according to the instructions provided in
 To access to the html documentation, just double click on the file *index.html* stored in the folder *doc/html*: it will open the file in your browser.
 
 To view the inheritance graph, once the html file is opended in your browser, go in the Classes section and click on the Class Hierarchy tab.
-
-Notice that in the doxygen documentation for each function it is also specified if it can be executed in real time or not.
 
 For other examples, you can have look at the tests provided in the *tests* folder. 
 ## Tests
