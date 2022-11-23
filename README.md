@@ -39,7 +39,7 @@ Robotlib is written in C++17 to be fast and portable. It is compatible with the 
 ### Dependencies
 Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
 
-**CMake** (3.8.0 is the minimum version for C++17 standard) - You can download the chosen version and install it through
+**CMake** (3.14.0 is the minimum version for using GoogleTest) - You can download the chosen version and install it through
 
     wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
     tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
@@ -70,7 +70,7 @@ To build Robotlib, clone the latest version of this repository and compile the p
 
     make install
 
-If you get error when executing the `cmake` command, you might need to do
+If you get the error *CMAKE_MAKE_PROGRAM is not set.* when executing the `cmake` command, you might need to do
 
     sudo apt install build-essential
 
