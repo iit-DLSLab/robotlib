@@ -171,22 +171,22 @@ The implementation of the glue code is quite arbitrary. You can use whatever too
 
 * Define a \<RobotLeg> class extending robotlib::Leg. In this class you need to:
     * set the number of joints and links of the leg
-    * define a way to associate parent and child links to each joint: for example you could define a std::map data structure storing associating to each joint its child and parent links
-    * define a way to associate parent and child joints to each link: for example you could define a std::map data structure associating to each link its child and parent joints
+    * define a way to associate parent and child links to each joint: for example you could define a std::map data structure associating to each joint name the anems of its child and parent links
+    * define a way to associate parent and child joints to each link: for example you could define a std::map data structure associating to each link name the names of its child and parent joints
 * Define a \<RobotName> class extending robotlib::Robot. In this class you need to:
     * define the total number of joints, links, legs and arms 
     * define the robot hierarchical structure in the class constructor. Here you may also define joint limits or instantiate utility variables
     * implement all the virtual functions defined in the templated Robot class
-    * implement the factory functions in order to create and destroy a robot object. In the factory function creating the object you need to:
+    * implement the factory functions in order to create and destroy a robot object. In the factory function that creates the object you need to:
         * create a trunk link
         * create the legs (and/or arms too) with associated joints and links
         * call the \<RobotName> class constructor
 
-The implementation of each inherited function is arbitrary. 
+The implementation of each inherited function is arbitrary.
 
 Remember that you access to glue code functions through Robotlib. So if you define a new function in the glue code that it is not in Robotlib, it cannot be called by a RobotBase (or LimbBase) object. You would need then to make it visible also in Robotlib.
 
-Examples of glue codes are provided in the src/robots folder, where a dummy-quadruped and a dummy-hexapod robots are defined. [Aliengolib](git@gitlab.advr.iit.it:dls-lab/aliengo-commons.git) and [Crexlib](git@gitlab.advr.iit.it:dls-lab/crex-commons.git) are instead more complex implementations of glue codes.
+Examples of simple glue codes are provided in the src/robots folder, where a dummy-quadruped and a dummy-hexapod robots are defined. [Aliengolib](https://gitlab.advr.iit.it/dls-lab/aliengo-commons/-/tree/develop_aliengolib) and [Crexlib](https://gitlab.advr.iit.it/dls-lab/crex-commons/-/tree/develop_crexlib) are instead more complex implementations of glue codes.
 
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
