@@ -1,6 +1,20 @@
-#include "robot_factory.hpp"
+/**
+ * @file robot_factory.cpp
+ *
+ * @brief RobotFactory class and functions implementation
+ *
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Geoff Fink (IIT DLS Lab) - Contact: geoff.fink@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ *
+ * @bug No known bugs.
+ */
 
-// TODO: use #include<filesystem> once all dls images are updated with Ubuntu20 (and gcc version > 8)
+#include "robot_factory.hpp"
 #include <filesystem>
 
 namespace robotlib

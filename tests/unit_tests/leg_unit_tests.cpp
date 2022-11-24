@@ -1,5 +1,6 @@
 /**
  * @file leg_unit_tests.cpp
+ * 
  * @brief Unit tests for Leg class
  *
  * @authors Authors in alphabetical order:

@@ -1,5 +1,6 @@
 /**
  * @file trunk_unit_tests.cpp
+ * 
  * @brief Unit tests for Trunk class
  *
  * @authors Authors in alphabetical order:

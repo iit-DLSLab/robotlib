@@ -1,5 +1,6 @@
 /**
  * @file limb_unit_tests.cpp
+ * 
  * @brief Unit tests for Limb class
  *
  * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it

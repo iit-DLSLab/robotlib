@@ -1,5 +1,6 @@
 /**
  * @file arm_unit_tests.cpp
+ * 
  * @brief Unit tests for Arm class
  *
  * @authors Authors in alphabetical order:

@@ -1,5 +1,6 @@
 /**
  * @file joint_unit_tests.cpp
+ * 
  * @brief Unit tests for Joint class
  *
  * @authors Authors in alphabetical order:

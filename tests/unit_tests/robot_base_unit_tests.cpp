@@ -1,8 +1,19 @@
+/**
+ * @file robot_base_unit_tests.cpp
+ * 
+ * @brief Unit tests for RobotBase class
+ *
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Geoff Fink (IIT DLS Lab) - Contact: geoff.fink@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ */
+
 #include <gtest/gtest.h>
 #include "robot_factory.hpp"
-
-// In order to do the tests you need to install the dummy robots.
-// To do so, just do make install inside the build folder of robotlib, from docker root terminal. 
 
 TEST(RobotBaseUnitTests, getNLegs)
 {

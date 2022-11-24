@@ -1,5 +1,6 @@
 /**
  * @file dyn_params_unit_tests.cpp
+ * 
  * @brief Unit tests for DynParams class
  *
  * @authors Authors in alphabetical order:

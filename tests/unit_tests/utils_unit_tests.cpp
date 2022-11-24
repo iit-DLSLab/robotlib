@@ -1,4 +1,17 @@
-// TODO: Change this include
+/**
+ * @file utils_unit_tests.cpp
+ * 
+ * @brief Unit tests for ContainerBase and Container classes
+ *
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Geoff Fink (IIT DLS Lab) - Contact: geoff.fink@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ */
+
 #include <gtest/gtest.h>
 #include "utils.hpp"
 

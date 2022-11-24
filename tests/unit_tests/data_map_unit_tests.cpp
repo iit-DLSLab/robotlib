@@ -1,5 +1,6 @@
 /**
  * @file data_map_unit_tests.cpp
+ * 
  * @brief Unit tests for DataMap, LegDataMap, LinkDataMap, JointDataMap, JointState classes
  *
  * @authors Authors in alphabetical order:

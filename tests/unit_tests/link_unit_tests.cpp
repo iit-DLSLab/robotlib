@@ -1,5 +1,6 @@
 /**
  * @file link_unit_tests.cpp
+ * 
  * @brief Unit tests for Link class
  *
  * @authors Authors in alphabetical order:
