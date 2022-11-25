@@ -85,9 +85,17 @@ namespace robotlib
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                             const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
+        /*!
+         * @brief Get the foot jacobian.
+         * @details
+         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
+         * @param[in] q angles of the joints.
+         * @param[in] leg leg corresponding to the foot.
+         * @param[out] footJac jacobian to be filled.
+         */
         virtual void getFootJacobian(const JointState &q,
                                      const std::shared_ptr<LimbBase> leg,
-                                     Jacobian &footJac) = 0; //overridden by Glue
+                                     Jacobian &footJac) = 0;
 
         virtual void updateLinearJacobian(const JointState &joints_positions,
                                           LegDataMap<Jacobian> &robot_jacobian) const = 0; //overridden by Glue
