@@ -209,11 +209,10 @@ namespace robotlib
 			return foot_pose;
 		};
 
-		void getFootPosition(const JointState &q,
-							 const std::shared_ptr<LimbBase> leg,
-							 Eigen::Vector3d &footPos)
+		Eigen::Vector3d getFootPosition(const JointState &q,
+							 const std::shared_ptr<LimbBase> leg)
 		{
-			footPos = this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
+			return this->getFramePosition(q, this->getLink("TRUNK"), leg->getEndEffector());
 		};
 
 		Eigen::Matrix3d getFootOrientation(const JointState &q,

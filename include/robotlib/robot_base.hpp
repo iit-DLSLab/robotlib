@@ -75,9 +75,8 @@ namespace robotlib
         virtual Eigen::Matrix4d getFootPose(const JointState &q,
                                             const std::shared_ptr<Frame> foot) = 0; //overridden by Glue
 
-        virtual void getFootPosition(const JointState &q,
-                                     const std::shared_ptr<LimbBase> leg,
-                                     Eigen::Vector3d &footPos) = 0; //overridden by Glue
+        virtual Eigen::Vector3d getFootPosition(const JointState &q,
+                                     const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
 
         virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
                                                    const std::shared_ptr<LimbBase> leg) = 0; //overridden by Glue
