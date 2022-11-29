@@ -235,9 +235,9 @@ namespace robotlib
 			return foot_pose;
 		};
 
-		virtual void getFootJacobian(const JointState &q,
+		void getFootJacobian(const JointState &q,
 									 const std::shared_ptr<LimbBase> leg,
-									 Jacobian &footJac)
+									 Jacobian &footJac) const
 		{
 			footJac.setZero();
 		};
