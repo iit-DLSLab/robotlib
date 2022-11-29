@@ -22,9 +22,9 @@ namespace robotlib
 		}
 		else
 		{
-			const std::string error{library + " not found"};
+			const std::string error{"RobotFactory: " + library + " not found"};
             std::cout << "### " << error << " ###" << std::endl;
-			throw error;
+			throw std::runtime_error(error);
 		}
 
 		void *T_lib = dlopen(lib_path.c_str(), RTLD_LAZY);
