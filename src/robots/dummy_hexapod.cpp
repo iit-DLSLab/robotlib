@@ -247,6 +247,19 @@ namespace robotlib
 		{
 			std::cout << "Update Linear Jacobian" << std::endl;
 		};
+		void updateLinearFootJacobian(const JointState &joints_positions,
+                                        const std::shared_ptr<LimbBase> leg,
+                                        Jacobian &footJac) const
+		{
+			std::cout << "Update Linear Foot Jacobian" << std::endl;
+		}
+
+    	void updateAngularFootJacobian(const JointState &joints_positions,
+                                        const std::shared_ptr<LimbBase> leg,
+                                        Jacobian &footJac) const
+		{
+			std::cout << "Update Angular Foot Jacobian" << std::endl;
+		}
 
 		LegDataMap<std::shared_ptr<Frame>> getFeet() override
 		{
