@@ -91,7 +91,6 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[out] robot_jacobian jacobians associated to each foot.
          */
-
         virtual void updateLinearJacobian(const JointState &joints_positions,
                                           LegDataMap<Jacobian> &robot_jacobian) const = 0; //overridden by Glue
 
@@ -104,6 +103,7 @@ namespace robotlib
          */
         virtual void updateAngularJacobian(const JointState &q,
                                            LegDataMap<Jacobian> &robot_jacobian) const = 0;
+
         /*!
          * @brief Get the foot jacobian.
          * @details
