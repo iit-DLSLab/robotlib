@@ -38,7 +38,18 @@ namespace robotlib
         JointState &operator<< (double);
         JointState &operator, (double);
 
-        Eigen::VectorXd vec_();
+        /*!
+         * @brief Transform a JointState object in an Eigen::VectorXd.
+         * @return eigen vector filled by the data associated to each joint.
+         */
+        Eigen::VectorXd vec_() const;
+
+        /*!
+         * @brief Transform the data associated to the joints of the leg in input in an Eigen::VectorXd.
+         * @param[in] leg robot's leg.
+         * @return eigen vector filled by the data associated to the jointsof the leg in input.
+         */
+        Eigen::VectorXd vec_(const std::shared_ptr<LimbBase> leg) const;
 
         void setZero();
         int size() const;

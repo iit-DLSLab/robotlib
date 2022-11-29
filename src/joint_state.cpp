@@ -154,7 +154,7 @@ namespace robotlib
         throw std::range_error("Number of values bigger than the data map");
     }
 
-    Eigen::VectorXd JointState::vec_()
+    Eigen::VectorXd JointState::vec_() const
     {
         Eigen::VectorXd out(this->size());
 
@@ -165,6 +165,18 @@ namespace robotlib
             {   
                 out[i++] = *(joint_pair.data_);
             }
+        }
+        return out;
+    }
+
+    Eigen::VectorXd JointState::vec_(const std::shared_ptr<LimbBase> leg) const
+    {
+        Eigen::VectorXd out(leg->getNJoints());
+
+        int i = 0;
+        for(auto &joint_pair: (*this)[leg])
+        {   
+            out[i++] = *(joint_pair.data_);
         }
         return out;
     }
