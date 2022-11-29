@@ -233,6 +233,12 @@ namespace robotlib
 			std::cout << "Update Linear Jacobian" << std::endl;
 		};
 
+		void updateAngularJacobian(const JointState &joints_positions,
+								   LegDataMap<Jacobian> &robot_jacobian) const
+		{
+			std::cout << "Update Angular Jacobian" << std::endl;
+		}
+
 		void updateLinearFootJacobian(const JointState &joints_positions,
                                         const std::shared_ptr<LimbBase> leg,
                                         Jacobian &footJac) const

@@ -97,6 +97,15 @@ namespace robotlib
                                           LegDataMap<Jacobian> &robot_jacobian) const = 0; //overridden by Glue
 
         /*!
+         * @brief Update the angular part of the jacobian.
+         * @details
+         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
+         * @param[in] q angles of the joints.
+         * @param[out] robot_jacobian jacobians associated to each foot.
+         */
+        virtual void updateAngularJacobian(const JointState &q,
+                                           LegDataMap<Jacobian> &robot_jacobian) const = 0;
+        /*!
          * @brief Get the foot jacobian.
          * @details
          * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
