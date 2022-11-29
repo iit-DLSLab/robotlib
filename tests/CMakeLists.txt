@@ -13,6 +13,7 @@ add_executable(main_tests
 	unit_tests/leg_unit_tests.cpp
 	unit_tests/limb_unit_tests.cpp
 	unit_tests/link_unit_tests.cpp
+	unit_tests/joint_state_unit_tests.cpp
 	unit_tests/robot_base_unit_tests.cpp
 	unit_tests/trunk_unit_tests.cpp
 	unit_tests/utils_unit_tests.cpp
