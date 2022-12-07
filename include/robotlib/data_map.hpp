@@ -23,6 +23,8 @@ namespace robotlib
     class DataMap
     {
     friend class JointState;
+    template <class T> friend class LegDataMap;
+    
     private:
         class Pair
         {
@@ -30,6 +32,7 @@ namespace robotlib
             friend class RobotBase;
             friend class DataMap;
             friend class JointState;
+            template <class T> friend class LegDataMap;
 
             virtual Pair &operator=(const Pair &rhs)
             {
