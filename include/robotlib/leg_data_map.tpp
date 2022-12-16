@@ -26,6 +26,7 @@ namespace robotlib
     template <class Data>
     LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs) 
         : DataMap<LimbBase, Data>(legs->size()) //TODO: remove it, leave only the constructor with data
+        , dataIt(nullptr)
     {
         int count_data = 0;
         for (auto key : *legs)
@@ -37,6 +38,7 @@ namespace robotlib
     template <class Data>
     LegDataMap<Data>::LegDataMap(std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> legs, const Data &data) 
         : DataMap<LimbBase, Data>(legs->size())
+        , dataIt(nullptr)
     {
         int count_data = 0;
         for (auto key : *legs)
@@ -48,6 +50,7 @@ namespace robotlib
     template <class Data>
     LegDataMap<Data>::LegDataMap(const LegDataMap<Data> &other)
         : DataMap<LimbBase, Data>(other.getSize())
+        , dataIt(nullptr)
     {
         int count_data = 0;
         for (auto &pair: other)
@@ -96,6 +99,39 @@ namespace robotlib
         }
 
         return out;
+    }
+
+    template <class Data>
+    LegDataMap<Data>& LegDataMap<Data>::operator<< (Data val)
+    {
+        dataIt = this->begin();
+
+        *(dataIt->data_) = val;
+
+        return *this;
+    }
+
+    template <class Data>
+    LegDataMap<Data>&  LegDataMap<Data>::operator, (Data val)
+    {
+        for (auto leg_pair = this->begin(); leg_pair !=  this->end(); leg_pair++)
+        {
+            if(leg_pair == dataIt)
+            {
+                leg_pair++;
+                if(leg_pair != this->end())
+                {
+                    dataIt = leg_pair;
+                    *(dataIt->data_) = val;
+                    return *this;
+                }
+                else
+                {
+                    throw std::range_error("Number of values bigger than the data map");
+                }
+            }
+        }
+        throw std::range_error("Number of values bigger than the data map");
     }
 }
 
