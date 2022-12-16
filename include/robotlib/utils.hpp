@@ -2,6 +2,8 @@
 #define _ROBOTLIB_UTILS_HPP_
 
 #include <memory>
+#include <urdf_model/pose.h>
+#include <Eigen/Dense>
 
 namespace robotlib
 {
@@ -83,6 +85,29 @@ namespace robotlib
     protected:
         const std::array<Data, N> data_;
     };
+
+    /**
+     * @brief converts a quaternion \f$\mathbf{q}\f$ into a rotation matrix
+     * \f$R_q(\mathbf{q})\f$. The rotation matrix maps a vector
+     * \f$\mathbf{z}\in\mathbb{R}^{3\times1}\f$ (expressed in global coordinates)
+     * into a vector \f$ \mathbf{z}' \in \mathbb{R}^{3\times1}\f$ (expressed in
+     * local coordinates), such that \f$ \mathbf{z}' = R_q(\mathbf{q})\mathbf{z}\f$.
+     *
+     * @param[in] q structure containing the quaternion
+     * @return the 3 by 3 rotation matrix \f$R_q(\mathbf{q})\f$
+     * @remark the function uses the formula (125) from <a href="https://www.astro.rug.nl/software/kapteyn/_downloads/attitude.pdf">"Representing Attitude: Euler
+     *  Angles, Unit Quaternions, and Rotation Vectors"</a> by James Diebel.
+     * @date July 2005
+     */
+    inline Eigen::Matrix3d quatToRotMat(const Eigen::Quaterniond & q);
+
+    /*!
+    *@brief Get Eigen matrix from urdf pose.
+    *@param[in] urdf_pose pose of type urdf::Pose.
+    *@return 4x4 eigen matrix.
+    */
+    Eigen::Matrix4d get_eigen_matrix4d_from_urdf_pose(urdf::Pose urdf_pose);
+
 } // namespace robotlib
 
 #include "utils.tpp"

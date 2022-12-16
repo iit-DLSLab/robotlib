@@ -428,6 +428,14 @@ namespace robotlib
 			return Eigen::Matrix<double, 6, 1>::Zero();
         }
 
+        /*!
+        *@brief Get the IMU pose in base frame.
+        *@param[in] imu_link_name name of the link to which the IMU sensor is attached.
+        *@param[in] base_link_name name of the base link.
+        *@return IMU pose in base frame.
+        */
+        Eigen::Matrix4d getImuBaseOffset(const std::string imu_link_name="trunk_imu", const std::string base_link_name="base_link") const override{return Eigen::Matrix4d::Zero();};
+
 		void setInvKinTimePeriod(const double& period) const override {};
 
 		void setTrunkCom(const Eigen::Vector3d &trunk_com) const override {std::cout << "TODO\n";};

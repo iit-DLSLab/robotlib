@@ -181,8 +181,15 @@ namespace robotlib
         virtual Eigen::Matrix<double, 6, 1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &rotationMx,
                                                                  const Eigen::Vector3d offset_com) = 0;
-        
-   
+
+        /*!
+        *@brief Get the IMU pose in base frame.
+        *@param[in] imu_link_name name of the link to which the IMU sensor is attached.
+        *@param[in] base_link_name name of the base link.
+        *@return IMU pose in base frame.
+        */
+        virtual Eigen::Matrix4d getImuBaseOffset(const std::string imu_link_name="trunk_imu", const std::string base_link_name="base_link") const = 0;
+
         // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
 
         // Create a joint state

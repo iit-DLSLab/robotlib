@@ -11,9 +11,10 @@ add_library(robotlib
     joint_state.cpp
     jacobian.cpp
     data_map.cpp
+    utils.cpp
 )
 
-target_link_libraries(robotlib PRIVATE)
+target_link_libraries(robotlib PRIVATE urdf)
 
 add_executable(robot_info
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
