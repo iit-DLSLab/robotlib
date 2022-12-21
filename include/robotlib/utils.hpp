@@ -86,6 +86,13 @@ namespace robotlib
         const std::array<Data, N> data_;
     };
 
+    /*!
+    *@brief Get Eigen matrix from urdf pose.
+    *@param[in] urdf_pose pose of type urdf::Pose.
+    *@return 4x4 eigen matrix.
+    */
+    Eigen::Matrix4d get_eigen_matrix4d_from_urdf_pose(urdf::Pose urdf_pose);
+
     /**
      * @brief converts a quaternion \f$\mathbf{q}\f$ into a rotation matrix
      * \f$R_q(\mathbf{q})\f$. The rotation matrix maps a vector
@@ -99,15 +106,20 @@ namespace robotlib
      *  Angles, Unit Quaternions, and Rotation Vectors"</a> by James Diebel.
      * @date July 2005
      */
-    inline Eigen::Matrix3d quatToRotMat(const Eigen::Quaterniond & q);
+    inline Eigen::Matrix3d quatToRotMat(const Eigen::Quaterniond & q) {
+        Eigen::Matrix3d R;
+        R(0, 0) = -1.0 + 2.0 * (q.w() * q.w()) + 2.0 * (q.x() * q.x());
+        R(1, 1) = -1.0 + 2.0 * (q.w() * q.w()) + 2.0 * (q.y() * q.y());
+        R(2, 2) = -1.0 + 2.0 * (q.w() * q.w()) + 2.0 * (q.z() * q.z());
+        R(0, 1) = 2.0 * (q.x() * q.y() + q.w() * q.z());
+        R(0, 2) = 2.0 * (q.x() * q.z() - q.w() * q.y());
+        R(1, 0) = 2.0 * (q.x() * q.y() - q.w() * q.z());
+        R(1, 2) = 2.0 * (q.y() * q.z() + q.w() * q.x());
+        R(2, 0) = 2.0 * (q.x() * q.z() + q.w() * q.y());
+        R(2, 1) = 2.0 * (q.y() * q.z() - q.w() * q.x());
 
-    /*!
-    *@brief Get Eigen matrix from urdf pose.
-    *@param[in] urdf_pose pose of type urdf::Pose.
-    *@return 4x4 eigen matrix.
-    */
-    Eigen::Matrix4d get_eigen_matrix4d_from_urdf_pose(urdf::Pose urdf_pose);
-
+        return R;
+    }
 } // namespace robotlib
 
 #include "utils.tpp"
