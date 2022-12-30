@@ -270,14 +270,46 @@ namespace robotlib
 
         // ** INVERSE DYNAMICS ** 
 
-        virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
-                                     const Eigen::Matrix<double, 6, 1> &robot_acceleration,
-                                     const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                     const JointState &joint_position,
-                                     const JointState &joint_velocity,
-                                     const JointState &joint_acceleration,
-                                     Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-                                     JointState &tau_joints) const = 0;              ///output
+        /*!
+         * @brief Inverse dynamics.
+         * @details
+         * It computes the torque of each joint and the wrench at the base. By default, the robot velocity and acceleration are set to 0.
+         * @param[out] wrench_base wrench applied to the base.
+         * @param[out] tau_joints torque of each joint.
+         * @param[in] gravity_vector gravity vector in base frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[in] joint_velocity velocity of each joint.
+         * @param[in] joint_acceleration acceleration of each joint.
+         * @param[in] robot_velocity velocity of the robot base in base frame.
+         * @param[in] robot_acceleration  acceleration of the robot base in base frame.
+         */
+        virtual void inverseDynamics(Eigen::Matrix<double, 6, 1> &wrench_base,
+                                    robotlib::JointState &tau_joints,
+                                    const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                    const robotlib::JointState &joint_position,
+                                    const robotlib::JointState &joint_velocity,
+                                    const robotlib::JointState &joint_acceleration,
+                                    const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
+                                    const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero()) const = 0;
+
+        /*!
+         * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
+         * @details
+         * The robot velocity and acceleration are set to zero by default.
+         * @param[out] tau_joints torque of each joint.
+         * @param[in] gravity_vector gravity vector in base frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[in] joint_velocity velocity of each joint.
+         * @param[in] robot_velocity velocity of the robot base in base frame.
+         * @param[in] robot_acceleration  acceleration of the robot base in base frame.
+         */
+        virtual void inverseDynamicsHTerm(  JointState &tau_joints,
+                                            const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                            const JointState &joint_position,
+                                            const JointState &joint_velocity,
+                                            const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
+                                            const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero())
+                                            const = 0;
 
         // ** SET FUNCTIONS **
 

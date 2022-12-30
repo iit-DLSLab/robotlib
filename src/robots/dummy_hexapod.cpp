@@ -156,6 +156,17 @@ namespace robotlib
 
 		};
 
+
+		virtual void inverseDynamicsHTerm(  JointState &tau_joints,
+											const Eigen::Matrix<double, 6, 1> &gravity_vector,
+											const JointState &joint_position,
+											const JointState &joint_velocity,
+											const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
+											const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero()) const
+		{
+			std::cout << "inverseDynamicsHTerm" << std::endl;
+		}
+
 		Eigen::Vector3d getFramePosition(const JointState &q,
 										 const std::shared_ptr<Frame> origin,
 										 const std::shared_ptr<Frame> destination) override
@@ -333,14 +344,14 @@ namespace robotlib
             return out;
 		};
 
-		void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
-							 const Eigen::Matrix<double, 6, 1> &robot_acceleration,
-							 const Eigen::Matrix<double, 6, 1> &gravity_vector,
-							 const JointState &joint_position,
-							 const JointState &joint_velocity,
-							 const JointState &joint_acceleration,
-							 Eigen::Matrix<double, 6, 1> &wrench_base, ///output
-							 JointState &tau_joints) const override		   ///output
+		void inverseDynamics(Eigen::Matrix<double, 6, 1> &wrench_base,
+                                    robotlib::JointState &tau_joints,
+                                    const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                    const robotlib::JointState &joint_position,
+                                    const robotlib::JointState &joint_velocity,
+                                    const robotlib::JointState &joint_acceleration,
+                                    const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
+                                    const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero()) const override
 		{
 			std::cout << "Inverse Dynamics" << std::endl;
 		}
