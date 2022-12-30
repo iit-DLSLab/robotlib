@@ -27,7 +27,7 @@ namespace robotlib
         LegDataMap<Data>& operator, (Data);
 
         /// TODO: Print in new line if data is a vector, matrix, etc... in same line of leg name (as for JointState) if data is a single value
-        void print();
+        void print() const;
 
     protected:
 

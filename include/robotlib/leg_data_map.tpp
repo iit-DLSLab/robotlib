@@ -12,7 +12,7 @@ namespace robotlib
     LegDataMap<Data>::~LegDataMap(){}
 
     template <class Data>
-    void LegDataMap<Data>::print()
+    void LegDataMap<Data>::print() const
     {
         std::cout << "LegDataMap [Name - Value]" << std::endl;
         std::cout << "-------------------------" << std::endl;
