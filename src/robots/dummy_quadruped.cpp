@@ -141,6 +141,39 @@ namespace robotlib
 
 		};
 
+        virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                      const JointState &joint_position,
+                                                      Eigen::Matrix<double, 6, 1> &wrench_base,
+                                                      JointState &tau_joints) const
+		{
+			gravity_vector.size();
+			wrench_base.size();
+			joint_position.getSize();
+			tau_joints.getSize();
+
+			std::cout << "computeGravityCompensation" << std::endl;
+		}
+
+        virtual Eigen::Matrix<double, 6, 1> computeWrenchGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                      						 const JointState &joint_position) const
+		{
+			gravity_vector.size();
+			joint_position.getSize();
+			return Eigen::Matrix<double, 6, 1>::Zero();
+
+			std::cout << "computeWrenchGravityCompensation" << std::endl;
+		}
+
+        virtual void computeTorquesGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
+                                                      const JointState &joint_position,
+                                                      JointState &tau_joints) const
+		{
+			gravity_vector.size();
+			joint_position.getSize();
+			tau_joints.getSize();
+
+			std::cout << "computeTorquesGravityCompensation" << std::endl;
+		}
 
 		virtual void inverseDynamicsHTerm(  JointState &tau_joints,
 											const Eigen::Matrix<double, 6, 1> &gravity_vector,
