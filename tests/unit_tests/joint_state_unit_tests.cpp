@@ -24,6 +24,7 @@ TEST(JointStateUnitTest, vec_)
       */
      {
           Eigen::VectorXd joint_state_data {dummy_quadruped->getNJOINTS()};
+          joint_state_data.setZero();
           EXPECT_EQ(typeid(joint_state.vec_()), typeid(joint_state_data));
 
           for(auto leg :*dummy_quadruped->getLegs())
@@ -68,20 +69,17 @@ TEST(JointStateUnitTest, vec_)
           {
                auto leg_joint_state {joint_state.vec_(leg)};
                auto foot_jacobian = dummy_quadruped->makeFootJacobian(leg, jacobian_value);
-               auto res = foot_jacobian * leg_joint_state;
-               auto res_linear = foot_jacobian.getLinearJacobian() * leg_joint_state;
-               auto res_angular = foot_jacobian.getLinearJacobian() * leg_joint_state;
+               Eigen::Matrix<double,6,1> res = foot_jacobian * leg_joint_state;
+               Eigen::Vector3d res_linear = foot_jacobian.getLinearJacobian() * leg_joint_state;
+               Eigen::Vector3d res_angular = foot_jacobian.getLinearJacobian() * leg_joint_state;
+               double res_value {leg->getNJoints()*(joint_value*jacobian_value)};
                for(int i=0; i<5; i++)
                {
-                    double res_value {leg->getNJoints()*(joint_value*jacobian_value)};
-                    for (int j=0; j<leg->getNJoints(); j++)
+                    EXPECT_EQ(res(i), res_value);
+                    if(i<3)
                     {
-                         EXPECT_EQ(res(i,j), res_value);
-                         if(i<3)
-                         {
-                              EXPECT_EQ(res_linear(i,j), res_value);
-                              EXPECT_EQ(res_angular(i,j), res_value);
-                         }
+                         EXPECT_EQ(res_linear(i), res_value);
+                         EXPECT_EQ(res_angular(i), res_value);
                     }
                }
           }
