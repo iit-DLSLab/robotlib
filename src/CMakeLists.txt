@@ -11,7 +11,7 @@ add_library(robotlib
     joint_state.cpp
     jacobian.cpp
     data_map.cpp
-    utils.cpp
+    utils/utils.cpp
 )
 
 target_link_libraries(robotlib PRIVATE urdf)

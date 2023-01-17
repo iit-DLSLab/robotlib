@@ -3,7 +3,6 @@
 
 #include "limb_base.hpp"
 #include "data_map.hpp"
-#include "utils.hpp"
 
 namespace robotlib
 {        

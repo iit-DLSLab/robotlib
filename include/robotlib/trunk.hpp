@@ -13,7 +13,7 @@
 #define _ROBOTLIB_TRUNK_HPP_
 
 #include "link.hpp"
-#include "utils.hpp"
+//#include "utils.hpp"
 #include "joint.hpp"
 #include "dyn_params.hpp"
 
