@@ -1,7 +1,7 @@
 #ifndef _CONTAINER_HPP_
 #define _CONTAINER_HPP_
 
-#include "utils/container_base.hpp"
+#include "container_base.hpp"
 #include <memory>
 #include <Eigen/Dense>
 
@@ -25,6 +25,6 @@ namespace robotlib
     };
 } // namespace robotlib
 
-#include "utils/container.tpp"
+#include "container.tpp"
 
 #endif // _CONTAINER_HPP_

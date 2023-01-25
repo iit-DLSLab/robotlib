@@ -15,6 +15,7 @@
 #include "limb_base.hpp"
 #include "joint.hpp"
 #include "link.hpp"
+#include "utils/container.hpp"
 
 namespace robotlib
 {

@@ -1,7 +1,7 @@
 #ifndef _ROBOTLIB_UTILS_HPP_
 #define _ROBOTLIB_UTILS_HPP_
 
-#include "leg_data_map.hpp"
+#include "robotlib/leg_data_map.hpp"
 
 #include <memory>
 #include <urdf_model/pose.h>
@@ -70,8 +70,17 @@ namespace robotlib
     // */ 
     // Eigen::Vector6d computeGravity(const Eigen::Matrix3d& b_R_w);
 
-} // namespace robotlib
 
-#include "utils.tpp"
+    // int RobotBase::computeNumStanceLegs(const robotlib::LegDataMap<bool>& stance_legs)
+    // {
+    //     int leg_count{0};
+    //     for(auto leg_pair: stance_legs)
+    //     {
+    //         if (stance_legs[leg_pair.key_])
+    //             leg_count++;
+    //     }
+    //     return leg_count;
+    // }
+} // namespace robotlib
 
 #endif // _ROBOTLIB_UTILS_HPP_

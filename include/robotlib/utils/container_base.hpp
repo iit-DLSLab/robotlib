@@ -1,7 +1,8 @@
 #ifndef _CONTAINER_BASE_HPP_
 #define _CONTAINER_BASE_HPP_
 
-#include "utils/iterator.hpp"
+#include "iterator.hpp"
+
 #include <memory>
 #include <Eigen/Dense>
 
@@ -23,6 +24,6 @@ namespace robotlib
     };
 } // namespace robotlib
 
-#include "utils/container_base.tpp"
+#include "container_base.tpp"
 
 #endif // _CONTAINER_BASE_HPP_

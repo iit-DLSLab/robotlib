@@ -80,43 +80,6 @@ namespace robotlib
         }
         return feetJac;
     };
-
-    int RobotBase::compute_stance_legs(const robotlib::LegDataMap<bool>& stance_legs)
-    {
-        int leg_count{0};
-        for(auto leg_pair: stance_legs)
-        {
-            if (stance_legs[leg_pair.key_])
-                leg_count++;
-        }
-        return leg_count;
-    }
-
-    double RobotBase::computeProprioHeight(const Eigen::Vector3d w_rpy_b, const robotlib::LegDataMap<bool>& stance_legs, const robotlib::LegDataMap<Eigen::Vector3d>& actual_foot_position, const double actual_proprio_height)
-    {
-        double proprio_height = actual_proprio_height; 
-        int n_stance_legs{compute_stance_legs(stance_legs)};
-        if(n_stance_legs>0)
-        {
-            proprio_height = 0.0;
-
-            //Compute foot position in horizontal frame
-            auto actual_foot_pos_HF = this->pRobot->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
-            auto HF_R_b = dls::math::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
-            for(auto leg_pair : actual_foot_pos_HF)
-            {
-                actual_foot_pos_HF[leg_pair.key_] = HF_R_b*actual_foot_position[leg_pair.key_];
-            }
-            // Compute proprio height
-            for(auto leg_pair : stance_legs)
-            {
-                proprio_height += (-actual_foot_pos_HF[leg_pair.key_](2) * (stance_legs[leg_pair.key_]))/n_stance_legs;
-            }
-        }
-        return proprio_height;
-    }
-
-
 } // namespace robotlib
 
 #endif // _ROBOTLIB_ROBOT_BASE_CPP_
