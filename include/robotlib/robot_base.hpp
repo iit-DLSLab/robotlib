@@ -49,7 +49,7 @@ namespace robotlib
          */
         virtual Eigen::Matrix<double, 6, 1> computeWrenchGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                       const JointState &joint_position) const = 0;
-        
+
         /*!
          * @brief Compute gravity terms and return only the joint torques compensating for gravity.
          * @details
@@ -61,6 +61,23 @@ namespace robotlib
         virtual void computeTorquesGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
                                                       const JointState &joint_position,
                                                       JointState &tau_joints) const = 0;
+
+        /*!
+        * @brief Compute the number of legs in stance
+        * @param stance_legs
+        * @return
+        */
+        int computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const;
+
+        /*!
+        * @brief Computing robot proprio height
+        * @param[in] w_rpy_b orientation of the base frame in world coordinates
+        * @param[in] stance_legs variable identifying the stance status of each leg
+        * @param[in] actual_foot_position actual foot position
+        * @param[out] proprio_height robot proprio height
+        * @remark{DMA}
+        */
+        void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const robotlib::LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
 
         // ** GET FUNCTIONS **
         const std::string getName() const;

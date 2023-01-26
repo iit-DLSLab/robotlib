@@ -2,6 +2,7 @@
 #define _ROBOTLIB_ROBOT_BASE_CPP_
 
 #include "robot_base.hpp"
+#include "utils/utils.hpp"
 
 namespace robotlib
 {
@@ -33,7 +34,39 @@ namespace robotlib
     { 
         tau_max = joint->getMaxEffort(); 
     };
-       
+
+    int RobotBase::computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const
+    {
+        int leg_count{0};
+        for(auto leg_pair: stance_legs)
+        {
+            if (stance_legs[leg_pair.key_])
+                leg_count++;
+        }
+        return leg_count;
+    }
+
+    void RobotBase::computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const robotlib::LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const
+    {
+        int num_stance_legs{computeNumStanceLegs(stance_legs)};
+        if(num_stance_legs>0)
+        {
+            proprio_height = 0.0;
+            //Compute foot position in horizontal frame
+            auto HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
+            auto actual_foot_position_HF(actual_foot_position); //dynamic memory allocation is tacking place! - DMA
+            for(auto leg_pair : actual_foot_position_HF)
+            {
+                actual_foot_position_HF[leg_pair.key_] = HF_R_b*actual_foot_position[leg_pair.key_];
+            }
+            // Compute proprio height considering actual foot position in horizontal frame
+            for(auto leg_pair : stance_legs)
+            {
+                proprio_height += (-actual_foot_position_HF[leg_pair.key_](2) * (stance_legs[leg_pair.key_]))/num_stance_legs;
+            }
+        }
+    }
+
         // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
 
     // Create a joint state
