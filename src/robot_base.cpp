@@ -53,7 +53,7 @@ namespace robotlib
         {
             proprio_height = 0.0;
             //Compute foot position in horizontal frame
-            auto HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
+            Eigen::Matrix3d HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
             auto actual_foot_position_HF(actual_foot_position); //dynamic memory allocation is tacking place! - DMA
             for(auto leg_pair : actual_foot_position_HF)
             {
