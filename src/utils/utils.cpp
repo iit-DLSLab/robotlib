@@ -18,11 +18,8 @@ namespace robotlib
 
         Eigen::Matrix<double, 6,1> computeGravity_B(const Eigen::Matrix3d& b_R_w, const double g)
         {
-            Eigen::Matrix<double, 6,1> g_w = Eigen::Matrix<double, 6,1>::Zero();
+            Eigen::Matrix<double, 6,1> g_w (0.0,0.0, 0.0, 0.0, 0.0, -g);
             Eigen::Matrix<double, 6,1> g_b = Eigen::Matrix<double, 6,1>::Zero();
-
-            // Gravity vector
-            g_w(5) = -g;
 
             // Transform gravity from world to base frame
             g_b.segment(3, 3) = b_R_w*g_w.segment(3, 3);
