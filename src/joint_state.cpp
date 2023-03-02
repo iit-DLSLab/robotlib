@@ -163,7 +163,8 @@ namespace robotlib
         {
             for(auto &joint_pair: *leg_pair.data_)
             {   
-                out[i++] = *(joint_pair.data_);
+                out[i] = *(joint_pair.data_);
+                i++;
             }
         }
         return out;
@@ -176,7 +177,8 @@ namespace robotlib
         int i = 0;
         for(auto &joint_pair: (*this)[leg])
         {   
-            out[i++] = *(joint_pair.data_);
+            out[i] = *(joint_pair.data_);
+            i++;
         }
         return out;
     }
