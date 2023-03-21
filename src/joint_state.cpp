@@ -324,16 +324,16 @@ namespace robotlib
         : LegDataMap<JointDataMap<double>>(other)
         , jointIt(nullptr)
     {
-        for (auto &leg_pair : *this)
-        {
-            leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
-            for (auto &joint_pair : *leg_pair.data_)
-            {
-                joint_pair.data_ = std::shared_ptr<double>(new double(other[joint_pair.key_]));
-            }
-        }
-    }
 
+        // for (auto &leg_pair : *this)
+        // {
+        //     leg_pair.data_ = std::shared_ptr<JointDataMap<double>>(new JointDataMap<double>(leg_pair.key_));
+        //     for (auto &joint_pair : *leg_pair.data_)
+        //     {
+        //         joint_pair.data_ = std::shared_ptr<double>(new double(other[joint_pair.key_]));
+        //     }
+        // }
+    }
     JointState &JointState::operator=(const JointState &rhs)
     {
         for (auto &leg_pair : *this)
