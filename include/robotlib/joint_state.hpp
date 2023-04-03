@@ -66,7 +66,7 @@ namespace robotlib
          */
         double min();
 
-        void print();
+        void print() const;
 
         JointDataMap<double>& getLegJointState(const std::shared_ptr<LimbBase> leg);
         const JointDataMap<double>& getLegJointState(const std::shared_ptr<LimbBase> leg) const;
