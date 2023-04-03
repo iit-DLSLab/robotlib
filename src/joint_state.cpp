@@ -266,7 +266,7 @@ namespace robotlib
         return min_value;
     }
 
-    void JointState::print()
+    void JointState::print() const
     {
         std::cout << "JointState [Name - Value]" << std::endl;
         std::cout << "-------------------------" << std::endl;
