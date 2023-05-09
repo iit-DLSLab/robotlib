@@ -13,9 +13,9 @@ namespace robotlib
         : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
-        for (auto &leg : *DataHelper::getLegs(robot))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
-            for (auto &key : *(leg->getLinks()))
+            for (auto key : *(leg->getLinks()))
             {
                 this->data_array_[count_data++] = this->createPair(key);
             }
@@ -27,9 +27,9 @@ namespace robotlib
         : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
     {
         int count_data = 0;
-        for (auto &leg : *DataHelper::getLegs(robot))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
-            for (auto &key : *(leg->getLinks()))
+            for (auto key : *(leg->getLinks()))
             {
                 this->data_array_[count_data++] = this->createPair(key, data);
             }

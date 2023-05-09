@@ -14,7 +14,7 @@ namespace robotlib
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
-        for (auto &leg : *DataHelper::getLegs(robot))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto &key : *(leg->getJoints()))
             {
@@ -28,7 +28,7 @@ namespace robotlib
         : DataMap<Joint, Data>(DataHelper::getRobotNumJoints(robot))
     {
         int count_data = 0;
-        for (auto &leg : *DataHelper::getLegs(robot))
+        for (auto leg : *DataHelper::getLegs(robot))
         {
             for (auto &key : *(leg->getJoints()))
             {
@@ -87,6 +87,99 @@ namespace robotlib
         }
         return *this;
     }
+
+    template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator-(const JointDataMap<Data> &other)
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) - other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
+    JointDataMap<Data> &JointDataMap<Data>::operator-=(const JointDataMap<Data> &other)
+    {
+        for(auto &joint_pair: *this)
+        {   
+            *(joint_pair.data_) -= other[joint_pair.key_];
+        }
+        return *this;
+    }
+
+    template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator+(const JointDataMap<Data> &other)
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) + other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
+    JointDataMap<Data> &JointDataMap<Data>::operator+=(const JointDataMap<Data> &other)
+    {
+        for(auto &joint_pair: *this)
+        {   
+            *(joint_pair.data_) += other[joint_pair.key_];
+        }
+        return *this;
+    }
+
+    template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator*(const JointDataMap<Data> &other)
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) * other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
+    JointDataMap<Data> &JointDataMap<Data>::operator*=(const JointDataMap<Data> &other)
+    {
+        for(auto &joint_pair: *this)
+        {   
+            *(joint_pair.data_) *= other[joint_pair.key_];
+        }
+        return *this;
+    }
+}
+
+template <class Data>
+robotlib::JointDataMap<Data> operator*(const Eigen::VectorXd &vec, const robotlib::JointDataMap<Data> &state)
+{
+    assert (vec.size() == state.size());
+
+    robotlib::JointDataMap<Data> out(state);
+
+    int i = 0;
+
+    for(auto &joint_pair: state)
+    {   
+        out[joint_pair.key_] = vec[i++] * *(joint_pair.data_);
+    }
+    return out;
+}
+template <class Data>
+robotlib::JointDataMap<Data> operator*(const double &esc, const robotlib::JointDataMap<Data> &state)
+{
+    robotlib::JointDataMap<Data> out(state);
+
+    for(auto &joint_pair: state)
+    {   
+        out[joint_pair.key_] = esc * *(joint_pair.data_);
+    }
+    return out;
 }
 
 #include "joint_data_map.tpp"

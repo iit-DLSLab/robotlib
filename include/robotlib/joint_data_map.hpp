@@ -19,6 +19,12 @@ namespace robotlib
         ~JointDataMap();
 
         JointDataMap<Data> &operator=(const JointDataMap<Data> &);
+        JointDataMap<Data> operator+(const JointDataMap<Data>&);
+        JointDataMap<Data> &operator+=(const JointDataMap<Data>&);
+        JointDataMap<Data> operator*(const JointDataMap<Data>&);
+        JointDataMap<Data> &operator*=(const JointDataMap<Data>&);
+        JointDataMap<Data> operator-(const JointDataMap<Data>&);
+        JointDataMap<Data> &operator-=(const JointDataMap<Data>&);
         using DataMap<Joint, Data>::operator=;
 
     private:
@@ -28,6 +34,11 @@ namespace robotlib
         JointDataMap(const std::shared_ptr<LimbBase>, const Data&);
     };
 }
+
+template <class Data>
+robotlib::JointDataMap<Data> operator*(const Eigen::VectorXd &vec, const robotlib::JointDataMap<Data> &state);
+template <class Data>
+robotlib::JointDataMap<Data> operator*(const double &esc, const robotlib::JointDataMap<Data> &state);
 
 #include "joint_data_map.tpp"
 
