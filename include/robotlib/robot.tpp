@@ -63,7 +63,7 @@ namespace robotlib
                         return trunk_;
                 else
                 {
-                        for (auto leg : *(this->getLegs()))
+                        for (auto leg : *(legs_))
                         {
                                 std::shared_ptr<Link> link = leg->getLink(name);
                                 if (link != nullptr)
@@ -81,7 +81,7 @@ namespace robotlib
         {
                 if (name.compare("") == 0)
                         return nullptr;
-                for (auto leg : *(this->getLegs()))
+                for (auto leg : *(legs_))
                 {
                         std::shared_ptr<Joint> joint = leg->getJoint(name);
                         if (joint != nullptr)
@@ -95,7 +95,7 @@ namespace robotlib
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name) const
         {
-                for (auto leg : *(this->getLegs()))
+                for (auto leg : *(legs_))
                 {
                         if (leg->getName().compare(name) == 0)
                                 return leg;
