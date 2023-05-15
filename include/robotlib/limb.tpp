@@ -33,7 +33,7 @@ namespace robotlib
     template <unsigned int NJOINTS, unsigned int NLINKS>
     const std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name) const
     {
-        //Iterate over the array of links to find the link
+        //Iterate over the array of joints to find the joint
         for (auto joint : *joints_)
         {
             if (joint->getName().compare(name) == 0)
