@@ -64,7 +64,7 @@ package:
     - test
   only:
     - master
-    - develop_dls2
+    - dls2
 
 deploy:
   stage: deploy
@@ -78,4 +78,4 @@ deploy:
     - package
   only:
     - master
-    - develop_dls2
+    - dls2
