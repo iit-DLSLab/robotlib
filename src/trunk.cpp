@@ -27,12 +27,12 @@ namespace robotlib
 
 	std::string Trunk::getName() const { return name_; }
 
-	Eigen::Vector3d Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
+	const Eigen::Vector3d& Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
 
-	double Trunk::getMass() const { return dynamic_parameters_.getMass(); }
+	double Trunk::getMass() const { return dynamic_parameters_.getMass(); };
 	
-	Eigen::Matrix3d Trunk::getInertia() const {return dynamic_parameters_.getInertia(); }
+	const Eigen::Matrix3d& Trunk::getInertia() const {return dynamic_parameters_.getInertia(); }
 
-	DynParams Trunk::getDynParams() const { return dynamic_parameters_; }
+	const DynParams& Trunk::getDynParams() const { return dynamic_parameters_; }
 
 } // namespace robotlib

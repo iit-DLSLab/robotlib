@@ -19,7 +19,7 @@
 
 #include <memory>
 #include "frame.hpp"
-#include "utils.hpp"
+#include "utils/container_base.hpp"
 
 namespace robotlib
 {
@@ -49,7 +49,7 @@ namespace robotlib
 		 * @brief Get the name of the limb.
 		 * @return name of the limb.
 		 */
-      virtual std::string getName() const;
+      std::string getName() const;
 
       /*!
        * @brief Get the number of the joints of the Limb.
@@ -67,8 +67,8 @@ namespace robotlib
        * @brief Get the Joint object associated to the joint name.
        * @param[in] name name of the Joint object that is returned
        * @return shared pointer pointing to the joint.
-       */
-      virtual std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
+	   */
+	  virtual std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
 
       /*!
        * @brief Get the Link object associated to the name.

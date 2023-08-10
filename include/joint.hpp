@@ -53,43 +53,40 @@ namespace robotlib
 		 * @brief Get the name of the Joint.
 		 * @return name of the joint.
 		 */
-		virtual std::string getName() const override;
+		virtual const std::string& getName() const override;
 
 		/*!
 		 * @brief Get the Joint parent object, that is a Link object.
 		 * @return shared pointer pointing to a Link object.
 		 */
-		virtual std::shared_ptr<Link> getParent() const;
-
-		/*!
-		 * @brief Get the Joint child object, that is a Link object.
-		 * @return shared pointer pointing to a Link object.
-		 */
-		virtual std::shared_ptr<Link> getChild() const;
+		std::shared_ptr<Link> getParent() const;
 
 		/*!
 		 * @brief Get the Joint minimum angle.
 		 * @return minimum joint angle.
 		 */
-		virtual double getMinAngle() const;
+		double getMinAngle() const;
+		/**
+		 * @brief Get the Joint maximum angle
+		 * @return const double
+		 */
+		double getMaxAngle() const;
+		/**
+		 * @brief Get the Joint limit velocity
+		 * @return const double
+		 */
+		double getMaxVelocity() const;
+		/**
+		 * @brief Get the Joint limit effort
+		 * @return const double
+		 */
+		double getMaxEffort() const;
 
 		/*!
-		 * @brief Get the Joint maximum angle.
-		 * @return maximum joint angle.
+		 * @brief Get the Joint child object, that is a Link object.
+		 * @return shared pointer pointing to a Link object.
 		 */
-		virtual double getMaxAngle() const;
-
-		/*!
-		 * @brief Get the Joint limit velocity.
-		 * @return joint velocity limit.
-		 */
-		virtual double getMaxVelocity() const;
-
-		/*!
-		 * @brief Get the Joint limit effort.
-		 * @return joint limit effort.
-		 */
-		virtual double getMaxEffort() const;
+		std::shared_ptr<Link> getChild() const;
 
 	private:
 		/*!

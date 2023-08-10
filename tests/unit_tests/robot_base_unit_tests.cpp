@@ -13,6 +13,7 @@
  */
 
 #include <gtest/gtest.h>
+#include "robot_base.hpp"
 #include "robot_factory.hpp"
 
 TEST(RobotBaseUnitTests, getNLegs)
@@ -374,6 +375,13 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
 
     auto footPos = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+
+    // TODO: This loop should be done in the class, not outside	
+    for (auto &leg_pair : footPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     auto q = dummy_quadruped->makeJointState();
 
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -387,12 +395,17 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fp : footPos)
     {
-        std::cout << fp.key_->getName() << " " << fp.data_.transpose() << std::endl;
+        std::cout << fp.key_->getName() << " " << fp.data_->transpose() << std::endl;
     }
 
     /// LegDataMap Copy
 
     auto footPosCopy = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+
+    for (auto &leg_pair : footPosCopy)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
 
     for (auto legCopy : *(dummy_quadruped->getLegs()))
     {
@@ -406,12 +419,18 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpCopy : footPosCopy)
     {
-        std::cout << fpCopy.key_->getName() << " " << fpCopy.data_.transpose() << std::endl;
+        std::cout << fpCopy.key_->getName() << " " << fpCopy.data_->transpose() << std::endl;
     }
 
     /// LegDataMap Copy AssignAll
 
     auto footPosAssign = dummy_quadruped->makeLegDataMap<Eigen::Vector3d>();
+
+    for (auto &leg_pair : footPosAssign)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+    
     auto qAssign = dummy_quadruped->makeJointState();
 
     footPosAssign = Eigen::Vector3d().setOnes();
@@ -420,7 +439,7 @@ TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
 
     for (auto fpAssign : footPosAssign)
     {
-        std::cout << fpAssign.key_->getName() << " " << fpAssign.data_.transpose() << std::endl;
+        std::cout << fpAssign.key_->getName() << " " << fpAssign.data_->transpose() << std::endl;
     }
 
     // TODO: Const
@@ -623,6 +642,11 @@ TEST(RobotBaseUnitTests, LinkDataMap)
 
     auto linkPos = dummy_quadruped->makeLinkDataMap<Eigen::Vector3d>();
 
+    for (auto &leg_pair : linkPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     Eigen::Vector3d p;
     p.setZero();
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -637,7 +661,7 @@ TEST(RobotBaseUnitTests, LinkDataMap)
     }
     for (auto pos : linkPos)
     {
-        std::cout << pos.data_.transpose() << std::endl;
+        std::cout << pos.data_->transpose() << std::endl;
     }
 }
 
@@ -653,6 +677,11 @@ TEST(RobotBaseUnitTests, JointDataMap)
 
     auto jointPos = dummy_quadruped->makeJointDataMap<Eigen::Vector3d>();
 
+    for (auto &leg_pair : jointPos)
+    {
+        leg_pair.data_ = std::make_shared<Eigen::Vector3d>();
+    }
+
     Eigen::Vector3d p;
     p.setZero();
     for (auto leg : *(dummy_quadruped->getLegs()))
@@ -667,27 +696,9 @@ TEST(RobotBaseUnitTests, JointDataMap)
     }
     for (auto pos : jointPos)
     {
-        std::cout << pos.data_.transpose() << std::endl;
+        std::cout << pos.data_->transpose() << std::endl;
     }
 }
-
-// TEST(RobotBaseUnitTests, getNextLeg)     ///TODO
-// {
-//     std::cout << "TODO: getNextLeg TEST" << std::endl;
-
-//     /// Dummy quadruped
-//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-//     /// Groud truth
-//     //...
-
-//     Eigen::Vector3d p;
-//     p.setZero();
-//     for (auto leg : *(dummy_quadruped->getLegs()))
-//     {
-//         std::cout << "Leg: " << leg->getName() << ", Next leg: " << robot->getNextLeg(leg)->getName() << std::endl;
-//     }
-// }
 
 TEST(RobotBaseUnitTests, jacobian_operator_equal)
 {
@@ -856,7 +867,7 @@ TEST(RobotBaseUnitTests, JointDataMap_leg)
 
         for (auto pair : joint_dm_per_leg_default_data)
         {
-            EXPECT_EQ(pair.data_, value);
+            EXPECT_EQ(*(pair.data_), value);
         }
     }
 }
@@ -878,8 +889,8 @@ TEST(RobotBaseUnitTests, getLegJointState)
 
         auto joint_state_per_leg = joint_state.getLegJointState(leg); //even if the reference is returned, the joint_data_map pair has to be created in anycase, so it would be a non realtime part!0
 
-        int it {0};
-        for (auto pair : *joint_state_per_leg)
+        int it{0};
+        for (auto pair : joint_state_per_leg)
         {
             EXPECT_EQ(joint_names_gt[it], pair.key_->getName());
             it++;
@@ -984,4 +995,29 @@ TEST(RobotBaseUnitTests, maxJointValue)
     q[dummy_quadruped->getJoint("LH_HAA")] = 5;
     
     EXPECT_EQ(q.max(), q_max_gt);
+}
+
+TEST(RobotBaseUnitTests, getFootJacobian)
+{
+    /// Dummy quadruped
+    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+    auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
+    auto q = dummy_quadruped->makeJointState(0.0);
+    for(auto leg : *dummy_quadruped->getLegs())
+    {
+        feet_jacobian[leg].setOnes();
+        dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
+    }
+
+    for (auto leg : *dummy_quadruped->getLegs())
+    {
+        dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
+        for(int i=0; i<6;i++)
+        {
+            for (int j=0; j<leg->getNJoints(); j++)
+            {
+                EXPECT_EQ(feet_jacobian[leg](i,j), 0.0);
+            }
+        }
+    }
 }

@@ -23,34 +23,56 @@ namespace robotlib
 	{
 		std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-		if (std::filesystem::exists("/usr/lib/robots/" + library))
+		if (std::filesystem::exists("/usr/lib/" + library))
 		{
-			lib_path = "/usr/lib/robots/" + library;
+			lib_path = "/usr/lib/" + library;
 		}
-
 		else if (std::filesystem::exists("./" + library))
 		{
 			lib_path = "./" + library;
 		}
+		else if (std::filesystem::exists("/usr/lib/robots/" + library))
+		{
+			lib_path = "/usr/lib/robots/" + library;
+		}
 		else
 		{
-			const std::string error{library + " not found"};
-			throw error;
+			const std::string error{"RobotFactory: " + library + " not found"};
+            std::cout << "### " << error << " ###" << std::endl;
+			throw std::runtime_error(error);
 		}
 
-		void *robot = dlopen(lib_path.c_str(), RTLD_LAZY);
-		RobotBase::createRobot_t *create_robot = (RobotBase::createRobot_t *)dlsym(robot, "createRobot_t");
+		void *T_lib = dlopen(lib_path.c_str(), RTLD_LAZY);
+        if(!T_lib)
+	    {
+		    std::stringstream ss;
+		    ss << "Error: could not load object " << lib_path << ": " << dlerror();
+		    std::cout << ss.str() << std::endl;
+		    return nullptr;
+	    }
 
-		return create_robot();
+        dlerror();
+
+	    RobotBase::createRobot_t *create_robot = (RobotBase::createRobot_t *)dlsym(T_lib, "createRobot_t");
+
+        if(!create_robot)
+        {
+            std::stringstream ss;
+            ss	<< "Could not create robot " << robot_type << dlerror();
+            // std::cout << ss.str() << std::endl;
+            throw std::runtime_error(ss.str());
+        }
+
+        return create_robot();
 	}
 
 	std::shared_ptr<RobotBase> RobotFactory::openRobot(const std::string &robot_type, const std::string& robot_urdf)
 	{
 		std::string library{"lib" + robot_type + ".so"}, lib_path{};
 
-		if (std::filesystem::exists("/usr/lib/robots/" + library))
+		if (std::filesystem::exists("/usr/lib/" + library))
 		{
-			lib_path = "/usr/lib/robots/" + library;
+			lib_path = "/usr/lib/" + library;
 		}
 
 		else if (std::filesystem::exists("./" + library))
