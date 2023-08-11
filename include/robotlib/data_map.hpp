@@ -230,7 +230,7 @@ namespace robotlib
 
         virtual void init(const DataMap &data);
 
-        std::shared_ptr<DataMap::Pair> createPair(const Pair&);
+        std::shared_ptr<DataMap::Pair> createPair(const Pair& pair);
 
         /*!
          * @brief Create a Pair object.
@@ -238,11 +238,14 @@ namespace robotlib
          * @param[in] data data to be associated to the key.
          * @return Pair object.
          */
-        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>, const Data&);
+        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>, const Data& data);
         std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>);
 
         //! Pointer pointing to the array of pairs.
         Pair *data_array_;
+
+        //! Number of pairs.
+        int num_data_{};
     };
 }
 

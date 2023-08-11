@@ -25,7 +25,7 @@ namespace robotlib
 
 	Trunk::~Trunk(){}
 
-	std::string Trunk::getName() const { return name_; }
+	const std::string& Trunk::getName() const { return name_; }
 
 	const Eigen::Vector3d& Trunk::getCoM() const {return dynamic_parameters_.getCoM(); }
 

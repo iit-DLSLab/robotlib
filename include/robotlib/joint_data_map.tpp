@@ -156,7 +156,7 @@ namespace robotlib
 }
 
 template <class Data>
-robotlib::JointDataMap<Data> operator*(const Eigen::VectorXd &vec, const JointDataMap<Data>& state)
+robotlib::JointDataMap<Data> operator*(const Eigen::VectorXd &vec, const robotlib::JointDataMap<Data>& state)
 {
     assert (vec.size() == state.size());
 
@@ -165,18 +165,18 @@ robotlib::JointDataMap<Data> operator*(const Eigen::VectorXd &vec, const JointDa
     int i = 0;
 
     for(auto &joint_pair: state)
-    {   
+    {
         out[joint_pair.key_] = vec[i++] * *(joint_pair.data_);
     }
     return out;
 }
 template <class Data>
-robotlib::JointDataMap<Data> operator*(const double &esc, const JointDataMap<Data>& state)
+robotlib::JointDataMap<Data> operator*(const double &esc, const robotlib::JointDataMap<Data>& state)
 {
     robotlib::JointDataMap<Data> out(state);
 
     for(auto &joint_pair: state)
-    {   
+    {
         out[joint_pair.key_] = esc * *(joint_pair.data_);
     }
     return out;

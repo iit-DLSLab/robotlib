@@ -56,7 +56,7 @@ namespace robotlib
 		 * @brief Get the name of the link.
 		 * @return name of the link.
 		 */
-		virtual std::string getName() const override;
+		virtual const std::string& getName() const override;
 
 		/*!
 		 * @brief Get the parent object of the link, that is a Joint object.

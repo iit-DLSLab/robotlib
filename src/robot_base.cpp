@@ -26,7 +26,7 @@ namespace robotlib
     int RobotBase::computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const
     {
         int leg_count{0};
-        for(auto leg_pair: stance_legs)
+        for(auto &leg_pair: stance_legs)
         {
             if (stance_legs[leg_pair.key_])
                 leg_count++;
@@ -43,12 +43,12 @@ namespace robotlib
             //Compute foot position in horizontal frame
             Eigen::Matrix3d HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
             auto actual_foot_position_HF(actual_foot_position); //dynamic memory allocation is tacking place! - DMA
-            for(auto leg_pair : actual_foot_position_HF)
+            for(auto &leg_pair : actual_foot_position_HF)
             {
                 actual_foot_position_HF[leg_pair.key_] = HF_R_b*actual_foot_position[leg_pair.key_];
             }
             // Compute proprio height considering actual foot position in horizontal frame
-            for(auto leg_pair : stance_legs)
+            for(auto &leg_pair : stance_legs)
             {
                 proprio_height += (-actual_foot_position_HF[leg_pair.key_](2) * (stance_legs[leg_pair.key_]))/num_stance_legs;
             }
@@ -68,6 +68,9 @@ namespace robotlib
     // TODO
     Jacobian RobotBase::makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
     {
+        fOrigin->getName();
+        fDest->getName();
+
         std::cout << "makeJacobian function: TODO\n";
         return Jacobian(1);
     };
@@ -81,12 +84,14 @@ namespace robotlib
         // const int nJoints = l->getNJoints();
 
         // return Jacobian(nJoints);
+        frame->getName();
+
         std::cout << "makeFootJacobian-Input: foot function: TODO\n";
         return Jacobian(1);
     };
 
     // TODO: it should use makeJacobian
-    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data ) // NRT
+    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data) // NRT
     {
         return Jacobian(leg->getNJoints(), data);
     };
@@ -97,12 +102,12 @@ namespace robotlib
 
         for (auto &leg_pair : feetJac)
         {
-            leg_pair.data_ = std::shared_ptr<Jacobian>(new Jacobian(leg_pair.key_->getNJoints()), data);
+            leg_pair.data_ = std::shared_ptr<Jacobian>(new Jacobian(leg_pair.key_->getNJoints(), data));
         }
         return feetJac;
     };
 
-    virtual void RobotBase::printRobotHierarchy()
+    void RobotBase::printRobotHierarchy()
     {
         for(auto leg: *this->getLegs())
         {

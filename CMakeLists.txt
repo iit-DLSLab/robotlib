@@ -67,7 +67,8 @@ if(NOT CODE_TO_COMPILE)
 endif()
 
 include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/include
+	${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
+	/usr/include/eigen3
 	SYSTEM
 )
 
@@ -86,12 +87,5 @@ if (BUILD_TESTING)
 endif()
 
 include(debian_settings) # configure installation
-
-set(CPACK_PACKAGE_NAME "robotlib")
-set(CPACK_GENERATOR "DEB")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "robotlib")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "dlslab")
-
-include(CPack)
 
 unset(CODE_TO_COMPILE CACHE)	# unset the variable stored in CMakeCache.txt

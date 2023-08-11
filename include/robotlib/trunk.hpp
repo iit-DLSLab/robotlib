@@ -49,6 +49,12 @@ namespace robotlib
          */
 		virtual ~Trunk();
 
+        /*!
+		 * @brief Get the name of the trunk.
+		 * @return name of the trunk.
+		 */
+		virtual const std::string& getName() const override;
+
 		/*!
 		 * @brief Get the center of mass of the trunk.
 		 * @return trunk's center of mass.

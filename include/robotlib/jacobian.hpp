@@ -115,6 +115,8 @@ namespace robotlib
 		 */
         Jacobian(const int nJoints, const double data = 0.0);
 
+        Jacobian(const Jacobian& jacobian);
+
         /*!
 		 * @brief Empy constructor.
          * @details

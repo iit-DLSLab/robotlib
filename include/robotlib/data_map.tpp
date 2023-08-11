@@ -164,13 +164,13 @@ namespace robotlib
     }
 
     template <class Key, class Data>
-    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const DataMap<Key, Data>::Pair &pair)
+    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const DataMap<Key, Data>::Pair& pair)
     { 
         return std::shared_ptr<Pair>(new Pair(pair.key_, *pair.data_));
     }
     
     template <class Key, class Data>
-    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data &data) 
+    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data& data) 
     { 
         return std::shared_ptr<Pair>(new Pair(key, data));
     }  

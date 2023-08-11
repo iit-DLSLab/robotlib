@@ -8,6 +8,19 @@ namespace robotlib
 {
     Jacobian::Jacobian() : Map(NULL, 0, 0), nJoints_(0), data_(nullptr){};
 
+    Jacobian::Jacobian(const Jacobian& jacobian) : Map(NULL, 6, jacobian.nJoints_), nJoints_(jacobian.nJoints_)
+    {
+        // Data initialization (6: linear and angular part of the jacobian)
+        data_ = new double[6 * jacobian.nJoints_];
+
+        for (int i = 0; i < 6 * jacobian.nJoints_; ++i)
+        {
+            data_[i] = jacobian.data_[i];
+        }
+
+        new (this) Map(data_, 6, nJoints_);
+    }
+
     Jacobian::Jacobian(const int nJoints, const double data) : Map(NULL, 6, nJoints), nJoints_(nJoints)
     {
         // Data initialization (6: linear and angular part of the jacobian)

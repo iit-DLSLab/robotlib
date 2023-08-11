@@ -206,10 +206,7 @@ namespace robotlib
 
         for (auto &leg_pair : *this)
         {
-            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
-            {
-                size++;
-            }
+            size += leg_pair.key_->getNJoints();
         }
 
         return size;
