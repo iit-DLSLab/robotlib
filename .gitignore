@@ -3,6 +3,7 @@ compile_commands.json
 build
 *.sw
 *.swo
-.vscode
+/.setup.lock
+/.vscode
 html
 latex

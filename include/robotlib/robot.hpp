@@ -18,6 +18,7 @@
 #define _ROBOTLIB_ROBOT_HPP_
 
 #include "robot_base.hpp"
+#include "utils/container.hpp"
 
 namespace robotlib
 {
@@ -68,52 +69,52 @@ namespace robotlib
          * @param[in] name name of the link.
          * @return a shared pointer pointing to the link.
          */
-        virtual std::shared_ptr<Link> getLink(const std::string &name) override;
+        virtual std::shared_ptr<Link> getLink(const std::string &name) const override;
 
         /*!
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
          * @return a shared pointer pointing to the joint.
          */
-        virtual std::shared_ptr<Joint> getJoint(const std::string &name) override;
+        virtual std::shared_ptr<Joint> getJoint(const std::string &name) const override;
 
         /*!
          * @brief Get robot's leg from leg's name.
          * @param[in] name name of the leg.
          * @return a shared pointer pointing to the leg.
          */
-        virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) override;
+        virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) const override;
 
         /*!
          * @brief Get robot's arm from arm's name.
          * @param[in] name name of the arm.
          * @return a shared pointer pointing to the arm.
          */
-        virtual std::shared_ptr<LimbBase> getArm(const std::string &name) override;
+        virtual std::shared_ptr<LimbBase> getArm(const std::string &name) const override;
 
         /*!
          * @brief Get number of robot's legs.
          * @return number of robot's legs.
          */
-        virtual int getNLEGS() override;
+        virtual int getNLEGS() const override;
 
         /*!
          * @brief Get number of robot's arms.
          * @return number of robot's arms.
          */
-        virtual int getNARMS() override;
+        virtual int getNARMS() const override;
 
         /*!
          * @brief Get number of robot's joints.
          * @return number of robot's joints.
          */
-        virtual int getNJOINTS() override;
+        virtual int getNJOINTS() const override;
 
         /*!
          * @brief Get number of robot's links.
          * @return number of robot's links.
          */
-        virtual int getNLINKS() override;
+        virtual int getNLINKS() const override;
 
 		/*!
          * @brief Get lower angle limit of each joint.
@@ -151,7 +152,7 @@ namespace robotlib
          * @brief Get the CoM of the trunk.
          * @return trunk's CoM.
          */
-        virtual Eigen::Matrix<double, 3, 1> getTrunkCOM() const override;
+        virtual Eigen::Vector3d getTrunkCOM() const override;
 
 	protected:
 		/*!

@@ -17,8 +17,8 @@
 #ifndef _ROBOTLIB_DYN_PARAMS_HPP_
 #define _ROBOTLIB_DYN_PARAMS_HPP_
 
-#include <Eigen/Dense>
 #include <iostream>
+#include <Eigen/Dense>
 
 namespace robotlib
 {
@@ -43,25 +43,26 @@ namespace robotlib
 	    /*!
          * @brief Destructor.
          */
-		virtual ~DynParams();
+		~DynParams();
 
 		/*!
 		 * @brief Get the center of mass of the object to which those dynamic parameters are associated to.
 		 * @return center of mass.
 		 */
-		virtual Eigen::Vector3d getCoM() const;
+		const Eigen::Vector3d& getCoM() const;
 
 		/*!
 		 * @brief Get the mass of the object to which those dynamic parameters are associated to.
 		 * @return mass.
 		 */
-		virtual double getMass() const;
+
+		double getMass() const;
 
 		/*!
 		 * @brief Get the inertia of mass of the object to which those dynamic parameters are associated to.
 		 * @return inertia.
 		 */
-		virtual Eigen::Matrix3d getInertia() const;
+		const Eigen::Matrix3d& getInertia() const;
 
 	private:
 		//! Center of mass.

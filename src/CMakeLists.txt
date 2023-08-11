@@ -1,13 +1,20 @@
 add_library(robotlib
-	${CMAKE_CURRENT_SOURCE_DIR}/robot_factory.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/joint.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/link.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/limb_base.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/trunk.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/dyn_params.cpp
+	SHARED
+	robot_info.cpp
+	robot_factory.cpp
+	joint.cpp
+	link.cpp
+	limb_base.cpp
+	trunk.cpp
+	dyn_params.cpp
+    robot_base.cpp
+    joint_state.cpp
+    jacobian.cpp
+    data_map.cpp
+    utils/utils.cpp
 )
 
-target_link_libraries(robotlib PRIVATE)
+target_link_libraries(robotlib PRIVATE urdf)
 
 add_executable(robot_info
 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
@@ -15,40 +22,27 @@ add_executable(robot_info
 
 target_link_libraries(robot_info
 	PRIVATE
-	${CMAKE_PROJECT_NAME}
-	${CMAKE_DL_LIBS}
+		${PROJECT_NAME}
+		${CMAKE_DL_LIBS}
 )
 
-target_include_directories(robotlib PUBLIC
-	$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
-	$<INSTALL_INTERFACE:lib>
-)
-
-install(
-	DIRECTORY
-		${PROJECT_SOURCE_DIR}/include/
-	DESTINATION
-		${ROBOTLIB_INSTALL_HEADERS_DIR}/${CMAKE_PROJECT_NAME}
-	COMPONENT
-		"robotlib"
-	FILES_MATCHING
-		PATTERN "*.h"
-		PATTERN "*.hpp"
-		PATTERN "*.tpp"
+target_include_directories(robotlib 
+	PUBLIC
+		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
+		$<INSTALL_INTERFACE:lib>
 )
 
 install(
-	TARGETS robotlib
-	EXPORT robotlib
-	DESTINATION
-		${ROBOTLIB_INSTALL_LIBRARIES_DIR}/${CMAKE_PROJECT_NAME}
-	COMPONENT
-		"robotlib"
+	DIRECTORY 	${PROJECT_SOURCE_DIR}/include/
+	DESTINATION /usr/include
+	COMPONENT  	"robotlib_dev"
 )
 
-install(EXPORT robotlib DESTINATION ${ROBOTLIB_INSTALL_CMAKE_LIB_DIR}/${CMAKE_PROJECT_NAME})
-
-install(FILES ../robotlib-config.cmake DESTINATION ${ROBOTLIB_INSTALL_CMAKE_LIB_DIR}/${CMAKE_PROJECT_NAME})
+install(
+	TARGETS 	robotlib
+	DESTINATION	/usr/lib
+	COMPONENT	"robotlib"
+)
 
 add_subdirectory(robots)

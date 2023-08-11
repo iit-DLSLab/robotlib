@@ -20,6 +20,7 @@
 #include "limb_base.hpp"
 #include "joint.hpp"
 #include "link.hpp"
+#include "utils/container.hpp"
 
 namespace robotlib
 {
@@ -65,7 +66,7 @@ namespace robotlib
        * @brief Get the Joint object associated to the joint name.
        * @param[in] name name of the Joint object that is returned
        * @return shared pointer pointing to the joint.
-       */
+      */
       virtual std::shared_ptr<Joint> getJoint(const std::string &name) const override;
 
       /*!

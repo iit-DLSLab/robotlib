@@ -145,7 +145,7 @@ Consider now the following example to compute the forward kinematics for each le
 
     // Forward kinematics
     robotlib::RobotBase::JointState q_input{robot->makeJointState(0)};
-    robotlib::RobotBase::LegDataMap<Eigen::Matrix<double, 3, 1>> foot_position{robot->makeLegDataMap<Eigen::Matrix<double, 3, 1>>(Eigen::Matrix<double, 3, 1>::Zero())};
+    robotlib::RobotBase::LegDataMap<Eigen::Vector3d> foot_position{robot->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero())};
     robot->forwardKinematics(q_input, foot_position);
 
 The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function declared in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.

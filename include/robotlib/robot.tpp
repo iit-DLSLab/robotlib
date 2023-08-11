@@ -1,4 +1,4 @@
-#include "robot.hpp"
+#include "robotlib/robot.hpp"
 
 namespace robotlib
 {
@@ -8,7 +8,7 @@ namespace robotlib
             const std::shared_ptr<Trunk> trunk,
             const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs,
             const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms)
-            : RobotBase(name), legs_(legs), arms_(arms), trunk_(trunk){};
+            : RobotBase(name), trunk_(trunk), legs_(legs), arms_(arms){};
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
@@ -19,31 +19,17 @@ namespace robotlib
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms() const { return arms_; };
 
-        // template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>      /// NB: TODO
-        // const std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNextLeg(const std::shared_ptr<LimbBase>& leg){
-        //         for(auto it_leg = (*legs_).begin();it_leg<(*legs_).end(); ++it_leg){
-        //                 if (it_leg->getName().compare(leg->getName()) == 0){
-        //                         // if (it_leg == ){
-        //                         //         std::cout << "You are trying to get the next leg of the last one, which does not exist. The last leg is returned by default";
-        //                         //         return legs_[i];
-        //                         // }
-        //                         // else
-        //                                 return *(it_leg+1);
-        //                 }
-        //         }
-        // }
+        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() const { return NLEGS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() { return NLEGS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() const { return NARMS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() { return NARMS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() const { return NJOINTS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() { return NJOINTS; };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() { return NLINKS; };
+        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const { return NLINKS; };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
@@ -108,7 +94,7 @@ namespace robotlib
         }
                                                 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string &name)
+        std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string& name) const
         {
                 if (name.compare("") == 0)
                         return nullptr;
@@ -116,15 +102,9 @@ namespace robotlib
                         return trunk_;
                 else
                 {
-                        for (auto leg : *(this->getLegs()))
+                        for (auto leg : *(legs_))
                         {
                                 std::shared_ptr<Link> link = leg->getLink(name);
-                                if (link != nullptr)
-                                        return link;
-                        }
-                        for (auto arm : *(this->getArms()))
-                        {
-                                std::shared_ptr<Link> link = arm->getLink(name);
                                 if (link != nullptr)
                                         return link;
                         }
@@ -136,11 +116,11 @@ namespace robotlib
         };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name)
+        std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name) const
         {
                 if (name.compare("") == 0)
                         return nullptr;
-                for (auto leg : *(this->getLegs()))
+                for (auto leg : *(legs_))
                 {
                         std::shared_ptr<Joint> joint = leg->getJoint(name);
                         if (joint != nullptr)
@@ -158,9 +138,9 @@ namespace robotlib
         }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name)
+        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name) const
         {
-                for (auto leg : *(this->getLegs()))
+                for (auto leg : *(legs_))
                 {
                         if (leg->getName().compare(name) == 0)
                                 return leg;
@@ -171,7 +151,7 @@ namespace robotlib
         }
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const std::string &name)
+        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const std::string &name) const
         {
                 for (auto arm : *(this->getArms()))
                 {
@@ -231,12 +211,9 @@ namespace robotlib
                 }
         }
 
-
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Eigen::Matrix<double, 3, 1> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
+        Eigen::Vector3d Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
         {
                 return trunk_->getCoM();
         };
-
-
 } // namespace robotlib

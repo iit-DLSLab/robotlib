@@ -17,7 +17,7 @@
 #ifndef _ROBOTLIB_FRAME_HPP_
 #define _ROBOTLIB_FRAME_HPP_
 
-#include <Eigen/Dense>
+#include <string>
 
 namespace robotlib
 {
@@ -44,7 +44,7 @@ namespace robotlib
 		 * @brief Get the name of the Frame.
 		 * @return name of the frame.
 		 */
-        virtual std::string getName() const = 0;
+        virtual const std::string& getName() const = 0;
 
     protected:
         //! Name of the frame.

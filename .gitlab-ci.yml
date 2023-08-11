@@ -1,8 +1,13 @@
-variables:
-  REGISTRY: server-harbor:80
-
-image: $REGISTRY/clones/ubuntu:20.04
-
+# ==============================================================================
+# Environment setup
+# ==============================================================================
+image: server-harbor:80/dls2/dls2-dev:22.04
+before_script:
+  - source /root/dls_gitlab_ci/gitlab-script.sh
+    
+# ==============================================================================
+# Stages
+# ==============================================================================
 stages:
   - build
   - test
@@ -11,17 +16,14 @@ stages:
   - package
   - deploy
 
-# Build and install Robotlib
+# ------------------------------------------------------------------------------
+# Build Stage
+# ------------------------------------------------------------------------------
 build:
   stage: build
   tags:
     - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
-    - echo "Build stage started"
     - mkdir build
     - cd build
     # Enable gcov/lcov from command line
@@ -33,17 +35,14 @@ build:
   artifacts:
     paths:
       - build/*
-    expire_in: 30 mins
+      - build/tests/*
+    expire_in: 3 hrs
 
-# Run Robotlib tests
+
 test:
   stage: test
   tags: 
-    - dls  
-  before_script:
-  - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update
-  - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
+    - dls
   script:
     - echo "Test stage started"
     - cd build
@@ -64,7 +63,7 @@ coverage:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+    - apt-get install -y --no-install-recommends lcov
   script:
     - echo "Coverage (lines) stage started"
     - cd build/tests/CMakeFiles && mkdir gcov_tests
@@ -87,7 +86,7 @@ coverage-lines:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+    - apt-get install -y --no-install-recommends lcov
   script:
     - echo "Coverage (lines) stage started"
     - cd build/tests/CMakeFiles/gcov_tests
@@ -104,7 +103,7 @@ coverage-functions:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y --no-install-recommends build-essential libeigen3-dev libgtest-dev lcov
+    - apt-get install -y --no-install-recommends lcov
   script:
     - echo "Coverage (functions) stage started"
     - cd build/tests/CMakeFiles/gcov_tests
@@ -118,10 +117,6 @@ package:
   stage: package
   tags:
     - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends build-essential cmake libeigen3-dev libgtest-dev
   script:
     - cd build
     - make package
@@ -130,22 +125,18 @@ package:
     paths:
       - build/*.deb
       - build/CI_JOB_ID
-    expire_in: 1 hrs
+    expire_in: 3 hrs
   dependencies:
     - build
     - test
+  only:
+    - master
 
-# Deploy Robotlib debian on DLS server-ubuntu18
 deploy:
   stage: deploy
   tags:
     - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends curl lsb-release
   script:
-    - echo "Deploy stage started"
     - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
     - source make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$(cat build/CI_JOB_ID) tag=latest release=$(lsb_release -cs) > out.json
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'

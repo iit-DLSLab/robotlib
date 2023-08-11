@@ -22,7 +22,7 @@ namespace robotlib
 
 	Joint::~Joint(){}
 
-	std::string Joint::getName() const { return name_;}
+	const std::string& Joint::getName() const { return name_;}
 	std::shared_ptr<Link> Joint::getParent() const { return parent_;}
 	std::shared_ptr<Link> Joint::getChild() const { return child_;}
 

@@ -18,7 +18,6 @@
 #define _ROBOTLIB_TRUNK_HPP_
 
 #include "link.hpp"
-#include "utils.hpp"
 #include "joint.hpp"
 #include "dyn_params.hpp"
 
@@ -50,39 +49,39 @@ namespace robotlib
          */
 		virtual ~Trunk();
 
-		/*!
-		 * @brief Get the name of the Trunk.
-		 * @return trunk's name.
+        /*!
+		 * @brief Get the name of the trunk.
+		 * @return name of the trunk.
 		 */
-		virtual std::string getName() const override;
+		virtual const std::string& getName() const override;
 
 		/*!
 		 * @brief Get the center of mass of the trunk.
 		 * @return trunk's center of mass.
 		 */
-		virtual Eigen::Vector3d getCoM() const;
+		virtual const Eigen::Vector3d& getCoM() const;
 
 		/*!
 		 * @brief Get the mass of the trunk.
 		 * @return trunk's mass.
 		 */
-		virtual double getMass() const;
+		double getMass() const;
 
 		/*!
 		 * @brief Get the inertia of the trunk.
 		 * @return trunk's inertia.
 		 */
-		virtual Eigen::Matrix3d getInertia() const;
+		virtual const Eigen::Matrix3d& getInertia() const;
 
 		/*!
 		 * @brief Get the dynamic parameters of the trunk.
 		 * @return trunk's dynamic parameters.
 		 */
-		virtual DynParams getDynParams() const;
+		virtual const DynParams& getDynParams() const;
 
 	private:
 		//!Dynamic parameters of the Trunk
-		DynParams dynamic_parameters_;
+		const DynParams dynamic_parameters_;
 	};
 } // namespace robotlib
 
