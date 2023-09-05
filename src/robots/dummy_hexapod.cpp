@@ -346,7 +346,7 @@ namespace robotlib
 		}
         
 		virtual void forwardKinematics(const JointState &joint_position,
-                               LegDataMap<Eigen::Vector3d> &end_effector_position) override
+                               LegDataMap<Eigen::Vector3d> &end_effector_position) const override
 		{
 			joint_position.size();
 			end_effector_position.getSize();
@@ -355,7 +355,7 @@ namespace robotlib
         virtual void forwardKinematics(const JointState &joint_position,
                                const JointState &joint_velocity,
                                LegDataMap<Eigen::Vector3d> &end_effector_position,
-                               LegDataMap<Eigen::Vector3d> &end_effector_velocity) override
+                               LegDataMap<Eigen::Vector3d> &end_effector_velocity) const override
 		{
 			joint_position.size();
 			joint_velocity.size();
@@ -368,7 +368,7 @@ namespace robotlib
 							   const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
 							   JointState &joint_position,
 							   JointState &joint_velocity,
-							   JointState &joint_acceleration) override
+							   JointState &joint_acceleration) const override
 		{
 			end_effector_position.getSize();
 			end_effector_velocity.getSize();
@@ -379,7 +379,7 @@ namespace robotlib
 		}
 
 		virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       JointState &joint_position) override
+                                       JointState &joint_position) const override
 		{
 			end_effector_position.getSize();
 			joint_position.size();
@@ -392,7 +392,7 @@ namespace robotlib
 							 const JointState &joint_velocity,
 							 const JointState &joint_acceleration,
 							 Eigen::Matrix<double, 6, 1> &wrench_base,
-							 JointState &tau_joints) override
+							 JointState &tau_joints) const override
 		{
 			robot_velocity.size();
 			robot_acceleration.size();
