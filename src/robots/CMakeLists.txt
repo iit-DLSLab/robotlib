@@ -8,6 +8,7 @@ install(
 	TARGETS 
 		dummy-quadruped
 		dummy-hexapod
+	COMPONENT   ${PROJECT_NAME}
 	DESTINATION
 		${ROBOTLIB_INSTALL_ROBOTS_DIR}
 )
