@@ -28,7 +28,7 @@ build:
     - cd build
     # Enable gcov/lcov from command line
     - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
-    - make -j$(nproc)
+    - make -j$(nproc) install
     - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
     - cp /usr/lib/robots/* tests/
