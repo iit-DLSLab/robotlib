@@ -31,7 +31,7 @@ build:
     - make -j$(nproc) install
     - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
-    - cp /usr/lib/robots/* tests/
+    - cp /usr/local/lib/robots/* tests/
   artifacts:
     paths:
       - build/*
