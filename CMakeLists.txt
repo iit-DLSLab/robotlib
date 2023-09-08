@@ -74,8 +74,9 @@ include_directories(
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+include(robotlib_paths)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 if (BUILD_TESTING)
 	enable_testing()

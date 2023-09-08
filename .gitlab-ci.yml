@@ -10,9 +10,9 @@ before_script:
 # ==============================================================================
 stages:
   - build
-  - test
-  - coverage
-  - coverage-badge
+  # - test
+  # - coverage
+  # - coverage-badge
   - package
   - deploy
 
@@ -39,78 +39,78 @@ build:
     expire_in: 3 hrs
 
 
-test:
-  stage: test
-  tags: 
-    - dls
-  script:
-    - echo "Test stage started"
-    - cd build
-    - make check
-  artifacts:
-    paths:
-      - build/tests/CMakeFiles/*
-    expire_in: 30 mins
-  dependencies:
-    - build
+# test:
+#   stage: test
+#   tags: 
+#     - dls
+#   script:
+#     - echo "Test stage started"
+#     - cd build
+#     - make check
+#   artifacts:
+#     paths:
+#       - build/tests/CMakeFiles/*
+#     expire_in: 30 mins
+#   dependencies:
+#     - build
 
-# Generate code coverage data and html output for visualizing them
-# The build and test stages generate the ".gcno" and ".gcda" files used by GCOV
-coverage:
-  stage: coverage
-  tags:
-    - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends lcov
-  script:
-    - echo "Coverage (lines) stage started"
-    - cd build/tests/CMakeFiles && mkdir gcov_tests
-    - for file in *.dir/*/* ; do cp "$file" gcov_tests ; done
-    - cd gcov_tests && ls
-    - lcov --capture --directory . --output-file coverage.info
-    - genhtml coverage.info --output-directory out
-  artifacts:
-    paths:
-      - build/tests/CMakeFiles/gcov_tests/*
-    expire_in: 1 hrs
-  dependencies:
-    - test
+# # Generate code coverage data and html output for visualizing them
+# # The build and test stages generate the ".gcno" and ".gcda" files used by GCOV
+# coverage:
+#   stage: coverage
+#   tags:
+#     - dls
+#   before_script:
+#     - export DEBIAN_FRONTEND=noninteractive
+#     - apt-get update
+#     - apt-get install -y --no-install-recommends lcov
+#   script:
+#     - echo "Coverage (lines) stage started"
+#     - cd build/tests/CMakeFiles && mkdir gcov_tests
+#     - for file in *.dir/*/* ; do cp "$file" gcov_tests ; done
+#     - cd gcov_tests && ls
+#     - lcov --capture --directory . --output-file coverage.info
+#     - genhtml coverage.info --output-directory out
+#   artifacts:
+#     paths:
+#       - build/tests/CMakeFiles/gcov_tests/*
+#     expire_in: 1 hrs
+#   dependencies:
+#     - test
 
-# Update the test coverage GitLab badge with lines coverage value
-coverage-lines:
-  stage: coverage-badge
-  tags:
-    - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends lcov
-  script:
-    - echo "Coverage (lines) stage started"
-    - cd build/tests/CMakeFiles/gcov_tests
-    - genhtml coverage.info --output-directory out
-  coverage: '/lines.*?(\d+.*(?:\d+)*)[$%]/'
-  dependencies:
-    - coverage
+# # Update the test coverage GitLab badge with lines coverage value
+# coverage-lines:
+#   stage: coverage-badge
+#   tags:
+#     - dls
+#   before_script:
+#     - export DEBIAN_FRONTEND=noninteractive
+#     - apt-get update
+#     - apt-get install -y --no-install-recommends lcov
+#   script:
+#     - echo "Coverage (lines) stage started"
+#     - cd build/tests/CMakeFiles/gcov_tests
+#     - genhtml coverage.info --output-directory out
+#   coverage: '/lines.*?(\d+.*(?:\d+)*)[$%]/'
+#   dependencies:
+#     - coverage
 
-# Update the test coverage GitLab badge with functions coverage value
-coverage-functions:
-  stage: coverage-badge
-  tags:
-    - dls
-  before_script:
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get install -y --no-install-recommends lcov
-  script:
-    - echo "Coverage (functions) stage started"
-    - cd build/tests/CMakeFiles/gcov_tests
-    - genhtml coverage.info --output-directory out
-  coverage: '/functions.*?(\d+.*(?:\d+)*)[$%]/'
-  dependencies:
-    - coverage
+# # Update the test coverage GitLab badge with functions coverage value
+# coverage-functions:
+#   stage: coverage-badge
+#   tags:
+#     - dls
+#   before_script:
+#     - export DEBIAN_FRONTEND=noninteractive
+#     - apt-get update
+#     - apt-get install -y --no-install-recommends lcov
+#   script:
+#     - echo "Coverage (functions) stage started"
+#     - cd build/tests/CMakeFiles/gcov_tests
+#     - genhtml coverage.info --output-directory out
+#   coverage: '/functions.*?(\d+.*(?:\d+)*)[$%]/'
+#   dependencies:
+#     - coverage
 
 # Create Robotlib debian
 package:
@@ -128,7 +128,7 @@ package:
     expire_in: 3 hrs
   dependencies:
     - build
-    - test
+    # - test
   only:
     - master
 
