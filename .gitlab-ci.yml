@@ -9,12 +9,29 @@ before_script:
 # Stages
 # ==============================================================================
 stages:
+  - preamble
   - build
   # - test
   # - coverage
   # - coverage-badge
-  - package
+  # - package
   - deploy
+
+# ------------------------------------------------------------------------------
+# Preamble Stage
+# ------------------------------------------------------------------------------
+# Print versions of installed programmes on the docker image. 
+# This is helpful for a quick sanity check when things break
+preamble:
+  stage: preamble
+  tags:
+    - dls2
+  script:
+    - source /root/dls_gitlab_ci/gitlab-preamble.sh
+  artifacts:
+    paths:
+      - version
+      - release
 
 # ------------------------------------------------------------------------------
 # Build Stage
@@ -22,20 +39,23 @@ stages:
 build:
   stage: build
   tags:
-    - dls
+    - dls2
   script:
     - mkdir build
     - cd build
     # Enable gcov/lcov from command line
-    - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=On -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
-    - make -j$(nproc) install
-    - fgrep -R "CMAKE_BUILD_TYPE"
+    # - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=On -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
+    - cmake ..
+    # - make -j$(nproc) install
+    - make -j$(nproc)
+    # - fgrep -R "CMAKE_BUILD_TYPE"
     # Make robots libraries visible for test stage
-    - cp /usr/lib/robots/* tests/
+    # - cp /usr/lib/robots/* tests/
   artifacts:
     paths:
       - build/*
-      - build/tests/*
+      # - build/tests/*
+      - bin/*
     expire_in: 3 hrs
 
 
@@ -112,35 +132,23 @@ build:
 #   dependencies:
 #     - coverage
 
-# Create Robotlib debian
-package:
-  stage: package
-  tags:
-    - dls
-  script:
-    - cd build
-    - make package
-    - echo $CI_JOB_ID > CI_JOB_ID   
-  artifacts:
-    paths:
-      - build/*.deb
-      - build/CI_JOB_ID
-    expire_in: 3 hrs
-  dependencies:
-    - build
-    # - test
-  only:
-    - master
-
+# ------------------------------------------------------------------------------
+# Deploy Stage
+# ------------------------------------------------------------------------------
 deploy:
   stage: deploy
   tags:
-    - dls
+    - dls2
   script:
-    - curl http://server-ubuntu18/scripts/make-json.bash --output make-json.bash
-    - source make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$(cat build/CI_JOB_ID) tag=latest release=$(lsb_release -cs) > out.json
+    - cd build
+    - make package
+    - source /root/dls_gitlab_ci/make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$CI_JOB_ID tag=latest release=$(lsb_release -sc) > out.json
     - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   dependencies:
-    - package
+    - build
+  artifacts:
+    paths:
+      - build/*deb
+    expire_in: 1 week  
   only:
-    - master
+  - master
