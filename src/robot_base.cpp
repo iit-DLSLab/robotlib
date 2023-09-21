@@ -23,6 +23,104 @@ namespace robotlib
 
     double RobotBase::getMaxJointEffort(const std::shared_ptr<Joint> joint) { return joint->getMaxEffort(); };
 
+    void RobotBase::estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b, robotlib::LegDataMap<Eigen::Vector3d>& estimated_feet_grf)
+    {
+        robotlib::JointState inv_dyn_tau = this->makeJointState();	// remove this NRT instatiation!
+        Eigen::Matrix<double, 6, 1> wrench_base = Eigen::Matrix<double, 6, 1>::Zero();
+        this->inverseDynamics(Eigen::Matrix<double, 6, 1>::Zero(), Eigen::Matrix<double, 6, 1>::Zero(), g_b, q, qd, qdd, wrench_base, inv_dyn_tau);
+
+        // robotlib::JointState stiction_positive = robot_->makeJointState();
+        // robotlib::JointState stiction_negative = robot_->makeJointState();
+        // robotlib::JointState torque_offset = robot_->makeJointState();
+        // stiction_positive[robot_->getJoint("LF_HAA")] = 2;
+        // stiction_positive[robot_->getJoint("LF_HFE")] = 2;
+        // stiction_positive[robot_->getJoint("LF_KFE")] = 2;
+        // stiction_positive[robot_->getJoint("RF_HAA")] = 2;
+        // stiction_positive[robot_->getJoint("RF_HFE")] = 2;
+        // stiction_positive[robot_->getJoint("RF_KFE")] = 2;
+        // stiction_positive[robot_->getJoint("LH_HAA")] = 2;
+        // stiction_positive[robot_->getJoint("LH_HFE")] = 2;
+        // stiction_positive[robot_->getJoint("LH_KFE")] = 2;
+        // stiction_positive[robot_->getJoint("RH_HAA")] = 2;
+        // stiction_positive[robot_->getJoint("RH_HFE")] = 2;
+        // stiction_positive[robot_->getJoint("RH_KFE")] = 2;
+        // if(robot_name_.compare("crex")==0)
+        // {
+        //     stiction_positive[robot_->getJoint("LC_HAA")] = 2;
+        //     stiction_positive[robot_->getJoint("LC_HFE")] = 2;
+        //     stiction_positive[robot_->getJoint("LC_KFE")] = 2;
+        //     stiction_positive[robot_->getJoint("RC_HAA")] = 2;
+        //     stiction_positive[robot_->getJoint("RC_HFE")] = 2;
+        //     stiction_positive[robot_->getJoint("RC_KFE")] = 2;
+        // }
+
+        // stiction_negative[robot_->getJoint("LF_HAA")] = 2;
+        // stiction_negative[robot_->getJoint("LF_HFE")] = 2;
+        // stiction_negative[robot_->getJoint("LF_KFE")] = 2;
+        // stiction_negative[robot_->getJoint("RF_HAA")] = 2;
+        // stiction_negative[robot_->getJoint("RF_HFE")] = 2;
+        // stiction_negative[robot_->getJoint("RF_KFE")] = 2;
+        // stiction_negative[robot_->getJoint("LH_HAA")] = 2;
+        // stiction_negative[robot_->getJoint("LH_HFE")] = 2;
+        // stiction_negative[robot_->getJoint("LH_KFE")] = 2;
+        // stiction_negative[robot_->getJoint("RH_HAA")] = 2;
+        // stiction_negative[robot_->getJoint("RH_HFE")] = 2;
+        // stiction_negative[robot_->getJoint("RH_KFE")] = 2;
+        // if(robot_name_.compare("crex")==0)
+        // {
+        //     stiction_negative[robot_->getJoint("LC_HAA")] = 2;
+        //     stiction_negative[robot_->getJoint("LC_HFE")] = 2;
+        //     stiction_negative[robot_->getJoint("LC_KFE")] = 2;
+        //     stiction_negative[robot_->getJoint("RC_HAA")] = 2;
+        //     stiction_negative[robot_->getJoint("RC_HFE")] = 2;
+        //     stiction_negative[robot_->getJoint("RC_KFE")] = 2;
+        // }
+
+        // torque_offset[robot_->getJoint("LF_HAA")] = 0.0;
+        // torque_offset[robot_->getJoint("LF_HFE")] = -2.0;
+        // torque_offset[robot_->getJoint("LF_KFE")] = -4.0;
+        // torque_offset[robot_->getJoint("RF_HAA")] = -1.0;
+        // torque_offset[robot_->getJoint("RF_HFE")] = 0.0;
+        // torque_offset[robot_->getJoint("RF_KFE")] = 0.0;
+        // torque_offset[robot_->getJoint("LH_HAA")] = 0.0;
+        // torque_offset[robot_->getJoint("LH_HFE")] = -2.0;
+        // torque_offset[robot_->getJoint("LH_KFE")] = 0.0;
+        // torque_offset[robot_->getJoint("RH_HAA")] = 0.0;
+        // torque_offset[robot_->getJoint("RH_HFE")] = 0.0;
+        // torque_offset[robot_->getJoint("RH_KFE")] = 0.0;
+        // if(robot_name_.compare("crex")==0)
+        // {
+        //     torque_offset[robot_->getJoint("LC_HAA")] = 0.0;
+        //     torque_offset[robot_->getJoint("LC_HFE")] = 0.0;
+        //     torque_offset[robot_->getJoint("LC_KFE")] = 0.0;
+        //     torque_offset[robot_->getJoint("RC_HAA")] = 0.0;
+        //     torque_offset[robot_->getJoint("RC_HFE")] = 2.0;
+        //     torque_offset[robot_->getJoint("RC_KFE")] = 0.0;
+        // }
+
+        auto robot_jacobian = this->makeFeetJacobian();
+        this->updateLinearJacobian(q, robot_jacobian);
+
+        for(auto leg: *this->getLegs())
+        {
+            int num_joints{0};
+            Eigen::VectorXd tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
+            Eigen::VectorXd inv_dyn_tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
+
+            for(auto joint: *leg->getJoints())
+            {
+                tau_block(num_joints) = tau[joint];
+                //remove friction torques
+                //inv_dyn_tau[joint] -= torque_offset[joint] + sign_func(des_qd[joint])*stiction_positive
+                                                             //+ (1-sign_func(des_qd[joint]))*stiction_negative
+                inv_dyn_tau_block(num_joints) = inv_dyn_tau[joint];
+                num_joints++;
+            }
+            estimated_feet_grf[leg] = robot_jacobian[leg].block<3,3>(0,0).transpose().inverse() * (inv_dyn_tau_block - tau_block);
+            //extForces[leg] = jacobians_[leg].transpose().inverse() * (-tau_.segment(3*leg, 3));
+        }
+    }
+
     int RobotBase::computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const
     {
         int leg_count{0};
