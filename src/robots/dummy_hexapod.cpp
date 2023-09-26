@@ -379,6 +379,17 @@ namespace robotlib
 		}
 
 		virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+							   const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+							   JointState &joint_position,
+							   JointState &joint_velocity) const  override
+		{
+			end_effector_position.getSize();
+			end_effector_velocity.getSize();
+			joint_position.size();
+			joint_velocity.size();
+		}
+
+		virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
                                        JointState &joint_position) const override
 		{
 			end_effector_position.getSize();
