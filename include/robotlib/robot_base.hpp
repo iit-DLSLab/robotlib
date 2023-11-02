@@ -101,6 +101,17 @@ namespace robotlib
         void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
 
         /*!
+         * @brief Estimate feet external ground reaction forces
+        * @param[in] q
+        * @param[in] qd
+        * @param[in] qdd
+        * @param[in] tau
+        * @param[in] g_b gravity vector in base frame
+        * @param[out] estimated_feet_grf
+        */
+        void estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b, robotlib::LegDataMap<Eigen::Vector3d>& estimated_feet_grf);
+
+        /*!
          * @brief Get number of robot's legs.
          * @return number of robot's legs.
          */
@@ -628,6 +639,21 @@ namespace robotlib
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) const = 0;
+        /*!
+         * @brief Inverse kinematics.
+         * @details
+         * It computes the angle and velocity of each joint from the position and velocity of each end effector expressed in base frame.
+        *
+         * @param[in] end_effector_position position of each end effector (foot) in base frame.
+         * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
+         * @param[out] joint_position angle of each joint.
+         * @param[out] joint_velocity velocity of each joint.
+         */
+        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+                                       JointState &joint_position,
+                                       JointState &joint_velocity) const = 0;
+
         /*!
          * @brief Inverse kinematics.
          * @details
