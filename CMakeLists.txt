@@ -87,6 +87,31 @@ if (BUILD_TESTING)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)	
 endif()
 
-include(debian_settings) # configure installation
+set(CPACK_PACKAGE_VERSION_MAJOR         ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR         ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH         ${PROJECT_VERSION_PATCH})
+set(CPACK_DEBIAN_PACKAGE_VERSION        ${PROJECT_VERSION})
+set(CPACK_PACKAGE_VENDOR                "dlslab")
+set(CPACK_PACKAGE_CONTACT               "dlslab")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER     "dlslab")
+set(CPACK_VERBATIM_VARIABLES            ON)
+set(CPACK_GENERATOR                     "DEB")
+set(CPACK_DEB_COMPONENT_INSTALL         ON)
+set(CPACK_PACKAGE_NAME 					"robotlib")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY 	"robotlib")
 
-unset(CODE_TO_COMPILE CACHE)	# unset the variable stored in CMakeCache.txt
+
+set(CPACK_DEBIAN_ROBOTLIB_PACKAGE_NAME          "dls-robotlib" CACHE INTERNAL "")
+set(CPACK_DEBIAN_ROBOTLIB_FILE_NAME             "dls-robotlib-${PROJECT_VERSION}.deb" CACHE INTERNAL "")  
+set(CPACK_DEBIAN_ROBOTLIB_PACKAGE_DEPENDS       "" CACHE INTERNAL "")
+
+set(CPACK_DEBIAN_ROBOTLIB_DEV_PACKAGE_NAME      "dls-robotlib-dev" CACHE INTERNAL "")
+set(CPACK_DEBIAN_ROBOTLIB_DEV_FILE_NAME         "dls-robotlib-dev-${PROJECT_VERSION}.deb" CACHE INTERNAL "")  
+set(CPACK_DEBIAN_ROBOTLIB_DEV_PACKAGE_DEPENDS   "dls-robotlib" CACHE INTERNAL "")
+
+get_cmake_property(CPACK_COMPONENTS_ALL COMPONENTS)
+list(REMOVE_ITEM CPACK_COMPONENTS_ALL "Unspecified")
+
+include(CPack)
+
+# unset(CODE_TO_COMPILE CACHE)	# unset the variable stored in CMakeCache.txt
