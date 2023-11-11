@@ -7,13 +7,11 @@ image: server-harbor:80/dls2/dls2-dev:22.04
 # Stages
 # ==============================================================================
 stages:
-  - preamble
   - build
   # - test
   # - coverage
   # - coverage-badge
-  - pack
-  - deploy
+  - packdeploy 
 
 # ------------------------------------------------------------------------------
 # Build Stage
@@ -34,20 +32,20 @@ build:
   tags:
     - dls2
   script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan gitlab.advr.iit.it >> ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+    - git clone git@gitlab.advr.iit.it:dls-lab/dls_gitlab_ci.git -b master
+    # build the project
     - mkdir build
     - cd build
-    # Enable gcov/lcov from command line
-    # - cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=On -DCMAKE_CXX_FLAGS:STRING="-fprofile-arcs -ftest-coverage" ..
     - cmake ..
-    # - make -j$(nproc) install
     - make -j$(nproc)
-    # - fgrep -R "CMAKE_BUILD_TYPE"
-    # Make robots libraries visible for test stage
-    # - cp /usr/lib/robots/* tests/
   artifacts:
     paths:
+      - dls_gitlab_ci/*
       - build/*
-      # - build/tests/*
       - bin/*
     expire_in: 3 hrs
 
@@ -126,46 +124,22 @@ build:
 #     - coverage
 
 # ------------------------------------------------------------------------------
-# Pack Stage
+# Pack and Deploy Stage
 # ------------------------------------------------------------------------------
-pack:
-  stage: pack
+packdeploy:
+  stage: packdeploy
+  dependencies:
+    - build
   tags:
     - dls2
   script:
-    # build the debians set up by cmake
     - cd build
     - make package
+    - source ../dls_gitlab_ci/make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$CI_JOB_ID tag=latest release=$(lsb_release -sc) > out.json
+    - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
   artifacts:
     paths:
-      - build/*.deb
+      - build/*deb
     expire_in: 1 week
-  dependencies:
-    - build
   only:
     - master
-
-# ------------------------------------------------------------------------------
-# Deploy Stage
-# ------------------------------------------------------------------------------
-deploy:
-  stage: deploy
-  tags:
-    - dls2
-  script:
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    - ssh-keyscan gitlab.advr.iit.it >> ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
-    - git clone git@gitlab.advr.iit.it:dls-lab/dls_gitlab_ci.git -b master /root/dls_gitlab_ci
-
-    - source /root/dls_gitlab_ci/make-json.bash token=$DLSUSER_TOKEN project=$CI_PROJECT_ID branch=$CI_COMMIT_BRANCH job=$CI_JOB_ID tag=latest release=$(lsb_release -sc) > out.json
-    - 'curl -X post -H "Content-Type: application/json" -d @out.json http://server-ubuntu18:9000/hooks/deploy-apt'
-  dependencies:
-    - build
-  artifacts:
-    paths:
-      - out.json
-    expire_in: 1 week  
-  only:
-  - master
