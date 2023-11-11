@@ -37,7 +37,6 @@ build:
     - mkdir -p ~/.ssh && chmod 700 ~/.ssh
     - ssh-keyscan gitlab.advr.iit.it >> ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
     - git clone git@gitlab.advr.iit.it:dls-lab/dls_gitlab_ci.git -b master
-    - mkdir build
     # build the project
     - mkdir build
     - cd build
