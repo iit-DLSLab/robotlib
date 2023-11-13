@@ -35,6 +35,10 @@ namespace robotlib
 		{
 			lib_path = "/usr/lib/robots/" + library;
 		}
+		else if (std::filesystem::exists("/usr/lib/dls2/robots/" + library))
+		{
+			lib_path = "/usr/lib/dls2/robots/" + library;
+		}
 		else
 		{
 			const std::string error{"RobotFactory: " + library + " not found"};
