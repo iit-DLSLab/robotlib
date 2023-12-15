@@ -101,6 +101,18 @@ namespace robotlib
     }
 
     template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator-(const JointDataMap<Data>& other) const
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) - other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
     JointDataMap<Data> &JointDataMap<Data>::operator-=(const JointDataMap<Data>& other)
     {
         for(auto &joint_pair: *this)
@@ -123,6 +135,18 @@ namespace robotlib
     }
 
     template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator+(const JointDataMap<Data>& other) const
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) + other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
     JointDataMap<Data> &JointDataMap<Data>::operator+=(const JointDataMap<Data>& other)
     {
         for(auto &joint_pair: *this)
@@ -134,6 +158,18 @@ namespace robotlib
 
     template <class Data>
     JointDataMap<Data> JointDataMap<Data>::operator*(const JointDataMap<Data>& other)
+    {
+        JointDataMap<Data> out(*this);
+
+        for(auto &joint_pair: out)
+        {   
+            out[joint_pair.key_] = *(joint_pair.data_) * other[joint_pair.key_];
+        }
+        return out;
+    }
+
+    template <class Data>
+    JointDataMap<Data> JointDataMap<Data>::operator*(const JointDataMap<Data>& other) const
     {
         JointDataMap<Data> out(*this);
 
