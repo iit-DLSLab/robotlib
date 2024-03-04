@@ -1,10 +1,9 @@
 #ifndef _ROBOTLIB_LINK_DATA_MAP_HPP_
 #define _ROBOTLIB_LINK_DATA_MAP_HPP_
 
+#include "link.hpp"
 namespace robotlib
 {    
-    class RobotBase;
-
     /*!
      * @brief LinkDataMap class.
      * @details
@@ -31,16 +30,24 @@ namespace robotlib
     private:
         /*!
          * @brief Constructor.
-         * @param[in] robot robot object to be used to get the number of links.
+         * @param[in] links list of links to map the data.
+         * @param[in] data data to be associated to all links.
          */
-        LinkDataMap(const RobotBase* robot_base);
+        LinkDataMap(const ContainerBase<Link>& links, const Data& data);
 
         /*!
          * @brief Constructor.
-         * @param[in] robot robot object to be used to get the number of links.
-         * @param[in] data data to be associated to each link.
+         * @param[in] links list of links pointers to map the data.
+         * @param[in] data data to be associated to all links.
          */
-        LinkDataMap(const RobotBase* robot_base, const Data& data);
+        LinkDataMap(const ContainerBase<std::shared_ptr<Link>>& links, const Data& data);
+
+        /*!
+         * @brief Constructor.
+         * @param[in] links list of links to be map the data.
+         * @param[in] data data list to be associated to each link.
+         */
+        LinkDataMap(const ContainerBase<Link>& links, const std::vector<Data>& data);
     };
 }
 

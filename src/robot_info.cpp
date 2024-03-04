@@ -47,51 +47,37 @@ namespace robotlib
     {
         std::cout << "\nINFO ON ROBOT " << robot->getName() << std::endl;
 
-        std::cout << "\n*** LEGS OF " << robot->getName() << " ***" << std::endl;
-        for (auto leg : *robot->getLegs())
+        std::cout << "\n*** LIMBS OF " << robot->getName() << " ***" << std::endl;
+        for (auto& limb : robot->getLimbs())
         {
-            std::cout << leg->getName() << std::endl;
+            std::cout << limb.getName() << std::endl;
         }
 
-        std::cout << "\n*** LINKS FOR EACH LEG OF " << robot->getName() << " ***" << std::endl;
-        for (auto leg : *robot->getLegs())
+        std::cout << "\n*** LINKS FOR EACH LIMB OF " << robot->getName() << " ***" << std::endl;
+        for (auto& limb : robot->getLimbs())
         {
-            std::cout << leg->getName() << ":  ";
-            int nLinks {leg->getNLinks()};
+            std::cout << limb.getName() << ":  ";
+            unsigned int nLinks {limb.getNLinks()};
 
             int count_links {0};
-            for (auto link : *leg->getLinks())
+            for (auto& link : limb.getLinks())
             {
                 if (count_links == nLinks - 1)
-                    std::cout << link->getName() << std::endl;
+                    std::cout << link.getName() << std::endl;
                 else
-                    std::cout << link->getName() << ", ";
+                    std::cout << link.getName() << ", ";
                 count_links++;
             }
         }
 
-        std::cout << "\n*** JOINTS FOR EACH LEG OF " << robot->getName() << " ***" << std::endl;
-        for (auto leg : *robot->getLegs())
+        std::cout << "\n*** JOINTS FOR EACH LIMB OF " << robot->getName() << " ***" << std::endl;
+        for (auto& limb : robot->getLimbs())
         {
-            std::cout << leg->getName() << ":  ";
+            std::cout << limb.getName() << ":  ";
             int count_joints {0};
-            for (auto joint : *leg->getJoints())
+            for (auto& joint : limb.getJoints())
             {
-                std::cout << joint->getName() << ", ";
-            }
-            std::cout << '\n';
-            count_joints++;
-        }
-        std::cout << '\n';
-
-        std::cout << "\n*** JOINTS FOR EACH ARM OF " << robot->getName() << " ***" << std::endl;
-        for (auto arm : *robot->getArms())
-        {
-            std::cout << arm->getName() << ":  ";
-            int count_joints {0};
-            for (auto joint : *arm->getJoints())
-            {
-                std::cout << joint->getName() << ", ";
+                std::cout << joint.getName() << ", ";
             }
             std::cout << '\n';
             count_joints++;

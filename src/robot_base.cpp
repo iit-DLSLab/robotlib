@@ -3,6 +3,7 @@
 
 #include "robot_base.hpp"
 #include "utils/utils.hpp"
+#include "utils/container.hpp"
 
 namespace robotlib
 {
@@ -23,7 +24,7 @@ namespace robotlib
 
     double RobotBase::getMaxJointEffort(const std::shared_ptr<Joint> joint) { return joint->getMaxEffort(); };
 
-    void RobotBase::estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b, robotlib::LegDataMap<Eigen::Vector3d>& estimated_feet_grf)
+    robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b)
     {
         robotlib::JointState inv_dyn_tau = this->makeJointState();	// remove this NRT instatiation!
         Eigen::Matrix<double, 6, 1> wrench_base = Eigen::Matrix<double, 6, 1>::Zero();
@@ -98,16 +99,18 @@ namespace robotlib
         //     torque_offset[robot_->getJoint("RC_KFE")] = 0.0;
         // }
 
+
+        auto estimated_feet_grf = this->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
         auto robot_jacobian = this->makeFeetJacobian();
         this->updateLinearJacobian(q, robot_jacobian);
 
-        for(auto leg: *this->getLegs())
+        for(auto& limb : this->getLimbs())
         {
             int num_joints{0};
-            Eigen::VectorXd tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
-            Eigen::VectorXd inv_dyn_tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
+            Eigen::VectorXd tau_block = Eigen::VectorXd::Zero(limb.getNJoints());
+            Eigen::VectorXd inv_dyn_tau_block = Eigen::VectorXd::Zero(limb.getNJoints());
 
-            for(auto joint: *leg->getJoints())
+            for(auto& joint: limb.getJoints())
             {
                 tau_block(num_joints) = tau[joint];
                 //remove friction torques
@@ -116,23 +119,25 @@ namespace robotlib
                 inv_dyn_tau_block(num_joints) = inv_dyn_tau[joint];
                 num_joints++;
             }
-            estimated_feet_grf[leg] = robot_jacobian[leg].block<3,3>(0,0).transpose().inverse() * (inv_dyn_tau_block - tau_block);
-            //extForces[leg] = jacobians_[leg].transpose().inverse() * (-tau_.segment(3*leg, 3));
+            estimated_feet_grf[limb] = robot_jacobian[limb].block<3,3>(0,0).transpose().inverse() * (inv_dyn_tau_block - tau_block);
+            //extForces[limb] = jacobians_[limb].transpose().inverse() * (-tau_.segment(3*limb, 3));
         }
+        return estimated_feet_grf;
     }
 
-    int RobotBase::computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const
+    int RobotBase::computeNumStanceLegs(const LimbDataMap<bool>& stance_legs) const
     {
-        int leg_count{0};
-        for(auto &leg_pair: stance_legs)
+        int limb_count{0};
+
+        for(auto& limb_pair: stance_legs)
         {
-            if (stance_legs[leg_pair.key_])
-                leg_count++;
+            if (stance_legs[limb_pair])
+                limb_count++;
         }
-        return leg_count;
+        return limb_count;
     }
 
-    void RobotBase::computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const robotlib::LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const
+    void RobotBase::computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LimbDataMap<bool>& stance_legs, const robotlib::LimbDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const
     {
         int num_stance_legs{computeNumStanceLegs(stance_legs)};
         if(num_stance_legs>0)
@@ -141,102 +146,60 @@ namespace robotlib
             //Compute foot position in horizontal frame
             Eigen::Matrix3d HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
             auto actual_foot_position_HF(actual_foot_position); //dynamic memory allocation is tacking place! - DMA
-            for(auto &leg_pair : actual_foot_position_HF)
+
+            for(auto& limb_pair : actual_foot_position_HF)
             {
-                actual_foot_position_HF[leg_pair.key_] = HF_R_b*actual_foot_position[leg_pair.key_];
+                actual_foot_position_HF[limb_pair] = HF_R_b*actual_foot_position[limb_pair];
             }
+
             // Compute proprio height considering actual foot position in horizontal frame
-            for(auto &leg_pair : stance_legs)
+            for(auto& limb_pair : stance_legs)
             {
-                proprio_height += (-actual_foot_position_HF[leg_pair.key_](2) * (stance_legs[leg_pair.key_]))/num_stance_legs;
+                proprio_height += (-actual_foot_position_HF[limb_pair.getKey()](2) * (stance_legs[limb_pair]))/num_stance_legs;
             }
         }
     }
 
-        // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
-
-    // Create a joint state
-    robotlib::JointState RobotBase::makeJointState(const double value) const
+    JointState RobotBase::makeJointState(const double& value) const
     {
-        robotlib::JointState joint_state(this->getLegs(), value);
+        JointState joint_state(this->getLimbs(), value);
         
         return joint_state;
-    } // NRT
-
-    // TODO
-    Jacobian RobotBase::makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
-    {
-        fOrigin->getName();
-        fDest->getName();
-
-        std::cout << "makeJacobian function: TODO\n";
-        return Jacobian(1);
-    };
-
-    // TODO: it should use makeJacobian
-    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<Frame> frame) // NRT
-    {
-        // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
-
-        // const LimbBase *l = foot.getParentLimb();
-        // const int nJoints = l->getNJoints();
-
-        // return Jacobian(nJoints);
-        frame->getName();
-
-        std::cout << "makeFootJacobian-Input: foot function: TODO\n";
-        return Jacobian(1);
-    };
-
-    // TODO: it should use makeJacobian
-    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data) // NRT
-    {
-        return Jacobian(leg->getNJoints(), data);
-    };
-
-    LegDataMap<Jacobian> RobotBase::makeFeetJacobian(const double data) const // NRT
-    {
-        auto feetJac = this->makeLegDataMap<Jacobian>();
-
-        for (auto &leg_pair : feetJac)
-        {
-            leg_pair.data_ = std::shared_ptr<Jacobian>(new Jacobian(leg_pair.key_->getNJoints(), data));
-        }
-        return feetJac;
-    };
-
-    void RobotBase::printRobotHierarchy()
-    {
-        for(auto leg: *this->getLegs())
-        {
-            std::cout << "\nLeg: " << leg->getName() << std::endl;
-
-            for(auto joint : *leg->getJoints())
-            {
-                std::cout << leg->jointToParentName(joint) << " --> " << joint->getName() << " --> " << leg->jointToChildName(joint) << std::endl;
-            }
-
-            for(auto link : *leg->getLinks())
-            {
-                std::cout << leg->linkToParentName(link) << " --> " << link->getName() << " --> " << leg->linkToChildName(link) << std::endl;
-            }
-        }
-
-        for(auto arm: *this->getArms())
-        {
-            std::cout << "\nArm: " << arm->getName() << std::endl;
-
-            for(auto joint : *arm->getJoints())
-            {
-                std::cout << arm->jointToParentName(joint) << " --> " << joint->getName() << " --> " << arm->jointToChildName(joint) << std::endl;
-            }
-
-            for(auto link : *arm->getLinks())
-            {
-                std::cout << arm->linkToParentName(link) << " --> " << link->getName() << " --> " << arm->linkToChildName(link) << std::endl;
-            }
-        }
     }
+
+    LimbDataMap<Jacobian> RobotBase::makeFeetJacobian(const double& data) const
+    {
+        return this->makeLimbDataMap<Jacobian>(
+            [&]() -> std::vector<Jacobian>
+            {
+                std::vector<Jacobian> container;
+
+				for(auto& limb : this->getLimbs())
+				{
+                    container.push_back(Jacobian(limb.getNJoints(), data));
+                }
+                return container;
+            }()
+        );
+    };
+
+    // void RobotBase::printRobotHierarchy()
+    // {
+    //     for(auto& limb: this->getLimbs())
+    //     {
+    //         std::cout << "\nlimb: " << limb.getName() << std::endl;
+
+    //         for(auto& joint : limb.getJoints())
+    //         {
+    //             std::cout << limb.jointToParentName(joint) << " --> " << joint.getName() << " --> " << limb.jointToChildName(joint) << std::endl;
+    //         }
+
+    //         for(auto& link : limb.getLinks())
+    //         {
+    //             std::cout << limb.linkToParentName(link) << " --> " << link.getName() << " --> " << limb.linkToChildName(link) << std::endl;
+    //         }
+    //     }
+    // }
 
 } // namespace robotlib
 

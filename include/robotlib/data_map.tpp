@@ -8,48 +8,125 @@
 namespace robotlib
 {
     template <class Key, class Data>
-    DataMap<Key, Data>::DataMap(const int num_data) : num_data_(num_data)
+    DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const Data& data)
+        : num_data_(keys.length())
     {
-        this->data_array_ = new Pair[this->num_data_];
+        int count_data = 0;
+        for(auto& key : keys)
+        {
+            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
+        }   
     }
 
     template <class Key, class Data>
-    DataMap<Key, Data>::~DataMap()
+    DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data) 
+        : num_data_(keys.length())
     {
-        if(data_array_ != nullptr)
-            delete[] data_array_;
+        int count_data = 0;
+        for(auto& key : keys)
+        {
+            this->data_array_[count_data] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data[count_data]));
+            count_data++;
+        }   
     }
 
     template <class Key, class Data>
-    Iterator<typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::begin() 
+    DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data)
+        : num_data_(keys.length())
+    {
+        int count_data = 0;
+        for(auto& key : keys)
+        {
+            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
+        }   
+    }
+
+    template <class Key, class Data>
+    DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data) 
+        : num_data_(keys.length())
+    {
+        int count_data = 0;
+        for(auto& key : keys)
+        {
+            this->data_array_[count_data] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data[count_data]));
+            count_data++;
+        }   
+    }
+
+    template <class Key, class Data>
+    DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& data)
+        : num_data_(data.size())
+    {
+        int count_data = 0;
+        for (auto& pair : data)
+        {
+            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(pair));
+        }
+    }
+
+    template <class Key, class Data>
+    Iterator<DataPair<Key, Data>> DataMap<Key, Data>::begin() 
     { 
-        return Iterator<Pair>(&data_array_[0]);
+        return Iterator<DataPair<Key, Data>>(&data_array_[0]);
     }
     
     template <class Key, class Data>
-    Iterator<typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::end()
+    Iterator<DataPair<Key, Data>> DataMap<Key, Data>::end()
     { 
-        return Iterator<Pair>(&data_array_[num_data_]);
+        return Iterator<DataPair<Key, Data>>(&data_array_[num_data_]);
     }
 
     template <class Key, class Data>
-    Iterator<const typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::begin() const 
+    Iterator<const DataPair<Key, Data>> DataMap<Key, Data>::begin() const 
     { 
-        return Iterator<const Pair>(&data_array_[0]); 
+        return Iterator<const DataPair<Key, Data>>(&data_array_[0]); 
     }
         
     template <class Key, class Data>
-    Iterator<const typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::end() const 
+    Iterator<const DataPair<Key, Data>> DataMap<Key, Data>::end() const 
     { 
-        return Iterator<const Pair>(&data_array_[num_data_]); 
+        return Iterator<const DataPair<Key, Data>>(&data_array_[num_data_]); 
     }
 
     template <class Key, class Data>
-    Data& DataMap<Key, Data>::operator[](const std::shared_ptr<Key> key) // q: shared_ptr or & ?
+    const Data& DataMap<Key, Data>::operator[](const Key& key) const
     {
-        for (Pair &pair : *this)
+        for (auto& pair : *this)
         {
-            if (pair.key_->getName().compare(key->getName()) == 0)
+            if (pair.getKey().getName().compare(key.getName()) == 0)
+                return *pair.data_;
+        }
+        throw std::range_error("key not found");
+    }
+
+    template <class Key, class Data>
+    const Data& DataMap<Key, Data>::operator[](const std::shared_ptr<const Key>& key) const
+    {
+        for (auto& pair : *this)
+        {
+            if (pair.getKey() == *key)
+                return *pair.data_;
+        }
+        throw std::range_error("key not found");
+    }
+
+    template <class Key, class Data>
+    const Data& DataMap<Key, Data>::operator[](const DataPair<Key, Data>& in_pair) const
+    {
+        for (auto& pair : *this)
+        {
+            if (pair.getKey() == in_pair.getKey())
+                return *pair.data_;
+        }
+        throw std::range_error("key not found");
+    }
+
+    template <class Key, class Data>
+    Data& DataMap<Key, Data>::operator[](const Key& key)
+    {
+        for (auto &pair : *this)
+        {
+            if (pair.getKey() == key)
             {
                 return *pair.data_;
             }
@@ -58,57 +135,74 @@ namespace robotlib
     }
 
     template <class Key, class Data>
-    const Data& DataMap<Key, Data>::operator[](const std::shared_ptr<Key> key) const // q: shared_ptr or & ?
+    Data& DataMap<Key, Data>::operator[](const std::shared_ptr<const Key>& key)
+    {
+        for (auto& pair : *this)
+        {
+            if (pair.getKey().getName().compare(key->getName()) == 0)
+            {
+                return *pair.data_;
+            }
+        }
+        throw std::range_error("key not found");
+    }
+
+    template <class Key, class Data>
+    Data& DataMap<Key, Data>::operator[](const DataPair<Key, Data>& in_pair) // q: shared_ptr or & ?
     {
         for (auto &pair : *this)
         {
-            if (pair.key_->getName().compare(key->getName()) == 0)
+            if (pair.getKey() == in_pair.getKey())
+            {
                 return *pair.data_;
+            }
         }
         throw std::range_error("key not found");
     }
 
     template <class Key, class Data>
-    Data& DataMap<Key, Data>::operator[](const std::string &key_name)
-    {
-        for (Pair &pair : *this)
-        {
-            if (pair.key_->getName().compare(key_name) == 0)
-                return *pair.data_;
-        }
-        throw std::range_error("key not found");
-    }
-
-    template <class Key, class Data>
-    const Data& DataMap<Key, Data>::operator[](const std::string &key_name) const
+    Data& DataMap<Key, Data>::operator[](const std::string& id)
     {
         for (auto &pair : *this)
         {
-            if (pair.key_->getName().compare(key_name) == 0)
+            if (pair.getKey().getName() == id)
+            {
                 return *pair.data_;
+            }
         }
         throw std::range_error("key not found");
     }
 
     template <class Key, class Data>
-    void DataMap<Key, Data>::copydata(const DataMap &rhs)
+    void DataMap<Key, Data>::copyData(const DataMap &rhs)
     {
-        assert(this->getSize() == rhs.getSize());
+        assert(this->size() == rhs.size());
 
-        for (auto i{0}; i < num_data_; i++)
+        for(auto& data_pair : *this)
         {
-            data_array_[i].key_ = rhs.data_array_[i].key_;
-            *data_array_[i].data_ = *rhs.data_array_[i].data_;
+            *data_pair.data_ = rhs[data_pair];
         }
     }
 
     template <class Key, class Data>
     void DataMap<Key, Data>::assignAll(const Data &value)
     {
-        for (auto i{0}; i < num_data_; i++)
+        for(auto& data_pair : *this)
         {
-            *(data_array_[i].data_) = value;
+            *data_pair.data_ = value;
         }
+    }
+
+    template <class Key, class Data>
+    std::vector<Data> DataMap<Key, Data>::tovec_() const
+    {
+        std::vector<Data> out(this->size());
+
+        for (auto& data_pair : *this)
+        {
+            out.push_back(data_pair.getData());
+        }
+        return out;
     }
 
     template <class Key, class Data>    
@@ -116,7 +210,7 @@ namespace robotlib
     {
         if (&rhs != this)
         {
-            copydata(rhs);
+            copyData(rhs);
         }
         return *this;
     }
@@ -125,61 +219,93 @@ namespace robotlib
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const std::vector<Data> &rhs)
     {
         
-        assert(this->getSize() == (int) rhs.size());
+        assert(this->size() == (int) rhs.size());
 
-        for (long unsigned int i{0}; i < rhs.size(); i++)
+        unsigned int data_count{0};
+        for(auto& pair : *this)
         {
-            *data_array_[i].data_ = rhs[i];
+            *pair.data_ = rhs[data_count++];
         }
-
-        
         return *this;
     }
 
     template <class Key, class Data>
-    DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &defaultValue)
+    DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &value)
     {
-        assignAll(defaultValue);
+        assignAll(value);
         return *this;
     }
 
     template <class Key, class Data>
-    int DataMap<Key, Data>::getSize() const { 
-        return num_data_;
-    }
-
-    template <class Key, class Data>
-    void DataMap<Key, Data>::init(const DataMap<Key, Data> &data)
+    DataMap<Key, Data> DataMap<Key, Data>::operator+(const DataMap& rhs)
     {
-        num_data_ = data.getSize();
+        DataMap<Key, Data> out(*this);
 
-        if (data_array_ != nullptr)
+        for (auto& data_pair : *this)
         {
-            delete[] data_array_;
+            out[data_pair] += rhs[data_pair];
         }
-
-        data_array_ = new Pair[num_data_];
-
-        copydata(data);
+        return out;
     }
 
     template <class Key, class Data>
-    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const DataMap<Key, Data>::Pair& pair)
-    { 
-        return std::shared_ptr<Pair>(new Pair(pair.key_, *pair.data_));
+    DataMap<Key, Data>& DataMap<Key, Data>::operator+=(const DataMap& rhs)
+    {
+        for (auto& data_pair : *this)
+        {
+            data_pair += rhs[data_pair];
+        }
+        return *this;
+    }
+
+    template <class Key, class Data>
+    DataMap<Key, Data> DataMap<Key, Data>::operator-(const DataMap& rhs)
+    {
+        DataMap<Key, Data> out(*this);
+
+        for (auto& data_pair : *this)
+        {
+            out[data_pair] -= rhs[data_pair];
+        }
+        return out;
+    }
+
+    template <class Key, class Data>
+    DataMap<Key, Data>& DataMap<Key, Data>::operator-=(const DataMap& rhs)
+    {
+        for (auto& data_pair : *this)
+        {
+            data_pair -= rhs[data_pair];
+        }
+        return *this;
     }
     
-    template <class Key, class Data>
-    std::shared_ptr<typename  DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key, const Data& data) 
-    { 
-        return std::shared_ptr<Pair>(new Pair(key, data));
-    }  
 
     template <class Key, class Data>
-    std::shared_ptr<typename DataMap<Key, Data>::Pair> DataMap<Key, Data>::createPair(const std::shared_ptr<Key> key) 
-    { 
-        return std::shared_ptr<Pair>(new Pair(key));
-    }            
+    bool DataMap<Key, Data>::operator==(const DataMap<Key, Data>& rhs) const
+    {
+        if(this->size() != rhs.size())
+            return false;
+        
+        for (auto& data_pair : *this)
+        {
+            if(data_pair.getData() != rhs[data_pair])
+                return false;
+        }
+
+        return true;
+    }
+
+    template <class Key, class Data>
+    bool DataMap<Key, Data>::operator!=(const DataMap<Key, Data>& rhs) const
+    {
+        return !this->operator==(rhs);
+    }
+
+    template <class Key, class Data>
+    unsigned int DataMap<Key, Data>::size() const { 
+        return num_data_;
+    }       
 }
 
 #endif //_ROBOTLIB_DATA_MAP_TPP_

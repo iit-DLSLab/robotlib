@@ -1,254 +1,252 @@
 #ifndef _ROBOTLIB_DATA_MAP_HPP_
 #define _ROBOTLIB_DATA_MAP_HPP_
 
+#include "data_pair.hpp"
 #include "utils/container_base.hpp"
-#include "limb_base.hpp"
-#include <iostream>
-#include <vector>
+
 namespace robotlib
 {
-    class RobotBase;
-
-    class DataHelper
-    {
-    public:
-        friend class RobotBase;
-
-        static int getRobotNumLinks(const RobotBase*);
-        static int getRobotNumJoints(const RobotBase*);
-        static const std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs(const RobotBase*);
-    };
-
     /*!
      * @brief DataMap class.
-     * @details
-     * This templated class is a wrap around a list of Pair objects, storing a data for each key.
+     * @details This templated class is a wrap around a list of DataPair objects, storing a data for each key.
      * @tparam Key class of the keys to which associate data.
      * @tparam Data class of the data associated to keys.
      */
     template <class Key, class Data>
+        requires requires (Key& a) {
+            {a.getName()} -> std::same_as<const std::string&>;
+        }
     class DataMap
     {
-    friend class JointState;
-    template <class T> friend class LegDataMap;
-    
-    private:
-        /*!
-         * @brief Pair class.
-         * @details
-         * This class is introduces because of the private constructors of the data structures defined in Robotlib.
-         */
-        class Pair
-        {
-        public:
-            //! RobotBase is a friend class to let it use the private costructor of the Pair class.
-            friend class RobotBase;
-            friend class DataMap;
-            friend class JointState;
-            template <class T> friend class LegDataMap;
-
-            /*!
-             * @brief Destructor.
-             */
-            ~Pair(){};
-
-            /*!
-             * @brief Equal operator.
-             * @param[in] pair Pair object whose key-data pair is assigned to the object pointed by *this*.
-             * @return reference to the Pair object pointed by *this*.
-            */
-            virtual Pair &operator=(const Pair &rhs)
-            {
-                this->key_ = rhs.key_;
-                if((this->data_ != nullptr) && (rhs.data_ != nullptr))
-                    *this->data_ = *rhs.data_;
-
-                return *this;
-            }
-
-            virtual Pair &operator=(const std::shared_ptr<Pair> rhs)
-            {
-                this->key_ = rhs->key_;
-                this->data_ = rhs->data_;
-
-                return *this;
-            }
-
-            //! Key to which associate a data.
-            std::shared_ptr<Key> key_;
-
-            //! Data to be associated to a key.
-            std::shared_ptr<Data> data_;
-
-        private:
-            /*!
-             * @brief Constructor.
-             * @param[in] key shared pointer pointing to the key.
-             * @param[in] data data to be associated to the key.
-             */
-            Pair(const std::shared_ptr<Key> key, const Data data) 
-                : key_(key)
-                , data_(new Data(data))
-            {};
-
-            Pair(const std::shared_ptr<Key> key) 
-                : key_(key)
-                , data_(nullptr)
-            {};
-
-            /*!
-             * @brief Empty constructor.
-             */
-            Pair() 
-                : key_(nullptr)
-                , data_(nullptr)
-            {};
-        };
-    
-        int getRobotNumLinks(RobotBase* robot_base);
-
     public:
-        //! RobotBase is a friend class to let it use the private costructor of the DataMap class.
-        friend class RobotBase;
 
         /*!
-        * @brief Destructor.
-        */
-        virtual ~DataMap();
-        // DataMap (const DataMap&);
-
-        /*!
-         * @brief Begin function to be used with iterators.
-         * @return iterator object pointing to the first data of the data_ array.
+         * @brief Copy constructor.
+         * @param[in] data data map to copy.
          */
-        virtual Iterator<Pair> begin();
+        DataMap(const DataMap& data);
 
         /*!
-         * @brief End function to be used with iterators.
-         * @return iterator object pointing to the last data of the data_ array.
+         * @brief Default destructor.
          */
-        virtual Iterator<Pair> end();
+        virtual ~DataMap() = default;
+        
+        /*!
+         * @brief Begin method to be used with iterators.
+         * @details Implementation for constant objects.
+         * @return Iterator object pointing to the first data of the data_ array.
+         */
+        virtual Iterator<const DataPair<Key, Data>> begin() const;
 
         /*!
-         * @brief Begin function to be used with iterators.
-         * @details
-         * Implementation for constant objects.
-         * @return iterator object pointing to the first data of the data_ array.
+         * @brief End method to be used with iterators.
+         * @details Implementation for constant objects.
+         * @return Iterator object pointing to the last data of the data_ array.
          */
-        virtual Iterator<const Pair> begin() const;
+        virtual Iterator<const DataPair<Key, Data>> end() const;
 
         /*!
-         * @brief End function to be used with iterators.
-         * @details
-         * Implementation for constant objects.
-         * @return iterator object pointing to the last data of the data_ array.
+         * @brief Begin method to be used with iterators.
+         * @return Iterator object pointing to the first data of the data_ array.
          */
-        virtual Iterator<const Pair> end() const;
+        virtual Iterator<DataPair<Key, Data>> begin();
+
+        /*!
+         * @brief End method to be used with iterators.
+         * @return Iterator object pointing to the last data of the data_ array.
+         */
+        virtual Iterator<DataPair<Key, Data>> end();
 
         /*!
          * @brief Square brackets operator.
-         * @details
-         * This function allows to access to the data associated to the key in input.
-         * @param[in] key shared pointer pointing to the key.
-         * @return reference to the data associated to the key.
-         */
-        virtual Data &operator[](const std::shared_ptr<Key> key);
-
-        /*!
-         * @brief Square brackets operator.
-         * @details
-         * This function allows to access to the data associated to the key in input.
-         * 
+         * @details This method allows access to the data associated to the key in input.
          * Implementation for constant objects.
          * @param[in] key shared pointer pointing to the key.
          * @return reference to the data associated to the key.
          */
-        virtual const Data &operator[](const std::shared_ptr<Key> key) const;
+        virtual const Data& operator[](const std::shared_ptr<const Key>& key) const;
 
         /*!
          * @brief Square brackets operator.
-         * @details
-         * This function allows to access to the data associated to the key whose name is given in input.
-         * @param[in] key_name name of the key.
-         * @return reference to the data associated to the key.
-         */
-        virtual Data &operator[](const std::string &key_name);
-
-        /*!
-         * @brief Square brackets operator.
-         * @details
-         * It allows to access to the data associated to the key whose name is given in input.
-         * 
+         * @details This method allows access to the data associated to the key in input.
          * Implementation for constant objects.
-         * @param[in] key_name name of the key.
+         * @param[in] key shared pointer pointing to the key.
          * @return reference to the data associated to the key.
          */
-        virtual const Data &operator[](const std::string &key_name) const;
+        virtual const Data& operator[](const Key& key) const;
 
         /*!
-         * @brief Copying keys and data from another DataMap object.
-         * @param[in] data_map DataMap object.
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * Implementation for constant objects.
+         * @param[in] pair pair containing the key.
+         * @return reference to the data associated to the key.
          */
-        virtual void copydata(const DataMap &rhs);
+        virtual const Data& operator[](const DataPair<Key, Data>& pair) const;
 
         /*!
-         * @brief Assigning a value to all the keys of the DataMap object.
-         * @param[in] value value to be assigned to all the keys.
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * @param[in] key shared pointer pointing to the key.
+         * @return reference to the data associated to the key.
          */
-        virtual void assignAll(const Data &value);
+        virtual Data& operator[](const std::shared_ptr<const Key>& key);
 
         /*!
-         * @brief Equal operator.
-         * @param[in] data_map DataMap object whose key-data pairs are assigned to the object pointed by *this*.
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * @param[in] key shared pointer pointing to the key.
+         * @return reference to the data associated to the key.
+         */
+        virtual Data& operator[](const Key& key);
+
+        /*!
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * @param[in] pair pair containing the key.
+         * @return reference to the data associated to the key.
+         */
+        virtual Data& operator[](const DataPair<Key, Data>& pair);
+
+        /*!
+         * @brief Square brackets operator.
+         * @details This method allows to access to the data associated to the key in input.
+         * @param[in] keyid string with key id.
+         * @return reference to the data associated to the key.
+         */
+        virtual Data& operator[](const std::string& keyid);
+
+        /*!
+         * @brief Assignment operator.
+         * @param[in] data DataMap object whose data are assigned *this*.
+         * Keys do not change.
          * @return reference to the DataMap object pointed by *this*.
          */
-        virtual DataMap &operator=(const DataMap &rhs);
+        virtual DataMap &operator=(const DataMap &data);
 
         /*!
-         * @brief Equal operator.
-         * @details
-         * It assigns the value in input to all the keys.
-         * @param[in] value value to be assigned to all the keys of the DataMap object.
+         * @brief Assignment operator.
+         * @details It assigns the value to all the data inside *this*.
+         * Keys do not change.
+         * @param[in] value value to be assigned to data items of *this*.
          * @return reference to the DataMap object pointed by *this*.
          */
-        virtual DataMap &operator=(const Data &defaultValue);
+        virtual DataMap& operator=(const Data& value);
 
-        virtual DataMap &operator=(const std::vector<Data>&);
+        /*!
+         * @brief Assignment operator.
+         * @details It assigns the value to all the data inside *this*.
+         * Keys do not change.
+         * @param[in] data vector of Data to be assigned to each item of *this*.
+         * @return reference to the DataMap object pointed by *this*.
+         */
+        virtual DataMap& operator=(const std::vector<Data>& data);
+
+        /*!
+         * @brief Addition operator.
+         * @param[in] data DataMap object that constais the Data to subtract.
+         * @return The DataPair object with the result.
+         */
+        virtual DataMap operator+(const DataMap& data);
+        
+        /*!
+         * @brief Addition assignment operator.
+         * @param[in] data DataMap object to sum.
+         * @return Reference to the DataPair object pointed by *this*.
+         */
+        virtual DataMap& operator+=(const DataMap&);
+
+        /*!
+         * @brief Subtraction operator.
+         * @param[in] data DataMap object that constais the Data to subtract.
+         * @return The DataPair object with the result.
+         */
+        virtual DataMap operator-(const DataMap& data);
+
+        /*!
+         * @brief Subtraction assignment operator.
+         * @param[in] data DataMap object that constais the Data to subtract.
+         * @return The DataPair object pointed by *this*.
+         */
+        virtual DataMap& operator-=(const DataMap& data);
+
+        /*!
+         * @brief Equal comparission operator.
+         * @param[in] data DataMap object that constais the Data to compare.
+         * @return True if they are equal.
+         */
+        virtual bool operator==(const DataMap& data) const;
+
+        /*!
+         * @brief Not equal comparission operator.
+         * @param[in] data DataMap object that constais the Data to compare.
+         * @return True if they are not equal.
+         */
+        virtual bool operator!=(const DataMap& data) const;
 
         /*!
          * @brief Get number of pairs stored by the DataMap object.
          * @return number of pairs stored by the DataMap object.
          */
-        virtual int getSize() const;
+        unsigned int size() const;
+
+        /*!
+         * @brief Get the data of the DataMap as a std vector container.
+         * @return A not mapped list of the data of *this*.
+         */
+        std::vector<Data> tovec_() const;
 
     protected:
+
         /*!
          * @brief DataMap constructor.
-         * @param[in] num_data number of pairs to be stored.
+         * @param[in] keys keys references to map the data.
+         * @param[in] data default data value for all keys.
          */
-        DataMap(const int num_data);
-
-        virtual void init(const DataMap &data);
-
-        std::shared_ptr<DataMap::Pair> createPair(const Pair& pair);
+        DataMap(const ContainerBase<Key>& keys,  const Data& data);
 
         /*!
-         * @brief Create a Pair object.
-         * @param[in] key shared pointer pointing to the key.
-         * @param[in] data data to be associated to the key.
-         * @return Pair object.
+         * @brief DataMap constructor.
+         * @param[in] keys keys references to map the data.
+         * @param[in] data vector of data values for each key.
          */
-        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>, const Data& data);
-        std::shared_ptr<DataMap::Pair> createPair(const std::shared_ptr<Key>);
+        DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data);
 
-        //! Pointer pointing to the array of pairs.
-        Pair *data_array_;
+        /*!
+         * @brief DataMap constructor.
+         * @param[in] keys pointer to keys to map the data.
+         * @param[in] data default data value for all keys.
+         */
+        DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data);
+
+        /*!
+         * @brief DataMap constructor.
+         * @param[in] keys pointer to keys to map the data.
+         * @param[in] data vector of data values for each key.
+         */
+        DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data);
+
+    private:
+
+        /*!
+         * @brief Copying keys and data from another DataMap object.
+         * @param[in] data DataMap object.
+         */
+        void copyData(const DataMap &data);
+
+        /*!
+         * @brief Assigning a value to all the keys of the DataMap object.
+         * @param[in] value value to be assigned to all the keys.
+         */
+        void assignAll(const Data &value);
+
+        //! Pointer to the array of pairs.
+        std::shared_ptr<DataPair<Key, Data>[]> data_array_;
 
         //! Number of pairs.
-        int num_data_{};
+        unsigned int num_data_;
     };
 }
-
 #include "data_map.tpp"
 
 #endif //_ROBOTLIB_DATA_MAP_HPP_

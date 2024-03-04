@@ -2,15 +2,15 @@ add_library(robotlib
 	SHARED
 	robot_info.cpp
 	robot_factory.cpp
+	limb_base.cpp
 	joint.cpp
 	link.cpp
-	limb_base.cpp
 	trunk.cpp
+	frame.cpp
 	dyn_params.cpp
     robot_base.cpp
     joint_state.cpp
     jacobian.cpp
-    data_map.cpp
     utils/utils.cpp
 )
 

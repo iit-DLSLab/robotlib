@@ -9,43 +9,24 @@ namespace robotlib
     LinkDataMap<Data>::~LinkDataMap(){}
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(const RobotBase* robot) 
-        : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
-    {
-        int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
-        {
-            for (auto key : *(leg->getLinks()))
-            {
-                this->data_array_[count_data++] = this->createPair(key);
-            }
-        }
-    }
+    LinkDataMap<Data>::LinkDataMap(const ContainerBase<Link>& links, const Data& data) 
+        : DataMap<Link, Data>(links, data)
+    {}
 
     template <class Data>
-    LinkDataMap<Data>::LinkDataMap(const RobotBase* robot, const Data &data) 
-        : DataMap<Link, Data>(DataHelper::getRobotNumLinks(robot))
-    {
-        int count_data = 0;
-        for (auto leg : *DataHelper::getLegs(robot))
-        {
-            for (auto key : *(leg->getLinks()))
-            {
-                this->data_array_[count_data++] = this->createPair(key, data);
-            }
-        }
-    }
+    LinkDataMap<Data>::LinkDataMap(const ContainerBase<std::shared_ptr<Link>>& links, const Data& data) 
+        : DataMap<Link, Data>(links, data)
+    {}
+
+    template <class Data>
+    LinkDataMap<Data>::LinkDataMap(const ContainerBase<Link>& links, const std::vector<Data>& data) 
+        : DataMap<Link, Data>(links, data)
+    {}
 
     template <class Data>
     LinkDataMap<Data>::LinkDataMap(const LinkDataMap &other)
-        : DataMap<Joint, Data>(other.getSize())
-    {
-        int count_data = 0;
-        for (auto pair: other)
-        {
-            this->data_array_[count_data++] = this->createPair(pair.key_);
-        }
-    }
+        : DataMap<Joint, Data>(other)
+    {}
 
     template <class Data>
     LinkDataMap<Data> &LinkDataMap<Data>::operator=(const LinkDataMap<Data> &other)

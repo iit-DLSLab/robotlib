@@ -18,8 +18,6 @@
 #define _ROBOTLIB_LIMB_HPP_
 
 #include "limb_base.hpp"
-#include "joint.hpp"
-#include "link.hpp"
 #include "utils/container.hpp"
 
 namespace robotlib
@@ -27,13 +25,15 @@ namespace robotlib
    /*!
 	 * @brief Limb class.
 	 * @details
-	 * This class represents a robot limb (leg/arm) with a specific number of joints and links and extends the abstract class LimbBase.
-	 * @tparam NJOINTS number of joints of the limb.
-    * @tparam NLINKS number of links of the limb.
+	 * This class represents a robot limb (leg/arm/other) with a specific number of joints and links.
     */
-   template <unsigned int NJOINTS, unsigned int NLINKS>
+   template <unsigned int NLINKS, unsigned int NJOINTS>
    class Limb : public LimbBase
    {
+      //! Robot is a friend class to let it use the private methods of the Joint class.
+		template <unsigned int NLMBS, unsigned int NLNKS, unsigned int NJONTS>
+		friend class Robot;
+
    public:
       /*!
       * @brief Constructor.
@@ -41,65 +41,81 @@ namespace robotlib
       * @param[in] joints array of shared pointers pointing to limb's joints.
       * @param[in] links array of shared pointers pointing to limb's links.
       */
-      Limb(const std::string &name,
-           const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-           const std::array<std::shared_ptr<Link>, NLINKS> &links);
+      Limb(const std::string& name,
+           const std::array<Link, NLINKS>& links,
+           const std::array<Joint, NJOINTS>& joints);
 
       /*!
       * @brief Destructor.
       */
-      virtual ~Limb();
+      virtual ~Limb() = default;
 
       /*!
        * @brief Get the number of the joints of the Limb.
        * @return number of the limb's joints.
        */
-      virtual int getNJoints() const override;
+      unsigned int getNJoints() const override;
 
       /*!
        * @brief Get the number of the links of the limb.
        * @return number of the limb's links.
        */
-      virtual int getNLinks() const override;
+      unsigned int getNLinks() const override;
 
       /*!
        * @brief Get the Joint object associated to the joint name.
        * @param[in] name name of the Joint object that is returned
        * @return shared pointer pointing to the joint.
       */
-      virtual std::shared_ptr<Joint> getJoint(const std::string &name) const override;
+      const Joint& getJoint(const std::string &name) const override;
 
       /*!
        * @brief Get the Link object associated to the name.
        * @param[in] name name of the Link object that is returned.
        * @return shared pointer pointing to the link.
        */
-      virtual std::shared_ptr<Link> getLink(const std::string &name) const override;
+      const Link& getLink(const std::string &name) const override;
 
       /*!
        * @brief Get the limb end-effector.
        * @return shared pointer pointing to the limb end-effector. 
        */
-      virtual std::shared_ptr<Link> getEndEffector() const override;   
+      const Link& getEndEffector() const override;   
 
       /*!
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getJoints() const override { return joints_; };
+      const ContainerBase<Joint>& getJoints() const override;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Link>>> getLinks() const override { return links_; };
+      const ContainerBase<Link>& getLinks() const override;
 
    protected:
+
+      /*!
+       * @brief Get the joints of the Limb.
+       * @return joints of the limb.
+       */
+      ContainerBase<Joint>& getJoints() override;
+
+      /*!
+       * @brief Get the links of the Limb.
+       * @return links of the limb.
+       */
+      ContainerBase<Link>& getLinks() override;
+
+
+   private:
+
       //! Shared pointer pointing to the list of the limb's joints.
-      const std::shared_ptr<const Container<std::shared_ptr<Joint>, NJOINTS>> joints_;
+      Container<Joint, NJOINTS> joints_;
 
       //! Shared pointer pointing to the list of the limb's links.
-      const std::shared_ptr<const Container<std::shared_ptr<Link>, NLINKS>> links_;
+      Container<Link, NLINKS> links_;
    };
 } // namespace robotlib
 

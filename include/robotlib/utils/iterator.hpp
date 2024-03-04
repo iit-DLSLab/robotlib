@@ -1,47 +1,49 @@
 #ifndef _ITERATOR_HPP_
 #define _ITERATOR_HPP_
 #include <iterator>
+#include <memory>
 
+namespace robotlib
+{
     /*!
      * @brief Iterator struct.
      * @details
      * This struct is used to iterate over custom data types.
      * @tparam Data data type of the object on which iterate on.
      */
-namespace robotlib
-{
     template <class Data>
     struct Iterator
     {
     public:
-        //! Category of the iterator.
-        using iterator_category = std::forward_iterator_tag;
-        //! Difference type.
-        using difference_type = std::ptrdiff_t;
-        //! Data type.
-        using value_type = Data;
-        //! Pointer to the data type.
-        using pointer = Data *;
-        //! Reference to the data type.
-        using reference = Data &;
+        /*!
+         * @brief Constructor.
+         * @param[in] ptr pointer of type Data*.
+         */
+        Iterator(Data* ptr) : m_ptr(ptr) {}
 
         /*!
          * @brief Constructor.
          * @param[in] ptr pointer of type Data*.
          */
-        Iterator(pointer ptr) : m_ptr(ptr) {}
+        Iterator(std::shared_ptr<Data> ptr) : m_ptr(ptr.get()) {}
 
         /*!
          * @brief Operator *.
          * @return reference to the data pointed by m_ptr.
          */
-        reference operator*() const { return *m_ptr; }
+        Data& operator*() const { return *m_ptr; }
 
         /*!
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        pointer operator->() { return m_ptr; }
+        Data* operator->() { return m_ptr; }
+
+        /*!
+         * @brief Operator ->.
+         * @return pointer pointing to the data.
+         */
+        Data* get() { return m_ptr; }
 
         /*!
          * @brief Pre-increment version of operator ++.
@@ -103,7 +105,7 @@ namespace robotlib
 
     protected:
         //! Pointer pointing to the data.
-        pointer m_ptr;
+        Data* m_ptr;
     };
 }
 #endif // _ITERATOR_HPP_

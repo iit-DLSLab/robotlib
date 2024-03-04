@@ -84,13 +84,13 @@ TEST(DummyRobotUnitTests, test)
                EXPECT_EQ(leg->getName(), components_names.at(2+i));
                i++;
 
-               for (auto joint : *(leg->getJoints()))
+               for (auto joint : leg->getJoints())
                {
                     EXPECT_EQ(joint->getName(), components_names.at(6+j));
                     j++;
                }
 
-               for (auto link : *(leg->getLinks()))
+               for (auto link : leg->getLinks())
                {
                     EXPECT_EQ(link->getName(), components_names.at(18+k));
                     k++;
@@ -197,12 +197,12 @@ TEST(DummyRobotUnitTests, test)
           {
                EXPECT_EQ(leg->getName(), components_names.at(2+i));
 
-               for (auto joint : *(leg->getJoints()))
+               for (auto joint : leg->getJoints())
                {
                     EXPECT_EQ(joint->getName(), components_names.at(6+i));
                }
 
-               for (auto link : *(leg->getLinks()))
+               for (auto link : leg->getLinks())
                {
                     EXPECT_EQ(link->getName(), components_names.at(10+i));
                }
@@ -270,12 +270,12 @@ TEST(DummyRobotUnitTests, test)
           {
                EXPECT_EQ(leg->getName(), components_names.at(2));
 
-               for (auto joint : *(leg->getJoints()))
+               for (auto joint : leg->getJoints())
                {
                     EXPECT_EQ(joint->getName(), components_names.at(3));
                }
 
-               for (auto link : *(leg->getLinks()))
+               for (auto link : leg->getLinks())
                {
                     EXPECT_EQ(link->getName(), components_names.at(4));
                }
@@ -336,13 +336,13 @@ TEST(DummyRobotUnitTests, test)
                EXPECT_EQ(leg->getName(), components_names.at(2+i));
                i++;
 
-               for (auto joint : *(leg->getJoints()))
+               for (auto joint : leg->getJoints())
                {
                     EXPECT_EQ(joint->getName(), components_names.at(5+j));
                     j++;
                }
 
-               for (auto link : *(leg->getLinks()))
+               for (auto link : leg->getLinks())
                {
                     EXPECT_EQ(link->getName(), components_names.at(14+k));
                     k++;

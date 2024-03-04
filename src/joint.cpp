@@ -18,16 +18,28 @@
 
 namespace robotlib
 {
-	Joint::Joint(const std::string &name) : Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) {}
+	Joint::Joint(const std::string &name) 
+		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+	{}
 
-	Joint::~Joint(){}
+	Joint::Joint(const std::string &name, Link& parent) 
+		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+	{
+		this->setParent(parent);
+	}
 
-	const std::string& Joint::getName() const { return name_;}
-	std::shared_ptr<Link> Joint::getParent() const { return parent_;}
-	std::shared_ptr<Link> Joint::getChild() const { return child_;}
+	const Link& Joint::getParent() const { return *parent_;}
+	const Link& Joint::getChild() const { return *child_;}
 
-	void Joint::setParent(const std::shared_ptr<Link> parent) { parent_ = parent; }
-	void Joint::setChild(const std::shared_ptr<Link> child) { child_ = child; }
+	void Joint::setParent(Link& parent) {
+		parent_ = std::shared_ptr<Link>(&parent); 
+		parent_->addChild(*this);
+	}
+
+	void Joint::setChild(Link& child) 
+	{ 
+		child_ = std::shared_ptr<Link>(&child); 
+	}
 
 	double Joint::getMinAngle() const {return q_min_;}
 	double Joint::getMaxAngle() const {return q_max_;}
@@ -38,5 +50,13 @@ namespace robotlib
 	void Joint::setMaxAngle(const double q_max) {q_max_ = q_max;}
 	void Joint::setMaxVelocity(const double qd_max) {qd_max_ = qd_max;}
 	void Joint::setMaxEffort(const double tau_max)  {tau_max_ = tau_max;}
+
+	void Joint::setJointLimits(const double& q_min, const double& q_max, const double& qd_max, const double& tau_max)
+	{
+		this->setMinAngle(q_min);
+		this->setMaxAngle(q_max);
+		this->setMaxVelocity(qd_max);
+		this->setMaxEffort(tau_max);
+	}
 
 } // namespace robotlib

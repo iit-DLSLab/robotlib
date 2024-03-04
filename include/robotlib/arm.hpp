@@ -17,7 +17,7 @@
 #ifndef _ROBOTLIB_ARM_HPP_
 #define _ROBOTLIB_ARM_HPP_
 
-#include "limb.hpp"
+#include "limb_base.hpp"
 
 namespace robotlib
 {
@@ -28,8 +28,8 @@ namespace robotlib
      * @tparam NJOINTS number of joints of the arm.
      * @tparam NLINKS number of links of the arm.
 	 */
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    class Arm : public Limb<NJOINTS, NLINKS>
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    class Arm : public Limb<NLINKS, NJOINTS>
     {
     public:
         /*!
@@ -38,14 +38,16 @@ namespace robotlib
          * @param[in] joints array of shared pointers pointing to arm's joints.
          * @param[in] links array of shared pointers pointing to arm's links.
          */
-        Arm(const std::string &name,
-            const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-            const std::array<std::shared_ptr<Link>, NLINKS> &links);
+        Arm(const std::string& name,
+            const std::array<Link, NLINKS>& links,
+            const std::array<Joint, NJOINTS>& joints);
 
         /*!
          * @brief Destructor.
          */
         virtual ~Arm();
+
+        std::string type() const override;
     };
 } // namespace robotlib
 

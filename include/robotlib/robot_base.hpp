@@ -6,7 +6,7 @@
 #include "link.hpp"
 #include "joint.hpp"
 #include "dyn_params.hpp"
-#include "leg_data_map.hpp"
+#include "limb_data_map.hpp"
 #include "joint_state.hpp"
 #include "jacobian.hpp"
 #include "link_data_map.hpp"
@@ -23,7 +23,7 @@ namespace robotlib
      * @class RobotBase
      * @brief RobotBase class.
      * @details
-     * This class represents a generic abstract robot.  It provides data structures such as LegDataMap, JointDataMap, JointState and Jacobian classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like forwardKinematics, inverseKinematics and inverseDynamics.
+     * This class represents a generic abstract robot.  It provides data structures such as LimbDataMap, JointDataMap, JointState and Jacobian classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like forwardKinematics, inverseKinematics and inverseDynamics.
     */
     class RobotBase
     {
@@ -88,7 +88,7 @@ namespace robotlib
         * @param stance_legs
         * @return
         */
-        int computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const;
+        int computeNumStanceLegs(const LimbDataMap<bool>& stance_legs) const;
 
         /*!
         * @brief Computing robot proprio height
@@ -98,7 +98,7 @@ namespace robotlib
         * @param[out] proprio_height robot proprio height
         * @remark{DMA}
         */
-        void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
+        void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LimbDataMap<bool>& stance_legs, const LimbDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
 
         /*!
          * @brief Estimate feet external ground reaction forces
@@ -109,71 +109,88 @@ namespace robotlib
         * @param[in] g_b gravity vector in base frame
         * @param[out] estimated_feet_grf
         */
-        void estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b, robotlib::LegDataMap<Eigen::Vector3d>& estimated_feet_grf);
+        robotlib::LimbDataMap<Eigen::Vector3d> estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b);
 
         /*!
          * @brief Get number of robot's legs.
          * @return number of robot's legs.
          */
-        virtual int getNLEGS() const = 0;
+        virtual unsigned int getNLEGS() const = 0;
 
         /*!
          * @brief Get number of robot's arms.
          * @return number of robot's arms.
          */
-        virtual int getNARMS() const = 0;
+        virtual unsigned int getNARMS() const = 0;
+
+        /*!
+         * @brief Get number of robot's limbs.
+         * @return number of robot's limbs.
+         */
+        virtual unsigned int getNLIMBS() const = 0;
 
         /*!
          * @brief Get number of robot's joints.
          * @return number of robot's joints.
          */
-        virtual int getNJOINTS() const = 0;
+        virtual unsigned int getNJOINTS() const = 0;
 
         /*!
          * @brief Get number of robot's links.
          * @return number of robot's links.
          */
-        virtual int getNLINKS() const = 0;
-
-        /*!
-         * @brief Get robot's legs.
-         * @return robot's legs as a shared pointer to a ContainerBase object.
-         */
-        virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getLegs() const = 0;
-
-        /*!
-         * @brief Get robot's arms.
-         * @return robot's arms as a shared pointer to a ContainerBase object.
-         */
-        virtual std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> getArms() const = 0;
-
-        /*!
-         * @brief Get robot's link from link's name.
-         * @param[in] name name of the link.
-         * @return a shared pointer pointing to the link.
-         */
-        virtual std::shared_ptr<Link> getLink(const std::string &name) const = 0;
+        virtual unsigned int getNLINKS() const = 0;
 
         /*!
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
-         * @return a shared pointer pointing to the joint.
+         * @return reference to link or throw except.
          */
-        virtual std::shared_ptr<Joint> getJoint(const std::string &name) const = 0;
+        virtual const Joint& getJoint(const std::string &name) const = 0;
 
         /*!
-         * @brief Get robot's leg from leg's name.
-         * @param[in] name name of the leg.
-         * @return a shared pointer pointing to the leg.
+         * @brief Get robot's joints.
+         * @return robot's joints as a ContainerBase object.
          */
-        virtual std::shared_ptr<LimbBase> getLeg(const std::string &name) const = 0;
+        virtual const ContainerBase<std::shared_ptr<Joint>>& getJoints() const = 0;
 
         /*!
-         * @brief Get robot's arm from arm's name.
-         * @param[in] name name of the arm.
-         * @return a shared pointer pointing to the arm.
+         * @brief Get robot's link from link's name.
+         * @param[in] name name of the link.
+         * @return reference to link or throw except.
          */
-        virtual std::shared_ptr<LimbBase> getArm(const std::string &name) const = 0;
+        virtual const Link& getLink(const std::string &name) const = 0;
+
+        /*!
+         * @brief Get a list of all links of the robot.
+         * @return a list of links of the robot.
+         */
+        virtual const ContainerBase<std::shared_ptr<Link>>& getLinks() const = 0;
+
+        /*!
+         * @brief Get robot's limb from limb's name.
+         * @param[in] name name of the limb.
+         * @return reference to limb or throw except.
+         */
+        virtual const LimbBase& getLimb(const std::string &name) const = 0;
+
+        /*!
+         * @brief Get robot's limbs.
+         * @return robot's limbs as a ContainerBase object.
+         */
+        virtual const ContainerBase<LimbBase>& getLimbs() const = 0;
+
+        /*!
+         * @brief Get robot's legs.
+         * @return robot's legs as a vector object.
+         */
+        virtual const std::vector<std::shared_ptr<const LimbBase>> getLegs() const = 0;
+
+        /*!
+         * @brief Get robot's arms.
+         * @return robot's arms as a vector object.
+         */
+        virtual const std::vector<std::shared_ptr<const LimbBase>> getArms() const = 0;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -242,9 +259,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return destination frame position expressed in origin one.
          */
-        virtual Eigen::Vector3d getFramePosition(const JointState &q,
-                                                 const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) const = 0;
+        virtual Eigen::Vector3d getFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const = 0;
 
         /*!
          * @brief Get orientation of the destination frame expressed in the origin one.
@@ -253,9 +268,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return destination frame orientation expressed in origin one.
          */
-        virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
-                                                    const std::shared_ptr<Frame> origin,
-                                                    const std::shared_ptr<Frame> destination) const = 0;
+        virtual Eigen::Matrix3d getFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
 
         /*!
          * @brief Get pose of the destination frame expressed in the origin one.
@@ -264,69 +277,37 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return destination frame pose expressed in origin one.
          */
-        virtual Eigen::Matrix4d getFramePose(const JointState &q,
-                                             const std::shared_ptr<Frame> origin,
-                                             const std::shared_ptr<Frame> destination) const = 0;
-
-        /*!
-         * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot position expressed in trunk frame.
-         */
-        virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                       const std::shared_ptr<Frame> foot) const = 0;
+        virtual Eigen::Matrix4d getFramePose(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
 
         /*!
          * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot position.
          * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
+         * @param[in] foot_frame foot frame.
          * @return foot position expressed in trunk frame.
          */
-        virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                       const std::shared_ptr<LimbBase> leg) const = 0;
+        virtual Eigen::Vector3d getFootPosition(const JointState& q, const Frame& foot_frame) const = 0;
 
         /*!
          * @brief Get foot orientation expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot orientation expressed in trunk frame.
-         */
-        virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                          const std::shared_ptr<Frame> foot) const = 0;
-
-        /*!
-         * @brief Get foot orientation with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot orientation.
          * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
+         * @param[in] foot_frame foot frame.
          * @return foot orientation expressed in trunk frame.
          */
-        virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                         const std::shared_ptr<LimbBase> leg) const = 0;
+        virtual Eigen::Matrix3d getFootOrientation(const JointState& q, const Frame& foot_frame) const = 0;
 
         /*!
          * @brief Get foot pose expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot pose expressed in trunk frame.
-         */
-        virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                            const std::shared_ptr<Frame> foot) const = 0;
-
-        /*!
-         * @brief Get foot pose with respect to the trunk frame, expressed in trunk frame.
          * @details
          * This function gets the foot corresponding to the leg in input and then it computes the foot pose.
          * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
+         * @param[in] foot_frame foot frame.
          * @return foot pose expressed in trunk frame.
          */
-        virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                  const std::shared_ptr<LimbBase> leg) const = 0;
+        virtual Eigen::Matrix4d getFootPose(const JointState& q, const Frame& foot_frame) const = 0;
 
         /*!
          * @brief Update the linear part of the jacobian.
@@ -335,8 +316,7 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[out] robot_jacobian jacobians associated to each foot.
          */
-        virtual void updateLinearJacobian(const JointState &joints_positions,
-                                          LegDataMap<Jacobian> &robot_jacobian) const = 0;
+        virtual void updateLinearJacobian(const JointState& joints_positions, LimbDataMap<Jacobian>& robot_jacobian) const = 0;
 
         /*!
          * @brief Update the angular part of the jacobian.
@@ -345,8 +325,7 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[out] robot_jacobian jacobians associated to each foot.
          */
-        virtual void updateAngularJacobian(const JointState &q,
-                                           LegDataMap<Jacobian> &robot_jacobian) const = 0;
+        virtual void updateAngularJacobian(const JointState& q, LimbDataMap<Jacobian>& robot_jacobian) const = 0;
 
         /*!
          * @brief Get the foot jacobian.
@@ -356,9 +335,7 @@ namespace robotlib
          * @param[in] leg leg corresponding to the foot.
          * @param[out] footJac jacobian to be filled.
          */
-        virtual void getFootJacobian(const JointState &q,
-                                     const std::shared_ptr<LimbBase> leg,
-                                     Jacobian &footJac) const = 0;
+        virtual void getFootJacobian(const JointState& q, const LimbBase& leg, Jacobian &footJac) const = 0;
 
         /*!
          * @brief Update the linear part of the foot jacobian.
@@ -368,9 +345,7 @@ namespace robotlib
          * @param[in] leg leg corresponding to the foot.
          * @param[out] footJac jacobian to be filled.
          */
-        virtual void updateLinearFootJacobian(const JointState &joints_positions,
-                                              const std::shared_ptr<LimbBase> leg,
-                                              Jacobian &footJac) const = 0;
+        virtual void updateLinearFootJacobian(const JointState& joints_positions, const LimbBase& leg, Jacobian& footJac) const = 0;
 
         /*!
          * @brief Update the angular part of the foot jacobian.
@@ -380,9 +355,7 @@ namespace robotlib
          * @param[in] leg leg corresponding to the foot.
          * @param[out] footJac jacobian to be filled.
          */
-        virtual void updateAngularFootJacobian(const JointState &q,
-                                               const std::shared_ptr<LimbBase> leg,
-                                               Jacobian &footJac) const = 0;
+        virtual void updateAngularFootJacobian(const JointState& q, const LimbBase& leg, Jacobian& footJac) const = 0;
 
         /*!
          * @brief Get total robot mass.
@@ -420,14 +393,14 @@ namespace robotlib
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) const = 0;
+        virtual Eigen::Vector3d getWholeBodyCOM(const JointState& joint_state) const = 0;
 
         /*!
          * @brief Compute CoM legs contribution in base frame.
          * @param[in] q angles of the joints.
          * @return CoM legs contribution in base frame.
          */
-        virtual Eigen::Vector3d getLegContribution(const JointState &q) const = 0;
+        virtual Eigen::Vector3d getLegContribution(const JointState& q) const = 0;
 
 
         /*!
@@ -437,9 +410,9 @@ namespace robotlib
          * @param[in] base_pos base position in world frame.
          * @return CoM position in world frame.
          */
-        virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
-                                               const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &base_pos) const = 0;
+        virtual Eigen::Vector3d getCoMFromBase(const JointState& q,
+                                               const Eigen::Vector3d& base_orient,
+                                               const Eigen::Vector3d& base_pos) const = 0;
 
         /*!
           * @brief Compute robot base position in world frame, from CoM position in world frame.
@@ -448,9 +421,9 @@ namespace robotlib
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
          */
-        virtual Eigen::Vector3d getBaseFromCoM(const JointState &q,
-                                               const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &CoM) const = 0;
+        virtual Eigen::Vector3d getBaseFromCoM(const JointState& q,
+                                               const Eigen::Vector3d& base_orient,
+                                               const Eigen::Vector3d& CoM) const = 0;
 
         /*!
          * @brief Compute whole body CoM velocity in world frame.
@@ -459,8 +432,8 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @return CoM velocity in world frame.
 		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState &q,
-                                                               const JointState &qd) const = 0;
+        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState& q,
+                                                               const JointState& qd) const = 0;
 
         /*!
          * @brief Compute whole body CoM velocity in world frame.
@@ -469,9 +442,9 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @return CoM velocity in world frame.
 		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                const Eigen::Matrix3d &R,
-                                                                const JointState &q) const = 0;
+        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
+                                                                const Eigen::Matrix3d& R,
+                                                                const JointState& q) const = 0;
 
         /*!
          * @brief Compute whole body com velocity in world frame, without recomputing the CoM offset.
@@ -480,9 +453,9 @@ namespace robotlib
          * @param[in] offset_com CoM offset in base frame.
          * @return CoM velocity in world frame.
          */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                 const Eigen::Matrix3d &R,
-                                                                 const Eigen::Vector3d offset_com) const = 0;
+        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
+                                                                const Eigen::Matrix3d& R,
+                                                                const Eigen::Vector3d& offset_com) const = 0;
 
         /*!
         *@brief Get the IMU pose in base frame.
@@ -490,7 +463,8 @@ namespace robotlib
         *@param[in] base_link_name name of the base link.
         *@return IMU pose in base frame.
         */
-        virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu", const std::string& base_link_name="base_link") const = 0;
+        virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu",
+                                                 const std::string& base_link_name="base_link") const = 0;
 
         // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
 
@@ -499,32 +473,25 @@ namespace robotlib
          * @param[in] value value used to initialize the joint state.
          * @return joint state.
          */
-        JointState makeJointState(const double value = 0.0) const;
+        JointState makeJointState(const double& value = 0.0) const;
 
         /*!
-         * @brief Function to create a LegDataMap object object.
+         * @brief Function to create a LimbDataMap object.
          * @tparam Data data type associated to each leg.
-         * @return LegDataMap<Data> object.
+         * @param[in] data data used to initialize the LimbDataMap object.
+         * @return LimbDataMap<Data> object.
          */
         template <class Data>
-        LegDataMap<Data> makeLegDataMap() const; // NRT
+        LimbDataMap<Data> makeLimbDataMap(const Data& data) const;
 
         /*!
-         * @brief Function to create a LegDataMap object.
+         * @brief Function to create a LimbDataMap object.
          * @tparam Data data type associated to each leg.
-         * @param[in] data data used to initialize the LegDataMap object.
-         * @return LegDataMap<Data> object.
+         * @param[in] data vector data used to initialize each LimbDataMap object.
+         * @return LimbDataMap<Data> object.
          */
         template <class Data>
-        LegDataMap<Data> makeLegDataMap(const Data& data) const;
-
-        /*!
-         * @brief Function to create a LinkDataMap object.
-         * @tparam Data data type associated to each link.
-         * @return LinkDataMap<Data> object.
-         */
-        template <class Data>
-        LinkDataMap<Data> makeLinkDataMap(); // NRT
+        LimbDataMap<Data> makeLimbDataMap(const std::vector<Data>& data) const;
 
         /*!
          * @brief Function to create a LinkDataMap object.
@@ -540,62 +507,30 @@ namespace robotlib
          * @details
          * This function creates a data structure to associate data to each joint of the robot.
          * @tparam Data data type associated to each joint.
-         * @return JointDataMap<Data> object.
-         */
-        template <class Data>
-        JointDataMap<Data> makeJointDataMap(); // NRT
-
-        /*!
-         * @brief Function to create a JointDataMap object.
-         * @details
-         * This function creates a data structure to associate data to each joint of the robot.
-         * @tparam Data data type associated to each joint.
          * @param[in] data data used to initialize the JointDataMap object.
          * @return JointDataMap<Data> object.
          */
         template <class Data>
         JointDataMap<Data> makeJointDataMap(const Data& data); // NRT
 
-        /*!
-         * @brief Function to create a JointDataMap object.
-         * @details
-         * This function creates a data structure to associate data to each joint of the leg in input.
-         * @tparam Data data type associated to each joint.
-         * @param[in] leg leg whose joints are used to create the JointDataMap object.
-         * @return JointDataMap<Data> object.
-         */
-        template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg); // NRT
+        // // TODO
+        // Jacobian makeJacobian(const Frame& fOrigin, const Frame& fDest); // NRT
+
+        // // TODO: it should use makeJacobian
+        // Jacobian makeFootJacobian(const Frame& frame); // NRT
+
+        // // TODO: it should use makeJacobian
+        // Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0); // NRT
 
         /*!
-         * @brief Function to create a JointDataMap object.
+         * @brief Function to create a LimbDataMap object, associating a Jacobian to each leg.
          * @details
-         * This function creates a data structure to associate data to each joint of the leg in input.
-         * @tparam Data data type associated to each joint.
-         * @param[in] leg leg whose joints are used to create the JointDataMap object.
+         * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; 
+         * n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
          * @param[in] data data used to initialize the JointDataMap object.
-         * @return JointDataMap<Data> object.
+         * @return LimbDataMap<Jacobian> object.
          */
-        template <class Data>
-        JointDataMap<Data> makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data&); // NRT
-
-        // TODO
-        Jacobian makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest); // NRT
-
-        // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<Frame> frame); // NRT
-
-        // TODO: it should use makeJacobian
-        Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0); // NRT
-
-        /*!
-         * @brief Function to create a LegDataMap object, associating a Jacobian to each leg.
-         * @details
-         * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
-         * @param[in] data data used to initialize the JointDataMap object.
-         * @return LegDataMap<Jacobian> object.
-         */
-        LegDataMap<Jacobian> makeFeetJacobian(const double data = 0.0) const; // NRT
+        LimbDataMap<Jacobian> makeFeetJacobian(const double& data = 0.0) const; // NRT
 
         // ** FORWARD KINEMATICS ** 
 
@@ -607,7 +542,7 @@ namespace robotlib
           * @param[out] end_effector_position position of each end effector (foot) in base frame.
           */
         virtual void forwardKinematics(const JointState &joint_position,
-                                       LegDataMap<Eigen::Vector3d> &end_effector_position) const = 0;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_position) const = 0;
         /*!
          * @brief Forward kinematics.
          * @details
@@ -619,8 +554,8 @@ namespace robotlib
          */
         virtual void forwardKinematics(const JointState &joint_position,
                                        const JointState &joint_velocity,
-                                       LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       LegDataMap<Eigen::Vector3d> &end_effector_velocity) const = 0;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_position,
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_velocity) const = 0;
         /*!
          * @brief Inverse kinematics.
          * @details
@@ -633,9 +568,9 @@ namespace robotlib
          * @param[out] joint_velocity velocity of each joint.
          * @param[out] joint_acceleration acceleration of each joint.
          */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
+        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
+                                       const LimbDataMap<Eigen::Vector3d> &end_effector_velocity,
+                                       const LimbDataMap<Eigen::Vector3d> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
                                        JointState &joint_acceleration) const = 0;
@@ -649,8 +584,8 @@ namespace robotlib
          * @param[out] joint_position angle of each joint.
          * @param[out] joint_velocity velocity of each joint.
          */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
+                                       const LimbDataMap<Eigen::Vector3d> &end_effector_velocity,
                                        JointState &joint_position,
                                        JointState &joint_velocity) const = 0;
 
@@ -661,7 +596,7 @@ namespace robotlib
          * @param[in] end_effector_position position of each end effector (foot) in base frame.
          * @param[out] joint_position angle of each joint.
          */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
+        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
                                        JointState &joint_position) const = 0;
 
         /*!

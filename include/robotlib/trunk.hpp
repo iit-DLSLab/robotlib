@@ -35,31 +35,25 @@ namespace robotlib
          * @brief Constructor.
          * @param[in] name name of the trunk.
          */
-		Trunk(const std::string &name);
+		Trunk(const std::string& name);
 
 		/*!
          * @brief Constructor.
          * @param[in] name name of the trunk.
 		 * @param[in] dynamic_parameters dynamic parameters of the trunk.
          */
-		Trunk(const std::string &name, const DynParams &dynamic_parameters);
+		Trunk(const std::string& name, const DynParams& dynamic_parameters);
 
 		/*!
          * @brief Destructor.
          */
-		virtual ~Trunk();
-
-        /*!
-		 * @brief Get the name of the trunk.
-		 * @return name of the trunk.
-		 */
-		virtual const std::string& getName() const override;
+		~Trunk() = default;
 
 		/*!
 		 * @brief Get the center of mass of the trunk.
 		 * @return trunk's center of mass.
 		 */
-		virtual const Eigen::Vector3d& getCoM() const;
+		const Eigen::Vector3d& getCoM() const;
 
 		/*!
 		 * @brief Get the mass of the trunk.
@@ -71,13 +65,13 @@ namespace robotlib
 		 * @brief Get the inertia of the trunk.
 		 * @return trunk's inertia.
 		 */
-		virtual const Eigen::Matrix3d& getInertia() const;
+		const Eigen::Matrix3d& getInertia() const;
 
 		/*!
 		 * @brief Get the dynamic parameters of the trunk.
 		 * @return trunk's dynamic parameters.
 		 */
-		virtual const DynParams& getDynParams() const;
+		const DynParams& getDynParams() const;
 
 	private:
 		//!Dynamic parameters of the Trunk

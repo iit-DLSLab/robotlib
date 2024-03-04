@@ -29,26 +29,34 @@ namespace robotlib
     class Frame
     {
     public:
+
         /*!
          * @brief Constructor.
          * @param[in] name name of the frame.
          */
-        Frame(const std::string &name) : name_(name){};
+        Frame(const std::string &name);
 
         /*!
          * @brief Destructor.
          */
-        virtual ~Frame(){};
+        virtual ~Frame() = default;
 
         /*!
 		 * @brief Get the name of the Frame.
 		 * @return name of the frame.
 		 */
-        virtual const std::string& getName() const = 0;
+        const std::string& getName() const;
 
-    protected:
+        /*!
+		 * @brief Equal comparator for Frame.
+		 * @return true if the frames are equal.
+		 */
+		bool operator==(const Frame& rhs) const;
+
+    private:
+
         //! Name of the frame.
-        const std::string name_{};
+        const std::string name_;
     };
 } // namespace robotlib
 

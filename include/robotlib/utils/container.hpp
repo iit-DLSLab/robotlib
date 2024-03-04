@@ -10,44 +10,75 @@ namespace robotlib
     /*!
      * @brief Container class. This class is a wrapper around a std::array object.
      * @tparam Data data type of the object to be stored.
-     * @tparam N length of the wrapped std::array variable.
+     * @tparam Length length of the wrapped std::array variable.
      */
-    template <class Data, unsigned int N>
+    template <class Data, unsigned int Length>
     class Container : public ContainerBase<Data>
     {
+        //! Robot is a friend class to let it use the private methods of the Joint class.
+		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+		friend class Robot;
+
     public:
+
+         /*!
+         * @brief Default constructor.
+         */
+        Container();
+
         /*!
          * @brief Constructor.
          * @param[in] data std::array of data to be wrapped.
          */
-        Container(const std::array<Data, N> data);
+        Container(const std::array<Data, Length> data);
 
         /*!
         * @brief Destructor.
         */
-        virtual ~Container();
+        virtual ~Container() = default;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual Iterator<const Data> begin() const override;
+        Iterator<const Data> begin() const override;
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual Iterator<const Data> end() const override;
+        Iterator<const Data> end() const override;
+
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the data_ variable.
+        */
+        Iterator<Data> begin() override;
+
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the data_ variable.
+        */
+        Iterator <Data> end() override;
 
         /*!
         * @brief Get the size of the wrapped std::array.
         * @return size of the wrapped std::array.
         */
-        virtual int size() const override;
+        unsigned int length() const override;
 
-    protected:
+        /*!
+        * @brief Get reference to data at idx position.
+        * @param[in] idx index of the data in std::array.
+        */
+        Data& operator[](unsigned int idx) override;
+
+        // Data& operator[](unsigned int idx) const override;
+
+    private:
+    
         //! std::array wrapped by the Container class.
-        const std::array<Data, N> data_;
+        std::array<Data, Length> data_;
     };
 } // namespace robotlib
 

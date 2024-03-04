@@ -22,7 +22,7 @@ Notice that the robot states are decoupled from the hierarchical robot structure
 
 In the following an overview of Robotlib main classes is provided:
 * **RobotFactory**: this class stores the static function **openRobot** used to load at runtime the glue code
-* **RobotBase**: this is the main class used as interface to the glue code. It provides data structures such as **LegDataMap**, **JointDataMap**, **JointState** and **Jacobian** classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like **forwardKinematics**, **inverseKinematics** and **inverseDynamics**
+* **RobotBase**: this is the main class used as interface to the glue code. It provides data structures such as **LimbDataMap**, **JointDataMap**, **JointState** and **Jacobian** classes. It also provides the hierarchical structure of limbs as a sequence of joints and links together with utility functions like **forwardKinematics**, **inverseKinematics** and **inverseDynamics**
 * **LimbBase**: this is the class to interface with any kind of limb, no matter if it is a leg or arm
 * **Frame**: this class represents a generic frame, no matter if it is a joint or a link
 
@@ -101,11 +101,11 @@ Some robot information can be accessed through the robot object, for example
 Suppose now that you want a variable storing the stance status of each leg. You can define a leg data map object in this way
 
     // Define and populate a leg data map object
-    robotlib::RobotBase::LegDataMap<bool> stance_status {robot->makeLegDataMap<bool>(false)}; // or auto stance_status {robot->makeLegDataMap<bool>(0.0)};
+    robotlib::RobotBase::LimbDataMap<bool> stance_status {robot->makeLimbDataMap<bool>(false)}; // or auto stance_status {robot->makeLimbDataMap<bool>(0.0)};
 
-The LegDataMap object is a list of pairs. Each pair associates the shared pointer of a leg to a data.
+The LimbDataMap object is a list of pairs. Each pair associates the shared pointer of a leg to a data.
 
-Notice that the constructor of the LegDataMap class allocates dynamic memory. With the aim of letting the user managing more carefully dynamic memory allocation, the LegDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LegDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with dynamic memory allocation.
+Notice that the constructor of the LimbDataMap class allocates dynamic memory. With the aim of letting the user managing more carefully dynamic memory allocation, the LimbDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LimbDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with dynamic memory allocation.
 
 Let's now populate the stance_status variable
 
@@ -126,7 +126,7 @@ where "LF" is the name associated to the left front leg. The getLeg function ret
 As another example of data type that can be associated to legs consider the following example
 
     // Define and populate a leg data map object of jacobians; each jacobian is associated to a leg
-    robotlib::RobotBase::LegDataMap<robotlib::RobotBase::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{dummy_quadruped->makeFootJacobian(foot)};
+    robotlib::RobotBase::LimbDataMap<robotlib::RobotBase::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{dummy_quadruped->makeFootJacobian(foot)};
     for (auto leg : *(robot->getLegs()))
     {
         std::cout << "Foot jacobian per " << leg->getName() << " leg: " << std::endl;
@@ -145,7 +145,7 @@ Consider now the following example to compute the forward kinematics for each le
 
     // Forward kinematics
     robotlib::RobotBase::JointState q_input{robot->makeJointState(0)};
-    robotlib::RobotBase::LegDataMap<Eigen::Vector3d> foot_position{robot->makeLegDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero())};
+    robotlib::RobotBase::LimbDataMap<Eigen::Vector3d> foot_position{robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero())};
     robot->forwardKinematics(q_input, foot_position);
 
 The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function declared in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.

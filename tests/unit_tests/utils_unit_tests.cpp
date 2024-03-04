@@ -27,9 +27,10 @@ TEST(UtilsUnitTests, Containers)
     {
         d = value;
     }
+
     robotlib::Container<double, N> container(data);
 
-    for (auto d : container)
+    for (auto& d : container)
     {
         EXPECT_EQ(d, value);
     }

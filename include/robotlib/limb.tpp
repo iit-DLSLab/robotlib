@@ -18,57 +18,77 @@
 
 namespace robotlib
 {
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    Limb<NJOINTS, NLINKS>::Limb(const std::string &name,
-                                const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-                                const std::array<std::shared_ptr<Link>, NLINKS> &links)
-        : LimbBase(name),
-          joints_(std::make_shared<const Container<std::shared_ptr<Joint>, NJOINTS>>(joints)),
-          links_(std::make_shared<const Container<std::shared_ptr<Link>, NLINKS>>(links)){};
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    Limb<NLINKS, NJOINTS>::Limb(const std::string& name,
+                                const std::array<Link, NLINKS>& links,
+                                const std::array<Joint, NJOINTS>& joints)
+          : LimbBase(name)
+          , joints_(joints)
+          , links_(links)
+    {};
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    Limb<NJOINTS, NLINKS>::~Limb(){};
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    unsigned int Limb<NLINKS, NJOINTS>::getNJoints() const { return joints_.length(); };
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    int Limb<NJOINTS, NLINKS>::getNJoints() const { return joints_->size(); };
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    unsigned int Limb<NLINKS, NJOINTS>::getNLinks() const { return links_.length(); };
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    int Limb<NJOINTS, NLINKS>::getNLinks() const { return links_->size(); };
-
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    std::shared_ptr<Joint> Limb<NJOINTS, NLINKS>::getJoint(const std::string &name) const
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    const Joint& Limb<NLINKS, NJOINTS>::getJoint(const std::string &name) const
     {
         //Iterate over the array of joints to find the joint
-        for (auto joint : *joints_)
+        for (auto& joint : joints_)
         {
-            if (joint->getName().compare(name) == 0)
+            if (joint.getName().compare(name) == 0)
             {
                 return joint;
             }
         }
-
-        //std::cout << "JOINT NOT FOUD FROM THE INPUT NAME " << name << std::endl;
-        return std::shared_ptr<Joint>(nullptr);
+        throw std::range_error("key not found");
     };
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getLink(const std::string &name) const
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    const Link& Limb<NLINKS, NJOINTS>::getLink(const std::string &name) const
     {
         //Iterate over the array of links to find the link
-        for (auto link : *links_)
+        for (auto& link : links_)
         {
-            if (link->getName().compare(name) == 0)
+            if (link.getName().compare(name) == 0)
             {
                 return link;
             }
         }
-        //std::cout << "LINK " << name << " NOT FOUND IN LEG " << this->getName() << std::endl;
-        return std::shared_ptr<Link>(nullptr);
+        throw std::range_error("key not found");
     };
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    std::shared_ptr<Link> Limb<NJOINTS, NLINKS>::getEndEffector() const
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    const Link& Limb<NLINKS, NJOINTS>::getEndEffector() const
     {
-        return *(--links_->end());
+        return *(--links_.end());
     };
+
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    const ContainerBase<Joint>& Limb<NLINKS, NJOINTS>::getJoints() const
+    { 
+        return joints_; 
+    }
+
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    ContainerBase<Joint>& Limb<NLINKS, NJOINTS>::getJoints()
+    { 
+        return joints_; 
+    }
+
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    const ContainerBase<Link>& Limb<NLINKS, NJOINTS>::getLinks() const
+    { 
+        return links_; 
+    };
+
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    ContainerBase<Link>& Limb<NLINKS, NJOINTS>::getLinks()
+    { 
+        return links_; 
+    };
+
 } // namespace robotlib

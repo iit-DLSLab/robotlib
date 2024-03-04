@@ -20,12 +20,12 @@ TEST(JointStateUnitTest, vec_)
     auto joint_state = dummy_quadruped->makeJointState(0.0);
 
      /*!
-      * @test Dummy Quadruped - Type returned by vec_() is Eigen::VectorXd type
+      * @test Dummy Quadruped - Type returned by tovec_() is Eigen::VectorXd type
       */
      {
           Eigen::VectorXd joint_state_data {dummy_quadruped->getNJOINTS()};
           joint_state_data.setZero();
-          EXPECT_EQ(typeid(joint_state.vec_()), typeid(joint_state_data));
+          EXPECT_EQ(typeid(joint_state.tovec_()), typeid(joint_state_data));
 
           for(auto leg :*dummy_quadruped->getLegs())
           {
@@ -35,12 +35,12 @@ TEST(JointStateUnitTest, vec_)
      }
 
      /*!
-      * @test Dummy Quadruped - Values inside variable returned by vec_() is correct
+      * @test Dummy Quadruped - Values inside variable returned by tovec_() is correct
       */
      {
           double joint_value {1.0};
           joint_state = joint_value;
-          auto joint_state_data {joint_state.vec_()};
+          auto joint_state_data {joint_state.tovec_()};
           for(int i=0; i<joint_state.getSize(); i++)
           {
                EXPECT_EQ(joint_state_data(i), joint_value);

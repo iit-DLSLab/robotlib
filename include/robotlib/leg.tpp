@@ -18,12 +18,15 @@
 
 namespace robotlib
 {
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    Leg<NJOINTS, NLINKS>::Leg(const std::string &name,
-                              const std::array<std::shared_ptr<Joint>, NJOINTS> &joints,
-                              const std::array<std::shared_ptr<Link>, NLINKS> &links)
-        : Limb<NJOINTS, NLINKS>(name, joints, links){};
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    Leg<NLINKS, NJOINTS >::Leg(const std::string& name,
+                               const std::array<Link, NLINKS>& links,
+                               const std::array<Joint, NJOINTS>& joints)
+        : Limb<NLINKS, NJOINTS >(name, links, joints){};
 
-    template <unsigned int NJOINTS, unsigned int NLINKS>
-    Leg<NJOINTS, NLINKS>::~Leg(){};
+    template <unsigned int NLINKS, unsigned int NJOINTS>
+    std::string Leg<NLINKS, NJOINTS >::type() const
+    {
+        return "arm";
+    }
 } // namespace robotlib

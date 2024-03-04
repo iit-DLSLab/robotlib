@@ -2,218 +2,195 @@
 
 namespace robotlib
 {
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Robot<NJOINTS, NLINKS, NLEGS, NARMS>::Robot(
-            const std::string &name,
-            const std::shared_ptr<Trunk> trunk,
-            const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs,
-            const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms)
-            : RobotBase(name), trunk_(trunk), legs_(legs), arms_(arms){};
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	Robot<NLIMBS, NLINKS, NJOINTS>::Robot(
+		const std::string& name,
+		const Trunk& trunk,
+		const std::array<LimbBase, NLIMBS>& limbs)
+		: RobotBase(name)
+		, trunk_(trunk)
+		, limbs_(limbs)
+	{
+		// unsigned int count_data{0};
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& joint : limb.getJoints())
+		// 		this->joints_[count_data++] = std::shared_ptr<Joint>(&joint);
+		// }
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
+		// count_data = 0;
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& link : limb.getLinks())
+		// 		this->links_[count_data++] = std::shared_ptr<Link>(&link);
+		// }
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLegs() const { return legs_; };
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<const ContainerBase<std::shared_ptr<LimbBase>>> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArms() const { return arms_; };
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	unsigned int Robot<NLIMBS, NLINKS, NJOINTS>::getNLIMBS() const { return NLIMBS; };
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLEGS() const { return NLEGS; };
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	unsigned int Robot<NLIMBS, NLINKS, NJOINTS>::getNJOINTS() const { return NJOINTS; };
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNARMS() const { return NARMS; };
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	unsigned int Robot<NLIMBS, NLINKS, NJOINTS>::getNLINKS() const { return NLINKS; };
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNJOINTS() const { return NJOINTS; };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        int Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getNLINKS() const { return NLINKS; };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildrenOfTrunk(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children)
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	unsigned int Robot<NLIMBS, NLINKS, NJOINTS>::getNLEGS() const
+	{
+		unsigned int count{0};
+        for(auto& limb : limbs_)
         {
-                trunk_->setChildren(children);
-
-                if(children == nullptr || children->size() < 0 || children->size() > 1)
-                        trunk_->setChild(nullptr);
-                else if(children->size() == 1)
-                {
-                        /// TODO: Substitue the for loop with the operator[] for ContainerBase
-                        for (auto joint : *(trunk_->getChildren()))
-                        {
-                                trunk_->setChild(joint);
-                        }
-                }
-        };
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> child)
-        {
-                joint->setChild(child);
+            if(limb.type().compare("leg") == 0)
+				count++;
         }
+        return count;
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfJoint(const std::shared_ptr<Joint> joint, const std::shared_ptr<Link> parent)
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	unsigned int Robot<NLIMBS, NLINKS, NJOINTS>::getNARMS() const 
+	{
+		unsigned int count{0};
+        for(auto& limb : limbs_)
         {
-                joint->setParent(parent);
+            if(limb.type().compare("arm") == 0)
+				count++;
         }
+        return count;
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setChildOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> child)
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const Joint& Robot<NLIMBS, NLINKS, NJOINTS>::getJoint(const std::string &name) const
+	{
+		for(auto& joint : this->getJoints())
         {
-
-                link->setChild(child);
-                link->setChildren(nullptr);
-
-                if(child != nullptr)
-                {
-                        std::array<std::shared_ptr<Joint>, 1> children{child};
-                        link->setChildren(std::make_shared<Container<std::shared_ptr<Joint>, 1>>(children));
-                }
+            if(joint->getName().compare(name) == 0)
+                return *joint;
         }
+        throw std::range_error("joint name not found");
+	}
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setParentOfLink(const std::shared_ptr<Link> link, const std::shared_ptr<Joint> parent)
-        {
-                link->setParent(parent);
-        }
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const ContainerBase<std::shared_ptr<Joint>>& Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
+	{
+		// if(joints_[0] == nullptr)
+		// {
+		// 	unsigned int count_data{0};
+		// 	for(auto& limb : limbs_)
+		// 	{
+		// 		for(auto& joint : limb.getJoints())
+		// 			this->joints_[count_data++] = std::shared_ptr<Joint>(&joint);
+		// 	}
+		// }
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::setJointLimits(const std::shared_ptr<Joint> joint, 
-                                                const double q_min, 
-                                                const double q_max, 
-                                                const double qd_max, 
-                                                const double tau_max)
-        {
-                joint->setMinAngle(q_min);
-                joint->setMaxAngle(q_max);
-                joint->setMaxVelocity(qd_max);
-                joint->setMaxEffort(tau_max);
-        }
-                                                
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<Link> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLink(const std::string& name) const
-        {
-                if (name.compare("") == 0)
-                        return nullptr;
-                else if (trunk_->getName().compare(name) == 0)
-                        return trunk_;
-                else
-                {
-                        for (auto leg : *(legs_))
-                        {
-                                std::shared_ptr<Link> link = leg->getLink(name);
-                                if (link != nullptr)
-                                        return link;
-                        }
-                }
+		// count_data = 0;
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& link : limb.getLinks())
+		// 		this->links_[count_data++] = std::shared_ptr<Link>(&link);
+		// }
+		return joints_;
+	}
 
-                std::cout << "LINK NOT FOUND FROM THE INPUT NAME " << name << std::endl;
-                std::cout << "Returning a nullptr... " << std::endl;
-                return std::shared_ptr<Link>(nullptr);
-        };
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const Link& Robot<NLIMBS, NLINKS, NJOINTS>::getLink(const std::string& name) const
+	{
+		for(auto& link : this->getLinks())
+        {
+            if(link->getName().compare(name) == 0)
+                return *link;
+        }
+        throw std::range_error("link name not found");
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<Joint> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getJoint(const std::string &name) const
-        {
-                if (name.compare("") == 0)
-                        return nullptr;
-                for (auto leg : *(legs_))
-                {
-                        std::shared_ptr<Joint> joint = leg->getJoint(name);
-                        if (joint != nullptr)
-                                return joint;
-                }
-                for (auto arm : *(this->getArms()))
-                {
-                        std::shared_ptr<Joint> joint = arm->getJoint(name);
-                        if (joint != nullptr)
-                                return joint;
-                }
-                std::cout << "JOINT NOT FOUND FROM THE INPUT NAME " << name << std::endl;
-                std::cout << "Returning a nullptr... " << std::endl;
-                return std::shared_ptr<Joint>(nullptr);
-        }
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+    const ContainerBase<std::shared_ptr<Link>>& Robot<NLIMBS, NLINKS, NJOINTS>::getLinks() const
+    {
+        return links_;
+    }
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getLeg(const std::string &name) const
-        {
-                for (auto leg : *(legs_))
-                {
-                        if (leg->getName().compare(name) == 0)
-                                return leg;
-                }
-                std::cout << "LEG NOT FOUND FROM THE INPUT NAME " << name << std::endl;
-                std::cout << "Returning a nullptr... " << std::endl;
-                return std::shared_ptr<LimbBase>(nullptr);
-        }
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const LimbBase& Robot<NLIMBS, NLINKS, NJOINTS>::getLimb(const std::string &name) const
+	{
+		for (auto& limb : limbs_)
+		{
+			if (limb.getName().compare(name) == 0)
+				return limb;
+		}
+		throw std::range_error("limb name not found");
+	}
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        std::shared_ptr<LimbBase> Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getArm(const std::string &name) const
-        {
-                for (auto arm : *(this->getArms()))
-                {
-                        if (arm->getName().compare(name) == 0)
-                                return arm;
-                }
-                std::cout << "ARM NOT FOUND FROM THE INPUT NAME " << name << std::endl;
-                std::cout << "Returning a nullptr... " << std::endl;
-                return std::shared_ptr<LimbBase>(nullptr);
-        }
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const ContainerBase<LimbBase>& Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
+	{
+		return limbs_;
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMinJointAngle(JointState &q_min)
-        {
-                for(auto leg : *legs_)
-                {
-                        for (auto joint : *leg->getJoints()) 
-                        {
-                                q_min[joint] = joint->getMinAngle();
-                        }
-                }
-        }
-        
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointAngle(JointState &q_max)
-        {
-                for(auto leg : *legs_)
-                {
-                        for (auto joint : *leg->getJoints()) 
-                        {
-                                q_max[joint] = joint->getMaxAngle();
-                        }
-                }
-        }
-        
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointVelocity(JointState &qd_max)
-        {
-                for(auto leg : *legs_)
-                {
-                        for (auto joint : *leg->getJoints()) 
-                        {
-                                qd_max[joint] = joint->getMaxVelocity();
-                        }
-                }
-        }
-        
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        void Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getMaxJointEffort(JointState &tau_max)
-        {
-                for(auto leg : *legs_)
-                {
-                        for (auto joint : *leg->getJoints()) 
-                        {
-                                tau_max[joint] = joint->getMaxEffort();
-                        }
-                }
-        }
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const std::vector<std::shared_ptr<const LimbBase>> Robot<NLIMBS, NLINKS, NJOINTS>::getLegs() const
+	{
+		std::vector<std::shared_ptr<const LimbBase>> out;
+		for(auto& limb : limbs_)
+		{
+			if(limb.type().compare("leg"))
+				out.push_back(std::shared_ptr<const LimbBase>(&limb));
+		}
+		return out;
+	};
 
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Eigen::Vector3d Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
-        {
-                return trunk_->getCoM();
-        };
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	const std::vector<std::shared_ptr<const LimbBase>> Robot<NLIMBS, NLINKS, NJOINTS>::getArms() const
+	{
+		std::vector<std::shared_ptr<const LimbBase>> out;
+		for(auto& limb : limbs_)
+		{
+			if(limb.type().compare("arm"))
+				out.push_back(std::shared_ptr<const LimbBase>(&limb));
+		}
+		return out;
+	};
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	void Robot<NLIMBS, NLINKS, NJOINTS>::getMinJointAngle(JointState &q_min)
+	{
+		for (auto& joint : this->getJoints())
+		{
+			q_min[joint] = joint->getMinAngle();
+		}
+	}
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	void Robot<NLIMBS, NLINKS, NJOINTS>::getMaxJointAngle(JointState &q_max)
+	{
+		for (auto& joint : this->getJoints())
+		{
+			q_max[joint] = joint->getMaxAngle();
+		}
+	}
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	void Robot<NLIMBS, NLINKS, NJOINTS>::getMaxJointVelocity(JointState &qd_max)
+	{
+		for (auto& joint : this->getJoints())
+		{
+			qd_max[joint] = joint->getMaxVelocity();
+		}
+	}
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	void Robot<NLIMBS, NLINKS, NJOINTS>::getMaxJointEffort(JointState &tau_max)
+	{
+		for (auto& joint : this->getJoints())
+		{
+			tau_max[joint] = joint->getMaxEffort();
+		}
+	}
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+	Eigen::Vector3d Robot<NLIMBS, NLINKS, NJOINTS>::getTrunkCOM() const
+	{
+		return trunk_.getCoM();
+	};
+
 } // namespace robotlib

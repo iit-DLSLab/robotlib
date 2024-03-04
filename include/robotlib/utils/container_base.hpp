@@ -17,35 +17,63 @@ namespace robotlib
     template <class Data>
     class ContainerBase
     {
+        //! Robot is a friend class to let it use the private methods of the Joint class.
+		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+		friend class Robot;
+
     public:
         /*!
          * @brief Constructor.
          */
-        ContainerBase();
+        ContainerBase() = default;
 
         /*!
          * @brief Destructor.
          */
-        virtual ~ContainerBase();
+        virtual ~ContainerBase() = default;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the array stored in the Container child class.
         */
-        virtual Iterator<const Data> begin() const = 0;
+        virtual Iterator<const Data> begin() const;
+        
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the array stored in the Container child class.
         */
-        virtual Iterator<const Data> end() const = 0;
+        virtual Iterator<const Data> end() const;
 
-        //TODO: define [] operator using a string as input (it implies that all the possible Data classes have a getName function)
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the data_ variable.
+        */
+        virtual Iterator<Data> begin();
+
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the data_ variable.
+        */
+        virtual Iterator<Data> end();
 
         /*!
         * @brief Get the size of the array stored in the Container child class.
         * @return size of the array stored in the Container child class.
         */
-        virtual int size() const = 0;
+        virtual unsigned int length() const;
+
+        /*!
+        * @brief Get reference to data at idx position.
+        * @param[in] idx index of the data in std::array.
+        */
+        virtual Data& operator[](unsigned int idx);
+
+        // /*!
+        // * @brief Get reference to data at idx position.
+        // * @param[in] idx index of the data in std::array.
+        // */
+        // virtual Data& operator[](unsigned int idx) const;
+
     };
 } // namespace robotlib
 

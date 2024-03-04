@@ -13,22 +13,25 @@ namespace robotlib
      *        arbitrary number of joints. 
      * @details
      * It inherits from Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class to handle matrix operations 
-     * easily. Its dimension is 6 X num_joints, where 6 stands for the linear and angular part of the jacobian. num_joints is the number of joints and it is arbitrary, which means that jacobians corresponding to a different number of joints can be defined. E.g. we can define a jacobian for each robot limb where each of them can have a different number of joints.
+     * easily. Its dimension is 6 X num_joints, where 6 stands for the linear and angular part of the jacobian. 
+     * num_joints is the number of joints and it is arbitrary, which means that jacobians corresponding to a different number of joints 
+     * can be defined. E.g. we can define a jacobian for each robot limb where each of them can have a different number of joints.
      * 
-     * This class provides also functions to access only to linear and angular part of the jacobian plus of course all the eigen functions inherited from the Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
+     * This class provides also functions to access only to linear and angular part of the jacobian plus of course all the eigen functions
+     * inherited from the Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
      */
     class Jacobian : public Map
     {
-        //! RobotBase is a friend class to let it use the private costructors of the Jacobian class.
+        //! Robot is a friend class to let it use the private methods of the Joint class.
+		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+		friend class Robot;
         friend class RobotBase;
 
-        template <class Data> 
-        friend class LegDataMap;
-
     public:        
-        template <class Data> friend class LegDataMap;
-        template <class Key, class Data> friend class DataMap;
-        friend class Pair;
+        /*!
+		 * @brief Copy constructor.
+		*/
+        Jacobian(const Jacobian& jacobian);
 
         /*!
 		 * @brief Destructor.
@@ -97,45 +100,43 @@ namespace robotlib
 		 */
         Jacobian &operator=(const Jacobian &other);
 
-        /*!
-		 * @brief Print function.
-         * @details
-         * It prints the Jacobian object.
-		 */
-        void print();
+        // /*!
+		//  * @brief Print function.
+        //  * @details
+        //  * It prints the Jacobian object.
+		//  */
+        // void print();
 
     private:
         /*!
 		 * @brief Full constructor.
          * @details
-         * This constructor is used to create a Jacobian object given the number of joints and a default value. When using this constructor, the 
-         * init function is not needed.
+         * This constructor is used to create a Jacobian object given the number of joints and a default value. 
+         * When using this constructor, the init function is not needed.
          * @param [in] nJoints number of joints.
          * @param [in] data value used to initialize the jacobian.
 		 */
-        Jacobian(const int nJoints, const double data = 0.0);
-
-        Jacobian(const Jacobian& jacobian);
+        Jacobian(const int nJoints, const double& data = 0.0);
 
         /*!
 		 * @brief Empy constructor.
          * @details
-         * This constructor is used to create a LegDataMap<Jacobian> object, with "empty" jacobians. Each jacobian may have different sizes, and 
-         * the init function is used to initialize each of them.
+         * This constructor is used to create a LimbDataMap<Jacobian> object, with "empty" jacobians. 
+         * Each jacobian may have different sizes, and the init function is used to initialize each of them.
          */
-        Jacobian();
+        Jacobian(const std::vector<double>& data);
 
-        /*!
-		 * @brief Init function. This function is needed to initialize the jacobians of a LegDataMap<Jacobian> object, where each jacobian may 
-         * have different sizes.
-         * @details
-         * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
-         * 
-         * To avoid dynamic memory allocation, fixed-size data structures are defined in Robotlib, like the LegDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LegDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
-         * @param [in] nJoints number of joints.
-         * @param [in] init_value value used to initialize the jacobian.
-		 */
-        void init(const int nJoints, const double init_value = 0.0);
+        // /*!
+		//  * @brief Init function. This function is needed to initialize the jacobians of a LimbDataMap<Jacobian> object, where each jacobian may 
+        //  * have different sizes.
+        //  * @details
+        //  * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
+        //  * 
+        //  * To avoid dynamic memory allocation, fixed-size data structures are defined in Robotlib, like the LimbDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LimbDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
+        //  * @param [in] nJoints number of joints.
+        //  * @param [in] init_value value used to initialize the jacobian.
+		//  */
+        // void init(const int nJoints, const double init_value = 0.0);
 
         //! Number of joints.
         int nJoints_;
