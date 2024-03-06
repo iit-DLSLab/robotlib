@@ -68,25 +68,25 @@ namespace robotlib
     };
 
     template <unsigned int NLINKS, unsigned int NJOINTS>
-    const ContainerBase<Joint>& Limb<NLINKS, NJOINTS>::getJoints() const
+    const ContainerBase<Joint> Limb<NLINKS, NJOINTS>::getJoints() const
     { 
-        return joints_; 
+        return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
     }
 
     template <unsigned int NLINKS, unsigned int NJOINTS>
-    ContainerBase<Joint>& Limb<NLINKS, NJOINTS>::getJoints()
+    ContainerBase<Joint> Limb<NLINKS, NJOINTS>::getJoints()
     { 
-        return joints_; 
+        return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
     }
 
     template <unsigned int NLINKS, unsigned int NJOINTS>
-    const ContainerBase<Link>& Limb<NLINKS, NJOINTS>::getLinks() const
+    const ContainerBase<Link> Limb<NLINKS, NJOINTS>::getLinks() const
     { 
-        return links_; 
+        return ContainerBase<Link>((ContainerAbstract<Link>&) links_); 
     };
 
     template <unsigned int NLINKS, unsigned int NJOINTS>
-    ContainerBase<Link>& Limb<NLINKS, NJOINTS>::getLinks()
+    ContainerBase<Link> Limb<NLINKS, NJOINTS>::getLinks()
     { 
         return links_; 
     };

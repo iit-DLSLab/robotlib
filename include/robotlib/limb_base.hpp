@@ -60,79 +60,51 @@ namespace robotlib
        * @brief Get the number of the joints of the Limb.
        * @return number of the limb's joints.
        */
-      virtual unsigned int getNJoints() const;
+      virtual unsigned int getNJoints() const = 0;
 
       /*!
        * @brief Get the number of the links of the limb.
        * @return number of the limb's links.
        */
-      virtual unsigned int getNLinks() const;
+      virtual unsigned int getNLinks() const = 0;
 
       /*!
        * @brief Get the Joint object associated to the joint name.
        * @param[in] name name of the Joint object that is returned
        * @return shared pointer pointing to the joint.
 	   */
-	   virtual const Joint& getJoint(const std::string &name) const;
+	   virtual const Joint& getJoint(const std::string &name) const = 0;
 
       /*!
        * @brief Get the Link object associated to the name.
        * @param[in] name name of the Link object that is returned.
        * @return shared pointer pointing to the link.
        */
-      virtual const Link& getLink(const std::string &name) const;
+      virtual const Link& getLink(const std::string &name) const = 0;
 
       /*!
        * @brief Get the limb end-effector.
        * @return shared pointer pointing to the limb end-effector. 
        */
-      virtual const Link& getEndEffector() const;
+      virtual const Link& getEndEffector() const = 0;
 
       /*!
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      virtual const ContainerBase<Joint>& getJoints() const;
+      virtual const ContainerBase<Joint> getJoints() const = 0;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      virtual const ContainerBase<Link>& getLinks() const;
-
-      // /*!
-      //  * @brief Get the name of the joint's parent of the limb.
-      //  * @param[in] joint Joint object for which you get the name of the parent.
-      //  * @return name of the joint's parent. 
-      //  */
-      // virtual std::string jointToParentName(const Joint& joint) const;
-
-      // /*!
-      //  * @brief Get the name of the joint's child of the limb.
-      //  * @param[in] joint Joint object for which you get the name of the child.
-      //  * @return name of the joint's child.
-      //  */
-      // virtual std::string jointToChildName(const Joint& joint) const;
-
-      // /*!
-      //  * @brief Get the name of link's parent of the limb.
-      //  * @param[in] link Link object for which you get the name of the parent.
-      //  * @return name of the link's parent.
-      //  */
-      // virtual std::string linkToParentName(const Link& link) const;
-
-      // /*!
-      //  * @brief Get the name of the link's child of the limb.
-      //  * @param[in] link Link object for which you get the name of the child.
-      //  * @return name of the link's child.
-      //  */
-      // virtual std::string linkToChildName(const Link& link) const; 
+      virtual const ContainerBase<Link> getLinks() const = 0;
 
       /*!
        * @brief Type of the the limb.
        * @return return a string with the type of the arm e.g, leg, arm, etc.
        */
-      virtual std::string type() const;
+      virtual std::string type() const = 0;
 
       /*!
        * @brief Operator for comparing two limbs.
@@ -146,13 +118,13 @@ namespace robotlib
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      virtual ContainerBase<Joint>& getJoints();
+      virtual ContainerBase<Joint> getJoints() = 0;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      virtual ContainerBase<Link>& getLinks();
+      virtual ContainerBase<Link> getLinks() = 0;
 
    private:
 

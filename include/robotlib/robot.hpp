@@ -90,7 +90,7 @@ namespace robotlib
          * @brief Get robot's joints.
          * @return robot's joints as a ContainerBase object.
          */
-        const ContainerBase<Joint> getJoints() override;
+        const ContainerBase<Joint> getJoints() const override;
 
         /*!
          * @brief Get robot's link from link's name.
@@ -103,7 +103,7 @@ namespace robotlib
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        const ContainerBase<Link> getLinks() override;
+        const ContainerBase<Link> getLinks() const override;
 
         /*!
          * @brief Get robot's limb from limb's name.

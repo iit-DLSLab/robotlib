@@ -11,20 +11,19 @@ namespace robotlib
 		, trunk_(trunk)
 		, limbs_(limbs)
 	{
-		// unsigned int count_data{0};
-		// for(auto& limb : limbs_)
-		// {
-		// 	for(auto& joint : limb.getJoints())
-		// 		this->joints_[count_data++] = std::shared_ptr<Joint>(&joint);
-		// }
+		Iterator<Joint> jointIt = this->joints_.begin();
+		for(auto& limb : limbs_)
+		{
+			for(auto& joint : limb.getJoints())
+				jointIt++ = std::shared_ptr<Joint>(&joint);
+		}
 
-		// count_data = 0;
-		// for(auto& limb : limbs_)
-		// {
-		// 	for(auto& link : limb.getLinks())
-		// 		this->links_[count_data++] = std::shared_ptr<Link>(&link);
-		// }
-
+		Iterator<Link> linkIt = this->links_.begin();
+		for(auto& limb : limbs_)
+		{
+			for(auto& link : limb.getLinks())
+				linkIt++ = std::shared_ptr<Link>(&link);
+		}
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -72,26 +71,9 @@ namespace robotlib
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints()
+	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
 	{
-		// if(joints_[0] == nullptr)
-		// {
-		// 	unsigned int count_data{0};
-		// 	for(auto& limb : limbs_)
-		// 	{
-		// 		for(auto& joint : limb.getJoints())
-		// 			this->joints_[count_data++] = std::shared_ptr<Joint>(&joint);
-		// 	}
-		// }
-
-		// count_data = 0;
-		// for(auto& limb : limbs_)
-		// {
-		// 	for(auto& link : limb.getLinks())
-		// 		this->links_[count_data++] = std::shared_ptr<Link>(&link);
-		// }
-		ContainerBase<Joint> out(dynamic_cast<ContainerAbstract<Joint> &>(joints_));
-		return out;
+		return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -106,10 +88,9 @@ namespace robotlib
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    const ContainerBase<Link> Robot<NLIMBS, NLINKS, NJOINTS>::getLinks()
+    const ContainerBase<Link> Robot<NLIMBS, NLINKS, NJOINTS>::getLinks() const
     {
-		ContainerBase<Link> out(dynamic_cast<ContainerAbstract<Link> &>(links_));
-		return out;
+		return ContainerBase<Link>((ContainerAbstract<Link>&) links_); 
     }
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -126,8 +107,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<LimbBase> Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
 	{
-		ContainerBase<LimbBase> out(dynamic_cast<ContainerAbstract<LimbBase>&>(limbs_));
-		return out;
+		return ContainerBase<LimbBase>((ContainerAbstract<LimbBase>&) limbs_); 
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -159,7 +139,7 @@ namespace robotlib
 	{
 		for (auto& joint : this->getJoints())
 		{
-			q_min[joint] = joint->getMinAngle();
+			q_min[joint] = joint.getMinAngle();
 		}
 	}
 
@@ -168,7 +148,7 @@ namespace robotlib
 	{
 		for (auto& joint : this->getJoints())
 		{
-			q_max[joint] = joint->getMaxAngle();
+			q_max[joint] = joint.getMaxAngle();
 		}
 	}
 
@@ -177,7 +157,7 @@ namespace robotlib
 	{
 		for (auto& joint : this->getJoints())
 		{
-			qd_max[joint] = joint->getMaxVelocity();
+			qd_max[joint] = joint.getMaxVelocity();
 		}
 	}
 
@@ -186,7 +166,7 @@ namespace robotlib
 	{
 		for (auto& joint : this->getJoints())
 		{
-			tau_max[joint] = joint->getMaxEffort();
+			tau_max[joint] = joint.getMaxEffort();
 		}
 	}
 

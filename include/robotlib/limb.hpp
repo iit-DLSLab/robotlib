@@ -86,13 +86,13 @@ namespace robotlib
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      const ContainerBase<Joint>& getJoints() const override;
+      const ContainerBase<Joint> getJoints() const override;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      const ContainerBase<Link>& getLinks() const override;
+      const ContainerBase<Link> getLinks() const override;
 
    // protected:
 
@@ -100,13 +100,13 @@ namespace robotlib
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      ContainerBase<Joint>& getJoints() override;
+      ContainerBase<Joint> getJoints() override;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      ContainerBase<Link>& getLinks() override;
+      ContainerBase<Link> getLinks() override;
 
 
    private:
