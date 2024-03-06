@@ -21,7 +21,7 @@ namespace robotlib
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     DummyRobot<NLIMBS, NLINKS, NJOINTS>::DummyRobot(const std::string& name,
                                                     Trunk& trunk,
-                                                    std::array<LimbBase, NLIMBS> limbs)
+                                                    std::array<std::shared_ptr<LimbBase>, NLIMBS> limbs)
         : Robot<NLIMBS, NLINKS, NJOINTS>(name, trunk, limbs)
 	{
         // Set joint limits (dummy limits are used here)
@@ -32,7 +32,7 @@ namespace robotlib
 
         for (auto& joint: this->getJoints())
         {
-            joint->setJointLimits(q_min, q_max, qd_max, tau_max);
+            joint.setJointLimits(q_min, q_max, qd_max, tau_max);
         }
 	}
     

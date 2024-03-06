@@ -9,13 +9,13 @@
 namespace robotlib
 {
     /*!
-     * @brief ContainerBase class. This class is a base class for a wrapper around a std::array object.
+     * @brief ContainerAbstract class. This class is a base class for a wrapper around a std::array object.
      * @details
-     * This class is used to access to the std::array variable defined in the Container child class, without knowing its length. In this way, the ContainerBase class can be used in the RobotBase class.
+     * This class is used to access to the std::array variable defined in the Container child class, without knowing its length. In this way, the ContainerAbstract class can be used in the RobotBase class.
      * @tparam Data data type of the object to be stored.
      */
     template <class Data>
-    class ContainerBase
+    class ContainerAbstract
     {
         //! Robot is a friend class to let it use the private methods of the Joint class.
 		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -25,7 +25,69 @@ namespace robotlib
         /*!
          * @brief Constructor.
          */
-        ContainerBase() = default;
+        ContainerAbstract() = default;
+
+        /*!
+         * @brief Destructor.
+         */
+        virtual ~ContainerAbstract() = default;
+
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the array stored in the Container child class.
+        */
+        virtual Iterator<const Data> begin() const = 0;
+        
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the array stored in the Container child class.
+        */
+        virtual Iterator<const Data> end() const = 0;
+
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the data_ variable.
+        */
+        virtual Iterator<Data> begin() = 0;
+
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the data_ variable.
+        */
+        virtual Iterator<Data> end() = 0;
+
+        /*!
+        * @brief Get the size of the array stored in the Container child class.
+        * @return size of the array stored in the Container child class.
+        */
+        virtual unsigned int length() const = 0;
+
+        /*!
+        * @brief Get reference to data at idx position.
+        * @param[in] idx index of the data in std::array.
+        */
+        virtual Data& operator[](unsigned int idx) = 0;
+
+    };
+
+
+    template <class Data>
+    class ContainerBase : public std::shared_ptr<ContainerAbstract<Data>>
+    {
+        //! Robot is a friend class to let it use the private methods of the Joint class.
+		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+		friend class Robot;
+
+    public:
+        /*!
+         * @brief Constructor.
+         */
+        ContainerBase() : std::shared_ptr<ContainerAbstract<Data>>() {};
+
+         /*!
+         * @brief Constructor.
+         */
+        ContainerBase(ContainerAbstract<Data>& rhd) : std::shared_ptr<ContainerAbstract<Data>>(&rhd) {};
 
         /*!
          * @brief Destructor.
@@ -34,49 +96,29 @@ namespace robotlib
 
         /*!
         * @brief Begin function to be used with iterators.
-        * @return iterator object pointing to the first data of the array stored in the Container child class.
-        */
-        virtual Iterator<const Data> begin() const;
-        
-        /*!
-        * @brief End function to be used with iterators.
-        * @return iterator object pointing to the last data of the array stored in the Container child class.
-        */
-        virtual Iterator<const Data> end() const;
-
-        /*!
-        * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual Iterator<Data> begin();
+        virtual Iterator<Data> begin() { return this->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual Iterator<Data> end();
+        virtual Iterator<Data> end() { return this->end(); }
+
 
         /*!
-        * @brief Get the size of the array stored in the Container child class.
-        * @return size of the array stored in the Container child class.
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual unsigned int length() const;
+        virtual const Iterator<Data> begin() const { return this->begin(); }
 
         /*!
-        * @brief Get reference to data at idx position.
-        * @param[in] idx index of the data in std::array.
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual Data& operator[](unsigned int idx);
-
-        // /*!
-        // * @brief Get reference to data at idx position.
-        // * @param[in] idx index of the data in std::array.
-        // */
-        // virtual Data& operator[](unsigned int idx) const;
-
+        virtual const Iterator<Data> end() const { return this->end(); }
     };
 } // namespace robotlib
-
-#include "container_base.tpp"
 
 #endif // _CONTAINER_BASE_HPP_

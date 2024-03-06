@@ -13,7 +13,7 @@ namespace robotlib
      * @tparam Length length of the wrapped std::array variable.
      */
     template <class Data, unsigned int Length>
-    class Container : public ContainerBase<Data>
+    class Container : public ContainerAbstract<Data>
     {
         //! Robot is a friend class to let it use the private methods of the Joint class.
 		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -30,7 +30,7 @@ namespace robotlib
          * @brief Constructor.
          * @param[in] data std::array of data to be wrapped.
          */
-        Container(const std::array<Data, Length> data);
+        Container(std::array<std::shared_ptr<Data>, Length> data);
 
         /*!
         * @brief Destructor.
@@ -78,8 +78,9 @@ namespace robotlib
     private:
     
         //! std::array wrapped by the Container class.
-        std::array<Data, Length> data_;
+        std::array<std::shared_ptr<Data>, Length> data_;
     };
+
 } // namespace robotlib
 
 #include "container.tpp"

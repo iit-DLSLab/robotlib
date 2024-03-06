@@ -16,11 +16,6 @@ namespace robotlib
     {}
 
     template <class Data> 
-    JointDataMap<Data>::JointDataMap(const ContainerBase<std::shared_ptr<Joint>> joints, const Data& data) 
-        : DataMap<Joint, Data>(joints, data)
-    {}
-
-    template <class Data> 
     JointDataMap<Data>::JointDataMap(const JointDataMap<Data>& other) 
         : DataMap<Joint, Data>(other)
     {}

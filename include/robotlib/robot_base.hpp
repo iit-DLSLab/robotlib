@@ -152,7 +152,7 @@ namespace robotlib
          * @brief Get robot's joints.
          * @return robot's joints as a ContainerBase object.
          */
-        virtual const ContainerBase<std::shared_ptr<Joint>>& getJoints() const = 0;
+        virtual const ContainerBase<Joint> getJoints() = 0;
 
         /*!
          * @brief Get robot's link from link's name.
@@ -165,7 +165,7 @@ namespace robotlib
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        virtual const ContainerBase<std::shared_ptr<Link>>& getLinks() const = 0;
+        virtual const ContainerBase<Link> getLinks() = 0;
 
         /*!
          * @brief Get robot's limb from limb's name.
@@ -178,7 +178,7 @@ namespace robotlib
          * @brief Get robot's limbs.
          * @return robot's limbs as a ContainerBase object.
          */
-        virtual const ContainerBase<LimbBase>& getLimbs() const = 0;
+        virtual const ContainerBase<LimbBase> getLimbs() const = 0;
 
         /*!
          * @brief Get robot's legs.

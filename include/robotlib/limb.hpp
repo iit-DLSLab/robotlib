@@ -42,8 +42,8 @@ namespace robotlib
       * @param[in] links array of shared pointers pointing to limb's links.
       */
       Limb(const std::string& name,
-           const std::array<Link, NLINKS>& links,
-           const std::array<Joint, NJOINTS>& joints);
+           const std::array<std::shared_ptr<Link>, NLINKS>& links,
+           const std::array<std::shared_ptr<Joint>, NJOINTS>& joints);
 
       /*!
       * @brief Destructor.
@@ -94,7 +94,7 @@ namespace robotlib
        */
       const ContainerBase<Link>& getLinks() const override;
 
-   protected:
+   // protected:
 
       /*!
        * @brief Get the joints of the Limb.

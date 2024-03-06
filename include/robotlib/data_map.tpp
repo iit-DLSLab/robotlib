@@ -9,7 +9,7 @@ namespace robotlib
 {
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const Data& data)
-        : num_data_(keys.length())
+        : num_data_(keys->length())
     {
         int count_data = 0;
         for(auto& key : keys)
@@ -20,7 +20,7 @@ namespace robotlib
 
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data) 
-        : num_data_(keys.length())
+        : num_data_(keys->length())
     {
         int count_data = 0;
         for(auto& key : keys)

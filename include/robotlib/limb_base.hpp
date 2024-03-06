@@ -140,7 +140,7 @@ namespace robotlib
        */
       bool operator==(const LimbBase& rhs) const;
 
-   protected:
+   // protected:
 
       /*!
        * @brief Get the joints of the Limb.

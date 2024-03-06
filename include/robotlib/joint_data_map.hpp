@@ -67,12 +67,6 @@ namespace robotlib
          */
         JointDataMap(const ContainerBase<Joint>& joints, const std::vector<Data>& data);
 
-        /*!
-         * @brief Constructor.
-         * @param[in] joints list of pointers to joints used to map the data.
-         * @param[in] data data to be associated all the joints.
-         */
-        JointDataMap(const ContainerBase<std::shared_ptr<Joint>> joints, const Data& data);
     };
 }
 

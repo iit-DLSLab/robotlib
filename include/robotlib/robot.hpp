@@ -42,7 +42,7 @@ namespace robotlib
          */
 		Robot(const std::string& name,
 			  const Trunk& trunk,
-			  const std::array<LimbBase, NLIMBS>& limbs);
+			  std::array<std::shared_ptr<LimbBase>, NLIMBS>& limbs);
 
 		/*!
          * @brief Destructor.
@@ -90,7 +90,7 @@ namespace robotlib
          * @brief Get robot's joints.
          * @return robot's joints as a ContainerBase object.
          */
-        const ContainerBase<std::shared_ptr<Joint>>& getJoints() const override;
+        const ContainerBase<Joint> getJoints() override;
 
         /*!
          * @brief Get robot's link from link's name.
@@ -103,7 +103,7 @@ namespace robotlib
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        const ContainerBase<std::shared_ptr<Link>>& getLinks() const override;
+        const ContainerBase<Link> getLinks() override;
 
         /*!
          * @brief Get robot's limb from limb's name.
@@ -116,7 +116,7 @@ namespace robotlib
          * @brief Get robot's limbs.
          * @return robot's limbs as a ContainerBase object.
          */
-        const ContainerBase<LimbBase>& getLimbs() const override;
+        const ContainerBase<LimbBase> getLimbs() const override;
 
         /*!
          * @brief Get robot's legs.
@@ -178,10 +178,10 @@ namespace robotlib
 		Container<LimbBase, NLIMBS> limbs_;
 
         //! List of pointes to the joints of the robot
-		Container<std::shared_ptr<Joint>, NJOINTS> joints_;
+		Container<Joint, NJOINTS> joints_;
 
         //! Joints of the robot
-		Container<std::shared_ptr<Link>, NLINKS> links_;
+		Container<Link, NLINKS> links_;
 
 	};
 } // namespace robotlib

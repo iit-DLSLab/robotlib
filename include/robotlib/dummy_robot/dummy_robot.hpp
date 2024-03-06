@@ -43,7 +43,7 @@ namespace robotlib
         */
         DummyRobot(const std::string& name,
                    Trunk& trunk,
-                   std::array<LimbBase, NLIMBS> limbs);
+                   std::array<std::shared_ptr<LimbBase>, NLIMBS> limbs);
 
         /*!
         * @brief Destructor.

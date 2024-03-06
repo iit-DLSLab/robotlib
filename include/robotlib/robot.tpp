@@ -6,7 +6,7 @@ namespace robotlib
 	Robot<NLIMBS, NLINKS, NJOINTS>::Robot(
 		const std::string& name,
 		const Trunk& trunk,
-		const std::array<LimbBase, NLIMBS>& limbs)
+		std::array<std::shared_ptr<LimbBase>, NLIMBS>& limbs)
 		: RobotBase(name)
 		, trunk_(trunk)
 		, limbs_(limbs)
@@ -63,16 +63,16 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const Joint& Robot<NLIMBS, NLINKS, NJOINTS>::getJoint(const std::string &name) const
 	{
-		for(auto& joint : this->getJoints())
+		for(auto& joint : joints_)
         {
-            if(joint->getName().compare(name) == 0)
-                return *joint;
+            if(joint.getName().compare(name) == 0)
+                return joint;
         }
         throw std::range_error("joint name not found");
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	const ContainerBase<std::shared_ptr<Joint>>& Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
+	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints()
 	{
 		// if(joints_[0] == nullptr)
 		// {
@@ -90,24 +90,26 @@ namespace robotlib
 		// 	for(auto& link : limb.getLinks())
 		// 		this->links_[count_data++] = std::shared_ptr<Link>(&link);
 		// }
-		return joints_;
+		ContainerBase<Joint> out(dynamic_cast<ContainerAbstract<Joint> &>(joints_));
+		return out;
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const Link& Robot<NLIMBS, NLINKS, NJOINTS>::getLink(const std::string& name) const
 	{
-		for(auto& link : this->getLinks())
+		for(auto& link : links_)
         {
-            if(link->getName().compare(name) == 0)
-                return *link;
+            if(link.getName().compare(name) == 0)
+                return link;
         }
         throw std::range_error("link name not found");
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    const ContainerBase<std::shared_ptr<Link>>& Robot<NLIMBS, NLINKS, NJOINTS>::getLinks() const
+    const ContainerBase<Link> Robot<NLIMBS, NLINKS, NJOINTS>::getLinks()
     {
-        return links_;
+		ContainerBase<Link> out(dynamic_cast<ContainerAbstract<Link> &>(links_));
+		return out;
     }
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -122,9 +124,10 @@ namespace robotlib
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	const ContainerBase<LimbBase>& Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
+	const ContainerBase<LimbBase> Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
 	{
-		return limbs_;
+		ContainerBase<LimbBase> out(dynamic_cast<ContainerAbstract<LimbBase>&>(limbs_));
+		return out;
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
