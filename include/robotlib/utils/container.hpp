@@ -41,25 +41,25 @@ namespace robotlib
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        Iterator<const Data> begin() const override;
+        IteratorContainer<Data> begin() const override;
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        Iterator<const Data> end() const override;
+        IteratorContainer<Data> end() const override;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        Iterator<Data> begin() override;
+        IteratorContainer<Data> begin() override;
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        Iterator <Data> end() override;
+        IteratorContainer <Data> end() override;
 
         /*!
         * @brief Get the size of the wrapped std::array.
@@ -73,7 +73,8 @@ namespace robotlib
         */
         Data& operator[](unsigned int idx) override;
 
-        // Data& operator[](unsigned int idx) const override;
+
+        std::shared_ptr<Data> at(unsigned int idx) override;
 
     private:
     

@@ -1,7 +1,7 @@
 #ifndef _CONTAINER_BASE_HPP_
 #define _CONTAINER_BASE_HPP_
 
-#include "iterator.hpp"
+#include "iterator_container.hpp"
 
 #include <memory>
 #include <Eigen/Dense>
@@ -36,25 +36,25 @@ namespace robotlib
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the array stored in the Container child class.
         */
-        virtual Iterator<const Data> begin() const = 0;
+        virtual IteratorContainer<Data> begin() const = 0;
         
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the array stored in the Container child class.
         */
-        virtual Iterator<const Data> end() const = 0;
+        virtual IteratorContainer<Data> end() const = 0;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual Iterator<Data> begin() = 0;
+        virtual IteratorContainer<Data> begin() = 0;
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual Iterator<Data> end() = 0;
+        virtual IteratorContainer<Data> end() = 0;
 
         /*!
         * @brief Get the size of the array stored in the Container child class.
@@ -67,6 +67,9 @@ namespace robotlib
         * @param[in] idx index of the data in std::array.
         */
         virtual Data& operator[](unsigned int idx) = 0;
+
+
+        virtual std::shared_ptr<Data> at(unsigned int idx) = 0;
 
     };
 
@@ -98,26 +101,26 @@ namespace robotlib
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual Iterator<Data> begin() { return this->begin(); }
+        virtual IteratorContainer<Data> begin() { return this->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual Iterator<Data> end() { return this->end(); }
+        virtual IteratorContainer<Data> end() { return this->end(); }
 
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual const Iterator<Data> begin() const { return this->begin(); }
+        virtual const IteratorContainer<Data> begin() const { return this->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual const Iterator<Data> end() const { return this->end(); }
+        virtual const IteratorContainer<Data> end() const { return this->end(); }
     };
 } // namespace robotlib
 

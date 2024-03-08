@@ -6,24 +6,29 @@ namespace robotlib
 	Robot<NLIMBS, NLINKS, NJOINTS>::Robot(
 		const std::string& name,
 		const Trunk& trunk,
-		std::array<std::shared_ptr<LimbBase>, NLIMBS>& limbs)
+		Container<LimbBase, NLIMBS>& limbs)
 		: RobotBase(name)
 		, trunk_(trunk)
 		, limbs_(limbs)
 	{
-		Iterator<Joint> jointIt = this->joints_.begin();
+		std::cout << "1 -- testing ...." << std::endl;
+
 		for(auto& limb : limbs_)
 		{
+			std::cout << "testing .... " << limb.getName() <<  std::endl;
+
 			for(auto& joint : limb.getJoints())
-				jointIt++ = std::shared_ptr<Joint>(&joint);
+			{
+				std::cout << "#####" << joint.getName() << std::endl;
+			}
 		}
 
-		Iterator<Link> linkIt = this->links_.begin();
-		for(auto& limb : limbs_)
-		{
-			for(auto& link : limb.getLinks())
-				linkIt++ = std::shared_ptr<Link>(&link);
-		}
+		// Iterator<Link> linkIt = this->links_.begin();
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& link : limb.getLinks())
+		// 		linkIt++ = std::shared_ptr<Link>(&link);
+		// }
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>

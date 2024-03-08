@@ -20,8 +20,8 @@ namespace robotlib
 {
     template <unsigned int NLINKS, unsigned int NJOINTS>
     Limb<NLINKS, NJOINTS>::Limb(const std::string& name,
-                                const std::array<std::shared_ptr<Link>, NLINKS>& links,
-                                const std::array<std::shared_ptr<Joint>, NJOINTS>& joints)
+                                const Container<Link, NLINKS>& links,
+                                const Container<Joint, NJOINTS>& joints)
           : LimbBase(name)
           , joints_(joints)
           , links_(links)

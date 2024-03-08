@@ -37,8 +37,8 @@ namespace robotlib
         * @param[in] links array of shared pointers pointing to arm's links.
         */
         DummyArm(const std::string& name,
-                 const std::array<std::shared_ptr<Link>, NLINKS>& links,
-                 const std::array<std::shared_ptr<Joint>, NJOINTS>& joints);
+                 const Container<Link, NLINKS>& links,
+                 const Container<Joint, NJOINTS>& joints);
 
         /*!
         * @brief Destructor.

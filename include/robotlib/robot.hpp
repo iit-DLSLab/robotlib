@@ -42,7 +42,7 @@ namespace robotlib
          */
 		Robot(const std::string& name,
 			  const Trunk& trunk,
-			  std::array<std::shared_ptr<LimbBase>, NLIMBS>& limbs);
+			  Container<LimbBase, NLIMBS>& limbs);
 
 		/*!
          * @brief Destructor.

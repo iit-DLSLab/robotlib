@@ -20,7 +20,7 @@ namespace robotlib
 {
     template <unsigned int NLINKS, unsigned int NJOINTS>
     DummyLeg<NLINKS, NJOINTS>::DummyLeg::DummyLeg(const std::string& name,
-                                                  const std::array<std::shared_ptr<Link>, NLINKS>& links,
-                                                  const std::array<std::shared_ptr<Joint>, NJOINTS>& joints)
+                                                  const Container<Link, NLINKS>& links,
+                                                  const Container<Joint, NJOINTS>& joints)
         : Leg<NLINKS, NJOINTS>(name, links, joints){}
 } // namespace robotlib

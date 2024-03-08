@@ -40,8 +40,8 @@ namespace robotlib
         * @param[in] leg_links array of shared pointers pointing to leg's links.
         */
         DummyLeg(const std::string& name,
-                    const std::array<std::shared_ptr<Link>, NLINKS>& links,
-                    const std::array<std::shared_ptr<Joint>, NJOINTS>& joints);
+                 const Container<Link, NLINKS>& links,
+                 const Container<Joint, NJOINTS>& joints);
 
         /*!
         * @brief Destructor.
