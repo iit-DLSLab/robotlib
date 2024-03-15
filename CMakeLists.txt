@@ -82,31 +82,11 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if (BUILD_TESTING)
 	include(CTest)
+	find_package(GTest REQUIRED)
+	include(GoogleTest)
 	include(RobotlibGoogleTest)
-	# add_compile_options( # Uncomment these compile options to have more robust tests
-	# 	-fsanitize=leak,address,undefined #Enable LeakSanitizer, AddressSanitizer, UndefinedBehaviorSanitizer 
-	# )
-	# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)	
-	# add_subdirectory(tests)	
 
-	
-	# find_package(GTest REQUIRED)
-	# include(GoogleTest)
-
-	add_executable(
-		arm_unit_tests 
-		tests/unit_tests/arm_unit_tests.cpp
-	)
-
-	target_link_libraries(
-		arm_unit_tests
-		GTest::gtest_main
-		robotlib
-	)
-
-	# include(GoogleTest)
-	gtest_discover_tests(arm_unit_tests)
-	# add_test(arm_unit_tests arm_unit_tests)
+	add_subdirectory(tests)	
 endif()
 
 set(CPACK_PACKAGE_VERSION_MAJOR         ${PROJECT_VERSION_MAJOR})

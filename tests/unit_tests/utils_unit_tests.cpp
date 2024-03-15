@@ -20,34 +20,28 @@ TEST(UtilsUnitTests, Containers)
     std::cout << "Testing correct storing for non share pointer data...\n";
 
     const int N {10};
-    double value {1};
-    std::array<double, N> data;
+    std::array<double, N> data{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    for (auto &d : data)
+    robotlib::Container<double, N> container1(data);
+
+    for (auto i{0}; i < N-1; i++)
     {
-        d = value;
-    }
-
-    robotlib::Container<double, N> container(data);
-
-    for (auto& d : container)
-    {
-        EXPECT_EQ(d, value);
+        std::cout << "test  " << container1[i] << std::endl;
+        EXPECT_EQ(container1[i], i);
     }
 
     std::cout << "Testing correct storing for share pointer data... \n";
-    value = 2;
     std::array<std::shared_ptr<double>, N> data_shp;
 
-    for (auto &d : data_shp)
+    for (auto i{0}; i < N; i++)
     {
-        d = std::make_shared<double>(value);
+        data_shp[i] = std::make_shared<double>(i);
     }
 
-    robotlib::Container<std::shared_ptr<double>, N> container_shp(data_shp);
+    robotlib::Container<double, N> container2(data_shp);
 
-    for (auto d : container_shp)
+    for (auto i{0}; i < N; i++)
     {
-        EXPECT_EQ(*d, value);
+        EXPECT_EQ(container2[i], i);
     }
 }

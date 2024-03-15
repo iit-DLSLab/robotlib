@@ -53,15 +53,15 @@ namespace robotlib
         {
             for(unsigned int j{0}; j < NLINKSLEG; j++)
             {
-                leg_links.at(i*NLINKSLEG + j) = std::make_shared<Link>(components_names[(i*NLINKSLEG)+(j+2+NLEGS+(NJOINTSLEG*NLEGS))]);
+                leg_links.at(i*NLINKSLEG + j) = new Link(components_names[(i*NLINKSLEG)+(j+2+NLEGS+(NJOINTSLEG*NLEGS))]);
             }
 
             for(unsigned int j{0}; j < NJOINTSLEG; j++)
             {
-                leg_joints.at(i*NJOINTSLEG + j) = std::make_shared<Joint>(components_names[(i*NJOINTSLEG)+(j+2+NLEGS)]);
+                leg_joints.at(i*NJOINTSLEG + j) = new Joint(components_names[(i*NJOINTSLEG)+(j+2+NLEGS)]);
             }
 
-            limbs.at(i) = std::make_shared<DummyLeg<NLINKSLEG, NJOINTSLEG>>(components_names[i+2], leg_links, leg_joints); 
+            limbs.at(i) = new DummyLeg<NLINKSLEG, NJOINTSLEG>(components_names[i+2], leg_links, leg_joints); 
         }
 
         Container<Link, NARMS*NLINKSARM> arm_links;
@@ -71,15 +71,15 @@ namespace robotlib
         {
             for(unsigned int j{0}; j < NLINKSARM; j++)
             {
-                arm_links.at(i*NLINKSARM + j) = std::make_shared<Link>(components_names[(i*NLINKSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS+(NJOINTSARM*NARMS))]);
+                arm_links.at(i*NLINKSARM + j) = new Link(components_names[(i*NLINKSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS+(NJOINTSARM*NARMS))]);
             }
             
             for(unsigned int j{0}; j < NJOINTSARM; j++)
             {
-                arm_joints.at(i*NJOINTSARM + j) = std::make_shared<Joint>(components_names[(i*NJOINTSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS)]);
+                arm_joints.at(i*NJOINTSARM + j) = new Joint(components_names[(i*NJOINTSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS)]);
             }
 
-            limbs.at(NLEGS + i) = std::make_shared<DummyArm<NLINKSARM, NJOINTSARM>>(components_names[i+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)], arm_links, arm_joints); 
+            limbs.at(NLEGS + i) = new DummyArm<NLINKSARM, NJOINTSARM>(components_names[i+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)], arm_links, arm_joints); 
         }
 
         return std::make_shared<DummyRobot<NARMS+NLEGS, NLINKSARM+NLINKSLEG, NJOINTSARM+NJOINTSLEG>>(name, trunk, limbs);
