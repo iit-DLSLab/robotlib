@@ -70,13 +70,26 @@ namespace robotlib
     template <unsigned int NLINKS, unsigned int NJOINTS>
     const ContainerBase<Joint> Limb<NLINKS, NJOINTS>::getJoints() const
     { 
+        // std::cout << "##### getJoints" << std::endl;
+
+        // for(auto& joint : joints_)
+        // {
+        //     std::cout << "#####" << joint.getName() << std::endl;
+        // }
         return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
     }
 
     template <unsigned int NLINKS, unsigned int NJOINTS>
     ContainerBase<Joint> Limb<NLINKS, NJOINTS>::getJoints()
     { 
-        return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
+        std::cout << "##### getJoints #####" << std::endl;
+        for(auto& joint : joints_)
+        {
+            std::cout << "#####" << joint.getName() << std::endl;
+        }
+
+        // return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
+        return joints_; 
     }
 
     template <unsigned int NLINKS, unsigned int NJOINTS>

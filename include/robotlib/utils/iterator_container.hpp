@@ -18,7 +18,7 @@ namespace robotlib
          * @brief Constructor.
          * @param[in] ptr pointer of type Data*.
          */
-        IteratorContainer(Data** ptr) : m_ptr(ptr) {}
+        IteratorContainer(const std::shared_ptr<Data>* ptr) : m_ptr(ptr) {}
 
         /*!
          * @brief Operator *.
@@ -36,13 +36,13 @@ namespace robotlib
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        Data* operator->() { return *m_ptr; }
+        std::shared_ptr<Data> operator->() { return m_ptr; }
 
         /*!
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        Data** get() { return *m_ptr; }
+        std::shared_ptr<Data>* get() { return *m_ptr; }
 
         /*!
          * @brief Pre-increment version of operator ++.
@@ -104,7 +104,7 @@ namespace robotlib
 
     protected:
         //! Pointer pointing to the data.
-        Data** m_ptr;
+        const std::shared_ptr<Data>* m_ptr;
     };
 } // namespace robotlib
 #endif // _ITERATOR_CONTAINER_HPP_

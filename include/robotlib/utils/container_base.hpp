@@ -32,17 +32,17 @@ namespace robotlib
          */
         virtual ~ContainerAbstract() = default;
 
-        // /*!
-        // * @brief Begin function to be used with iterators.
-        // * @return iterator object pointing to the first data of the array stored in the Container child class.
-        // */
-        // virtual IteratorContainer<Data> begin() const = 0;
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the array stored in the Container child class.
+        */
+        virtual IteratorContainer<Data> begin() const = 0;
         
-        // /*!
-        // * @brief End function to be used with iterators.
-        // * @return iterator object pointing to the last data of the array stored in the Container child class.
-        // */
-        // virtual IteratorContainer<Data> end() const = 0;
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the array stored in the Container child class.
+        */
+        virtual IteratorContainer<Data> end() const = 0;
 
         /*!
         * @brief Begin function to be used with iterators.
@@ -69,7 +69,7 @@ namespace robotlib
         virtual Data& operator[](unsigned int idx) = 0;
 
 
-        virtual Data*& at(unsigned int idx) = 0;
+        virtual std::shared_ptr<Data>& at(unsigned int idx) = 0;
 
     };
 
@@ -90,7 +90,7 @@ namespace robotlib
          /*!
          * @brief Constructor.
          */
-        ContainerBase(ContainerAbstract<Data>& rhd) : std::shared_ptr<ContainerAbstract<Data>>(&rhd) {};
+        ContainerBase(const ContainerAbstract<Data>& rhd) : std::shared_ptr<const ContainerAbstract<Data>>(&rhd) {};
 
         /*!
          * @brief Destructor.

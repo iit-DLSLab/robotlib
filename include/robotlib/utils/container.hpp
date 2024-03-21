@@ -21,7 +21,7 @@ namespace robotlib
 
     public:
 
-         /*!
+        /*!
          * @brief Default constructor.
          */
         Container();
@@ -32,28 +32,28 @@ namespace robotlib
          */
         Container(std::array<std::shared_ptr<Data>, Length> data);
 
-        /*!
-         * @brief Constructor.
-         * @param[in] data std::array of data to be wrapped.
-         */
-        Container(std::array<Data, Length>& data);
+        // /*!
+        //  * @brief Constructor.
+        //  * @param[in] data std::array of data to be wrapped.
+        //  */
+        // Container(std::array<Data, Length>& data);
 
         /*!
         * @brief Destructor.
         */
         virtual ~Container() = default;
 
-        // /*!
-        // * @brief Begin function to be used with iterators.
-        // * @return iterator object pointing to the first data of the data_ variable.
-        // */
-        // IteratorContainer<Data> begin() const override;
+        /*!
+        * @brief Begin function to be used with iterators.
+        * @return iterator object pointing to the first data of the data_ variable.
+        */
+        IteratorContainer<Data> begin() const override;
 
-        // /*!
-        // * @brief End function to be used with iterators.
-        // * @return iterator object pointing to the last data of the data_ variable.
-        // */
-        // IteratorContainer<Data> end() const override;
+        /*!
+        * @brief End function to be used with iterators.
+        * @return iterator object pointing to the last data of the data_ variable.
+        */
+        IteratorContainer<Data> end() const override;
 
         /*!
         * @brief Begin function to be used with iterators.
@@ -80,12 +80,12 @@ namespace robotlib
         Data& operator[](unsigned int idx) override;
 
 
-        Data*& at(unsigned int idx) override;
+        std::shared_ptr<Data>& at(unsigned int idx) override;
 
     private:
     
         //! std::array wrapped by the Container class.
-        std::array<Data*, Length> data_;
+        std::array<std::shared_ptr<Data>, Length> data_;
     };
 
 } // namespace robotlib

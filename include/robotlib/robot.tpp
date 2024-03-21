@@ -16,11 +16,12 @@ namespace robotlib
 		for(auto& limb : limbs_)
 		{
 			std::cout << "testing .... " << limb.getName() <<  std::endl;
+			limb.getJoints();
 
-			for(auto& joint : limb.getJoints())
-			{
-				std::cout << "#####" << joint.getName() << std::endl;
-			}
+			// for(auto& joint : limb.getJoints())
+			// {
+			// 	std::cout << "#####" << joint.getName() << std::endl;
+			// }
 		}
 
 		// Iterator<Link> linkIt = this->links_.begin();
@@ -78,7 +79,9 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
 	{
-		return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
+		// return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
+		return ContainerBase<Joint>(&joints_);
+		// return joints_;
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
