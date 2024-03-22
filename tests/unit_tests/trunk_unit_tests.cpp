@@ -36,17 +36,16 @@ std::array<std::string, 5> components_names{"Dummy Robot",
  * 1 joints per leg
  * 1 links per leg
  */
-robotlib::DummyRobotCreator<2, 1, 1> dummy_robot_creator_2;
+robotlib::DummyRobotCreator<1, 2, 2> dummy_robot_creator_2;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 8> components_names_2{"Dummy Robot",
+std::array<std::string, 7> components_names_2{"Dummy Robot",
                                               "TRUNK",
                                               "Leg",
-                                              "Leg2",
                                               "Leg_joint_1",
-                                              "Leg2_joint_2",
+                                              "Leg_joint_2",
                                               "Leg_link_1",
-                                              "Leg2_link_2"};
+                                              "Leg_link_2"};
 
 /**
  * @brief Set of unit tests for Trunk::getName function
@@ -89,7 +88,7 @@ TEST(TrunkUnitTests, getName)
      * @test Dummy robot trunk name
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
 
         // auto trunk_link{dummy_robot->getLink(components_names[1])};
 

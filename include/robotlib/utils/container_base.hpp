@@ -75,7 +75,7 @@ namespace robotlib
 
 
     template <class Data>
-    class ContainerBase : public std::shared_ptr<ContainerAbstract<Data>>
+    class ContainerBase
     {
         //! Robot is a friend class to let it use the private methods of the Joint class.
 		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -85,42 +85,52 @@ namespace robotlib
         /*!
          * @brief Constructor.
          */
-        ContainerBase() : std::shared_ptr<ContainerAbstract<Data>>() {};
+        // ContainerBase() : std::shared_ptr<const ContainerAbstract<Data>>() {};
 
          /*!
          * @brief Constructor.
          */
-        ContainerBase(const ContainerAbstract<Data>& rhd) : std::shared_ptr<const ContainerAbstract<Data>>(&rhd) {};
+        ContainerBase(const ContainerAbstract<Data>* rhd)
+            : data(rhd)
+        {};
 
         /*!
          * @brief Destructor.
          */
-        virtual ~ContainerBase() = default;
+        ~ContainerBase() = default;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual IteratorContainer<Data> begin() { return this->begin(); }
+        IteratorContainer<Data> begin() { return data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual IteratorContainer<Data> end() { return this->end(); }
+        IteratorContainer<Data> end() { return data->end(); }
 
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual const IteratorContainer<Data> begin() const { return this->begin(); }
+        const IteratorContainer<Data> begin() const { return data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual const IteratorContainer<Data> end() const { return this->end(); }
+        const IteratorContainer<Data> end() const { return data->end(); }
+
+        const ContainerAbstract<Data>* operator->() { return data; }
+
+        unsigned int length() const { return data->length(); };
+
+    private:
+
+        const ContainerAbstract<Data>* data; 
     };
 } // namespace robotlib
 

@@ -9,7 +9,10 @@ include(CTest)
 
 find_package(Eigen3 REQUIRED NO_MODULE)
 
-add_compile_options("-std=c++20")
+add_compile_options(
+	-std=c++23
+	# -fsanitize=address -g
+)
 
 # add_compile_options(
 # 	-std=c++20

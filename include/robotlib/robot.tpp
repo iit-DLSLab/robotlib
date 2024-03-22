@@ -11,25 +11,22 @@ namespace robotlib
 		, trunk_(trunk)
 		, limbs_(limbs)
 	{
-		std::cout << "1 -- testing ...." << std::endl;
-
+		unsigned int i{0}, j{0};
 		for(auto& limb : limbs_)
-		{
-			std::cout << "testing .... " << limb.getName() <<  std::endl;
-			limb.getJoints();
+		{			
+			for(auto& joint : limb.getJoints())
+			{
+				// std::cout << "#####" << joint.getName() << std::endl;
+				joints_.at(i++) = std::shared_ptr<Joint>(&joint);
+			}
 
-			// for(auto& joint : limb.getJoints())
-			// {
-			// 	std::cout << "#####" << joint.getName() << std::endl;
-			// }
+			for(auto& link : limb.getLinks())
+			{
+				links_.at(j++) = std::shared_ptr<Link>(&link);
+			}
 		}
 
-		// Iterator<Link> linkIt = this->links_.begin();
-		// for(auto& limb : limbs_)
-		// {
-		// 	for(auto& link : limb.getLinks())
-		// 		linkIt++ = std::shared_ptr<Link>(&link);
-		// }
+		std::cout << "##### DONE ROBOT" << std::endl;
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -79,9 +76,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
 	{
-		// return ContainerBase<Joint>((ContainerAbstract<Joint>&) joints_); 
-		return ContainerBase<Joint>(&joints_);
-		// return joints_;
+		return &joints_;
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -98,7 +93,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     const ContainerBase<Link> Robot<NLIMBS, NLINKS, NJOINTS>::getLinks() const
     {
-		return ContainerBase<Link>((ContainerAbstract<Link>&) links_); 
+		return &links_; 
     }
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -115,7 +110,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<LimbBase> Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
 	{
-		return ContainerBase<LimbBase>((ContainerAbstract<LimbBase>&) limbs_); 
+		return &limbs_; 
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>

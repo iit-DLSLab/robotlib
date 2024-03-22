@@ -7,35 +7,20 @@ namespace robotlib
 
 	template <class Data, unsigned int Length>
 	Container<Data, Length>::Container(std::array<std::shared_ptr<Data>, Length> data)
-	{
-		for(auto i{0}; i < Length; i++)
-		{
-			data_[i] = data[i];
-		}
-
-	}
-
-	// template <class Data, unsigned int Length>
-	// Container<Data, Length>::Container(std::array<Data, Length>& data)
-	// {
-	// 	for(auto i{0}; i < Length; i++)
-	// 	{
-	// 		data_[i] = &data[i];
-	// 	}
-
-	// }
+		: data_(data)
+	{}
 
 	template <class Data, unsigned int Length>
-	IteratorContainer<Data> Container<Data, Length>::begin() const { return IteratorContainer<Data>(&data_[0]); }
+	IteratorContainer<Data> Container<Data, Length>::begin() const { return &data_[0]; }
 
 	template <class Data, unsigned int Length>
-	IteratorContainer<Data> Container<Data, Length>::end() const { return IteratorContainer<Data>(&data_[Length]); }
+	IteratorContainer<Data> Container<Data, Length>::end() const { std::cout << "#### ITERATOR END" << std::endl; return &data_[Length]; }
 
 	template <class Data, unsigned int Length>
-	IteratorContainer<Data> Container<Data, Length>::begin() { return IteratorContainer<Data>(&data_[0]); }
+	IteratorContainer<Data> Container<Data, Length>::begin() { return &data_[0]; }
 
 	template <class Data, unsigned int Length>
-	IteratorContainer<Data> Container<Data, Length>::end() { return IteratorContainer<Data>(&data_[Length]); }
+	IteratorContainer<Data> Container<Data, Length>::end() { std::cout << "#### ITERATOR END CONST" << std::endl; return &data_[Length]; }
 
 	template <class Data, unsigned int Length>
 	unsigned int Container<Data, Length>::length() const { return Length; }

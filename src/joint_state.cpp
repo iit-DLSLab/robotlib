@@ -216,7 +216,7 @@ namespace robotlib
         *this = 0; 
     }
 
-    int JointState::size() const
+    long unsigned int JointState::size() const
     {
         return this->total_size;
     }

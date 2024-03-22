@@ -9,7 +9,7 @@ namespace robotlib
 {
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const Data& data)
-        : num_data_(keys->length())
+        : num_data_(keys.length())
     {
         int count_data = 0;
         for(auto& key : keys)
@@ -20,29 +20,6 @@ namespace robotlib
 
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data) 
-        : num_data_(keys->length())
-    {
-        int count_data = 0;
-        for(auto& key : keys)
-        {
-            this->data_array_[count_data] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data[count_data]));
-            count_data++;
-        }   
-    }
-
-    template <class Key, class Data>
-    DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data)
-        : num_data_(keys.length())
-    {
-        int count_data = 0;
-        for(auto& key : keys)
-        {
-            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
-        }   
-    }
-
-    template <class Key, class Data>
-    DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data) 
         : num_data_(keys.length())
     {
         int count_data = 0;
@@ -52,6 +29,29 @@ namespace robotlib
             count_data++;
         }   
     }
+
+    // template <class Key, class Data>
+    // DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data)
+    //     : num_data_(keys.length())
+    // {
+    //     int count_data = 0;
+    //     for(auto& key : keys)
+    //     {
+    //         this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
+    //     }   
+    // }
+
+    // template <class Key, class Data>
+    // DataMap<Key, Data>::DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data) 
+    //     : num_data_(keys.length())
+    // {
+    //     int count_data = 0;
+    //     for(auto& key : keys)
+    //     {
+    //         this->data_array_[count_data] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data[count_data]));
+    //         count_data++;
+    //     }   
+    // }
 
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& data)
@@ -219,7 +219,7 @@ namespace robotlib
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const std::vector<Data> &rhs)
     {
         
-        assert(this->size() == (int) rhs.size());
+        assert(this->size() == rhs.size());
 
         unsigned int data_count{0};
         for(auto& pair : *this)
@@ -303,7 +303,7 @@ namespace robotlib
     }
 
     template <class Key, class Data>
-    unsigned int DataMap<Key, Data>::size() const { 
+    long unsigned int DataMap<Key, Data>::size() const { 
         return num_data_;
     }       
 }

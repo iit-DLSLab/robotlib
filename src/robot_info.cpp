@@ -59,7 +59,7 @@ namespace robotlib
             std::cout << limb.getName() << ":  ";
             unsigned int nLinks {limb.getNLinks()};
 
-            int count_links {0};
+            unsigned int count_links {0};
             for (auto& link : limb.getLinks())
             {
                 if (count_links == nLinks - 1)

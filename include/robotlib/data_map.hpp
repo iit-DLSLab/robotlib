@@ -188,7 +188,7 @@ namespace robotlib
          * @brief Get number of pairs stored by the DataMap object.
          * @return number of pairs stored by the DataMap object.
          */
-        unsigned int size() const;
+        long unsigned int size() const;
 
         /*!
          * @brief Get the data of the DataMap as a std vector container.
@@ -212,19 +212,19 @@ namespace robotlib
          */
         DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data);
 
-        /*!
-         * @brief DataMap constructor.
-         * @param[in] keys pointer to keys to map the data.
-         * @param[in] data default data value for all keys.
-         */
-        DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data);
+        // /*!
+        //  * @brief DataMap constructor.
+        //  * @param[in] keys pointer to keys to map the data.
+        //  * @param[in] data default data value for all keys.
+        //  */
+        // DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const Data& data);
 
-        /*!
-         * @brief DataMap constructor.
-         * @param[in] keys pointer to keys to map the data.
-         * @param[in] data vector of data values for each key.
-         */
-        DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data);
+        // /*!
+        //  * @brief DataMap constructor.
+        //  * @param[in] keys pointer to keys to map the data.
+        //  * @param[in] data vector of data values for each key.
+        //  */
+        // DataMap(const ContainerBase<std::shared_ptr<Key>> keys,  const std::vector<Data>& data);
 
     private:
 
@@ -244,7 +244,7 @@ namespace robotlib
         std::shared_ptr<DataPair<Key, Data>[]> data_array_;
 
         //! Number of pairs.
-        unsigned int num_data_;
+        long unsigned int num_data_;
     };
 }
 #include "data_map.tpp"

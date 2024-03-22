@@ -138,7 +138,7 @@ namespace robotlib
          * @brief Get the dimension of the joint state.
          * @return size of the joint state.
          */
-        int size() const;
+        long unsigned int size() const;
 
         /**
          * @brief Return the max value of the joint state
@@ -200,7 +200,7 @@ namespace robotlib
 		std::vector<std::shared_ptr<const Joint>> joints_;
 
         //! Local value with the number of data items inside the map
-        unsigned int total_size;
+        long unsigned int total_size;
     };
 
 } //namespace robotlib
