@@ -85,7 +85,9 @@ namespace robotlib
         /*!
          * @brief Constructor.
          */
-        // ContainerBase() : std::shared_ptr<const ContainerAbstract<Data>>() {};
+        // ContainerBase()
+        //     : data(nullptr)
+        // {};
 
          /*!
          * @brief Constructor.
@@ -97,40 +99,34 @@ namespace robotlib
         /*!
          * @brief Destructor.
          */
-        ~ContainerBase() = default;
+        virtual ~ContainerBase() = default;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        IteratorContainer<Data> begin() { return data->begin(); }
+        virtual IteratorContainer<Data> begin() { return this->data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        IteratorContainer<Data> end() { return data->end(); }
+        virtual IteratorContainer<Data> end() { return this->data->end(); }
 
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        const IteratorContainer<Data> begin() const { return data->begin(); }
+        virtual const IteratorContainer<Data> begin() const { return this->data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        const IteratorContainer<Data> end() const { return data->end(); }
+        virtual const IteratorContainer<Data> end() const { return this->data->end(); }
 
-        const ContainerAbstract<Data>* operator->() { return data; }
-
-        unsigned int length() const { return data->length(); };
-
-    private:
-
-        const ContainerAbstract<Data>* data; 
+        const ContainerAbstract<Data>* data;
     };
 } // namespace robotlib
 

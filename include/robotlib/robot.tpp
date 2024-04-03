@@ -11,22 +11,29 @@ namespace robotlib
 		, trunk_(trunk)
 		, limbs_(limbs)
 	{
-		unsigned int i{0}, j{0};
+		std::cout << "1 -- testing ...." << std::endl;
+
+		unsigned int joint_count{0};
 		for(auto& limb : limbs_)
-		{			
+		{
+			std::cout << "testing .... " << limb.getName() <<  std::endl;
+
 			for(auto& joint : limb.getJoints())
 			{
 				// std::cout << "#####" << joint.getName() << std::endl;
-				joints_.at(i++) = std::shared_ptr<Joint>(&joint);
-			}
 
-			for(auto& link : limb.getLinks())
-			{
-				links_.at(j++) = std::shared_ptr<Link>(&link);
+				this->joints_.at(joint_count) = limb.getJoints().data->at(joint_count);
+				std::cout << "#####" << this->joints_.at(joint_count)->getName() << "   ### USE: " << this->joints_.at(joint_count).use_count() << std::endl;
+
 			}
 		}
 
-		std::cout << "##### DONE ROBOT" << std::endl;
+		// Iterator<Link> linkIt = this->links_.begin();
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& link : limb.getLinks())
+		// 		linkIt++ = std::shared_ptr<Link>(&link);
+		// }
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -76,7 +83,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
 	{
-		return &joints_;
+		return ContainerBase<Joint>(&joints_);
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -93,7 +100,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     const ContainerBase<Link> Robot<NLIMBS, NLINKS, NJOINTS>::getLinks() const
     {
-		return &links_; 
+		return ContainerBase<Link>(&links_); 
     }
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -110,7 +117,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<LimbBase> Robot<NLIMBS, NLINKS, NJOINTS>::getLimbs() const
 	{
-		return &limbs_; 
+		return ContainerBase<LimbBase>(&limbs_); 
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
