@@ -26,7 +26,7 @@ namespace robotlib
      * @details
      * This class allows to create dummy robots having different morphologies with the only purpose of testing Robotlib structures.
      */
-    template <unsigned int NLEGS, unsigned int NLINKSLEG, unsigned int NJOINTSLEG, unsigned int NARMS = 0, unsigned int NLINKSARM = 0, unsigned int NJOINTSARM = 0>
+    template <unsigned int NLEGS, unsigned int NLJLEG, unsigned int NARMS = 0, unsigned int NLJARM = 0>
     class DummyRobotCreator
     {
     public:
@@ -49,7 +49,7 @@ namespace robotlib
          * @param[in] components_names names of the items defining the robot.
          * @return shared pointer pointing to the RobotBase object.
          */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + NLEGS*NLINKSLEG + NLEGS*NJOINTSLEG + NARMS + NARMS*NLINKSARM + NARMS*NJOINTSARM)>& components_names);
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + 2*NLEGS*NLJLEG + NARMS + 2*NARMS*NLJARM)>& components_names);
     };
 } // namespace robotlib
 

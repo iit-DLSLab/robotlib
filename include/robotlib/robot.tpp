@@ -11,29 +11,25 @@ namespace robotlib
 		, trunk_(trunk)
 		, limbs_(limbs)
 	{
-		std::cout << "1 -- testing ...." << std::endl;
-
 		unsigned int joint_count{0};
 		for(auto& limb : limbs_)
 		{
-			std::cout << "testing .... " << limb.getName() <<  std::endl;
-
 			for(auto& joint : limb.getJoints())
 			{
-				// std::cout << "#####" << joint.getName() << std::endl;
-
-				this->joints_.at(joint_count) = limb.getJoints().data->at(joint_count);
-				std::cout << "#####" << this->joints_.at(joint_count)->getName() << "   ### USE: " << this->joints_.at(joint_count).use_count() << std::endl;
-
+				this->joints_.at(joint_count) = limb.getJoints().at(joint_count);
+				joint_count++;
 			}
 		}
 
-		// Iterator<Link> linkIt = this->links_.begin();
-		// for(auto& limb : limbs_)
-		// {
-		// 	for(auto& link : limb.getLinks())
-		// 		linkIt++ = std::shared_ptr<Link>(&link);
-		// }
+		unsigned int link_count{0};
+		for(auto& limb : limbs_)
+		{
+			for(auto& link : limb.getLinks())
+			{
+				this->links_.at(link_count) = limb.getLinks().at(link_count);
+				link_count++;
+			}
+		}
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -70,6 +66,12 @@ namespace robotlib
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+    const Trunk& Robot<NLIMBS, NLINKS, NJOINTS>::getTrunk() const
+	{
+		return trunk_;
+	}
+
+	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const Joint& Robot<NLIMBS, NLINKS, NJOINTS>::getJoint(const std::string &name) const
 	{
 		for(auto& joint : joints_)
@@ -91,6 +93,7 @@ namespace robotlib
 	{
 		for(auto& link : links_)
         {
+			std::cout << "LINK NAME " << link.getName() << std::endl;
             if(link.getName().compare(name) == 0)
                 return link;
         }

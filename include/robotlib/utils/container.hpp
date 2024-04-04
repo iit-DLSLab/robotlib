@@ -32,12 +32,6 @@ namespace robotlib
          */
         Container(std::array<std::shared_ptr<Data>, Length> data);
 
-        // /*!
-        //  * @brief Constructor.
-        //  * @param[in] data std::array of data to be wrapped.
-        //  */
-        // Container(std::array<Data, Length>& data);
-
         /*!
         * @brief Destructor.
         */
@@ -81,6 +75,8 @@ namespace robotlib
 
 
         std::shared_ptr<Data>& at(unsigned int idx) override;
+
+        const std::shared_ptr<Data>& at(unsigned int idx) const override;
 
     private:
     

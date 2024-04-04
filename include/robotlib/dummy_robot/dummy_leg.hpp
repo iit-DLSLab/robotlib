@@ -28,8 +28,8 @@ namespace robotlib
     * @tparam NJOINTSLEG number of joints of the leg.
     * @tparam NLINKSLEG number of links of the leg.
     */
-    template <unsigned int NLINKS, unsigned int NJOINTS>
-    class DummyLeg : public Leg<NLINKS, NJOINTS>
+    template <unsigned int NLINKSJOINTS>
+    class DummyLeg : public Leg<NLINKSJOINTS, NLINKSJOINTS>
     {
     public:
         /*!
@@ -40,8 +40,8 @@ namespace robotlib
         * @param[in] leg_links array of shared pointers pointing to leg's links.
         */
         DummyLeg(const std::string& name,
-                 const Container<Link, NLINKS>& links,
-                 const Container<Joint, NJOINTS>& joints);
+                 const Container<Link, NLINKSJOINTS>& links,
+                 const Container<Joint, NLINKSJOINTS>& joints);
 
         /*!
         * @brief Destructor.

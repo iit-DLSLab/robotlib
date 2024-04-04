@@ -20,23 +20,9 @@
 
 namespace robotlib
 {
-
-    template<typename T, typename Iter, std::size_t... Is>
-    constexpr auto to_array(Iter& iter, std::index_sequence<Is...>)
-    -> std::array<T, sizeof...(Is)> {
-        return {{ ((void)Is, *iter++)... }};
-    }
-
-    template<std::size_t N, typename Iter,
-            typename T = typename std::iterator_traits<Iter>::value_type>
-    constexpr auto to_array(Iter iter)
-    -> std::array<T, N> {
-        return to_array<T>(iter, std::make_index_sequence<N>{});
-    }
-
-    template <unsigned int NLEGS, unsigned int NLINKSLEG, unsigned int NJOINTSLEG, unsigned int NARMS, unsigned int NLINKSARM, unsigned int NJOINTSARM>
-    std::shared_ptr<RobotBase> DummyRobotCreator<NLEGS, NLINKSLEG, NJOINTSLEG, NARMS, NLINKSARM, NJOINTSARM>
-        ::createDummyRobot(const std::array<std::string, (2 + NLEGS + NLEGS*NLINKSLEG + NLEGS*NJOINTSLEG + NARMS + NARMS*NLINKSARM + NARMS*NJOINTSARM)>& components_names)
+    template <unsigned int NLEGS, unsigned int NLJLEG, unsigned int NARMS, unsigned int NLJARM>
+    std::shared_ptr<RobotBase> DummyRobotCreator<NLEGS, NLJLEG, NARMS, NLJARM>
+        ::createDummyRobot(const std::array<std::string, (2 + NLEGS + 2*NLEGS*NLJLEG + NARMS + 2*NARMS*NLJARM)>& components_names)
     {
         const std::string name{components_names[0]};
 
@@ -46,42 +32,41 @@ namespace robotlib
 
         Container<robotlib::LimbBase, NLEGS+NARMS> limbs;
         
-        std::array<std::array<std::shared_ptr<Link>, NLINKSLEG>,  NLEGS> leg_links;
-        std::array<std::array<std::shared_ptr<Joint>, NJOINTSLEG>,  NLEGS> leg_joints;
+        std::array<std::array<std::shared_ptr<Link>, NLJLEG>,  NLEGS> leg_links;
+        std::array<std::array<std::shared_ptr<Joint>, NLJLEG>,  NLEGS> leg_joints;
 
         for(unsigned int i{0}; i < NLEGS; i++)
-        {
-            for(unsigned int j{0}; j < NLINKSLEG; j++)
+        {   
+            Link* parent_link = &trunk;
+            for(unsigned int j{0}; j < NLJLEG; j++)
             {
-                leg_links[i][j] = std::make_shared<Link>(components_names[(i*NLINKSLEG)+(j+2+NLEGS+(NJOINTSLEG*NLEGS))]);
+                leg_joints[i][j] = std::make_shared<Joint>(components_names[(i*NLJLEG)+(j+2+NLEGS)], parent_link);
+
+                leg_links[i][j] = std::make_shared<Link>(components_names[(i*NLJLEG)+(j+2+NLEGS+(NLJLEG*NLEGS))], leg_joints[i][j]);
+                parent_link = &leg_links[i][j];
             }
 
-            for(unsigned int j{0}; j < NJOINTSLEG; j++)
-            {
-                leg_joints[i][j] = std::make_shared<Joint>(components_names[(i*NJOINTSLEG)+(j+2+NLEGS)]);
-            }
-
-            limbs.at(i) = std::make_shared<DummyLeg<NLINKSLEG, NJOINTSLEG>>(components_names[i+2], leg_links[i], leg_joints[i]); 
+            limbs.at(i) = std::make_shared<DummyLeg<NLJLEG>>(components_names[i+2], leg_links[i], leg_joints[i]); 
         }
 
-        std::array<std::array<std::shared_ptr<Link>, NLINKSARM>, NARMS> arm_links;
-        std::array<std::array<std::shared_ptr<Joint>, NJOINTSARM>, NARMS> arm_joints;
+        // std::array<std::array<std::shared_ptr<Link>, NLINKSARM>, NARMS> arm_links;
+        // std::array<std::array<std::shared_ptr<Joint>, NJOINTSARM>, NARMS> arm_joints;
 
-        for(unsigned int i{0}; i < NARMS; i++)
-        {
-            for(unsigned int j{0}; j < NLINKSARM; j++)
-            {
-                arm_links[i][j] = std::make_shared<Link>(components_names[(i*NLINKSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS+(NJOINTSARM*NARMS))]);
-            }
+        // for(unsigned int i{0}; i < NARMS; i++)
+        // {
+        //     for(unsigned int j{0}; j < NLINKSARM; j++)
+        //     {
+        //         arm_links[i][j] = std::make_shared<Link>(components_names[(i*NLINKSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS+(NJOINTSARM*NARMS))]);
+        //     }
             
-            for(unsigned int j{0}; j < NJOINTSARM; j++)
-            {
-                arm_joints[i][j] = std::make_shared<Joint>(components_names[(i*NJOINTSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS)]);
-            }
+        //     for(unsigned int j{0}; j < NJOINTSARM; j++)
+        //     {
+        //         arm_joints[i][j] = std::make_shared<Joint>(components_names[(i*NJOINTSARM)+(j+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)+NARMS)]);
+        //     }
 
-            limbs.at(NLEGS + i) = std::make_shared<DummyArm<NLINKSARM, NJOINTSARM>>(components_names[i+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)], arm_links[i], arm_joints[i]); 
-        }
+        //     limbs.at(NLEGS + i) = std::make_shared<DummyArm<NLINKSARM, NJOINTSARM>>(components_names[i+2+NLEGS+(NJOINTSLEG*NLEGS)+(NLINKSLEG*NLEGS)], arm_links[i], arm_joints[i]); 
+        // }
    
-        return std::make_shared<DummyRobot<NARMS+NLEGS, NLINKSARM+NLINKSLEG, NJOINTSARM+NJOINTSLEG>>(name, trunk, limbs);
+        return std::make_shared<DummyRobot<NARMS+NLEGS, NLJARM+NLJLEG, NLJARM+NLJLEG>>(name, trunk, limbs);
     }
 } // namespace robotlib

@@ -80,6 +80,12 @@ namespace robotlib
         virtual unsigned int getNLINKS() const override;
 
         /*!
+         * @brief Get robot's trunk.
+         * @return reference to trunk link.
+         */
+        virtual const Trunk& getTrunk() const override;
+
+        /*!
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
          * @return reference to link or throw except.

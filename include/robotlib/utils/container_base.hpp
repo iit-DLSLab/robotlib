@@ -71,6 +71,8 @@ namespace robotlib
 
         virtual std::shared_ptr<Data>& at(unsigned int idx) = 0;
 
+        virtual const std::shared_ptr<Data>& at(unsigned int idx) const = 0;
+
     };
 
 
@@ -99,32 +101,44 @@ namespace robotlib
         /*!
          * @brief Destructor.
          */
-        virtual ~ContainerBase() = default;
+        ~ContainerBase() = default;
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual IteratorContainer<Data> begin() { return this->data->begin(); }
+        IteratorContainer<Data> begin() { return this->data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual IteratorContainer<Data> end() { return this->data->end(); }
+        IteratorContainer<Data> end() { return this->data->end(); }
 
 
         /*!
         * @brief Begin function to be used with iterators.
         * @return iterator object pointing to the first data of the data_ variable.
         */
-        virtual const IteratorContainer<Data> begin() const { return this->data->begin(); }
+        const IteratorContainer<Data> begin() const { return this->data->begin(); }
 
         /*!
         * @brief End function to be used with iterators.
         * @return iterator object pointing to the last data of the data_ variable.
         */
-        virtual const IteratorContainer<Data> end() const { return this->data->end(); }
+        const IteratorContainer<Data> end() const { return this->data->end(); }
+
+        /*!
+        * @brief Get the size of the wrapped std::array.
+        * @return size of the wrapped std::array.
+        */
+        unsigned int length() const { return this->data->length(); }    
+
+        
+        // std::shared_ptr<Data>& at(unsigned int idx) {return this->data->at(idx); };
+
+        const std::shared_ptr<Data>& at(unsigned int idx) const {return this->data->at(idx); };
+
 
         const ContainerAbstract<Data>* data;
     };
