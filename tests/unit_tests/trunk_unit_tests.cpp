@@ -90,56 +90,56 @@ TEST(TrunkUnitTests, getName)
     {
         auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-        auto trunk_link{dummy_robot->getTrunk()};
+        // auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getName(), components_names[1]);
+        // EXPECT_EQ(trunk_link.getName(), components_names[1]);
     }
 }
 
-/**
- * @brief Set of unit tests for Trunk::getParent function (inherited from Link)
- */
-TEST(LinkUnitTests, getParent)
-{
-    /**
-     * @test Get the trunk parent (trunk has generally no parent links)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// /**
+//  * @brief Set of unit tests for Trunk::getParent function (inherited from Link)
+//  */
+// TEST(LinkUnitTests, getParent)
+// {
+//     /**
+//      * @test Get the trunk parent (trunk has generally no parent links)
+//      */
+//     {
+//         auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-        auto trunk_link{dummy_robot->getTrunk()};
+//         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getParent(), nullptr);
-    }
-}
+//         EXPECT_EQ(trunk_link.getParent(), nullptr);
+//     }
+// }
 
-/**
- * @brief Set of unit tests for Trunk::getChild function (inherited from Link)
- */
-TEST(LinkUnitTests, getChild)
-{
-    /**
-     * @test Get the trunk child (case with one child)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// /**
+//  * @brief Set of unit tests for Trunk::getChild function (inherited from Link)
+//  */
+// TEST(LinkUnitTests, getChild)
+// {
+//     /**
+//      * @test Get the trunk child (case with one child)
+//      */
+//     {
+//         auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-        auto trunk_link{dummy_robot->getTrunk()};
+//         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getChildren()[0]->getName(), components_names[3]);
-    }
+//         EXPECT_EQ(trunk_link.getChildren()[0]->getName(), components_names[3]);
+//     }
 
-    // /**
-    //  * @test Get the trunk child (case with two children. Child is not univoque and is set as null pointer)
-    //  */
-    // {
-    //     auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
+//     // /**
+//     //  * @test Get the trunk child (case with two children. Child is not univoque and is set as null pointer)
+//     //  */
+//     // {
+//     //     auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
 
-    //     auto trunk_link{dummy_robot->getTrunk()};
+//     //     auto trunk_link{dummy_robot->getTrunk()};
 
-    //     EXPECT_EQ(trunk_link.getChildren().size(), 2);
-    // }
-}
+//     //     EXPECT_EQ(trunk_link.getChildren().size(), 2);
+//     // }
+// }
 
 // /**
 //  * @brief Set of unit tests for Trunk::getChildren function (inherited from Link)

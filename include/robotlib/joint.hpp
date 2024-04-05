@@ -50,7 +50,7 @@ namespace robotlib
 		 * @param[in] name name of the joint.
          * @param[in] parent parent link.
          */
-		Joint(const std::string& name, Link& parent);
+		Joint(const std::string& name, Link* parent);
 
 		/*!
          * @brief Destructor.
@@ -110,7 +110,7 @@ namespace robotlib
 		 * @brief Set the Joint parent object, that is a Link object.
 		 * @param[in] parent the Link parent object to be set.
 		 */
-		void setParent(Link& parent);
+		void setParent(Link* parent);
 
 		/*!
 		 * @brief Set the Joint minimum angle.
@@ -144,7 +144,7 @@ namespace robotlib
 		 * This restriction garantee the coerence in the definition of the kinematic chain
 		 * @param[in] child the Link child object to be set.
 		 */
-		void setChild(Link& child);
+		void setChild(Link* child);
 
 		//! Minimum joint angle.
 		double q_min_;
@@ -156,10 +156,10 @@ namespace robotlib
 		double tau_max_;
 
 		//! Parent of the joint.
-		std::shared_ptr<Link> parent_;
+		Link* parent_;
 
 		//! Child of the joint.
-		std::shared_ptr<Link> child_;
+		Link* child_;
 	};
 } // namespace robotlib
 

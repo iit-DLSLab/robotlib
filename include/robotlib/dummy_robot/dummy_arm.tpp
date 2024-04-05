@@ -18,9 +18,9 @@
 
 namespace robotlib
 {
-    template <unsigned int NLINKS, unsigned int NJOINTS>
-    DummyArm<NLINKS, NJOINTS>::DummyArm::DummyArm(const std::string& name,
-                                                  const Container<Link, NLINKS>& links,
-                                                  const Container<Joint, NJOINTS>& joints)
-        : Arm<NLINKS, NJOINTS>(name, links, joints){}
+    template <unsigned int NLINKSJOINTS>
+    DummyArm<NLINKSJOINTS>::DummyArm::DummyArm(const std::string& name,
+                                               const Container<Link, NLINKSJOINTS>& links,
+                                               const Container<Joint, NLINKSJOINTS>& joints)
+        : Arm<NLINKSJOINTS, NLINKSJOINTS>(name, links, joints){}
 } // namespace robotlib

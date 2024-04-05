@@ -14,22 +14,23 @@ namespace robotlib
 		unsigned int joint_count{0};
 		for(auto& limb : limbs_)
 		{
+			std::cout << "SEARCHING FOR THE PROBLEM" << std::endl;
 			for(auto& joint : limb.getJoints())
 			{
-				this->joints_.at(joint_count) = limb.getJoints().at(joint_count);
-				joint_count++;
+				// this->joints_.at(joint_count) = limb.getJoints().at(joint_count);
+				// joint_count++;
 			}
 		}
 
-		unsigned int link_count{0};
-		for(auto& limb : limbs_)
-		{
-			for(auto& link : limb.getLinks())
-			{
-				this->links_.at(link_count) = limb.getLinks().at(link_count);
-				link_count++;
-			}
-		}
+		// unsigned int link_count{0};
+		// for(auto& limb : limbs_)
+		// {
+		// 	for(auto& link : limb.getLinks())
+		// 	{
+		// 		this->links_.at(link_count) = limb.getLinks().at(link_count);
+		// 		link_count++;
+		// 	}
+		// }
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
@@ -85,7 +86,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	const ContainerBase<Joint> Robot<NLIMBS, NLINKS, NJOINTS>::getJoints() const
 	{
-		return ContainerBase<Joint>(&joints_);
+		return &joints_;
 	}
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>

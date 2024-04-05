@@ -51,7 +51,7 @@ namespace robotlib
          * @param[in] name name of the link.
 		 * @param[in] parent parent joint.
          */
-		Link(const std::string &name, Joint& parent);
+		Link(const std::string &name, Joint* parent);
 
 
 		/*!
@@ -67,13 +67,13 @@ namespace robotlib
 		 * @brief Get the parent object of the link, that is a Joint object.
 		 * @return parent joint of the link.
 		 */
-		std::shared_ptr<const Joint> getParent() const;
+		const Joint& getParent() const;
 
 		/*!
 		 * @brief Get the children of the link, that are Joint objects.
 		 * @return joints that are children of the link.
 		 */
-		const std::vector<std::shared_ptr<Joint>>& getChildren() const;
+		const std::vector<Joint*>& getChildren() const;
 
 	protected:
 
@@ -81,7 +81,7 @@ namespace robotlib
 		 * @brief Set the parent of the link, that is a Joint object.
 		 * @param[in] parent the parent of the link to be set.
 		 */
-		void setParent(Joint& parent);
+		void setParent(Joint* parent);
 	
 
 	private:
@@ -92,13 +92,13 @@ namespace robotlib
 		 * This restriction garantee the coerence in the definition of the kinematic chain
 		 * @param[in] child the child of the link to be set.
 		 */
-		void addChild(Joint& child);
+		void addChild(Joint* child);
 
 		//! Children of the link.
-		std::vector<std::shared_ptr<Joint>> children_;
+		std::vector<Joint*> children_;
 
 		//! Parent of the link.
-		std::shared_ptr<Joint> parent_;
+		Joint* parent_;
 	};
 } // namespace robotlib
 

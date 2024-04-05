@@ -20,25 +20,27 @@ namespace robotlib
 {
 	Joint::Joint(const std::string &name) 
 		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+		, parent_(NULL)
+		, child_(NULL)
 	{}
 
-	Joint::Joint(const std::string &name, Link& parent) 
+	Joint::Joint(const std::string &name, Link* parent) 
 		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
 	{
 		this->setParent(parent);
 	}
 
 	const Link& Joint::getParent() const { return *parent_;}
-	const Link& Joint::getChild() const { return *child_;}
+	const Link& Joint::getChild() const { return *	child_;}
 
-	void Joint::setParent(Link& parent) {
-		parent_ = std::shared_ptr<Link>(&parent); 
-		parent_->addChild(*this);
+	void Joint::setParent(Link* parent) {
+		parent_ = parent; 
+		parent_->addChild(this);
 	}
 
-	void Joint::setChild(Link& child) 
+	void Joint::setChild(Link* child) 
 	{ 
-		child_ = std::shared_ptr<Link>(&child); 
+		child_ = child; 
 	}
 
 	double Joint::getMinAngle() const {return q_min_;}

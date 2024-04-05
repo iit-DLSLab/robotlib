@@ -20,9 +20,10 @@ namespace robotlib
 {
 	Link::Link(const std::string& name) 
 		: Frame(name)
+		, parent_(NULL)
 	{}
 
-	Link::Link(const std::string& name, Joint& parent) 
+	Link::Link(const std::string& name, Joint* parent) 
 		: Frame(name)
 	{
 		this->setParent(parent);
@@ -34,24 +35,24 @@ namespace robotlib
 	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
 	// segnalare i possibili segmentation fault da gestire
 
-	std::shared_ptr<const Joint> Link::getParent() const 
+	const Joint& Link::getParent() const 
 	{ 
-		return parent_; 
+		return *parent_; 
 	}
 
-	const std::vector<std::shared_ptr<Joint>>& Link::getChildren() const 
+	const std::vector<Joint*>& Link::getChildren() const 
 	{ 
 		return children_; 
 	}
 	
-	void Link::setParent(Joint& parent) 
+	void Link::setParent(Joint* parent) 
 	{ 
-		parent_ = std::shared_ptr<Joint>(&parent); 
-		parent_->setChild(*this);
+		parent_ = parent; 
+		parent_->setChild(this);
 	}
 
-	void Link::addChild(Joint& child) 
+	void Link::addChild(Joint* child) 
 	{ 
-		children_.push_back(std::shared_ptr<Joint>(&child)); 
+		children_.push_back(child); 
 	}
 } // namespace robotlib

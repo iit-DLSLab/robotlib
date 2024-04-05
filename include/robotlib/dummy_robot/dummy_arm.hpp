@@ -26,8 +26,8 @@ namespace robotlib
     * @details
     * This class allows to create a dummy arm having a specific morphology with the only purpose of testing Robotlib structures.
     */
-    template <unsigned int NLINKS, unsigned int NJOINTS>
-    class DummyArm : public Arm<NLINKS, NJOINTS>
+    template <unsigned int NLINKSJOINTS>
+    class DummyArm : public Arm<NLINKSJOINTS, NLINKSJOINTS>
     {
     public:
         /*!
@@ -37,8 +37,8 @@ namespace robotlib
         * @param[in] links array of shared pointers pointing to arm's links.
         */
         DummyArm(const std::string& name,
-                 const Container<Link, NLINKS>& links,
-                 const Container<Joint, NJOINTS>& joints);
+                 const Container<Link, NLINKSJOINTS>& links,
+                 const Container<Joint, NLINKSJOINTS>& joints);
 
         /*!
         * @brief Destructor.
