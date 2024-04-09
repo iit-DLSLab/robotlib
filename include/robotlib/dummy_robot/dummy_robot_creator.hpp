@@ -49,7 +49,7 @@ namespace robotlib
          * @param[in] components_names names of the items defining the robot.
          * @return shared pointer pointing to the RobotBase object.
          */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + NLEGS*NLJLEG + NARMS + NARMS*NLJARM)>& components_names);
+        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (2 + NLEGS + 2*NLEGS*NLJLEG + NARMS + 2*NARMS*NLJARM)>& components_names);
     };
 } // namespace robotlib
 

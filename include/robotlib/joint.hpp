@@ -65,13 +65,13 @@ namespace robotlib
 		 * @brief Get the Joint parent object, that is a Link object.
 		 * @return shared pointer pointing to a Link object.
 		 */
-		const Link& getParent() const;
+		const Link* getParent() const;
 
 		/*!
 		 * @brief Get the Joint child object, that is a Link object.
 		 * @return shared pointer pointing to a Link object.
 		 */
-		const Link& getChild() const;
+		const Link* getChild() const;
 
 		/*!
 		 * @brief Get the Joint minimum angle.

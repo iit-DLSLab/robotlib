@@ -15,6 +15,7 @@
  */
 
 #include "joint.hpp"
+#include <iostream>
 
 namespace robotlib
 {
@@ -30,8 +31,15 @@ namespace robotlib
 		this->setParent(parent);
 	}
 
-	const Link& Joint::getParent() const { return *parent_;}
-	const Link& Joint::getChild() const { return *	child_;}
+	const Link* Joint::getParent() const
+	{ 
+		return parent_;
+	}
+	
+	const Link* Joint::getChild() const 
+	{ 
+		return child_;
+	}
 
 	void Joint::setParent(Link* parent) {
 		parent_ = parent; 

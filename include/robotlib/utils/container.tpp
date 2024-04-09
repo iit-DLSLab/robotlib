@@ -14,7 +14,7 @@ namespace robotlib
 	IteratorContainer<Data> Container<Data, Length>::begin() const { return &data_[0]; }
 
 	template <class Data, unsigned int Length>
-	IteratorContainer<Data> Container<Data, Length>::end() const {return &data_[Length]; }
+	IteratorContainer<Data> Container<Data, Length>::end() const { return &data_[Length]; }
 
 	template <class Data, unsigned int Length>
 	IteratorContainer<Data> Container<Data, Length>::begin() { return &data_[0]; }

@@ -16,6 +16,8 @@
 
 #include "link.hpp"
 
+#include <iostream>
+
 namespace robotlib
 {
 	Link::Link(const std::string& name) 
@@ -35,14 +37,14 @@ namespace robotlib
 	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
 	// segnalare i possibili segmentation fault da gestire
 
-	const Joint& Link::getParent() const 
+	const Joint* Link::getParent() const 
 	{ 
-		return *parent_; 
+		return parent_; 
 	}
 
 	const std::vector<Joint*>& Link::getChildren() const 
 	{ 
-		return children_; 
+		return children_;
 	}
 	
 	void Link::setParent(Joint* parent) 
@@ -53,6 +55,6 @@ namespace robotlib
 
 	void Link::addChild(Joint* child) 
 	{ 
-		children_.push_back(child); 
+		children_.push_back(child);
 	}
 } // namespace robotlib

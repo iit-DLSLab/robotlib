@@ -67,7 +67,7 @@ namespace robotlib
 		 * @brief Get the parent object of the link, that is a Joint object.
 		 * @return parent joint of the link.
 		 */
-		const Joint& getParent() const;
+		const Joint* getParent() const;
 
 		/*!
 		 * @brief Get the children of the link, that are Joint objects.
