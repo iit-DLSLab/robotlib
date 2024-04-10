@@ -5,7 +5,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	Robot<NLIMBS, NLINKS, NJOINTS>::Robot(
 		const std::string& name,
-		const Trunk& trunk,
+		const std::shared_ptr<Trunk>& trunk,
 		Container<LimbBase, NLIMBS>& limbs)
 		: RobotBase(name)
 		, trunk_(trunk)
@@ -66,7 +66,7 @@ namespace robotlib
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    const Trunk& Robot<NLIMBS, NLINKS, NJOINTS>::getTrunk() const
+    const std::shared_ptr<Trunk>& Robot<NLIMBS, NLINKS, NJOINTS>::getTrunk() const
 	{
 		return trunk_;
 	}
@@ -186,7 +186,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	Eigen::Vector3d Robot<NLIMBS, NLINKS, NJOINTS>::getTrunkCOM() const
 	{
-		return trunk_.getCoM();
+		return trunk_->getCoM();
 	};
 
 } // namespace robotlib

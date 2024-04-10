@@ -41,7 +41,7 @@ namespace robotlib
          * @param[in] limbs robot's limbs.
          */
 		Robot(const std::string& name,
-			  const Trunk& trunk,
+			  const std::shared_ptr<Trunk>& trunk,
 			  Container<LimbBase, NLIMBS>& limbs);
 
 		/*!
@@ -83,7 +83,7 @@ namespace robotlib
          * @brief Get robot's trunk.
          * @return reference to trunk link.
          */
-        virtual const Trunk& getTrunk() const override;
+        virtual const std::shared_ptr<Trunk>& getTrunk() const override;
 
         /*!
          * @brief Get robot's joint from joint's name.
@@ -177,7 +177,7 @@ namespace robotlib
     protected:
 
 		//! Trunk of the robot
-		const Trunk trunk_;
+		const std::shared_ptr<Trunk> trunk_;
 
     private:
 		//! Limbs of the robot

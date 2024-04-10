@@ -95,7 +95,7 @@ TEST(TrunkUnitTests, getName)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getName(), components_names[1]);
+        EXPECT_EQ(trunk_link->getName(), components_names[1]);
     }
 }
 
@@ -112,7 +112,7 @@ TEST(LinkUnitTests, getParent)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getParent(), nullptr);
+        EXPECT_EQ(trunk_link->getParent(), nullptr);
     }
 }
 
@@ -129,7 +129,7 @@ TEST(LinkUnitTests, getChild)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getChildren()[0]->getName(), components_names[3]);
+        EXPECT_EQ(trunk_link->getChildren()[0]->getName(), components_names[3]);
     }
 
     /**
@@ -140,7 +140,7 @@ TEST(LinkUnitTests, getChild)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getChildren().size(), 2);
+        EXPECT_EQ(trunk_link->getChildren().size(), 2);
     }
 }
 
@@ -157,9 +157,9 @@ TEST(LinkUnitTests, getChildren)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ((trunk_link.getChildren().size()), 1);
+        EXPECT_EQ((trunk_link->getChildren().size()), 1);
 
-        for (auto& trunk_child : trunk_link.getChildren())
+        for (auto& trunk_child : trunk_link->getChildren())
         {
             EXPECT_EQ(trunk_child->getName(), components_names[3]);
         }
@@ -173,10 +173,10 @@ TEST(LinkUnitTests, getChildren)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getChildren().size(), 2);
+        EXPECT_EQ(trunk_link->getChildren().size(), 2);
 
         unsigned int i{0};
-        for (auto& trunk_child : trunk_link.getChildren())
+        for (auto& trunk_child : trunk_link->getChildren())
         {
             EXPECT_EQ(trunk_child->getName(), components_names_2[4 + 2*i]);
             i++;

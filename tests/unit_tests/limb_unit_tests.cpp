@@ -13,13 +13,11 @@
 /**
  * @test Dummy robot created with the following structure:
  * 1 leg
- * 2 joints per leg
- * 2 links per leg
+ * 2 joints/links per leg
  * 1 arm
- * 2 joints per arm
- * 2 links per arm
+ * 2 joints/links per arm
  */
-robotlib::DummyRobotCreator<1, 2, 2, 1, 2, 2> dummy_robot_creator;
+robotlib::DummyRobotCreator<1, 2, 1, 2> dummy_robot_creator;
 
 //! Names of the components of the robot.
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */

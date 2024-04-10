@@ -55,7 +55,7 @@ namespace robotlib
 		/*!
          * @brief Destructor.
          */
-		~Joint() = default;
+		virtual ~Joint() = default;
 
 		//! Robot is a friend class to let it use the private methods of the Joint class.
 		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>

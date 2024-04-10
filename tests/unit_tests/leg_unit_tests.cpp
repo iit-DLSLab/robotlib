@@ -18,10 +18,9 @@
 /**
  * @test Dummy robot created with the following structure:
  * 1 leg
- * 2 joints per leg
- * 2 links per leg
+ * 2 joints/links per leg
  */
-robotlib::DummyRobotCreator<1, 2, 2> dummy_robot_creator;
+robotlib::DummyRobotCreator<1, 2> dummy_robot_creator;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
 std::array<std::string, 7> components_names{"Dummy Robot",
@@ -33,10 +32,9 @@ std::array<std::string, 7> components_names{"Dummy Robot",
 /**
  * @test Dummy robot created with the following structure:
  * 1 leg
- * 1 joints per leg
- * 1 links per leg
+ * 1 joints/links per leg
  */
-robotlib::DummyRobotCreator<1, 1, 1> dummy_robot_creator_2;
+robotlib::DummyRobotCreator<1, 1> dummy_robot_creator_2;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
 std::array<std::string, 5> components_names_2{"Dummy Robot",
@@ -205,7 +203,7 @@ TEST(LegUnitTests, getJoints)
         unsigned int i{0};
         for (auto& joint : dummy_robot->getJoints())
         {
-            EXPECT_EQ(joint->getName(), components_names.at(3+i));
+            EXPECT_EQ(joint.getName(), components_names.at(3+i));
             i++;
         }
     }
@@ -225,7 +223,7 @@ TEST(LegUnitTests, getLinks)
         unsigned int i{0};
         for (auto& link : dummy_robot->getLinks())
         {
-            EXPECT_EQ(link->getName(), components_names.at(5+i));
+            EXPECT_EQ(link.getName(), components_names.at(5+i));
             i++;
         }
     }
