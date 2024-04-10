@@ -49,8 +49,9 @@ namespace robotlib
 	
 	void Link::setParent(Joint* parent) 
 	{ 
-		parent_ = parent; 
-		parent_->setChild(this);
+		parent_ = parent;
+		if(parent_) 
+			parent_->setChild(this);
 	}
 
 	void Link::addChild(Joint* child) 

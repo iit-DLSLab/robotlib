@@ -5,10 +5,10 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	Robot<NLIMBS, NLINKS, NJOINTS>::Robot(
 		const std::string& name,
-		const std::shared_ptr<Trunk>& trunk,
+		const DynParams& dynamic_parameters,
 		Container<LimbBase, NLIMBS>& limbs)
 		: RobotBase(name)
-		, trunk_(trunk)
+		, trunk_(dynamic_parameters)
 		, limbs_(limbs)
 	{
 		unsigned int limb_joint_count{0};
@@ -17,6 +17,8 @@ namespace robotlib
 			unsigned int joint_count{0};
 			for(auto& joint : limb.getJoints())
 			{
+				if(!joint.getParent())
+					joint.setParent(&trunk_);
 				this->joints_.at(limb_joint_count++) = limb.getJoints().at(joint_count++);
 			}
 		}
@@ -66,7 +68,7 @@ namespace robotlib
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    const std::shared_ptr<Trunk>& Robot<NLIMBS, NLINKS, NJOINTS>::getTrunk() const
+    const Trunk& Robot<NLIMBS, NLINKS, NJOINTS>::getTrunk() const
 	{
 		return trunk_;
 	}
@@ -124,25 +126,25 @@ namespace robotlib
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	const std::vector<std::shared_ptr<const LimbBase>> Robot<NLIMBS, NLINKS, NJOINTS>::getLegs() const
+	const std::vector<LimbBase*> Robot<NLIMBS, NLINKS, NJOINTS>::getLegs() const
 	{
-		std::vector<std::shared_ptr<const LimbBase>> out;
+		std::vector<LimbBase*> out;
 		for(auto& limb : limbs_)
 		{
-			if(limb.type().compare("leg"))
-				out.push_back(std::shared_ptr<const LimbBase>(&limb));
+			if(limb.type().compare("leg") == 0)
+				out.push_back(&limb);
 		}
 		return out;
 	};
 
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	const std::vector<std::shared_ptr<const LimbBase>> Robot<NLIMBS, NLINKS, NJOINTS>::getArms() const
+	const std::vector<LimbBase*> Robot<NLIMBS, NLINKS, NJOINTS>::getArms() const
 	{
-		std::vector<std::shared_ptr<const LimbBase>> out;
+		std::vector<LimbBase*> out;
 		for(auto& limb : limbs_)
 		{
-			if(limb.type().compare("arm"))
-				out.push_back(std::shared_ptr<const LimbBase>(&limb));
+			if(limb.type().compare("arm") == 0)
+				out.push_back(&limb);
 		}
 		return out;
 	};
@@ -186,7 +188,7 @@ namespace robotlib
 	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 	Eigen::Vector3d Robot<NLIMBS, NLINKS, NJOINTS>::getTrunkCOM() const
 	{
-		return trunk_->getCoM();
+		return trunk_.getCoM();
 	};
 
 } // namespace robotlib

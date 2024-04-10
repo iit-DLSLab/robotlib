@@ -8,7 +8,9 @@ namespace robotlib
     template <class Data> 
     JointDataMap<Data>::JointDataMap(const  ContainerBase<Joint>& joints, const Data& data) 
         : DataMap<Joint, Data>(joints, data)
-    {}
+    {
+        std::cout << "TESTING JOINT DATA MAP - CONSTRUCTOR" << std::endl;
+    }
 
     template <class Data>
     JointDataMap<Data>::JointDataMap(const ContainerBase<Joint>& joints, const std::vector<Data>& data) 

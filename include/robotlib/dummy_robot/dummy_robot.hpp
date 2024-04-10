@@ -42,7 +42,7 @@ namespace robotlib
         * @param[in] arms shared pointer pointing to the robot's arms.
         */
         DummyRobot(const std::string& name,
-                   std::shared_ptr<Trunk>& trunk,
+                   const DynParams& dynamic_parameters,
                    Container<LimbBase, NLIMBS>& limbs);
 
         /*!

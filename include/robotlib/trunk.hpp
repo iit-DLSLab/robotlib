@@ -31,18 +31,18 @@ namespace robotlib
 	class Trunk : public Link
 	{
 	public:
-		/*!
-         * @brief Constructor.
-         * @param[in] name name of the trunk.
-         */
-		Trunk(const std::string& name);
+		// /*!
+        //  * @brief Constructor.
+        //  * @param[in] name name of the trunk.
+        //  */
+		// Trunk(const std::string& name);
 
 		/*!
          * @brief Constructor.
          * @param[in] name name of the trunk.
 		 * @param[in] dynamic_parameters dynamic parameters of the trunk.
          */
-		Trunk(const std::string& name, const DynParams& dynamic_parameters);
+		Trunk(const DynParams& dynamic_parameters = DynParams());
 
 		/*!
          * @brief Destructor.

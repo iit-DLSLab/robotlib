@@ -23,11 +23,12 @@
 robotlib::DummyRobotCreator<0, 0, 1, 2> dummy_robot_creator;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 7> components_names{"Dummy Robot",
-                                            "TRUNK",
+std::array<std::string, 6> components_names{"Dummy Robot",
                                             "Arm",
-                                            "Arm_joint_1", "Arm_joint_2",
-                                            "Arm_link_1", "Arm_link_2"};
+                                            "Arm_joint_1",
+                                            "Arm_joint_2",
+                                            "Arm_link_1",
+                                            "Arm_link_2"};
 
 /**
  * @test Dummy robot created with the following structure:
@@ -37,8 +38,7 @@ std::array<std::string, 7> components_names{"Dummy Robot",
 robotlib::DummyRobotCreator<0, 0, 1, 1> dummy_robot_creator_2;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 5> components_names_2{"Dummy Robot",
-                                              "TRUNK",
+std::array<std::string, 4> components_names_2{"Dummy Robot",
                                               "Robot arm",
                                               "Arm_joint_1",
                                               "Arm_link_1"};
@@ -56,7 +56,7 @@ TEST(ArmUnitTests, getName)
 
           for (auto& arm : dummy_robot->getArms())
           {
-               EXPECT_EQ(arm->getName(), components_names[2]);
+               EXPECT_EQ(arm->getName(), components_names[1]);
           }
      }
 
@@ -68,7 +68,7 @@ TEST(ArmUnitTests, getName)
 
           for (auto& arm : dummy_robot->getArms())
           {
-               EXPECT_EQ(arm->getName(), components_names_2[2]);
+               EXPECT_EQ(arm->getName(), components_names_2[1]);
           }
      }
 }
@@ -146,8 +146,8 @@ TEST(ArmUnitTests, getJoint)
 
           for (auto& arm : dummy_robot->getArms())
           {
+               EXPECT_EQ(arm->getJoint(components_names[2]).getName(), components_names[2]);
                EXPECT_EQ(arm->getJoint(components_names[3]).getName(), components_names[3]);
-               EXPECT_EQ(arm->getJoint(components_names[4]).getName(), components_names[4]);
           }
      }
 }
@@ -165,8 +165,8 @@ TEST(ArmUnitTests, getLink)
 
           for (auto& arm : dummy_robot->getArms())
           {
+               EXPECT_EQ(arm->getLink(components_names[4]).getName(), components_names[4]);
                EXPECT_EQ(arm->getLink(components_names[5]).getName(), components_names[5]);
-               EXPECT_EQ(arm->getLink(components_names[6]).getName(), components_names[6]);
           }
      }
 }
@@ -184,7 +184,7 @@ TEST(ArmUnitTests, getEndEffector)
 
           for (auto& arm : dummy_robot->getArms())
           {
-               EXPECT_EQ(arm->getEndEffector().getName(), components_names[6]);
+               EXPECT_EQ(arm->getEndEffector().getName(), components_names[5]);
           }
      }
 }
@@ -205,7 +205,7 @@ TEST(ArmUnitTests, getJoints)
           {
                for (auto& joint : arm->getJoints())
                {
-                    EXPECT_EQ(joint.getName(), components_names[3+i]);
+                    EXPECT_EQ(joint.getName(), components_names[2+i]);
                     i++;
                }
           }
@@ -228,7 +228,7 @@ TEST(ArmUnitTests, getLinks)
           {
                for (auto& link : arm->getLinks())
                {
-                    EXPECT_EQ(link.getName(), components_names[5+i]);
+                    EXPECT_EQ(link.getName(), components_names[4+i]);
                     i++;
                }
           }

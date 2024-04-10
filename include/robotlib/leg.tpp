@@ -27,6 +27,6 @@ namespace robotlib
     template <unsigned int NLINKS, unsigned int NJOINTS>
     std::string Leg<NLINKS, NJOINTS >::type() const
     {
-        return "arm";
+        return "leg";
     }
 } // namespace robotlib

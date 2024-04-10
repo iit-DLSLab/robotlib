@@ -23,8 +23,7 @@
 robotlib::DummyRobotCreator<1, 1> dummy_robot_creator;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 5> components_names{"Dummy Robot",
-                                            "TRUNK",
+std::array<std::string, 4> components_names{"Dummy Robot",
                                             "Leg",
                                             "Leg_joint_1",
                                             "Leg_link_1",};
@@ -37,8 +36,7 @@ std::array<std::string, 5> components_names{"Dummy Robot",
 robotlib::DummyRobotCreator<2, 2> dummy_robot_creator_2;
 
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 12> components_names_2{"Dummy Robot",
-                                              "Trunk",
+std::array<std::string, 11> components_names_2{"Dummy Robot",
                                               "Leg_1",
                                               "Leg_2",
                                               "Leg_1_joint_1",
@@ -56,38 +54,6 @@ std::array<std::string, 12> components_names_2{"Dummy Robot",
 TEST(TrunkUnitTests, getName)
 {  
     /**
-     * @test Trunk name with a complete string
-     */
-    {
-        robotlib::Trunk trunk{"trunk_test"};
-        EXPECT_EQ(trunk.getName(), "trunk_test");
-    }
-
-    /**
-     * @test Trunk name with two separate words
-     */
-    {
-        robotlib::Trunk trunk{"trunk test"};
-        EXPECT_EQ(trunk.getName(), "trunk test");
-    }
-
-    /**
-     * @test Trunk name with an empty string
-     */
-    {
-        robotlib::Trunk trunk{""};
-        EXPECT_EQ(trunk.getName(), "");
-    }
-
-    /**
-     * @test Trunk name with a single space character
-     */
-    {
-        robotlib::Trunk trunk{" "};
-        EXPECT_EQ(trunk.getName(), " ");
-    }
-
-    /**
      * @test Dummy robot trunk name
      */
     {
@@ -95,7 +61,7 @@ TEST(TrunkUnitTests, getName)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link->getName(), components_names[1]);
+        EXPECT_EQ(trunk_link.getName(), "TRUNK");
     }
 }
 
@@ -112,7 +78,7 @@ TEST(LinkUnitTests, getParent)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link->getParent(), nullptr);
+        EXPECT_EQ(trunk_link.getParent(), nullptr);
     }
 }
 
@@ -129,7 +95,7 @@ TEST(LinkUnitTests, getChild)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link->getChildren()[0]->getName(), components_names[3]);
+        EXPECT_EQ(trunk_link.getChildren()[0]->getName(), components_names[2]);
     }
 
     /**
@@ -140,7 +106,7 @@ TEST(LinkUnitTests, getChild)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link->getChildren().size(), 2);
+        EXPECT_EQ(trunk_link.getChildren().size(), 2);
     }
 }
 
@@ -157,11 +123,11 @@ TEST(LinkUnitTests, getChildren)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ((trunk_link->getChildren().size()), 1);
+        EXPECT_EQ((trunk_link.getChildren().size()), 1);
 
-        for (auto& trunk_child : trunk_link->getChildren())
+        for (auto& trunk_child : trunk_link.getChildren())
         {
-            EXPECT_EQ(trunk_child->getName(), components_names[3]);
+            EXPECT_EQ(trunk_child->getName(), components_names[2]);
         }
     }
 
@@ -173,16 +139,17 @@ TEST(LinkUnitTests, getChildren)
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link->getChildren().size(), 2);
+        EXPECT_EQ(trunk_link.getChildren().size(), 2);
 
         unsigned int i{0};
-        for (auto& trunk_child : trunk_link->getChildren())
+        for (auto& trunk_child : trunk_link.getChildren())
         {
-            EXPECT_EQ(trunk_child->getName(), components_names_2[4 + 2*i]);
+            EXPECT_EQ(trunk_child->getName(), components_names_2[3 + 2*i]);
             i++;
         }
     }
 }
+
 /// TODO: The following tests on getCoM, getMass, getInertia and getDynParams should be substitued using the set functions
 /// implemented in Robotlib (and so, using a dummy robot) instead of in the Glue.
 
@@ -204,7 +171,7 @@ TEST(TrunkUnitTests, getCoM)
      * @test Trunk com with dummy values
      */
     {
-        robotlib::Trunk trunk{"trunk", trunk_dyn_params};
+        robotlib::Trunk trunk{trunk_dyn_params};
         EXPECT_EQ(trunk.getCoM(), com);
     }
 }
@@ -228,7 +195,7 @@ TEST(TrunkUnitTests, getMass)
      * @test Trunk mass with dummy values
      */
     {
-        robotlib::Trunk trunk{"trunk", trunk_dyn_params};
+        robotlib::Trunk trunk{trunk_dyn_params};
         EXPECT_EQ(trunk.getMass(), mass);
     }
 }
@@ -252,7 +219,7 @@ TEST(TrunkUnitTests, getInertia)
      * @test Trunk inertia with dummy values
      */
     {
-        robotlib::Trunk trunk{"trunk", trunk_dyn_params};
+        robotlib::Trunk trunk{trunk_dyn_params};
         EXPECT_EQ(trunk.getInertia(), inertia);
     }
 }
@@ -275,7 +242,7 @@ TEST(TrunkUnitTests, getDynParams)
      * @test Trunk inertia with dummy values
      */
     {
-        robotlib::Trunk trunk{"trunk", trunk_dyn_params};
+        robotlib::Trunk trunk{trunk_dyn_params};
         EXPECT_EQ(trunk.getDynParams().getCoM(), com);
         EXPECT_EQ(trunk.getDynParams().getMass(), mass);
         EXPECT_EQ(trunk.getDynParams().getInertia(), inertia);

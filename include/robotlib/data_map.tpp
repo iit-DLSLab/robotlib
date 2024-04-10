@@ -10,12 +10,15 @@ namespace robotlib
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const Data& data)
         : num_data_(keys.length())
+        , data_array_(new DataPair<Key, Data>*[num_data_])
     {
+        std::cout << "TESTING JOINT DATA MAP - DATA MAP CONSTRUCTOR" << std::endl;
         int count_data = 0;
         for(auto& key : keys)
         {
             this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
         }   
+        std::cout << "TESTING JOINT DATA MAP - DATA MAP CONSTRUCTOR - FASE 2" << std::endl;
     }
 
     template <class Key, class Data>

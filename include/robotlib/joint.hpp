@@ -39,18 +39,18 @@ namespace robotlib
 
 	public:
 	
-		/*!
-         * @brief Constructor.
-         * @param[in] name name of the joint.
-         */
-		Joint(const std::string& name);
+		// /*!
+        //  * @brief Constructor.
+        //  * @param[in] name name of the joint.
+        //  */
+		// Joint(const std::string& name);
 
 		/*!
          * @brief Constructor.
 		 * @param[in] name name of the joint.
          * @param[in] parent parent link.
          */
-		Joint(const std::string& name, Link* parent);
+		Joint(const std::string& name, Link* parent = NULL);
 
 		/*!
          * @brief Destructor.

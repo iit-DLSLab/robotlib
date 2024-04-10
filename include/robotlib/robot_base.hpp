@@ -145,7 +145,7 @@ namespace robotlib
          * @brief Get robot's trunk.
          * @return reference to trunk link.
          */
-        virtual const std::shared_ptr<Trunk>& getTrunk() const = 0;
+        virtual const Trunk& getTrunk() const = 0;
 
         /*!
          * @brief Get robot's joint from joint's name.
@@ -190,13 +190,13 @@ namespace robotlib
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        virtual const std::vector<std::shared_ptr<const LimbBase>> getLegs() const = 0;
+        virtual const std::vector<LimbBase*> getLegs() const = 0;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        virtual const std::vector<std::shared_ptr<const LimbBase>> getArms() const = 0;
+        virtual const std::vector<LimbBase*> getArms() const = 0;
 
         /*!
          * @brief Get lower angle limit of each joint.

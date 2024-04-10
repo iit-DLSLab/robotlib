@@ -9,32 +9,41 @@ namespace robotlib
 {
     JointState::JointState(const ContainerBase<LimbBase>& limbs, const double& val) 
         : LimbDataMap<JointDataMap<double>>(limbs, 
-            [&]() -> std::vector<JointDataMap<double>>
+            [=, this]() -> std::vector<JointDataMap<double>>
             {
+                std::cout << "TESTING JOINTSTATE CONSTRUCTOR" << std::endl;
                 std::vector<JointDataMap<double>> out;
 
-                for (auto& limb_pair : *this)
-                {
-                    std::vector<double> limb_data;
+                std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 2" << std::endl;
 
-                    for (auto& joint_pair : limb_pair.getData())
+                for (auto& limb : limbs)
+                {
+                    std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 3" << std::endl;
+
+                    std::vector<double> limb_data;
+                    std::vector<Joint*> temp;
+
+                    auto link_count{0};
+                    for (auto& joint : limb.getJoints())
                     {
                         limb_data.push_back(val);
-                        joints_.push_back(std::shared_ptr<const Joint>(&joint_pair.getKey()));
+                        temp.push_back(&joint);
+                        // this->links_.at(limb_link_count++) = limb.getLinks().at(link_count++);
+                        std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 4 " << limb.getJoints().at(link_count++) << std::endl;
                     }
 
-                    out.push_back(JointDataMap<double>(limb_pair.getKey().getJoints(), limb_data));
+                    out.push_back(JointDataMap<double>(limb.getJoints(), limb_data));
                 }
                 return out;
             }()
         )
         // , attribIt(nullptr)
     {
-        this->total_size = 0;
-        for (auto& limb_pair : *this)
-        {
-            this->total_size += limb_pair.getKey().getNJoints();
-        }
+        // this->total_size = 0;
+        // for (auto& limb_pair : *this)
+        // {
+        //     this->total_size += limb_pair.getKey().getNJoints();
+        // }
     }
     
     
@@ -52,7 +61,7 @@ namespace robotlib
         // }
     }
 
-    const std::vector<std::shared_ptr<const Joint>>& JointState::getJoints() const
+    const std::vector<Joint*>& JointState::getJoints() const
     {
         return joints_;
     }

@@ -19,11 +19,11 @@
 
 namespace robotlib
 {
-	Joint::Joint(const std::string &name) 
-		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
-		, parent_(NULL)
-		, child_(NULL)
-	{}
+	// Joint::Joint(const std::string &name) 
+	// 	: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+	// 	, parent_(NULL)
+	// 	, child_(NULL)
+	// {}
 
 	Joint::Joint(const std::string &name, Link* parent) 
 		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
@@ -42,8 +42,9 @@ namespace robotlib
 	}
 
 	void Joint::setParent(Link* parent) {
-		parent_ = parent; 
-		parent_->addChild(this);
+		parent_ = parent;
+		if(parent_)
+			parent_->addChild(this);
 	}
 
 	void Joint::setChild(Link* child) 

@@ -41,7 +41,7 @@ namespace robotlib
          * @param[in] limbs robot's limbs.
          */
 		Robot(const std::string& name,
-			  const std::shared_ptr<Trunk>& trunk,
+			  const DynParams& dynamic_parameters,
 			  Container<LimbBase, NLIMBS>& limbs);
 
 		/*!
@@ -83,7 +83,7 @@ namespace robotlib
          * @brief Get robot's trunk.
          * @return reference to trunk link.
          */
-        virtual const std::shared_ptr<Trunk>& getTrunk() const override;
+        virtual const Trunk& getTrunk() const override;
 
         /*!
          * @brief Get robot's joint from joint's name.
@@ -128,13 +128,13 @@ namespace robotlib
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        const std::vector<std::shared_ptr<const LimbBase>> getLegs() const override;
+        const std::vector<LimbBase*> getLegs() const override;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        const std::vector<std::shared_ptr<const LimbBase>> getArms() const override;
+        const std::vector<LimbBase*> getArms() const override;
 
 		/*!
          * @brief Get lower angle limit of each joint.
@@ -177,7 +177,7 @@ namespace robotlib
     protected:
 
 		//! Trunk of the robot
-		const std::shared_ptr<Trunk> trunk_;
+		Trunk trunk_;
 
     private:
 		//! Limbs of the robot

@@ -241,7 +241,7 @@ namespace robotlib
         void assignAll(const Data &value);
 
         //! Pointer to the array of pairs.
-        std::shared_ptr<DataPair<Key, Data>[]> data_array_;
+        DataPair<Key, Data>** data_array_;
 
         //! Number of pairs.
         long unsigned int num_data_;

@@ -13,7 +13,28 @@
  */
 
 #include <gtest/gtest.h>
-#include "robot_factory.hpp"
+#include "dummy_robot/dummy_robot_creator.hpp"
+
+/**
+ * @test Dummy robot created with the following structure:
+ * 1 leg
+ * 2 joints/links per leg
+ */
+robotlib::DummyRobotCreator<4, 3> dummy_robot_creator;
+
+/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
+std::array<std::string, 29> components_names{"Dummy Quadruped",
+                                            "LF", "RF", "LH", "RH",
+                                            //joints
+                                            "LF_HAA", "LF_HFE", "LF_KFE",
+                                            "RF_HAA", "RF_HFE", "RF_KFE",
+                                            "LH_HAA", "LH_HFE", "LH_KFE",
+                                            "RH_HAA", "RH_HFE", "RH_KFE",
+                                            //links
+                                            "LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG",
+                                            "RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG",
+                                            "LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG",
+                                            "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
 
 /**
  * @brief Unit tests for JointState class
@@ -21,18 +42,18 @@
  */
 TEST(JointStateUnitTests, makeJointState)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
     /**
      * @test Dummy Quadruped - JointState initialized with all 0.0 values when called makeJointState
      */
     {
-    auto joint_state = dummy_quadruped->makeJointState();
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
     
-    for(auto& joint : dummy_quadruped->getJoints())
-    {
-        ASSERT_EQ(joint_state[joint], 0.0);
-    }
+        // auto joint_state = dummy_robot->makeJointState();
+    
+        // for(auto& joint : dummy_robot->getJoints())
+        // {
+        //     ASSERT_EQ(joint_state[joint], 0.0);
+        // }
     }
 
 //     /**

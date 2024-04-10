@@ -36,14 +36,14 @@ namespace robotlib
          * @param[in] mass mass.
          * @param[in] inertia inertia.
          */
-		DynParams(const Eigen::Vector3d &com,
-				  const double mass,
-				  const Eigen::Matrix3d &inertia);
+		DynParams(const Eigen::Vector3d com = Eigen::Vector3d::Zero(),
+				  const double mass = 0,
+				  const Eigen::Matrix3d inertia = Eigen::Matrix3d::Zero());
 
 	    /*!
          * @brief Destructor.
          */
-		~DynParams();
+		virtual ~DynParams() = default;
 
 		/*!
 		 * @brief Get the center of mass of the object to which those dynamic parameters are associated to.

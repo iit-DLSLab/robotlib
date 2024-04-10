@@ -21,14 +21,17 @@ robotlib::DummyRobotCreator<1, 2, 1, 2> dummy_robot_creator;
 
 //! Names of the components of the robot.
 /* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 12> components_names{"Dummy Robot",
-                                            "TRUNK",
+std::array<std::string, 11> components_names{"Dummy Robot",
                                             "Leg",
-                                            "Leg_joint_1", "Leg_joint_2",
-                                            "Leg_link_1", "Leg_link_2"
+                                            "Leg_joint_1",
+											"Leg_joint_2",
+                                            "Leg_link_1",
+											"Leg_link_2",
                                             "Arm",
-                                            "Arm_joint_1", "Arm_joint_2",
-                                            "Arm_link_1", "Arm_link_2"};
+                                            "Arm_joint_1",
+											"Arm_joint_2",
+                                            "Arm_link_1",
+											"Arm_link_2"};
 
 /**
  * @brief Set of unit tests for Limb::getName function (inherited from LimbBase)
@@ -43,7 +46,7 @@ TEST(LimbUnitTests, getName)
 
 		for (auto& leg : dummy_robot->getLegs())
 		{
-			EXPECT_EQ(leg->getName(), components_names.at(2));
+			EXPECT_EQ(leg->getName(), components_names[1]);
 		}
 	}
 
@@ -55,7 +58,7 @@ TEST(LimbUnitTests, getName)
 
 		for (auto& arm : dummy_robot->getArms())
 		{
-			EXPECT_EQ(arm->getName(), components_names.at(7));
+			EXPECT_EQ(arm->getName(), components_names[6]);
 		}
 	}
 }
@@ -121,8 +124,8 @@ TEST(LimbUnitTests, getJoint)
 
 		for (auto& leg : dummy_robot->getLegs())
 		{
-			EXPECT_EQ(leg->getJoint(components_names.at(3)).getName(), components_names.at(3));
-			EXPECT_EQ(leg->getJoint(components_names.at(4)).getName(), components_names.at(4));
+			EXPECT_EQ(leg->getJoint(components_names[2]).getName(), components_names[2]);
+			EXPECT_EQ(leg->getJoint(components_names[3]).getName(), components_names[3]);
 		}
 	}
 
@@ -134,8 +137,8 @@ TEST(LimbUnitTests, getJoint)
 
 		for (auto& arm : dummy_robot->getArms())
 		{
-			EXPECT_EQ(arm->getJoint(components_names.at(8)).getName(), components_names.at(8));
-			EXPECT_EQ(arm->getJoint(components_names.at(9)).getName(), components_names.at(9));
+			EXPECT_EQ(arm->getJoint(components_names[7]).getName(), components_names[7]);
+			EXPECT_EQ(arm->getJoint(components_names[8]).getName(), components_names[8]);
 		}
 	}
 }
@@ -153,8 +156,8 @@ TEST(LimbUnitTests, getLink)
 
 		for (auto& leg : dummy_robot->getLegs())
 		{
-			EXPECT_EQ(leg->getLink(components_names.at(5)).getName(), components_names.at(5));
-			EXPECT_EQ(leg->getLink(components_names.at(6)).getName(), components_names.at(6));
+			EXPECT_EQ(leg->getLink(components_names[4]).getName(), components_names[4]);
+			EXPECT_EQ(leg->getLink(components_names[5]).getName(), components_names[5]);
 		}
 	}
 
@@ -166,8 +169,8 @@ TEST(LimbUnitTests, getLink)
 
 		for (auto& arm : dummy_robot->getArms())
 		{
-			EXPECT_EQ(arm->getLink(components_names.at(10)).getName(), components_names.at(10));
-			EXPECT_EQ(arm->getLink(components_names.at(11)).getName(), components_names.at(11));
+			EXPECT_EQ(arm->getLink(components_names[9]).getName(), components_names[9]);
+			EXPECT_EQ(arm->getLink(components_names[10]).getName(), components_names[10]);
 		}
 	}
 }
@@ -185,7 +188,7 @@ TEST(LimbUnitTests, getEndEffector)
 
 		for (auto& leg : dummy_robot->getLegs())
 		{
-			EXPECT_EQ(leg->getEndEffector().getName(), components_names.at(6));
+			EXPECT_EQ(leg->getEndEffector().getName(), components_names[5]);
 		}
 	}
 
@@ -197,7 +200,7 @@ TEST(LimbUnitTests, getEndEffector)
 
 		for (auto& arm : dummy_robot->getArms())
 		{
-			EXPECT_EQ(arm->getEndEffector().getName(), components_names.at(11));
+			EXPECT_EQ(arm->getEndEffector().getName(), components_names[10]);
 		}
 	}
 }
@@ -218,7 +221,7 @@ TEST(LimbUnitTests, getJoints)
 		{
 			for (auto& joint : leg->getJoints())
 			{
-				EXPECT_EQ(joint.getName(), components_names.at(3+i));
+				EXPECT_EQ(joint.getName(), components_names[2+i]);
 				i++;
 			}
 		}
@@ -235,7 +238,7 @@ TEST(LimbUnitTests, getJoints)
 		{
 			for (auto& joint : arm->getJoints())
 			{
-				EXPECT_EQ(joint.getName(), components_names.at(8+i));
+				EXPECT_EQ(joint.getName(), components_names[7+i]);
 				i++;
 			}
 		}
@@ -258,7 +261,7 @@ TEST(LimbUnitTests, getLinks)
 		{
 			for (auto& link : leg->getLinks())
 			{
-				EXPECT_EQ(link.getName(), components_names.at(5+i));
+				EXPECT_EQ(link.getName(), components_names[4+i]);
 				i++;
 			}
 		}
@@ -275,7 +278,7 @@ TEST(LimbUnitTests, getLinks)
 		{
 			for (auto& link : arm->getLinks())
 			{
-				EXPECT_EQ(link.getName(), components_names.at(10+i));
+				EXPECT_EQ(link.getName(), components_names[9+i]);
 				i++;
 			}
 		}
