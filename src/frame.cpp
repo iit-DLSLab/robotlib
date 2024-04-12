@@ -33,7 +33,9 @@ namespace robotlib
 
     bool Frame::operator==(const Frame& rhs) const
 	{
-		return this->getName().compare(rhs.getName());
+		// return this->getName().compare(rhs.getName()) == 0;
+
+        return this == &rhs;
 	}
     
 } // namespace robotlib

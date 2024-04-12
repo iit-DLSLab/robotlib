@@ -8,42 +8,23 @@
 namespace robotlib
 {
     JointState::JointState(const ContainerBase<LimbBase>& limbs, const double& val) 
-        : LimbDataMap<JointDataMap<double>>(limbs, 
-            [=, this]() -> std::vector<JointDataMap<double>>
+        : total_size(0)
+        , LimbDataMap<JointDataMap<double>>(limbs, 
+            [&]() -> std::vector<JointDataMap<double>>
             {
-                std::cout << "TESTING JOINTSTATE CONSTRUCTOR" << std::endl;
                 std::vector<JointDataMap<double>> out;
-
-                std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 2" << std::endl;
 
                 for (auto& limb : limbs)
                 {
-                    std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 3" << std::endl;
-
-                    std::vector<double> limb_data;
-                    std::vector<Joint*> temp;
-
-                    auto link_count{0};
-                    for (auto& joint : limb.getJoints())
-                    {
-                        limb_data.push_back(val);
-                        temp.push_back(&joint);
-                        // this->links_.at(limb_link_count++) = limb.getLinks().at(link_count++);
-                        std::cout << "TESTING JOINTSTATE CONSTRUCTOR - FASE 4 " << limb.getJoints().at(link_count++) << std::endl;
-                    }
-
-                    out.push_back(JointDataMap<double>(limb.getJoints(), limb_data));
+                    out.push_back(JointDataMap<double>(limb.getJoints(), val));
                 }
                 return out;
             }()
         )
         // , attribIt(nullptr)
     {
-        // this->total_size = 0;
-        // for (auto& limb_pair : *this)
-        // {
-        //     this->total_size += limb_pair.getKey().getNJoints();
-        // }
+        for (auto& limb_pair : *this)
+            this->total_size += limb_pair.getKey().getNJoints();
     }
     
     
@@ -61,9 +42,18 @@ namespace robotlib
         // }
     }
 
-    const std::vector<Joint*>& JointState::getJoints() const
+    const std::vector<Joint*> JointState::getJoints() const
     {
-        return joints_;
+        std::vector<Joint*> out;
+
+         for (auto& limb_pair : *this)
+        {
+            for (auto& joint : limb_pair.getKey().getJoints())
+            {
+                out.push_back(&joint);
+            }
+        }
+        return out;
     }
 
     double& JointState::operator[](const Joint& rhs)

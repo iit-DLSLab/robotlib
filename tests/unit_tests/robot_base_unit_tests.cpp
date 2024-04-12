@@ -614,34 +614,6 @@ TEST(RobotBaseUnitTests, getNLegs)
 //     }
 // }
 
-// TEST(RobotBaseUnitTests, JointDataMap)
-// {
-//     std::cout << "TODO: JointDataMap TEST" << std::endl;
-
-//     /// Dummy quadruped
-//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-
-//     /// Groud truth
-//     //...
-
-//     auto jointPos = dummy_quadruped->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
-
-//     Eigen::Vector3d p;
-//     p.setZero();
-//     for (auto joint : dummy_quadruped->getJoints())
-//     {
-//         jointPos[joint] = p;
-//         p[0]++;
-//         p[1]++;
-//         p[2]++;
-//     }
-
-//     for (auto& pos : jointPos)
-//     {
-//         std::cout << pos.getData().transpose() << std::endl;
-//     }
-// }
-
 // TEST(RobotBaseUnitTests, jacobian_operator_equal)
 // {
 //     // std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};

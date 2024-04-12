@@ -1,7 +1,7 @@
 /**
- * @file joint_data_map_unit_tests.cpp
+ * @file link_data_map_unit_tests.cpp
  * 
- * @brief Unit tests for JointDataMap classes
+ * @brief Unit tests for LinkDataMap classes
  *
  * @authors Authors in alphabetical order:
  *
@@ -37,49 +37,49 @@ std::array<std::string, 29> components_names{"Dummy Quadruped",
                                             "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
 
 
-TEST(JointDataMapUnitTests, makeJointDataMapZero)
+TEST(LinkDataMapUnitTests, makeLinkDataMapZero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto linkPos = dummy_robot->makeLinkDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
-    for (auto& joint : dummy_robot->getJoints())
+    for (auto& link : dummy_robot->getLinks())
     {
-        EXPECT_EQ(jointPos[joint],  Eigen::Vector3d::Zero());
+        EXPECT_EQ(linkPos[link],  Eigen::Vector3d::Zero());
     }
 }
 
-TEST(JointDataMapUnitTests, makeJointDataMapNonZero)
+TEST(LinkDataMapUnitTests, makeLinkDataMapNonZero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
     Eigen::Vector3d p(1, 2, 3);
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(p);
+    auto linkPos = dummy_robot->makeLinkDataMap<Eigen::Vector3d>(p);
 
-    for (auto& joint : dummy_robot->getJoints())
+    for (auto& link : dummy_robot->getLinks())
     {
-        EXPECT_EQ(jointPos[joint],  p);
+        EXPECT_EQ(linkPos[link],  p);
     }
 }
 
-TEST(JointDataMapUnitTests, Attribution)
+TEST(LinkDataMapUnitTests, Attribution)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto linkPos = dummy_robot->makeLinkDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
     Eigen::Vector3d p;
     p.setZero();
-    for (auto& joint : dummy_robot->getJoints())
+    for (auto& link : dummy_robot->getLinks())
     {
         p[0]++;
         p[1]++;
         p[2]++;
-        jointPos[joint] = p;
+        linkPos[link] = p;
 
-        EXPECT_EQ(jointPos[joint],  p);
+        EXPECT_EQ(linkPos[link],  p);
     }
 }

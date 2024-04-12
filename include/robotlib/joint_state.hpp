@@ -37,7 +37,7 @@ namespace robotlib
          * @brief Get a sequece of the joints keys.
          * @return vector of joints keys.
          */
-        const std::vector<Joint*>& getJoints() const;
+        const std::vector<Joint*> getJoints() const;
 
         /*!
          * @brief Square brackets operator.
@@ -195,9 +195,9 @@ namespace robotlib
 
         // Iterator<typename DataMap<Joint, double>::DataPair> attribIt;
 
-        //! List of pointes to the joints of the robot
-        //! This variable is used to easy and accelerate access to the joints keys
-		std::vector<Joint*> joints_;
+        // //! List of pointes to the joints of the robot
+        // //! This variable is used to easy and accelerate access to the joints keys
+		// std::vector<Joint*> joints_;
 
         //! Local value with the number of data items inside the map
         long unsigned int total_size;

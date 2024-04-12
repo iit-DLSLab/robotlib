@@ -28,7 +28,7 @@ namespace robotlib
 
     bool LimbBase::operator==(const LimbBase& rhs) const
     {
-        return this->name_.compare(rhs.name_) == 0;
+        return this == &rhs;
     }
 
     std::string LimbBase::type() const

@@ -25,7 +25,7 @@ namespace robotlib
         /*!
          * @brief Default destructor.
          */
-        ~DataPair() = default;
+        virtual ~DataPair() = default;
 
         /*!
          * @brief Assignment operator.
@@ -126,6 +126,11 @@ namespace robotlib
          * @param[in] data data to be associated to the key.
          */
         DataPair(const std::shared_ptr<Key> key, const Data& data);
+
+        // /*!
+        //  * @brief Default Constructor.
+        //  */
+        // DataPair() = default;
 
         //! Key to which associate a data.
         std::shared_ptr<const Key> key_;

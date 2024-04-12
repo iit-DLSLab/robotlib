@@ -2,7 +2,7 @@
 #define _ROBOTLIB_DATA_MAP_HPP_
 
 #include "data_pair.hpp"
-#include "utils/iterator.hpp"
+#include "utils/iterator_data_map.hpp"
 
 namespace robotlib
 {
@@ -29,33 +29,33 @@ namespace robotlib
         /*!
          * @brief Default destructor.
          */
-        virtual ~DataMap() = default;
+        virtual ~DataMap();
         
         /*!
          * @brief Begin method to be used with iterators.
          * @details Implementation for constant objects.
          * @return Iterator object pointing to the first data of the data_ array.
          */
-        virtual Iterator<const DataPair<Key, Data>> begin() const;
+        virtual IteratorDataMap<const DataPair<Key, Data>> begin() const;
 
         /*!
          * @brief End method to be used with iterators.
          * @details Implementation for constant objects.
          * @return Iterator object pointing to the last data of the data_ array.
          */
-        virtual Iterator<const DataPair<Key, Data>> end() const;
+        virtual IteratorDataMap<const DataPair<Key, Data>> end() const;
 
         /*!
          * @brief Begin method to be used with iterators.
          * @return Iterator object pointing to the first data of the data_ array.
          */
-        virtual Iterator<DataPair<Key, Data>> begin();
+        virtual IteratorDataMap<DataPair<Key, Data>> begin();
 
         /*!
          * @brief End method to be used with iterators.
          * @return Iterator object pointing to the last data of the data_ array.
          */
-        virtual Iterator<DataPair<Key, Data>> end();
+        virtual IteratorDataMap<DataPair<Key, Data>> end();
 
         /*!
          * @brief Square brackets operator.

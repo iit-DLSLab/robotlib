@@ -162,9 +162,7 @@ namespace robotlib
 
     JointState RobotBase::makeJointState(const double& value) const
     {
-        std::cout << "TESTING MAKE JOINT STATE" << std::endl;
         JointState joint_state(this->getLimbs(), value);
-        std::cout << "TESTING MAKE JOINT STATE 2" << std::endl;
         return joint_state;
     }
 

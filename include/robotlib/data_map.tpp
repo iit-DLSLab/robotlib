@@ -8,27 +8,28 @@
 namespace robotlib
 {
     template <class Key, class Data>
-    DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const Data& data)
+    DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys, const Data& data)
         : num_data_(keys.length())
-        , data_array_(new DataPair<Key, Data>*[num_data_])
     {
-        std::cout << "TESTING JOINT DATA MAP - DATA MAP CONSTRUCTOR" << std::endl;
+        data_array_ = new DataPair<Key, Data>*[num_data_];
+
         int count_data = 0;
         for(auto& key : keys)
         {
-            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data));
+            this->data_array_[count_data++] = new DataPair<Key, Data>(key, data);
         }   
-        std::cout << "TESTING JOINT DATA MAP - DATA MAP CONSTRUCTOR - FASE 2" << std::endl;
     }
 
     template <class Key, class Data>
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data) 
         : num_data_(keys.length())
     {
+        data_array_ = new DataPair<Key, Data>*[num_data_];
+
         int count_data = 0;
         for(auto& key : keys)
         {
-            this->data_array_[count_data] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(key, data[count_data]));
+            this->data_array_[count_data] = new DataPair<Key, Data>(key, data[count_data]);
             count_data++;
         }   
     }
@@ -60,35 +61,50 @@ namespace robotlib
     DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& data)
         : num_data_(data.size())
     {
+        data_array_ = new DataPair<Key, Data>*[num_data_];
+
         int count_data = 0;
         for (auto& pair : data)
         {
-            this->data_array_[count_data++] = std::shared_ptr<DataPair<Key, Data>>(new DataPair<Key, Data>(pair));
+            this->data_array_[count_data++] = new DataPair<Key, Data>(pair);
         }
     }
 
     template <class Key, class Data>
-    Iterator<DataPair<Key, Data>> DataMap<Key, Data>::begin() 
-    { 
-        return Iterator<DataPair<Key, Data>>(&data_array_[0]);
-    }
-    
-    template <class Key, class Data>
-    Iterator<DataPair<Key, Data>> DataMap<Key, Data>::end()
-    { 
-        return Iterator<DataPair<Key, Data>>(&data_array_[num_data_]);
+    DataMap<Key, Data>::~DataMap()
+    {
+        // std::cout << "TESTING JOINT DATA MAP - DATA MAP DESCONSTRUCTOR" << std::endl;
+        // for (int i=0; i < num_data_; i++)
+        // {
+        //     std::cout << "TESTING JOINT DATA MAP - CONSTRUCTOR - LOOP" << std::endl;
+        //     delete[] data_array_[i];
+        // }
+
+        delete[] data_array_;
     }
 
     template <class Key, class Data>
-    Iterator<const DataPair<Key, Data>> DataMap<Key, Data>::begin() const 
+    IteratorDataMap<DataPair<Key, Data>> DataMap<Key, Data>::begin() 
     { 
-        return Iterator<const DataPair<Key, Data>>(&data_array_[0]); 
+        return IteratorDataMap<DataPair<Key, Data>>(data_array_, 0);
+    }
+    
+    template <class Key, class Data>
+    IteratorDataMap<DataPair<Key, Data>> DataMap<Key, Data>::end()
+    { 
+        return IteratorDataMap<DataPair<Key, Data>>(data_array_, num_data_);
+    }
+
+    template <class Key, class Data>
+    IteratorDataMap<const DataPair<Key, Data>> DataMap<Key, Data>::begin() const 
+    { 
+        return IteratorDataMap<const DataPair<Key, Data>>(data_array_, 0); 
     }
         
     template <class Key, class Data>
-    Iterator<const DataPair<Key, Data>> DataMap<Key, Data>::end() const 
+    IteratorDataMap<const DataPair<Key, Data>> DataMap<Key, Data>::end() const 
     { 
-        return Iterator<const DataPair<Key, Data>>(&data_array_[num_data_]); 
+        return IteratorDataMap<const DataPair<Key, Data>>(data_array_, num_data_); 
     }
 
     template <class Key, class Data>
@@ -96,7 +112,7 @@ namespace robotlib
     {
         for (auto& pair : *this)
         {
-            if (pair.getKey().getName().compare(key.getName()) == 0)
+            if (pair.getKey() == key)
                 return *pair.data_;
         }
         throw std::range_error("key not found");
@@ -127,12 +143,10 @@ namespace robotlib
     template <class Key, class Data>
     Data& DataMap<Key, Data>::operator[](const Key& key)
     {
-        for (auto &pair : *this)
+        for (auto& pair : *this)
         {
             if (pair.getKey() == key)
-            {
                 return *pair.data_;
-            }
         }
         throw std::range_error("key not found");
     }
@@ -143,9 +157,7 @@ namespace robotlib
         for (auto& pair : *this)
         {
             if (pair.getKey().getName().compare(key->getName()) == 0)
-            {
                 return *pair.data_;
-            }
         }
         throw std::range_error("key not found");
     }
@@ -156,9 +168,7 @@ namespace robotlib
         for (auto &pair : *this)
         {
             if (pair.getKey() == in_pair.getKey())
-            {
                 return *pair.data_;
-            }
         }
         throw std::range_error("key not found");
     }
@@ -169,9 +179,7 @@ namespace robotlib
         for (auto &pair : *this)
         {
             if (pair.getKey().getName() == id)
-            {
                 return *pair.data_;
-            }
         }
         throw std::range_error("key not found");
     }
