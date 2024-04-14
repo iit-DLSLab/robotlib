@@ -36,31 +36,31 @@ std::array<std::string, 29> components_names{"Dummy Quadruped",
                                             "LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG",
                                             "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
 
-
-TEST(JointDataMapUnitTests, makeJointDataMapZero)
+TEST(JointDataMapUnitTests, Zero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto joint_map = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
-    for (auto& joint : dummy_robot->getJoints())
+    for (auto& joint_pair : joint_map)
     {
-        EXPECT_EQ(jointPos[joint],  Eigen::Vector3d::Zero());
+        EXPECT_EQ(joint_pair.getData(),  Eigen::Vector3d::Zero());
     }
 }
 
-TEST(JointDataMapUnitTests, makeJointDataMapNonZero)
+
+TEST(JointDataMapUnitTests, NonZero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
     Eigen::Vector3d p(1, 2, 3);
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(p);
+    auto joint_map = dummy_robot->makeJointDataMap<Eigen::Vector3d>(p);
 
     for (auto& joint : dummy_robot->getJoints())
     {
-        EXPECT_EQ(jointPos[joint],  p);
+        EXPECT_EQ(joint_map[joint],  p);
     }
 }
 
@@ -69,7 +69,7 @@ TEST(JointDataMapUnitTests, Attribution)
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto jointPos = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto joint_map = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
     Eigen::Vector3d p;
     p.setZero();
@@ -78,8 +78,59 @@ TEST(JointDataMapUnitTests, Attribution)
         p[0]++;
         p[1]++;
         p[2]++;
-        jointPos[joint] = p;
+        joint_map[joint] = p;
 
-        EXPECT_EQ(jointPos[joint],  p);
+        EXPECT_EQ(joint_map[joint],  p);
     }
+
+    for (auto& joint_pair : joint_map)
+    {
+        p[0]++;
+        p[1]++;
+        p[2]++;
+        joint_pair = p;
+
+        EXPECT_EQ(joint_pair.getData(),  p);
+    }
+
+    p[0]++;
+    p[1]++;
+    p[2]++;
+    joint_map = p;
+    for (auto& joint_pair : joint_map)
+    {
+        EXPECT_EQ(joint_pair.getData(),  p);
+    }
+}
+
+TEST(JointDataMapUnitTests, Iteration)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_map = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+
+    auto i{0};
+    for (auto& elem : joint_map)
+    {
+        EXPECT_EQ(elem.getKey().getName(), components_names[5+i++]);
+    }
+}
+
+
+TEST(JointDataMapUnitTests, Size)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_map = dummy_robot->makeJointDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+
+    auto joint_count{0};
+    for (auto& elem : joint_map)
+    {
+        joint_count++;
+    }
+
+    EXPECT_EQ(joint_count,  12);
+    EXPECT_EQ(joint_map.size(),  12);
 }

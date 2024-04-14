@@ -70,10 +70,19 @@ namespace robotlib
          * @brief Square brackets operator.
          * @details This method allows access to the data associated to the key in input.
          * Implementation for constant objects.
-         * @param[in] key shared pointer pointing to the key.
+         * @param[in] key address to the key.
          * @return reference to the data associated to the key.
          */
         virtual const Data& operator[](const Key& key) const;
+
+        /*!
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * Implementation for constant objects.
+         * @param[in] key pointer to the key.
+         * @return reference to the data associated to the key.
+         */
+        virtual const Data& operator[](const Key* key) const;
 
         /*!
          * @brief Square brackets operator.
@@ -95,10 +104,18 @@ namespace robotlib
         /*!
          * @brief Square brackets operator.
          * @details This method allows access to the data associated to the key in input.
-         * @param[in] key shared pointer pointing to the key.
+         * @param[in] key address to the key.
          * @return reference to the data associated to the key.
          */
         virtual Data& operator[](const Key& key);
+
+        /*!
+         * @brief Square brackets operator.
+         * @details This method allows access to the data associated to the key in input.
+         * @param[in] key pointer to the key.
+         * @return reference to the data associated to the key.
+         */
+        virtual Data& operator[](const Key* key);
 
         /*!
          * @brief Square brackets operator.

@@ -2,6 +2,7 @@
 #define _ROBOTLIB_JACOBIAN_HPP_
 
 #include <Eigen/Dense>
+#include <iostream>
 
 namespace robotlib
 {
@@ -27,30 +28,22 @@ namespace robotlib
 		friend class Robot;
         friend class RobotBase;
 
-    public:        
+    public:     
         /*!
 		 * @brief Copy constructor.
 		*/
-        Jacobian(const Jacobian& jacobian);
+        // Jacobian(const Jacobian& jacobian);
 
         /*!
 		 * @brief Destructor.
 		*/
         ~Jacobian();
 
-        ///// A new Map is returned but this points to class variable "linear_jacobian_".
-        ///// This because if you define the matrix linear_jacobian inside the method you have a pointer to it (linear_jacobian.data())
-        ///// that does not exist anymore outside the method and leads to errors.
-        //Map getLinearJacobian() //RT?
-        //{
-        //    for(int i{0}; i<linear_jacobian_.size(); i++)
-        //    {
-        //        linear_jacobian_(i) = this->data_[i];
-        //    }
-        //
-        //    ///This operation returns a new Map of linear Jacobian and also updates the linear part of the complete Jacobian
-        //    return Map(linear_jacobian_.data(), linear_jacobian_.rows(), linear_jacobian_.cols());
-        //};
+        // Jacobian(Map& map)
+        //     : Map(map)
+        // {
+        //     std::cout << "TESTING" << std::endl;
+        // }
 
         /*!
 		 * @brief Get function. It gets the linear part of the jacobian.
@@ -63,21 +56,6 @@ namespace robotlib
          * @return linear part of the jacobian.
 		 */
         Map getLinearJacobian();
-
-        ///// A new Map is returned but this points to class variable "angular_jacobian_".
-        ///// This because if you define the matrix angular_jacobian inside the method you have a pointer to it (angular_jacobian.data())
-        ///// that does not exist anymore outside the method and leads to errors.
-        //Map getAngularJacobian() //RT?
-        //{
-        //    int linear_jacobian_size{3*nJoints_};
-        //
-        //    for(int i{0}; i<angular_jacobian_.size(); i++)
-        //    {
-        //        angular_jacobian_(i) = this->data_[i + linear_jacobian_size];
-        //    }
-        //
-        //    return Map(angular_jacobian_.data(), angular_jacobian_.rows(), angular_jacobian_.cols());
-        //};
 
         /*!
 		 * @brief Get function. It gets the angular part of the jacobian.
@@ -100,12 +78,10 @@ namespace robotlib
 		 */
         Jacobian &operator=(const Jacobian &other);
 
-        // /*!
-		//  * @brief Print function.
-        //  * @details
-        //  * It prints the Jacobian object.
-		//  */
-        // void print();
+
+        // Jacobian operator*(std::vector<double>& vec);
+
+        // using Map::operator*;
 
     private:
         /*!
@@ -126,26 +102,12 @@ namespace robotlib
          */
         Jacobian(const std::vector<double>& data);
 
-        // /*!
-		//  * @brief Init function. This function is needed to initialize the jacobians of a LimbDataMap<Jacobian> object, where each jacobian may 
-        //  * have different sizes.
-        //  * @details
-        //  * For example, you can have a robot with limbs having different number of joints, so each limb has a jacobian of different size.
-        //  * 
-        //  * To avoid dynamic memory allocation, fixed-size data structures are defined in Robotlib, like the LimbDataMap class, that does not allow you to dinamically change its length. Therefore, you first create a LimbDataMap<Jacobian> object with "empty" jacobians, then you initialize each of them by creating limb specific jacobians.
-        //  * @param [in] nJoints number of joints.
-        //  * @param [in] init_value value used to initialize the jacobian.
-		//  */
-        // void init(const int nJoints, const double init_value = 0.0);
-
         //! Number of joints.
         int nJoints_;
 
         // Squashed matrix
         double *data_;
 
-        // TODO: Is it ok to declare these here (not initialized) and initialize them later in "init" function?
-        // Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> linear_jacobian_, angular_jacobian_;
     };
 }
 

@@ -506,9 +506,20 @@ namespace robotlib
          * @return LinkDataMap<Data> object.
          */
         template <class Data>
-        LinkDataMap<Data> makeLinkDataMap(const Data& data); // NRT
+        LinkDataMap<Data> makeLinkDataMap(const Data& data) const;
 
         /*!
+         * @brief Function to create a JointDataMap object.
+         * @details
+         * This function creates a data structure to associate data to each joint of the robot.
+         * @tparam Data data type associated to each joint.
+         * @param[in] data vector data used to initialize each JointDataMap object.
+         * @return JointDataMap<Data> object.
+         */
+        template <class Data>
+        JointDataMap<Data> makeJointDataMap(const std::vector<Data>& data) const;
+
+         /*!
          * @brief Function to create a JointDataMap object.
          * @details
          * This function creates a data structure to associate data to each joint of the robot.
@@ -517,7 +528,7 @@ namespace robotlib
          * @return JointDataMap<Data> object.
          */
         template <class Data>
-        JointDataMap<Data> makeJointDataMap(const Data& data); // NRT
+        JointDataMap<Data> makeJointDataMap(const Data& data) const;
 
         // // TODO
         // Jacobian makeJacobian(const Frame& fOrigin, const Frame& fDest); // NRT
@@ -525,8 +536,7 @@ namespace robotlib
         // // TODO: it should use makeJacobian
         // Jacobian makeFootJacobian(const Frame& frame); // NRT
 
-        // // TODO: it should use makeJacobian
-        // Jacobian makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data = 0.0); // NRT
+        Jacobian makeFootJacobian(const LimbBase& leg, const double data = 0.0); // NRT
 
         /*!
          * @brief Function to create a LimbDataMap object, associating a Jacobian to each leg.

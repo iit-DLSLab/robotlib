@@ -19,23 +19,22 @@ namespace robotlib
     }
 
     template <class Data>
-    LinkDataMap<Data> RobotBase::makeLinkDataMap(const Data& data) 
+    LinkDataMap<Data> RobotBase::makeLinkDataMap(const Data& data) const
     { 
         return LinkDataMap<Data>(this->getLinks(), data); 
     }
 
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMap(const Data& data) 
-    { 
+    JointDataMap<Data> RobotBase::makeJointDataMap(const std::vector<Data>& data) const
+    {
         return JointDataMap<Data>(this->getJoints(), data); 
     }
 
-    // template <class Data>
-    // JointDataMap<Data>> RobotBase::makeJointDataMap(const std::vector<Data>& data) const
-    // {
-    //     return JointDataMap<Data>(this->getJoints(), data); 
-    // }
-
+    template <class Data>
+    JointDataMap<Data> RobotBase::makeJointDataMap(const Data& data) const
+    { 
+        return JointDataMap<Data>(this->getJoints(), data); 
+    }
 
     // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
 

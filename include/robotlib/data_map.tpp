@@ -119,25 +119,21 @@ namespace robotlib
     }
 
     template <class Key, class Data>
+    const Data& DataMap<Key, Data>::operator[](const Key* key) const
+    {
+        return this->operator[](*key);
+    }
+
+    template <class Key, class Data>
     const Data& DataMap<Key, Data>::operator[](const std::shared_ptr<const Key>& key) const
     {
-        for (auto& pair : *this)
-        {
-            if (pair.getKey() == *key)
-                return *pair.data_;
-        }
-        throw std::range_error("key not found");
+        return this->operator[](*key);
     }
 
     template <class Key, class Data>
     const Data& DataMap<Key, Data>::operator[](const DataPair<Key, Data>& in_pair) const
     {
-        for (auto& pair : *this)
-        {
-            if (pair.getKey() == in_pair.getKey())
-                return *pair.data_;
-        }
-        throw std::range_error("key not found");
+        return this->operator[](in_pair.getKey());
     }
 
     template <class Key, class Data>
@@ -152,25 +148,21 @@ namespace robotlib
     }
 
     template <class Key, class Data>
+    Data& DataMap<Key, Data>::operator[](const Key* key)
+    {
+        return this->operator[](*key);
+    }
+
+    template <class Key, class Data>
     Data& DataMap<Key, Data>::operator[](const std::shared_ptr<const Key>& key)
     {
-        for (auto& pair : *this)
-        {
-            if (pair.getKey().getName().compare(key->getName()) == 0)
-                return *pair.data_;
-        }
-        throw std::range_error("key not found");
+        return this->operator[](*key);
     }
 
     template <class Key, class Data>
     Data& DataMap<Key, Data>::operator[](const DataPair<Key, Data>& in_pair) // q: shared_ptr or & ?
     {
-        for (auto &pair : *this)
-        {
-            if (pair.getKey() == in_pair.getKey())
-                return *pair.data_;
-        }
-        throw std::range_error("key not found");
+        return this->operator[](in_pair.getKey());
     }
 
     template <class Key, class Data>
@@ -178,7 +170,7 @@ namespace robotlib
     {
         for (auto &pair : *this)
         {
-            if (pair.getKey().getName() == id)
+            if (pair.getKey().getName().compare(id) == 0)
                 return *pair.data_;
         }
         throw std::range_error("key not found");
@@ -242,7 +234,7 @@ namespace robotlib
 
     template <class Key, class Data>
     DataMap<Key, Data>& DataMap<Key, Data>::operator=(const Data &value)
-    {
+    { 
         assignAll(value);
         return *this;
     }

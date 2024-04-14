@@ -177,28 +177,16 @@ namespace robotlib
 				{
                     container.push_back(Jacobian(limb.getNJoints(), data));
                 }
+
                 return container;
             }()
         );
     };
 
-    // void RobotBase::printRobotHierarchy()
-    // {
-    //     for(auto& limb: this->getLimbs())
-    //     {
-    //         std::cout << "\nlimb: " << limb.getName() << std::endl;
-
-    //         for(auto& joint : limb.getJoints())
-    //         {
-    //             std::cout << limb.jointToParentName(joint) << " --> " << joint.getName() << " --> " << limb.jointToChildName(joint) << std::endl;
-    //         }
-
-    //         for(auto& link : limb.getLinks())
-    //         {
-    //             std::cout << limb.linkToParentName(link) << " --> " << link.getName() << " --> " << limb.linkToChildName(link) << std::endl;
-    //         }
-    //     }
-    // }
+    Jacobian RobotBase::makeFootJacobian(const LimbBase& leg, const double data) // NRT
+    {
+        return Jacobian(leg.getNJoints(), data);
+    };
 
 } // namespace robotlib
 

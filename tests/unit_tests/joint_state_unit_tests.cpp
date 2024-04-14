@@ -1,87 +1,340 @@
 /**
- * @file link_unit_tests.cpp
- * @brief Unit tests for Link class
+ * @file data_map_unit_tests.cpp
+ * 
+ * @brief Unit tests for DataMap, LimbDataMap, LinkDataMap, JointDataMap, JointState classes
  *
- * @author Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- * @author Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
+ * @authors Authors in alphabetical order:
+ *
+ *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
+ *
+ *     Geoff Fink (IIT DLS Lab) - Contact: geoff.fink@iit.it
+ *
+ *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
  */
 
 #include <gtest/gtest.h>
-#include "robot_factory.hpp"
-#include "link.hpp"
+#include "dummy_robot/dummy_robot_creator.hpp"
+
+/**
+ * @test Dummy robot created with the following structure:
+ * 1 leg
+ * 2 joints/links per leg
+ */
+robotlib::DummyRobotCreator<4, 3> dummy_robot_creator;
+
+/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
+std::array<std::string, 29> components_names{"Dummy Robot",
+                                            "LF", "RF", "LH", "RH",
+                                            //joints
+                                            "LF_HAA", "LF_HFE", "LF_KFE",
+                                            "RF_HAA", "RF_HFE", "RF_KFE",
+                                            "LH_HAA", "LH_HFE", "LH_KFE",
+                                            "RH_HAA", "RH_HFE", "RH_KFE",
+                                            //links
+                                            "LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG",
+                                            "RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG",
+                                            "LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG",
+                                            "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
+
+TEST(JointStateUnitTests, Zero)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_state = dummy_robot->makeJointState();
+
+    for (auto& limb_pair : joint_state)
+    {
+        for (auto& joint_pair : limb_pair.getData())
+          EXPECT_EQ(joint_pair.getData(),  0);
+    }
+}
+
+
+TEST(JointStateUnitTests, NonZero)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    double p(3);
+    auto joint_state = dummy_robot->makeJointState(p);
+
+    for (auto& limb_pair : joint_state)
+    {
+        for (auto& joint_pair : limb_pair.getData())
+        	EXPECT_EQ(joint_pair.getData(),  p);
+    }
+}
+
+TEST(JointStateUnitTests, Attribution)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_state = dummy_robot->makeJointState();
+
+    double p(0);
+    for (auto& joint : dummy_robot->getJoints())
+    {
+        p++;
+        joint_state[joint] = p;
+
+        EXPECT_EQ(joint_state[joint],  p);
+    }
+}
+
+TEST(JointStateUnitTests, Iteration)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_state = dummy_robot->makeJointState();
+
+    auto i{0};
+    for (auto& limb_pair : joint_state)
+    {
+        for (auto& joint_pair : limb_pair.getData())
+       		EXPECT_EQ(joint_pair.getKey().getName(), components_names[5+i++]);
+    }
+}
+
+
+TEST(JointStateUnitTests, Size)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_state = dummy_robot->makeJointState();
+
+    auto joint_count{0};
+    for (auto& limb_pair : joint_state)
+    {
+        for (auto& joint_pair : limb_pair.getData())
+        	joint_count++;
+    }
+
+    EXPECT_EQ(joint_count,  12);
+    EXPECT_EQ(joint_state.size(),  12);
+}
 
 /*!
  * @brief Unit tests for JointState class.
- * @details Set of unit tests for JointState::vec_ function.
+ * @details Set of unit tests for JointState::toeig_ function.
  */
-TEST(JointStateUnitTest, vec_)
+TEST(JointStateUnitTest, toeig_)
 {
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-    auto joint_state = dummy_quadruped->makeJointState(0.0);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-     /*!
-      * @test Dummy Quadruped - Type returned by tovec_() is Eigen::VectorXd type
-      */
-     {
-          Eigen::VectorXd joint_state_data {dummy_quadruped->getNJOINTS()};
-          joint_state_data.setZero();
-          EXPECT_EQ(typeid(joint_state.tovec_()), typeid(joint_state_data));
+    auto joint_state = dummy_robot->makeJointState();
 
-          for(auto leg :*dummy_quadruped->getLegs())
-          {
-               Eigen::VectorXd joint_state_leg_data {leg->getNJoints()};
-               EXPECT_EQ(typeid(joint_state.vec_(leg)), typeid(joint_state_leg_data));
-          }
-     }
+	/*!
+     * @test Dummy Robot - Type returned by toeig_() is correct
+     */
+	{
+		Eigen::VectorXd joint_state_data {dummy_robot->getNJOINTS()};
+		
+		EXPECT_EQ(typeid(joint_state.toeig_()), typeid(joint_state_data));
+	}
 
-     /*!
-      * @test Dummy Quadruped - Values inside variable returned by tovec_() is correct
-      */
-     {
-          double joint_value {1.0};
-          joint_state = joint_value;
-          auto joint_state_data {joint_state.tovec_()};
-          for(int i=0; i<joint_state.getSize(); i++)
-          {
-               EXPECT_EQ(joint_state_data(i), joint_value);
-          }
+	/*!
+     * @test Dummy Robot - Size of toeig_() is correct
+     */
+	{
+		EXPECT_EQ(joint_state.toeig_().size(), 12);
+	}
 
-          for(auto leg :*dummy_quadruped->getLegs())
-          {
-               joint_value++;
-               joint_state[leg] = joint_value;
-               auto joint_state_leg_data {joint_state.vec_(leg)};
-               for(int i=0; i<leg->getNJoints(); i++)
-               {
-                    EXPECT_EQ(joint_state_leg_data(i), joint_value);
-               }
-          }
-     }
 
-     /*!
-      * @test Dummy Quadruped - Moltiplication with a jacobian object
-      */
-     {
-          double joint_value {2.0};
-          double jacobian_value {3.0};
-          joint_state = joint_value;
-          for(auto leg :*dummy_quadruped->getLegs())
-          {
-               auto leg_joint_state {joint_state.vec_(leg)};
-               auto foot_jacobian = dummy_quadruped->makeFootJacobian(leg, jacobian_value);
-               Eigen::Matrix<double,6,1> res = foot_jacobian * leg_joint_state;
-               Eigen::Vector3d res_linear = foot_jacobian.getLinearJacobian() * leg_joint_state;
-               Eigen::Vector3d res_angular = foot_jacobian.getLinearJacobian() * leg_joint_state;
-               double res_value {leg->getNJoints()*(joint_value*jacobian_value)};
-               for(int i=0; i<5; i++)
-               {
-                    EXPECT_EQ(res(i), res_value);
-                    if(i<3)
-                    {
-                         EXPECT_EQ(res_linear(i), res_value);
-                         EXPECT_EQ(res_angular(i), res_value);
-                    }
-               }
-          }
-     }
+    /*!
+	 * @test Dummy Robot - Values inside variable returned by toeig_() are correct
+	 */
+	{
+		double joint_value {1.0};
+		joint_state = joint_value;
+
+		auto joint_state_data(joint_state.toeig_());
+
+		for(int i=0; i < joint_state.size(); i++)
+		{
+		    EXPECT_EQ(joint_state_data[i], joint_value);
+		}
+
+		auto joint_count{0};
+		for(auto& leg : dummy_robot->getLegs())
+		{
+			joint_value++;
+			joint_state[leg] = joint_value;
+
+			joint_state_data.segment(joint_count*3, 3).setConstant(joint_value);
+			joint_count++;
+
+		    EXPECT_EQ(joint_state_data, joint_state.toeig_());
+		}
+	}
+}
+
+
+/*!
+ * @brief Unit tests for JointState class.
+ * @details Set of unit tests for JointState::tovec_ function.
+ */
+TEST(JointStateUnitTest, tovec_)
+{
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto joint_state = dummy_robot->makeJointState();
+
+	/*!
+     * @test Dummy Robot - Type returned by toeig_() is correct
+     */
+	{
+		std::vector<double> joint_state_data(dummy_robot->getNJOINTS(), 0.0);
+		
+		EXPECT_EQ(typeid(joint_state.tovec_()), typeid(joint_state_data));
+	}
+
+	/*!
+     * @test Dummy Robot - Size of toeig_() is correct
+     */
+	{
+		EXPECT_EQ(joint_state.tovec_().size(), 12);
+	}
+
+
+    /*!
+	 * @test Dummy Robot - Values inside variable returned by toeig_() are correct
+	 */
+	{
+		double joint_value {1.0};
+		joint_state = joint_value;
+
+		auto joint_state_data(joint_state.tovec_());
+
+		for(int i=0; i < joint_state.size(); i++)
+		{
+		    EXPECT_EQ(joint_state_data[i], joint_value);
+		}
+
+		auto joint_count{0};
+		for(auto& leg : dummy_robot->getLegs())
+		{
+			joint_value++;
+			joint_state[leg] = joint_value;
+
+			for(int i = 0; i <= 2; i++)
+				joint_state_data[joint_count*3 + i] = joint_value;
+
+		    EXPECT_EQ(joint_state_data, joint_state.tovec_());
+			joint_count++;
+		}
+	}
+}
+
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::makeJointState function
+ */
+TEST(JointStateUnitTests, makeJointState)
+{
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    /**
+     * @test Dummy Robot - JointState initialized with all 0.0 values when called makeJointState
+     */
+    {
+        auto joint_state = dummy_robot->makeJointState();
+    
+        for(auto& joint : dummy_robot->getJoints())
+        {
+            ASSERT_EQ(joint_state[joint], 0.0);
+        }
+    }
+
+    /**
+     * @test Dummy Robot - JointState initialized with a chosen value for each element using makeJointState
+     */
+    {
+        auto joint_state = dummy_robot->makeJointState(2.0);
+
+        for(auto& joint : dummy_robot->getJoints())
+        {
+            ASSERT_NE(joint_state[joint], 0.0);
+            ASSERT_EQ(joint_state[joint], 2.0);
+        }
+    }
+}
+
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::operator[] functions
+ */
+TEST(JointStateUnitTests, operatorSquareBracket)
+{
+    /**
+     * @test Dummy Robot - JointState values set with operator[]
+     */
+    {
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto joint_state = dummy_robot->makeJointState();
+         
+        for(auto& joint: dummy_robot->getJoints())
+        {
+            ASSERT_EQ(joint_state[joint], 0.0);
+            
+            joint_state[joint] = 2.0;
+
+            ASSERT_EQ(joint_state[joint], 2.0);
+        }
+    }
+}
+
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::setZero function
+ */
+TEST(JointStateUnitTests, setZero)
+{
+    /**
+     * @test Dummy Robot - JointState values set to 0.0 with setZero function
+     */
+    {
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto joint_state = dummy_robot->makeJointState(2.0);
+        
+        joint_state.setZero();
+
+        for(auto& joint : dummy_robot->getJoints())
+        {
+            ASSERT_NE(joint_state[joint], 2.0);
+            ASSERT_EQ(joint_state[joint], 0.0);
+        }
+    }
+}
+
+/**
+ * @brief Unit tests for JointState class
+ * @details Set of unit tests for JointState::size function
+ */
+TEST(JointStateUnitTests, size)
+{
+    /**
+     * @test Dummy Robot - JointState with 12 (4 legs x 3 joints) elements
+     */
+    {
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto joint_state = dummy_robot->makeJointState();
+
+        ASSERT_EQ(joint_state.size(), 12);
+    }
+    /**
+     * @test Dummy Robot - JointState empty
+     */
+    {}
+    /**
+     * @test Dummy Robot - JointState with one element
+     */
+    {}
+    /**
+     * @test Dummy Robot - JointState with 100 elements
+     */
+    {}
 }

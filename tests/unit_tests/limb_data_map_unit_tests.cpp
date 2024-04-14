@@ -37,30 +37,30 @@ std::array<std::string, 29> components_names{"Dummy Quadruped",
                                             "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
 
 
-TEST(LimbDataMapUnitTests, makeLimbDataMapZero)
+TEST(LimbDataMapUnitTests, Zero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto limbPos = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto limb_map = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
     for (auto& limb : dummy_robot->getLimbs())
     {
-        EXPECT_EQ(limbPos[limb],  Eigen::Vector3d::Zero());
+        EXPECT_EQ(limb_map[limb],  Eigen::Vector3d::Zero());
     }
 }
 
-TEST(LimbDataMapUnitTests, makeLimbDataMapNonZero)
+TEST(LimbDataMapUnitTests, NonZero)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
     Eigen::Vector3d p(1, 2, 3);
-    auto limbPos = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(p);
+    auto limb_map = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(p);
 
     for (auto& limb : dummy_robot->getLimbs())
     {
-        EXPECT_EQ(limbPos[limb],  p);
+        EXPECT_EQ(limb_map[limb],  p);
     }
 }
 
@@ -69,7 +69,7 @@ TEST(LimbDataMapUnitTests, Attribution)
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto limbPos = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+    auto limb_map = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
     Eigen::Vector3d p;
     p.setZero();
@@ -78,8 +78,41 @@ TEST(LimbDataMapUnitTests, Attribution)
         p[0]++;
         p[1]++;
         p[2]++;
-        limbPos[limb] = p;
+        limb_map[limb] = p;
 
-        EXPECT_EQ(limbPos[limb],  p);
+        EXPECT_EQ(limb_map[limb],  p);
     }
+}
+
+
+TEST(LimbDataMapUnitTests, Iteration)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto limb_map = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+
+    auto i{0};
+    for (auto& elem : limb_map)
+    {
+        EXPECT_EQ(elem.getKey().getName(), components_names[1+i++]);
+    }
+}
+
+
+TEST(LimbDataMapUnitTests, Size)
+{
+    /// Dummy quadruped
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto limb_map = dummy_robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+
+    auto limb_count{0};
+    for (auto& elem : limb_map)
+    {
+        limb_count++;
+    }
+
+    EXPECT_EQ(limb_count,  4);
+    EXPECT_EQ(limb_map.size(),  4);
 }

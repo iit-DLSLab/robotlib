@@ -46,10 +46,19 @@ namespace robotlib
         JointDataMap<Data> &operator-=(const JointDataMap<Data>&);
 
         /*!
-         * @brief Specification of the operator[] from base class.
+         * @brief Specification of the operator== from base class.
          */
         using DataMap<Joint, Data>::operator==;
+
+        /*!
+         * @brief Specification of the operator[]] from base class.
+         */
         using DataMap<Joint, Data>::operator[];
+
+        /*!
+         * @brief Specification of the operator= from base class.
+         */
+        using DataMap<Joint, Data>::operator=;
 
    private:
 

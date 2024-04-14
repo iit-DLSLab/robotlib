@@ -198,12 +198,12 @@ namespace robotlib
 
     std::vector<double> JointState::tovec_() const
     {
-         std::vector<double> out(this->size());
+        std::vector<double> out;
 
         for (auto& limb_pair : *this)
         {
             for(auto& joint_pair: limb_pair.getData())
-            {   
+            {  
                 out.push_back(joint_pair.getData());
             }
         }
@@ -249,20 +249,6 @@ namespace robotlib
         }
         return *min_value;
     }
-
-    // void JointState::print() const
-    // {
-    //     std::cout << "JointState [Name - Value]" << std::endl;
-    //     std::cout << "-------------------------" << std::endl;
-
-    //     for (auto& limb_pair : *this)
-    //     {
-    //         for (auto& joint_pair : limb_pair.getData())
-    //         {
-    //             std::cout << joint_pair.getKey().getName() << " - " << joint_pair.getData() << std::endl;
-    //         }
-    //     }
-    // }
 
     bool JointState::operator==(const JointState& rhs) const
     {
