@@ -21,7 +21,7 @@ namespace robotlib
 
         JointDataMap(const JointDataMap& other);
 
-        JointDataMap<Data>& operator=(const JointDataMap<Data>& other);
+        // JointDataMap<Data>& operator=(const JointDataMap<Data>& other);
 
         JointDataMap<Data>& operator=(const std::vector<Data>& other);
         

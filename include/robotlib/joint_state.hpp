@@ -181,6 +181,10 @@ namespace robotlib
         // JointState &operator<< (double data);
         // JointState &operator, (double data);
 
+        // IteratorJointState<DataPair<Joint, double>> begin();
+    
+        // IteratorJointState<DataPair<Joint, double>> end();
+
     private:
 
         /*!

@@ -12,17 +12,17 @@ namespace robotlib
         , data_(std::shared_ptr<Data>(new Data(*pair.data_)))
     {};
 
-    template <class Key, class Data>
-    DataPair<Key, Data>::DataPair(const Key& key, const std::shared_ptr<Data> data) 
-        : key_(&key)
-        , data_(std::shared_ptr<Data>(new Data(*data)))
-    {}
+    // template <class Key, class Data>
+    // DataPair<Key, Data>::DataPair(const Key* key, const std::shared_ptr<Data> data) 
+    //     : key_(std::shared_ptr<Key>(key))
+    //     , data_(std::shared_ptr<Data>(new Data(*data)))
+    // {}
 
-    template <class Key, class Data>
-    DataPair<Key, Data>::DataPair(const Key& key, const Data& data) 
-        : key_(&key)
-        , data_(std::shared_ptr<Data>(new Data(data)))
-    {};
+    // template <class Key, class Data>
+    // DataPair<Key, Data>::DataPair(const Key* key, const Data& data) 
+    //     : key_(std::shared_ptr<Key>(key))
+    //     , data_(std::shared_ptr<Data>(new Data(data)))
+    // {};
 
     template <class Key, class Data>
     DataPair<Key, Data>::DataPair(const std::shared_ptr<Key> key, const std::shared_ptr<Data> data) 

@@ -11,12 +11,12 @@ namespace robotlib
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys, const Data& data)
         : num_data_(keys.length())
     {
-        data_array_ = new DataPair<Key, Data>*[num_data_];
+        data_array_ = new DataPair<Key, Data>[num_data_];
 
         int count_data = 0;
-        for(auto& key : keys)
+        for(auto key_it = keys.begin(); key_it != keys.end(); ++key_it)
         {
-            this->data_array_[count_data++] = new DataPair<Key, Data>(key, data);
+            this->data_array_[count_data++] = DataPair<Key, Data>(key_it.get(), data);
         }   
     }
 
@@ -24,13 +24,12 @@ namespace robotlib
     DataMap<Key, Data>::DataMap(const ContainerBase<Key>& keys,  const std::vector<Data>& data) 
         : num_data_(keys.length())
     {
-        data_array_ = new DataPair<Key, Data>*[num_data_];
+        data_array_ = new DataPair<Key, Data>[num_data_];
 
         int count_data = 0;
-        for(auto& key : keys)
+        for(auto key_it = keys.begin(); key_it != keys.end(); ++key_it)
         {
-            this->data_array_[count_data] = new DataPair<Key, Data>(key, data[count_data]);
-            count_data++;
+            this->data_array_[count_data] = DataPair<Key, Data>(key_it.get(), data[count_data++]);
         }   
     }
 
@@ -61,12 +60,12 @@ namespace robotlib
     DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& data)
         : num_data_(data.size())
     {
-        data_array_ = new DataPair<Key, Data>*[num_data_];
+        data_array_ = new DataPair<Key, Data>[num_data_];
 
         int count_data = 0;
         for (auto& pair : data)
         {
-            this->data_array_[count_data++] = new DataPair<Key, Data>(pair);
+            this->data_array_[count_data++] = DataPair<Key, Data>(pair);
         }
     }
 
@@ -80,31 +79,31 @@ namespace robotlib
         //     delete[] data_array_[i];
         // }
 
-        delete[] data_array_;
+        delete data_array_;
     }
 
     template <class Key, class Data>
-    IteratorDataMap<DataPair<Key, Data>> DataMap<Key, Data>::begin() 
+    IteratorDataMap<Key, Data> DataMap<Key, Data>::begin() 
     { 
-        return IteratorDataMap<DataPair<Key, Data>>(data_array_, 0);
+        return IteratorDataMap<Key, Data>(data_array_, 0);
     }
     
     template <class Key, class Data>
-    IteratorDataMap<DataPair<Key, Data>> DataMap<Key, Data>::end()
+    IteratorDataMap<Key, Data> DataMap<Key, Data>::end()
     { 
-        return IteratorDataMap<DataPair<Key, Data>>(data_array_, num_data_);
+        return IteratorDataMap<Key, Data>(data_array_, num_data_);
     }
 
     template <class Key, class Data>
-    IteratorDataMap<const DataPair<Key, Data>> DataMap<Key, Data>::begin() const 
+    IteratorDataMap<Key, Data> DataMap<Key, Data>::begin() const 
     { 
-        return IteratorDataMap<const DataPair<Key, Data>>(data_array_, 0); 
+        return IteratorDataMap<Key, Data>(data_array_, 0); 
     }
         
     template <class Key, class Data>
-    IteratorDataMap<const DataPair<Key, Data>> DataMap<Key, Data>::end() const 
+    IteratorDataMap<Key, Data> DataMap<Key, Data>::end() const 
     { 
-        return IteratorDataMap<const DataPair<Key, Data>>(data_array_, num_data_); 
+        return IteratorDataMap<Key, Data>(data_array_, num_data_); 
     }
 
     template <class Key, class Data>

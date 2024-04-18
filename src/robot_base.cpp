@@ -162,6 +162,7 @@ namespace robotlib
 
     JointState RobotBase::makeJointState(const double& value) const
     {
+        std::cout << "SEARCHING FOR THE ERROR MAKEJOINTSTATE" << std::endl;
         JointState joint_state(this->getLimbs(), value);
         return joint_state;
     }

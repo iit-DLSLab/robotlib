@@ -16,7 +16,11 @@ namespace robotlib
 
                 for (auto& limb : limbs)
                 {
-                    out.push_back(JointDataMap<double>(limb.getJoints(), val));
+                    std::cout << "SEARCHING FOR THE ERROR CONTAINER BASE" << std::endl;
+                    auto jointdata = JointDataMap<double>(limb.getJoints(), val);
+                    std::cout << "SEARCHING FOR THE ERROR CONTAINER BASE 2" << std::endl;
+
+                    // out.push_back(JointDataMap<double>(limb.getJoints(), val));
                 }
                 return out;
             }()
@@ -88,14 +92,16 @@ namespace robotlib
 
     JointState& JointState::operator=(const JointState& rhs)
     {
-        if(*this != rhs)
-            throw std::range_error("Joint state operands are not for the same robot architecture");
+        assert (this->size() == rhs.size());
 
+        auto joints = this->getJoints();
+        auto i{0};
+        for(auto& joint : rhs.getJoints())
+            if(joint->getName() != joints[i++]->getName())
+                throw std::range_error("Joint state operands are not for the same robot architecture");
 
         for (auto& limb_pair : *this)
-        {
             limb_pair = rhs[limb_pair];
-        }
 
         return *this;
     }

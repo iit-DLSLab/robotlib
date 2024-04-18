@@ -42,7 +42,7 @@ namespace robotlib
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        std::shared_ptr<Data>* get() { return m_ptr; }
+        std::shared_ptr<Data> get() { return *m_ptr; }
 
         /*!
          * @brief Pre-increment version of operator ++.

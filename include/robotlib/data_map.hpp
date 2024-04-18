@@ -36,26 +36,26 @@ namespace robotlib
          * @details Implementation for constant objects.
          * @return Iterator object pointing to the first data of the data_ array.
          */
-        virtual IteratorDataMap<const DataPair<Key, Data>> begin() const;
+        virtual IteratorDataMap<Key, Data> begin() const;
 
         /*!
          * @brief End method to be used with iterators.
          * @details Implementation for constant objects.
          * @return Iterator object pointing to the last data of the data_ array.
          */
-        virtual IteratorDataMap<const DataPair<Key, Data>> end() const;
+        virtual IteratorDataMap<Key, Data> end() const;
 
         /*!
          * @brief Begin method to be used with iterators.
          * @return Iterator object pointing to the first data of the data_ array.
          */
-        virtual IteratorDataMap<DataPair<Key, Data>> begin();
+        virtual IteratorDataMap<Key, Data> begin();
 
         /*!
          * @brief End method to be used with iterators.
          * @return Iterator object pointing to the last data of the data_ array.
          */
-        virtual IteratorDataMap<DataPair<Key, Data>> end();
+        virtual IteratorDataMap<Key, Data> end();
 
         /*!
          * @brief Square brackets operator.
@@ -258,7 +258,7 @@ namespace robotlib
         void assignAll(const Data &value);
 
         //! Pointer to the array of pairs.
-        DataPair<Key, Data>** data_array_;
+        DataPair<Key, Data>* data_array_;
 
         //! Number of pairs.
         long unsigned int num_data_;

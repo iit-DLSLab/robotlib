@@ -2,6 +2,7 @@
 #define _ITERATOR_DATA_MAP_HPP_
 #include <memory>
 #include <iostream>
+#include "data_pair.hpp"
 
 namespace robotlib
 {
@@ -11,16 +12,26 @@ namespace robotlib
      * This struct is used to iterate over custom data types.
      * @tparam Data data type of the object on which iterate on.
      */
-    template <class Data>
+    template <class Key, class Data>
     struct IteratorDataMap
     {
+
     public:
         /*!
          * @brief Constructor.
          * @param[in] ptr pointer of type Data*.
          */
-        IteratorDataMap(Data* const* ptr, unsigned int count = 0) 
+        IteratorDataMap(DataPair<Key, Data>* ptr, unsigned int count = 0) 
             : m_ptr(ptr)
+            , counter{count}
+        {}
+
+        /*!
+         * @brief Constructor.
+         * @param[in] ptr pointer of type Data*.
+         */
+        IteratorDataMap(std::vector<Data*>& vec, unsigned int count = 0) 
+            : m_ptr(vec.data())
             , counter{count}
         {}
 
@@ -28,25 +39,25 @@ namespace robotlib
          * @brief Operator *.
          * @return reference to the data pointed by m_ptr.
          */
-        Data& operator*() { return *m_ptr[counter]; }
+        DataPair<Key, Data>& operator*() { return m_ptr[counter]; }
 
         /*!
          * @brief Operator *.
          * @return reference to the data pointed by m_ptr.
          */
-        const Data& operator*() const { return *m_ptr[counter]; }
+        const DataPair<Key, Data>& operator*() const { return &m_ptr[counter]; }
 
         /*!
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        Data* operator->() { return m_ptr[counter]; }
+        DataPair<Key, Data>* operator->() { return &m_ptr[counter]; }
 
         /*!
          * @brief Operator ->.
          * @return pointer pointing to the data.
          */
-        Data* get() { return m_ptr[counter]; }
+        DataPair<Key, Data>* get() { return m_ptr[counter]; }
 
         /*!
          * @brief Pre-increment version of operator ++.
@@ -108,7 +119,7 @@ namespace robotlib
 
     protected:
         //! Pointer pointing to the data.
-        Data* const* m_ptr;
+        DataPair<Key, Data>* m_ptr;
 
         unsigned int counter;
     };

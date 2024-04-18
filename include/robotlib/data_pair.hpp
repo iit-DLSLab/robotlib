@@ -99,19 +99,19 @@ namespace robotlib
         const Data& getData() const;
 
     private:
-        /*!
-         * @brief Constructor.
-         * @param[in] key reference to map key.
-         * @param[in] data pointer to the data to be associated to the key.
-         */
-        DataPair(const Key& key, const std::shared_ptr<Data> data);
+        // /*!
+        //  * @brief Constructor.
+        //  * @param[in] key reference to map key.
+        //  * @param[in] data pointer to the data to be associated to the key.
+        //  */
+        // DataPair(const Key* key, const std::shared_ptr<Data> data);
 
-        /*!
-         * @brief Constructor.
-         * @param[in] key reference to map key.
-         * @param[in] data data to be associated to the key.
-         */
-        DataPair(const Key& key, const Data& data);
+        // /*!
+        //  * @brief Constructor.
+        //  * @param[in] key reference to map key.
+        //  * @param[in] data data to be associated to the key.
+        //  */
+        // DataPair(const Key* key, const Data& data);
 
         /*!
          * @brief Constructor.
@@ -127,13 +127,13 @@ namespace robotlib
          */
         DataPair(const std::shared_ptr<Key> key, const Data& data);
 
-        // /*!
-        //  * @brief Default Constructor.
-        //  */
-        // DataPair() = default;
+        /*!
+         * @brief Default Constructor.
+         */
+        DataPair() = default;
 
         //! Key to which associate a data.
-        std::shared_ptr<const Key> key_;
+        std::shared_ptr<Key> key_;
 
         //! Data to be associated to a key.
         std::shared_ptr<Data> data_;

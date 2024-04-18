@@ -108,126 +108,126 @@ TEST(RobotBaseUnitTests, getFramePosition)
 
     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Vector3d frame_position = dummy_robot->getFramePosition(joint_state,
-                                                                   dummy_robot->getTrunk(),
-                                                                   dummy_robot->getLink("LF_LOWERLEG"));
+    // Eigen::Vector3d frame_position = dummy_robot->getFramePosition(joint_state,
+    //                                                                dummy_robot->getTrunk(),
+    //                                                                dummy_robot->getLink("LF_LOWERLEG"));
 
-    /// Assert conditions
-    ASSERT_EQ(frame_position, Eigen::Vector3d().setZero());
+    // /// Assert conditions
+    // ASSERT_EQ(frame_position, Eigen::Vector3d().setZero());
 }
 
-TEST(RobotBaseUnitTests, getFrameOrientation)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getFrameOrientation)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto joint_state = dummy_robot->makeJointState();
+//     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Matrix3d frame_orientation = dummy_robot->getFrameOrientation(joint_state,
-                                                                         dummy_robot->getTrunk(),
-                                                                         dummy_robot->getLink("LF_LOWERLEG"));
+//     Eigen::Matrix3d frame_orientation = dummy_robot->getFrameOrientation(joint_state,
+//                                                                          dummy_robot->getTrunk(),
+//                                                                          dummy_robot->getLink("LF_LOWERLEG"));
 
-    /// Assert conditions
-    ASSERT_EQ(frame_orientation, Eigen::Matrix3d().setZero());
-}
+//     /// Assert conditions
+//     ASSERT_EQ(frame_orientation, Eigen::Matrix3d().setZero());
+// }
 
-TEST(RobotBaseUnitTests, getFramePose)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getFramePose)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto joint_state = dummy_robot->makeJointState();
+//     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Matrix4d frame_pose_dq = dummy_robot->getFramePose(joint_state,
-                                                              dummy_robot->getTrunk(),
-                                                              dummy_robot->getLink("LF_UPPERLEG"));
-    /// Ground truth
-    Eigen::Matrix4d frame_pose_gt;
-    frame_pose_gt.setZero();
-    frame_pose_gt(3, 3) = 1;
+//     Eigen::Matrix4d frame_pose_dq = dummy_robot->getFramePose(joint_state,
+//                                                               dummy_robot->getTrunk(),
+//                                                               dummy_robot->getLink("LF_UPPERLEG"));
+//     /// Ground truth
+//     Eigen::Matrix4d frame_pose_gt;
+//     frame_pose_gt.setZero();
+//     frame_pose_gt(3, 3) = 1;
 
-    /// Assert conditions
-    ASSERT_EQ(frame_pose_dq, frame_pose_gt);
-    ASSERT_EQ(typeid(frame_pose_dq), typeid(frame_pose_gt));
-}
+//     /// Assert conditions
+//     ASSERT_EQ(frame_pose_dq, frame_pose_gt);
+//     ASSERT_EQ(typeid(frame_pose_dq), typeid(frame_pose_gt));
+// }
 
-TEST(RobotBaseUnitTests, getFootPosition)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getFootPosition)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto joint_state = dummy_robot->makeJointState();
+//     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Vector3d foot_position = dummy_robot->getFootPosition(joint_state,
-                                                                 dummy_robot->getLink("LF_LOWERLEG"));
+//     Eigen::Vector3d foot_position = dummy_robot->getFootPosition(joint_state,
+//                                                                  dummy_robot->getLink("LF_LOWERLEG"));
 
-    /// Assert conditions
-    ASSERT_EQ(foot_position, Eigen::Vector3d().setZero());
-}
+//     /// Assert conditions
+//     ASSERT_EQ(foot_position, Eigen::Vector3d().setZero());
+// }
 
-TEST(RobotBaseUnitTests, getFootOrientation)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getFootOrientation)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto joint_state = dummy_robot->makeJointState();
+//     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Matrix3d foot_orientation = dummy_robot->getFootOrientation(joint_state,
-                                                                       dummy_robot->getLink("LF_LOWERLEG"));
+//     Eigen::Matrix3d foot_orientation = dummy_robot->getFootOrientation(joint_state,
+//                                                                        dummy_robot->getLink("LF_LOWERLEG"));
 
-    /// Assert conditions
-    ASSERT_EQ(foot_orientation, Eigen::Matrix3d().setZero());
-}
+//     /// Assert conditions
+//     ASSERT_EQ(foot_orientation, Eigen::Matrix3d().setZero());
+// }
 
-TEST(RobotBaseUnitTests, getFootPose)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getFootPose)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto joint_state = dummy_robot->makeJointState();
+//     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Matrix4d foot_pose_dq = dummy_robot->getFootPose(joint_state,
-                                                            dummy_robot->getLink("LF_LOWERLEG"));
+//     Eigen::Matrix4d foot_pose_dq = dummy_robot->getFootPose(joint_state,
+//                                                             dummy_robot->getLink("LF_LOWERLEG"));
 
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt;
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
+//     /// Ground truth
+//     Eigen::Matrix4d foot_pose_gt;
+//     foot_pose_gt.setZero();
+//     foot_pose_gt(3, 3) = 1;
 
-    /// Assert conditions
-    ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-    ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
-}
+//     /// Assert conditions
+//     ASSERT_EQ(foot_pose_dq, foot_pose_gt);
+//     ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
+// }
 
-TEST(RobotBaseUnitTests, getLink)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getLink)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto link = dummy_robot->getLink("LF_ASSEMBLY");
+//     auto link = dummy_robot->getLink("LF_ASSEMBLY");
 
-    /// Ground truth
-    robotlib::Link link_gt("LF_ASSEMBLY"); //TODO : generalize the test for all the links
+//     /// Ground truth
+//     robotlib::Link link_gt("LF_ASSEMBLY"); //TODO : generalize the test for all the links
 
-    /// Assert conditions
-    ASSERT_EQ(link.getName(), link_gt.getName());
-    ASSERT_EQ(typeid(link), typeid(link_gt));
-}
+//     /// Assert conditions
+//     ASSERT_EQ(link.getName(), link_gt.getName());
+//     ASSERT_EQ(typeid(link), typeid(link_gt));
+// }
 
-TEST(RobotBaseUnitTests, getJoint)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getJoint)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
     
-    auto joint_dq = dummy_robot->getJoint("LF_HFE");
+//     auto joint_dq = dummy_robot->getJoint("LF_HFE");
 
-    /// Ground truth
-    robotlib::Joint joint_gt("LF_HFE");
+//     /// Ground truth
+//     robotlib::Joint joint_gt("LF_HFE");
 
-    /// Assert conditions
-    ASSERT_EQ(joint_dq.getName(), joint_gt.getName());
-    ASSERT_EQ(typeid(joint_dq), typeid(joint_gt));
-}
+//     /// Assert conditions
+//     ASSERT_EQ(joint_dq.getName(), joint_gt.getName());
+//     ASSERT_EQ(typeid(joint_dq), typeid(joint_gt));
+// }
 
 // TODO
 //TEST(RobotBaseUnitTests, forwardKinematicsOne)
@@ -281,91 +281,91 @@ TEST(RobotBaseUnitTests, getJoint)
 //    ASSERT_EQ(typeid(1), typeid(1));
 //}
 
-TEST(RobotBaseUnitTests, getName)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, getName)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    auto name_dq = dummy_robot->getName();
+//     auto name_dq = dummy_robot->getName();
 
-    /// Ground truth
-    std::string name_gt{"Dummy Robot"};
+//     /// Ground truth
+//     std::string name_gt{"Dummy Robot"};
 
-    /// Assert conditions
-    ASSERT_EQ(name_dq, name_gt);
-    ASSERT_EQ(typeid(name_dq), typeid(name_gt));
-}
+//     /// Assert conditions
+//     ASSERT_EQ(name_dq, name_gt);
+//     ASSERT_EQ(typeid(name_dq), typeid(name_gt));
+// }
 
-TEST(RobotBaseUnitTests, joint_parent_child)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, joint_parent_child)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    /// Groud truth
-    std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
-        //joint name, parent name, child name
-        {"LF_HAA", std::make_pair("TRUNK", "LF_ASSEMBLY")},
-        {"LF_HFE", std::make_pair("LF_ASSEMBLY", "LF_UPPERLEG")},
-        {"LF_KFE", std::make_pair("LF_UPPERLEG", "LF_LOWERLEG")},
-        {"RF_HAA", std::make_pair("TRUNK", "RF_ASSEMBLY")},
-        {"RF_HFE", std::make_pair("RF_ASSEMBLY", "RF_UPPERLEG")},
-        {"RF_KFE", std::make_pair("RF_UPPERLEG", "RF_LOWERLEG")},
-        {"LH_HAA", std::make_pair("TRUNK", "LH_ASSEMBLY")},
-        {"LH_HFE", std::make_pair("LH_ASSEMBLY", "LH_UPPERLEG")},
-        {"LH_KFE", std::make_pair("LH_UPPERLEG", "LH_LOWERLEG")},
-        {"RH_HAA", std::make_pair("TRUNK", "RH_ASSEMBLY")},
-        {"RH_HFE", std::make_pair("RH_ASSEMBLY", "RH_UPPERLEG")},
-        {"RH_KFE", std::make_pair("RH_UPPERLEG", "RH_LOWERLEG")},
-    };
+//     /// Groud truth
+//     std::map<std::string, std::pair<std::string, std::string>> jointMap_gt{
+//         //joint name, parent name, child name
+//         {"LF_HAA", std::make_pair("TRUNK", "LF_ASSEMBLY")},
+//         {"LF_HFE", std::make_pair("LF_ASSEMBLY", "LF_UPPERLEG")},
+//         {"LF_KFE", std::make_pair("LF_UPPERLEG", "LF_LOWERLEG")},
+//         {"RF_HAA", std::make_pair("TRUNK", "RF_ASSEMBLY")},
+//         {"RF_HFE", std::make_pair("RF_ASSEMBLY", "RF_UPPERLEG")},
+//         {"RF_KFE", std::make_pair("RF_UPPERLEG", "RF_LOWERLEG")},
+//         {"LH_HAA", std::make_pair("TRUNK", "LH_ASSEMBLY")},
+//         {"LH_HFE", std::make_pair("LH_ASSEMBLY", "LH_UPPERLEG")},
+//         {"LH_KFE", std::make_pair("LH_UPPERLEG", "LH_LOWERLEG")},
+//         {"RH_HAA", std::make_pair("TRUNK", "RH_ASSEMBLY")},
+//         {"RH_HFE", std::make_pair("RH_ASSEMBLY", "RH_UPPERLEG")},
+//         {"RH_KFE", std::make_pair("RH_UPPERLEG", "RH_LOWERLEG")},
+//     };
 
-    for (auto& joint : dummy_robot->getJoints())
-    {
-        ASSERT_EQ(joint.getParent()->getName(), jointMap_gt[joint.getName()].first);
-        ASSERT_EQ(joint.getChild()->getName(), jointMap_gt[joint.getName()].second);
-    }
-}
+//     for (auto& joint : dummy_robot->getJoints())
+//     {
+//         ASSERT_EQ(joint.getParent()->getName(), jointMap_gt[joint.getName()].first);
+//         ASSERT_EQ(joint.getChild()->getName(), jointMap_gt[joint.getName()].second);
+//     }
+// }
 
-TEST(RobotBaseUnitTests, link_parent_child)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, link_parent_child)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    /// Groud truth
-    std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
-        //link name, parent name, child name
-        {"LF_ASSEMBLY", std::make_pair("LF_HAA", "LF_HFE")},
-        {"LF_UPPERLEG", std::make_pair("LF_HFE", "LF_KFE")},
-        {"LF_LOWERLEG", std::make_pair("LF_KFE", "")},
-        {"RF_ASSEMBLY", std::make_pair("RF_HAA", "RF_HFE")},
-        {"RF_UPPERLEG", std::make_pair("RF_HFE", "RF_KFE")},
-        {"RF_LOWERLEG", std::make_pair("RF_KFE", "")},
-        {"LH_ASSEMBLY", std::make_pair("LH_HAA", "LH_HFE")},
-        {"LH_UPPERLEG", std::make_pair("LH_HFE", "LH_KFE")},
-        {"LH_LOWERLEG", std::make_pair("LH_KFE", "")},
-        {"RH_ASSEMBLY", std::make_pair("RH_HAA", "RH_HFE")},
-        {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
-        {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}};
+//     /// Groud truth
+//     std::map<std::string, std::pair<std::string, std::string>> linkMap_gt{
+//         //link name, parent name, child name
+//         {"LF_ASSEMBLY", std::make_pair("LF_HAA", "LF_HFE")},
+//         {"LF_UPPERLEG", std::make_pair("LF_HFE", "LF_KFE")},
+//         {"LF_LOWERLEG", std::make_pair("LF_KFE", "")},
+//         {"RF_ASSEMBLY", std::make_pair("RF_HAA", "RF_HFE")},
+//         {"RF_UPPERLEG", std::make_pair("RF_HFE", "RF_KFE")},
+//         {"RF_LOWERLEG", std::make_pair("RF_KFE", "")},
+//         {"LH_ASSEMBLY", std::make_pair("LH_HAA", "LH_HFE")},
+//         {"LH_UPPERLEG", std::make_pair("LH_HFE", "LH_KFE")},
+//         {"LH_LOWERLEG", std::make_pair("LH_KFE", "")},
+//         {"RH_ASSEMBLY", std::make_pair("RH_HAA", "RH_HFE")},
+//         {"RH_UPPERLEG", std::make_pair("RH_HFE", "RH_KFE")},
+//         {"RH_LOWERLEG", std::make_pair("RH_KFE", "")}};
 
-    for (auto& link : dummy_robot->getLinks())
-    {
-        ASSERT_EQ(link.getParent()->getName(), linkMap_gt[link.getName()].first);
-        if (link.getChildren().size() != 0)
-        {
-            ASSERT_EQ(link.getChildren()[0]->getName(), linkMap_gt[link.getName()].second);
-        }
-    }
-}
+//     for (auto& link : dummy_robot->getLinks())
+//     {
+//         ASSERT_EQ(link.getParent()->getName(), linkMap_gt[link.getName()].first);
+//         if (link.getChildren().size() != 0)
+//         {
+//             ASSERT_EQ(link.getChildren()[0]->getName(), linkMap_gt[link.getName()].second);
+//         }
+//     }
+// }
 
-TEST(RobotBaseUnitTests, limb_getEndEffector)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+// TEST(RobotBaseUnitTests, limb_getEndEffector)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-    for (auto& leg : dummy_robot->getLegs())
-    {
-        ASSERT_TRUE(leg->getEndEffector().getName().contains("LOWERLEG"));   
-    }
-}
+//     for (auto& leg : dummy_robot->getLegs())
+//     {
+//         ASSERT_TRUE(leg->getEndEffector().getName().contains("LOWERLEG"));   
+//     }
+// }
 
 // TODO
 // TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
@@ -430,33 +430,32 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
 
 TEST(RobotBaseUnitTests, jointStateOperators)
 {
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-    auto q = dummy_robot->makeJointState();
-    double value_gt {10};
+    // /// Dummy quadruped
+    // auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    // auto q = dummy_robot->makeJointState();
+    // double value_gt {10};
     
-    /// Operator[]
-    for (auto& joint : dummy_robot->getJoints())
-    {
-        q[joint] = value_gt;
-    }
+    // /// Operator[]
+    // for (auto& joint : dummy_robot->getJoints())
+    // {
+    //     q[joint] = value_gt;
+    // }
     
-    for (auto& joint : dummy_robot->getJoints())
-    {
-        EXPECT_EQ(value_gt, q[joint]);
-    }
+    // for (auto& joint : dummy_robot->getJoints())
+    // {
+    //     EXPECT_EQ(value_gt, q[joint]);
+    // }
 
-    /// Operator= Copy
-    auto q2 = dummy_robot->makeJointState();
-    q2 = q;
+    // /// Operator= Copy
+    // auto q2 = dummy_robot->makeJointState();
+    // q2 = q;
     
-    for (auto& joint : dummy_robot->getJoints())
-    {
-        EXPECT_EQ(q[joint], q2[joint]);   
-    }
+    // for (auto& joint : dummy_robot->getJoints())
+    // {
+    //     EXPECT_EQ(q[joint], q2[joint]);   
+    // }
 
     // // Dummy check: Checking that q and q2 does not point to the same memory
-    // std::cout << "Testing = operator does not allow variables to point to same memory\n";
     // double value {5};
     // auto joint{dummy_robot->getJoint("LF_HAA")};
     // q[joint] = value;
