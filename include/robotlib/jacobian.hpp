@@ -32,7 +32,7 @@ namespace robotlib
         /*!
 		 * @brief Copy constructor.
 		*/
-        // Jacobian(const Jacobian& jacobian);
+        Jacobian(const Jacobian& jacobian);
 
         /*!
 		 * @brief Destructor.

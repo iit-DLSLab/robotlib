@@ -199,7 +199,7 @@ namespace robotlib
     template <class Key, class Data>
     std::vector<Data> DataMap<Key, Data>::tovec_() const
     {
-        std::vector<Data> out(this->size());
+        std::vector<Data> out;
 
         for (auto& data_pair : *this)
         {

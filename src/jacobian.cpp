@@ -6,54 +6,68 @@
 
 namespace robotlib
 {
-    
-    
-
-    // Jacobian::Jacobian(const Jacobian& jacobian) 
-    //     : data_(new double[6 * jacobian.nJoints_])
-    //     , nJoints_(jacobian.nJoints_)
-    //     , Map(data_, 6, nJoints_)
-    // {
-    //     std::cout << "CONSTRUCTOR COPY" << std::endl;
-    //     for (int i = 0; i < 6 * nJoints_; ++i)
-    //     {
-    //         data_[i] = jacobian.data_[i];
-    //     }
-    // }
+    Jacobian::Jacobian(const Jacobian& jacobian) 
+        : Map(
+            [&]() -> double*
+            {
+                this->data_ =
+                    [&]() -> double*
+                    {
+                        double* data_temp = new double[6 * jacobian.nJoints_];
+                        for(auto i{0}; i < 6 * jacobian.nJoints_; i++)
+                            data_temp[i] = jacobian.data_[i];
+                        return data_temp;
+                    }();
+                return this->data_;
+            }()
+            , 6, jacobian.nJoints_)
+        , nJoints_(jacobian.nJoints_)   
+    {}
 
     Jacobian::Jacobian(const int nJoints, const double& data) 
-        : data_(new double[6 * nJoints])
+        : Map(
+            [&]() -> double*
+            {
+                this->data_ =
+                    [&]() -> double*
+                    {
+                        double* data_temp = new double[6 * nJoints];
+                        for(auto i{0}; i < 6 * nJoints; i++)
+                            data_temp[i] = data;
+                        return data_temp;
+                    }();
+                return this->data_;
+            }()
+            , 6, nJoints)
         , nJoints_(nJoints)
-        , Map(data_, 6, nJoints_)
-    { 
-        std::cout << "CONSTRUCTOR JOINT DATA " << nJoints << std::endl;
-        for(auto i{0}; i < 6 * nJoints_; i++)
-        {
-            data_[i] = data;
-        }
-    }
+    {}
 
     Jacobian::Jacobian(const std::vector<double>& data) 
-        : data_(new double[data.size()])
+        : Map(
+            [&]() -> double*
+            {
+                if(data.size()%6 != 0)
+                    throw std::invalid_argument("INITIALIZATION VECTOR SHOULD HAVE MODULUS 6.");
+                
+                this->data_ =
+                    [&]() -> double*
+                    {
+                        double* data_temp = new double[data.size()];
+                        for(auto i{0}; i < data.size(); i++)
+                            data_temp[i] = data[i];
+                        return data_temp;
+                    }();
+                return this->data_;
+            }()
+            , 6, data.size()/6)
         , nJoints_(data.size()/6)
-        , Map(data_, 6, nJoints_)
-    {
-        std::cout << "CONSTRUCTOR VECTOR" << std::endl;
-
-        if(data.size()%6 != 0)
-            throw std::invalid_argument("INITIALIZATION VECTOR SHOULD HAVE MODULUS 6.");
-
-        auto data_count{0};
-        for (int i = 0; i < data.size(); ++i)
-        {
-            data_[i] = data[data_count++];
-        }
-    }
+        
+    {}
     
     Jacobian::~Jacobian()
     {
-        // if (data_ != nullptr)
-        //     delete[] data_;
+        if (data_ != nullptr)
+            delete[] data_;
     }
 
     Map Jacobian::getLinearJacobian() 
@@ -91,6 +105,7 @@ namespace robotlib
 
     // Jacobian Jacobian::operator*(std::vector<double>& vec)
     // {
+
         
     //     // auto temp = this->Map::operator*(Map(vec.data(), 6, 1));
     //     // return this->Map::operator*(Map(vec.data(), 6, 1));
@@ -100,7 +115,8 @@ namespace robotlib
 
         
 
-    //     return *this * Map(vec.data(), nJoints_, 1);
+    //     return *this * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(vec.data(), vec.size(), 1);
+    //     // Map(vec.data(), nJoints_, 1);
     // }
 
 

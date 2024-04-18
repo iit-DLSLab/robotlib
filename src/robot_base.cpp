@@ -168,19 +168,15 @@ namespace robotlib
 
     LimbDataMap<Jacobian> RobotBase::makeFeetJacobian(const double& data) const
     {
-        return this->makeLimbDataMap<Jacobian>(
-            [&]() -> std::vector<Jacobian>
-            {
-                std::vector<Jacobian> container;
+        std::vector<Jacobian> container;
 
-				for(auto& limb : this->getLimbs())
-				{
-                    container.push_back(Jacobian(limb.getNJoints(), data));
-                }
+        int j{0};
+		for(auto& limb : this->getLimbs())
+		{
+            container.push_back(Jacobian(limb.getNJoints(), data));
+        }
 
-                return container;
-            }()
-        );
+        return this->makeLimbDataMap<Jacobian>(container);
     };
 
     Jacobian RobotBase::makeFootJacobian(const LimbBase& leg, const double data) // NRT

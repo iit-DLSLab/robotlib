@@ -95,7 +95,6 @@ namespace robotlib
 	{
 		for(auto& link : links_)
         {
-			std::cout << "LINK NAME " << link.getName() << std::endl;
             if(link.getName().compare(name) == 0)
                 return link;
         }

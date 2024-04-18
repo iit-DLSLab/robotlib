@@ -36,14 +36,23 @@ std::array<std::string, 29> components_names{"Dummy Robot",
                                             "LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG",
                                             "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
 
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-
 /**
  * @brief Unit tests for Jacobian class
  * @details Set of unit tests for Jacobian::getLinearJacobian function
  */
 
+/*
+ * @test Dummy Robot - Linear Jacobian matrix extracted with getLinearJacobian function
+ */
+TEST(JacobianUnitTests, makeFootJacobian)
+{
+	auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+	robotlib::LimbBase* leg = dummy_robot->getLegs()[0];
+	auto foot_jacobian = dummy_robot->makeFootJacobian(*leg, 4);
+
+	EXPECT_EQ(foot_jacobian.getLinearJacobian(), Eigen::MatrixXd::Ones(3,3)*4);
+}
 
 /*
  * @test Dummy Robot - Linear Jacobian matrix extracted with getLinearJacobian function
@@ -55,45 +64,83 @@ TEST(JacobianUnitTests, makeFeetJacobian)
 
 	for(auto& value : feet_jacobian)
 	{
-		std::cout << "TEST " << value.getData().rows() << ", " << value.getData().cols() << std::endl;
 		EXPECT_EQ(value.getData().getLinearJacobian(), Eigen::MatrixXd::Ones(3,3)*10);
 	}
 }
 
+/*!
+* @test Dummy Robot - Multiplication with a jacobian object
+*/
+TEST(JacobianUnitTests, Multiplication)
+{
+	auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
-// /*!
-// * @test Dummy Robot - Multiplication with a jacobian object
-// */
-// TEST(JacobianUnitTests, Multiplication)
-// {
-// 	auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+	double joint_value {2.0};
+	double jacobian_value {3.0};
 
-// 	double joint_value {2.0};
-// 	double jacobian_value {3.0};
+	auto joint_state = dummy_robot->makeJointState(joint_value);
+	auto feet_jacobian = dummy_robot->makeFeetJacobian(jacobian_value);
 
-// 	auto joint_state = dummy_robot->makeJointState(joint_value);
-// 	auto feet_jacobian = dummy_robot->makeFeetJacobian(jacobian_value);
+	for(auto& leg : dummy_robot->getLegs())
+	{
+		auto leg_joint_state {joint_state[leg].tovec_()};
+		auto foot_jacobian = dummy_robot->makeFootJacobian(*leg, jacobian_value);
 
-// 	for(auto& leg : dummy_robot->getLegs())
-// 	{
-// 		auto leg_joint_state {joint_state[leg].tovec_()};
-// 		auto foot_jacobian = dummy_robot->makeFootJacobian(*leg, jacobian_value);
+		auto temp = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(leg_joint_state.data(), leg_joint_state.size(), 1);
 
-// 		std::cout << "TEST " << foot_jacobian.rows() << ", " << foot_jacobian.cols() << std::endl;
+		Eigen::VectorXd res = foot_jacobian * temp;
+		Eigen::Vector3d res_linear = foot_jacobian.getLinearJacobian() * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(leg_joint_state.data(), leg_joint_state.size(), 1);
+		Eigen::Vector3d res_angular = foot_jacobian.getAngularJacobian() * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(leg_joint_state.data(), leg_joint_state.size(), 1);
 
-// 		// Eigen::VectorXd res = foot_jacobian * Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(leg_joint_state.data(), leg_joint_state.size(), 1);
-// 	// 	Eigen::Vector3d res_linear = foot_jacobian.getLinearJacobian() * leg_joint_state;
-// 	// 	Eigen::Vector3d res_angular = foot_jacobian.getLinearJacobian() * leg_joint_state;
+		double res_value {leg->getNJoints()*joint_value*jacobian_value};
+		for(int i = 0; i < 5; i++)
+		{
+			EXPECT_EQ(res(i), res_value);
+			if(i<3)
+			{
+					EXPECT_EQ(res_linear(i), res_value);
+					EXPECT_EQ(res_angular(i), res_value);
+			}
+		}
+	}
+}
 
-// 	// 	double res_value {leg->getNJoints()*(joint_value*jacobian_value)};
-// 	// 	for(int i=0; i<5; i++)
-// 	// 	{
-// 	// 		EXPECT_EQ(res(i), res_value);
-// 	// 		if(i<3)
-// 	// 		{
-// 	// 				EXPECT_EQ(res_linear(i), res_value);
-// 	// 				EXPECT_EQ(res_angular(i), res_value);
-// 	// 		}
-// 	// 	}
-// 	}
-// }
+
+TEST(JacobianUnitTests, OperatorEqual)
+{
+
+	auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+
+    auto feetJac = dummy_robot->makeFeetJacobian();
+	
+	Eigen::Matrix<double, 6, 3> footJacValues;
+    footJacValues << 10, 10, 10,
+					 20, 20, 20,
+					 30, 30, 30,
+					 40, 40, 40,
+					 50, 50, 50,
+					 60, 60, 60;
+
+    for (auto& leg : dummy_robot->getLegs())
+    {
+        feetJac[leg] << 10, 10, 10,
+						20, 20, 20,
+						30, 30, 30,
+						40, 40, 40,
+						50, 50, 50,
+						60, 60, 60;
+
+		EXPECT_EQ(feetJac[leg], footJacValues);
+    }
+
+    feetJac["LF"] << 5, 5, 5,
+					 5, 5, 5,
+					 5, 5, 5,
+					 6, 6, 6,
+					 6, 6, 6,
+					 6, 6, 6;
+
+    feetJac["RH"] = feetJac["LF"];
+
+    EXPECT_EQ(feetJac["RH"], feetJac["LF"]);
+}

@@ -77,14 +77,14 @@ namespace robotlib
     Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::getFootPosition(const robotlib::JointState& q,
                                                                          const robotlib::Frame& foot) const
     {
-        return this->getFramePosition(q, this->getLink(this->trunk_.getName()), foot);
+        return this->getFramePosition(q, this->getTrunk(), foot);
     }
 
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     Eigen::Matrix3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::getFootOrientation(const robotlib::JointState& q,
                                                                             const robotlib::Frame& foot) const
     {
-        return this->getFrameOrientation(q, this->getLink(this->trunk_.getName()), foot);
+        return this->getFrameOrientation(q, this->getTrunk(), foot);
     }
 
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
