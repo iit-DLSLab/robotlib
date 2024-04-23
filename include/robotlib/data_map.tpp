@@ -62,11 +62,15 @@ namespace robotlib
     {
         data_array_ = new DataPair<Key, Data>[num_data_];
 
+        std::cout << "SEARCHING FOR THE ERROR DATA MAP COPY CONSTRUCTOR INIT" <<  std::endl;
         int count_data = 0;
         for (auto& pair : data)
         {
+            std::cout << "PAIR " << pair.getKey().getName() <<  std::endl;
+
             this->data_array_[count_data++] = DataPair<Key, Data>(pair);
         }
+        std::cout << "SEARCHING FOR THE ERROR DATA MAP COPY CONSTRUCTOR " <<  std::endl;
     }
 
     template <class Key, class Data>
@@ -79,7 +83,7 @@ namespace robotlib
         //     delete[] data_array_[i];
         // }
 
-        delete data_array_;
+        delete[] data_array_;
     }
 
     template <class Key, class Data>

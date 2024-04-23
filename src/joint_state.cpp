@@ -16,11 +16,16 @@ namespace robotlib
 
                 for (auto& limb : limbs)
                 {
-                    std::cout << "SEARCHING FOR THE ERROR CONTAINER BASE" << std::endl;
-                    auto jointdata = JointDataMap<double>(limb.getJoints(), val);
-                    std::cout << "SEARCHING FOR THE ERROR CONTAINER BASE 2" << std::endl;
+                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR" << limb.getName() << std::endl;
+                }
 
-                    // out.push_back(JointDataMap<double>(limb.getJoints(), val));
+                for (auto& limb : limbs)
+                {
+                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR" << std::endl;
+                    // auto jointdata = JointDataMap<double>(limb.getJoints(), val);
+                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR 2" << std::endl;
+
+                    out.push_back(JointDataMap<double>(limb.getJoints(), val));
                 }
                 return out;
             }()
