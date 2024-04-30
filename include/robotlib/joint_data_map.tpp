@@ -8,9 +8,7 @@ namespace robotlib
     template <class Data> 
     JointDataMap<Data>::JointDataMap(const  ContainerBase<Joint>& joints, const Data& data) 
         : DataMap<Joint, Data>(joints, data)
-    {
-        std::cout << "SEARCHING FOR THE ERROR JOINT DATA MAP" << std::endl;
-    }
+    {}
 
     template <class Data>
     JointDataMap<Data>::JointDataMap(const ContainerBase<Joint>& joints, const std::vector<Data>& data) 
@@ -20,9 +18,7 @@ namespace robotlib
     template <class Data> 
     JointDataMap<Data>::JointDataMap(const JointDataMap<Data>& other) 
         : DataMap<Joint, Data>(other)
-    {
-        std::cout << "SEARCHING FOR THE ERROR JOINT DATA MAP COPY CONSTRUCTOR" << std::endl;
-    }
+    {}
 
     // template <class Data> 
     // JointDataMap<Data>& JointDataMap<Data>::operator=(const JointDataMap<Data>& other) 

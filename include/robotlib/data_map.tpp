@@ -3,7 +3,6 @@
 
 #include "data_map.hpp"
 #include <assert.h>
-#include <iostream>
 
 namespace robotlib
 {
@@ -16,7 +15,9 @@ namespace robotlib
         int count_data = 0;
         for(auto key_it = keys.begin(); key_it != keys.end(); ++key_it)
         {
-            this->data_array_[count_data++] = DataPair<Key, Data>(key_it.get(), data);
+            this->data_array_[count_data].key_ = key_it.get();
+            this->data_array_[count_data].data_ = std::shared_ptr<Data>(new Data(data));
+            count_data++;
         }   
     }
 
@@ -29,7 +30,9 @@ namespace robotlib
         int count_data = 0;
         for(auto key_it = keys.begin(); key_it != keys.end(); ++key_it)
         {
-            this->data_array_[count_data] = DataPair<Key, Data>(key_it.get(), data[count_data++]);
+            this->data_array_[count_data].key_ = key_it.get();
+            this->data_array_[count_data].data_ = std::shared_ptr<Data>(new Data(data[count_data]));
+            count_data++;
         }   
     }
 
@@ -57,20 +60,18 @@ namespace robotlib
     // }
 
     template <class Key, class Data>
-    DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& data)
-        : num_data_(data.size())
+    DataMap<Key, Data>::DataMap(const DataMap<Key, Data>& rhs)
+        : num_data_(rhs.size())
     {
         data_array_ = new DataPair<Key, Data>[num_data_];
 
-        std::cout << "SEARCHING FOR THE ERROR DATA MAP COPY CONSTRUCTOR INIT" <<  std::endl;
         int count_data = 0;
-        for (auto& pair : data)
+        for (auto& pair : rhs)
         {
-            std::cout << "PAIR " << pair.getKey().getName() <<  std::endl;
-
-            this->data_array_[count_data++] = DataPair<Key, Data>(pair);
+            this->data_array_[count_data].key_ = pair.key_;
+            this->data_array_[count_data].data_ = std::shared_ptr<Data>(new Data(*pair.data_));
+            count_data++;
         }
-        std::cout << "SEARCHING FOR THE ERROR DATA MAP COPY CONSTRUCTOR " <<  std::endl;
     }
 
     template <class Key, class Data>

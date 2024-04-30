@@ -2,7 +2,6 @@
 #define _ROBOTLIB_JOINT_STATE_CPP_
 
 #include "joint_state.hpp"
-#include <iostream> 
 #include "utils/container.hpp"
 
 namespace robotlib
@@ -16,15 +15,6 @@ namespace robotlib
 
                 for (auto& limb : limbs)
                 {
-                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR" << limb.getName() << std::endl;
-                }
-
-                for (auto& limb : limbs)
-                {
-                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR" << std::endl;
-                    // auto jointdata = JointDataMap<double>(limb.getJoints(), val);
-                    std::cout << "SEARCHING FOR THE ERROR JOINT STATE CONSTRUCTOR 2" << std::endl;
-
                     out.push_back(JointDataMap<double>(limb.getJoints(), val));
                 }
                 return out;
@@ -80,9 +70,19 @@ namespace robotlib
         throw std::range_error("key not found");
     }
 
-    const double& JointState::operator[](const Joint& joint) const
+    const double& JointState::operator[](const Joint& rhs) const
     {
-        return this->operator[](joint);
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                if (joint_pair.getKey() == rhs)
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");
     }
 
     double& JointState::operator[](const std::shared_ptr<Joint>& joint)
@@ -239,7 +239,7 @@ namespace robotlib
         {
             for (auto& joint_pair : limb_pair.getData()) //iterate over the joints
             {
-                if(max_value == nullptr || *max_value > joint_pair.getData())
+                if(max_value == nullptr || *max_value < joint_pair.getData())
                     max_value = &joint_pair.getData();
             }
         }
@@ -254,7 +254,7 @@ namespace robotlib
         {
             for (auto& joint_pair : limb_pair.getData()) //iterate over the joints
             {
-                if(min_value == nullptr || *min_value < joint_pair.getData())
+                if(min_value == nullptr || *min_value > joint_pair.getData())
                     min_value = &joint_pair.getData();
             }
         }
