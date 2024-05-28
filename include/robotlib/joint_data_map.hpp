@@ -30,10 +30,13 @@ namespace robotlib
 
         JointDataMap<Data> &operator=(const JointDataMap<Data> &);
         JointDataMap<Data> operator+(const JointDataMap<Data>&);
+        JointDataMap<Data> operator+(const JointDataMap<Data>&) const;
         JointDataMap<Data> &operator+=(const JointDataMap<Data>&);
         JointDataMap<Data> operator*(const JointDataMap<Data>&);
+        JointDataMap<Data> operator*(const JointDataMap<Data>&) const;
         JointDataMap<Data> &operator*=(const JointDataMap<Data>&);
         JointDataMap<Data> operator-(const JointDataMap<Data>&);
+        JointDataMap<Data> operator-(const JointDataMap<Data>&) const;
         JointDataMap<Data> &operator-=(const JointDataMap<Data>&);
         using DataMap<Joint, Data>::operator=;
 
