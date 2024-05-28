@@ -266,6 +266,39 @@ namespace robotlib
         return min_value;
     }
 
+    double JointState::getJointValue(const std::string &joint_name) const
+    {
+        for (auto &leg_pair : *this)
+        {
+            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            {
+                if (joint_pair.key_->getName().compare(joint_name) == 0)
+                {
+                    return *(joint_pair.data_);
+                }
+            }
+        }
+        throw std::range_error("key not found");
+    }
+
+    void JointState::setJointValue(const std::string &joint_name, double value)
+    {
+        bool joint_found{false};
+        for (auto &leg_pair : *this)
+        {
+            for (auto &joint_pair : *leg_pair.data_) //iterate over the JointDataMap
+            {
+                if (joint_pair.key_->getName().compare(joint_name) == 0)
+                {
+                    *(joint_pair.data_) = value;
+                    joint_found = true;
+                }
+            }
+        }
+        if(!joint_found)
+            throw std::range_error("key not found");
+    }
+
     void JointState::print() const
     {
         std::cout << "JointState [Name - Value]" << std::endl;

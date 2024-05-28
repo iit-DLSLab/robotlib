@@ -52,6 +52,25 @@ namespace robotlib
         const double &operator[](const std::shared_ptr<Joint> joint) const;
 
         /*!
+         * @brief Function getting the joint value from the joint name.
+         * @details
+         * This function allows to access to the data associated to the joint name in input.
+         * 
+         * @param[in] joint_name joint name.
+         * @return reference to the data associated to the joint.
+         */
+        double getJointValue(const std::string &joint_name) const;
+
+        /*!
+         * @brief Function setting the joint value from the joint name.
+         * @details
+         * This function allows to set the data associated to the joint name in input.
+         * 
+         * @param[in] joint_name joint name.
+         */
+        void setJointValue(const std::string &joint_name, double value);
+
+        /*!
          * @brief Equal operator.
          * @param[in] joint_state JointState object whose data is assigned to the object pointed by *this*.
          * @return reference to the JointState object pointed by *this*.
