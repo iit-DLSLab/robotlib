@@ -20,13 +20,13 @@ namespace robotlib
         : DataMap<Joint, Data>(other)
     {}
 
-    // template <class Data> 
-    // JointDataMap<Data>& JointDataMap<Data>::operator=(const JointDataMap<Data>& other) 
-    // {
-    //     this->DataMap<Joint, Data>::operator=(other);
+    template <class Data> 
+    JointDataMap<Data>& JointDataMap<Data>::operator=(const JointDataMap<Data>& other) 
+    {
+        this->DataMap<Joint, Data>::operator=(other);
         
-    //     return *this;
-    // }
+        return *this;
+    }
 
     template <class Data> 
     JointDataMap<Data>& JointDataMap<Data>::operator=(const std::vector<Data>& other) 

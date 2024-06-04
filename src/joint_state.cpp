@@ -95,6 +95,16 @@ namespace robotlib
         return this->operator[](*joint);
     }
 
+    double& JointState::operator[](const Joint* joint)
+    {
+        return this->operator[](*joint);
+    }
+
+    const double& JointState::operator[](const Joint* joint) const
+    {
+        return this->operator[](*joint);
+    }
+
     JointState& JointState::operator=(const JointState& rhs)
     {
         assert (this->size() == rhs.size());

@@ -78,6 +78,25 @@ namespace robotlib
         const double& operator[](const std::shared_ptr<Joint>& joint) const;
 
         /*!
+         * @brief Square brackets operator.
+         * @details
+         * This method allows to access to the data associated to the joint in input.
+         * @param[in] joint pointer to the joint.
+         * @return reference to the data associated to the joint.
+         */
+        double& operator[](const Joint* joint);
+
+        /*!
+         * @brief Square brackets operator.
+         * @details
+         * This method allows to access to the data associated to the joint in input.
+         * Implementation for constant objects.
+         * @param[in] joint pointer to the joint.
+         * @return reference to the data associated to the joint.
+         */
+        const double& operator[](const Joint* joint) const;
+
+        /*!
          * @brief Assignment operator.
          * @details
          * This method only assign the data not the keys (the keys couldn't change)

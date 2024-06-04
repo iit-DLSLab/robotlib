@@ -74,6 +74,7 @@ endif()
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
 	/usr/include/eigen3
+	include
 	SYSTEM
 )
 

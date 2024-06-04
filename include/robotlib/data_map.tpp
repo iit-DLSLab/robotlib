@@ -272,7 +272,13 @@ namespace robotlib
 
         for (auto& data_pair : *this)
         {
-            out[data_pair] -= rhs[data_pair];
+            if constexpr (std::is_same_v<Data, std::string>)
+            {
+                auto start_position_to_erase = out[data_pair].find(rhs[data_pair]);
+                out[data_pair].erase(start_position_to_erase, rhs[data_pair].length());
+            }
+            else
+                out[data_pair] -= rhs[data_pair];
         }
         return out;
     }

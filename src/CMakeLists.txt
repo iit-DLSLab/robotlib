@@ -28,6 +28,7 @@ target_link_libraries(robot_info
 
 target_include_directories(robotlib 
 	PUBLIC
+		include
 		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
 		$<INSTALL_INTERFACE:lib>

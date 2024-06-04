@@ -76,14 +76,29 @@ namespace robotlib
     DataPair<Key, Data> DataPair<Key, Data>::operator-(const Data& rhs)
     {
         DataPair out(*this);
-        *out.data_ -= rhs;
+
+        if constexpr (std::is_same_v<Data, std::string>)
+        {
+            auto start_position_to_erase = (*out.data_).find(rhs);
+            (*out.data_).erase(start_position_to_erase, rhs.length());
+        }
+        else
+            *out.data_ -= rhs;
+
         return out;
     }
 
     template <class Key, class Data>    
     DataPair<Key, Data>& DataPair<Key, Data>::operator-=(const Data& rhs)
     {
-        *this->data_ -= rhs;
+        if constexpr (std::is_same_v<Data, std::string>)
+        {
+            auto start_position_to_erase = (*this->data_).find(rhs);
+            (*this->data_).erase(start_position_to_erase, rhs.length());
+        }
+        else    
+            *this->data_ -= rhs;
+       
         return *this;
     }
 
