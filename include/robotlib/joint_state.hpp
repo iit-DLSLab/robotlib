@@ -84,6 +84,7 @@ namespace robotlib
          */
         JointState &operator=(const double data);
         JointState &operator=(const std::vector<double>& vector);
+        JointState &operator=(const Eigen::VectorXd& data);
 
         JointState operator+(const JointState& joint_state);
         JointState &operator+=(const JointState& joint_state);

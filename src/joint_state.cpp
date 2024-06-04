@@ -87,6 +87,18 @@ namespace robotlib
         return *this;
     }
 
+    JointState &JointState::operator=(const Eigen::VectorXd& data){
+        int i = 0;
+        for (auto &leg_pair : *this)
+        {
+            for(auto &joint_pair: *leg_pair.data_)
+            {   
+                *(joint_pair.data_) = data(i++);
+            }
+        }
+        return *this;
+    }
+
     JointState &JointState::operator-=(const JointState &other)
     {
         for (auto &leg_pair : *this)
