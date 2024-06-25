@@ -17,7 +17,7 @@
 #ifndef _ROBOTLIB_ARM_HPP_
 #define _ROBOTLIB_ARM_HPP_
 
-#include "limb_base.hpp"
+#include "limb.hpp"
 
 namespace robotlib
 {
