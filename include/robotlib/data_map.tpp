@@ -181,6 +181,17 @@ namespace robotlib
     }
 
     template <class Key, class Data>
+    const Data& DataMap<Key, Data>::operator[](const std::string& id) const
+    {
+        for (auto &pair : *this)
+        {
+            if (pair.getKey().getName().compare(id) == 0)
+                return *pair.data_;
+        }
+        throw std::range_error("key not found");
+    }
+
+    template <class Key, class Data>
     void DataMap<Key, Data>::copyData(const DataMap &rhs)
     {
         assert(this->size() == rhs.size());

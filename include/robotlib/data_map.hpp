@@ -132,6 +132,14 @@ namespace robotlib
          * @return reference to the data associated to the key.
          */
         virtual Data& operator[](const std::string& keyid);
+        
+        /*!
+         * @brief Square brackets operator.
+         * @details This method allows to access to the data associated to the key in input.
+         * @param[in] keyid string with key id.
+         * @return reference to the data associated to the key.
+         */
+        virtual const Data& operator[](const std::string& keyid) const;
 
         /*!
          * @brief Assignment operator.
