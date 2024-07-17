@@ -45,4 +45,4 @@ install(
 	COMPONENT	"robotlib"
 )
 
-add_subdirectory(robots)
+# add_subdirectory(robots)

@@ -607,7 +607,7 @@ namespace robotlib
           * @param[out] end_effector_position position of each end effector (foot) in base frame.
           */
         virtual void forwardKinematics(const JointState &joint_position,
-                                       LegDataMap<Eigen::Vector3d> &end_effector_position) const = 0;
+                                       LegDataMap<Eigen::Vector3d> &end_effector_position) = 0;
         /*!
          * @brief Forward kinematics.
          * @details
@@ -620,7 +620,7 @@ namespace robotlib
         virtual void forwardKinematics(const JointState &joint_position,
                                        const JointState &joint_velocity,
                                        LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       LegDataMap<Eigen::Vector3d> &end_effector_velocity) const = 0;
+                                       LegDataMap<Eigen::Vector3d> &end_effector_velocity) = 0;
         /*!
          * @brief Inverse kinematics.
          * @details
@@ -638,7 +638,7 @@ namespace robotlib
                                        const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
                                        JointState &joint_position,
                                        JointState &joint_velocity,
-                                       JointState &joint_acceleration) const = 0;
+                                       JointState &joint_acceleration) = 0;
         /*!
          * @brief Inverse kinematics.
          * @details
@@ -652,7 +652,7 @@ namespace robotlib
         virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
                                        const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
                                        JointState &joint_position,
-                                       JointState &joint_velocity) const = 0;
+                                       JointState &joint_velocity) = 0;
 
         /*!
          * @brief Inverse kinematics.
@@ -662,7 +662,7 @@ namespace robotlib
          * @param[out] joint_position angle of each joint.
          */
         virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       JointState &joint_position) const = 0;
+                                       JointState &joint_position) = 0;
 
         /*!
          * @brief Inverse dynamics.
@@ -684,7 +684,7 @@ namespace robotlib
                                      const JointState &joint_velocity,
                                      const JointState &joint_acceleration,
                                      Eigen::Matrix<double, 6, 1> &wrench_base,
-                                     JointState &tau_joints) const = 0;
+                                     JointState &tau_joints) = 0;
 
         /*!
          * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
@@ -703,8 +703,12 @@ namespace robotlib
                                             const JointState &joint_velocity,
                                             const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
                                             const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero())
-                                            const = 0;
-
+                                            = 0;
+        virtual void forwardKinematics(const robotlib::JointState &joint_position,
+                                    const robotlib::JointState &joint_velocity,
+                                    robotlib::LegDataMap<Eigen::Vector3d> &end_effector_position,
+                                    robotlib::LegDataMap<Eigen::Vector3d> &end_effector_velocity,
+                                    const int type) = 0;
         // ** SET FUNCTIONS **
 
         /*!
