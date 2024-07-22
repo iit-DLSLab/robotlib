@@ -87,22 +87,66 @@ namespace robotlib
 
     double& JointState::operator[](const std::shared_ptr<Joint>& joint)
     {
-        return this->operator[](*joint);
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                //if (joint_pair.getKey() == (*joint))
+                if (joint_pair.getKey().getName() == (*joint).getName())
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");        
     }
 
     const double& JointState::operator[](const std::shared_ptr<Joint>& joint) const
     {
-        return this->operator[](*joint);
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                //if (joint_pair.getKey() == (*joint))
+                if (joint_pair.getKey().getName() == (*joint).getName())
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");
     }
 
     double& JointState::operator[](const Joint* joint)
     {
-        return this->operator[](*joint);
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                //if (joint_pair.getKey() == (*joint))
+                if (joint_pair.getKey().getName() == (*joint).getName())
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");
     }
 
     const double& JointState::operator[](const Joint* joint) const
     {
-        return this->operator[](*joint);
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                //if (joint_pair.getKey() == (*joint))
+                if (joint_pair.getKey().getName() == (*joint).getName())
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");
     }
 
     JointState& JointState::operator=(const JointState& rhs)
