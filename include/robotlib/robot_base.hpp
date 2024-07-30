@@ -236,97 +236,37 @@ namespace robotlib
         virtual double getMaxJointEffort(const std::shared_ptr<Joint> joint);
 
         /*!
-         * @brief Get position of the destination frame expressed in the origin one.
+         * @brief Get position of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame position expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
         virtual Eigen::Vector3d getFramePosition(const JointState &q,
-                                                 const std::shared_ptr<Frame> origin,
-                                                 const std::shared_ptr<Frame> destination) const = 0;
+                                                 const std::string origin,
+                                                 const std::string destination) = 0;
 
         /*!
-         * @brief Get orientation of the destination frame expressed in the origin one.
+         * @brief Get orientation of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame orientation expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
         virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
-                                                    const std::shared_ptr<Frame> origin,
-                                                    const std::shared_ptr<Frame> destination) const = 0;
+                                                    const std::string origin,
+                                                    const std::string destination) = 0;
 
         /*!
-         * @brief Get pose of the destination frame expressed in the origin one.
+         * @brief Get pose of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame pose expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
         virtual Eigen::Matrix4d getFramePose(const JointState &q,
-                                             const std::shared_ptr<Frame> origin,
-                                             const std::shared_ptr<Frame> destination) const = 0;
-
-        /*!
-         * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot position expressed in trunk frame.
-         */
-        virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                       const std::shared_ptr<Frame> foot) const = 0;
-
-        /*!
-         * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot position.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @return foot position expressed in trunk frame.
-         */
-        virtual Eigen::Vector3d getFootPosition(const JointState &q,
-                                                       const std::shared_ptr<LimbBase> leg) const = 0;
-
-        /*!
-         * @brief Get foot orientation expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot orientation expressed in trunk frame.
-         */
-        virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                          const std::shared_ptr<Frame> foot) const = 0;
-
-        /*!
-         * @brief Get foot orientation with respect to the trunk frame, expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot orientation.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @return foot orientation expressed in trunk frame.
-         */
-        virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-                                                         const std::shared_ptr<LimbBase> leg) const = 0;
-
-        /*!
-         * @brief Get foot pose expressed in trunk frame.
-         * @param[in] q angles of the joints.
-         * @param[in] foot foot frame.
-         * @return foot pose expressed in trunk frame.
-         */
-        virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                            const std::shared_ptr<Frame> foot) const = 0;
-
-        /*!
-         * @brief Get foot pose with respect to the trunk frame, expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot pose.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @return foot pose expressed in trunk frame.
-         */
-        virtual Eigen::Matrix4d getFootPose(const JointState &q,
-                                                  const std::shared_ptr<LimbBase> leg) const = 0;
+                                             const std::string origin,
+                                             const std::string destination) = 0;
 
         /*!
          * @brief Update the linear part of the jacobian.
@@ -704,11 +644,6 @@ namespace robotlib
                                             const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
                                             const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero())
                                             = 0;
-        virtual void forwardKinematics(const robotlib::JointState &joint_position,
-                                    const robotlib::JointState &joint_velocity,
-                                    robotlib::LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                    robotlib::LegDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                    const int type) = 0;
         // ** SET FUNCTIONS **
 
         /*!
