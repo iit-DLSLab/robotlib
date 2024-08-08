@@ -997,27 +997,27 @@ TEST(RobotBaseUnitTests, maxJointValue)
     EXPECT_EQ(q.max(), q_max_gt);
 }
 
-TEST(RobotBaseUnitTests, getFootJacobian)
-{
-    /// Dummy quadruped
-    std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
-    auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
-    auto q = dummy_quadruped->makeJointState(0.0);
-    for(auto leg : *dummy_quadruped->getLegs())
-    {
-        feet_jacobian[leg].setOnes();
-        dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
-    }
+// TEST(RobotBaseUnitTests, getFootJacobian)
+// {
+//     /// Dummy quadruped
+//     std::shared_ptr<robotlib::RobotBase> dummy_quadruped {robotlib::RobotFactory::openRobot("dummy-quadruped")};
+//     auto feet_jacobian = dummy_quadruped->makeFeetJacobian();
+//     auto q = dummy_quadruped->makeJointState(0.0);
+//     for(auto leg : *dummy_quadruped->getLegs())
+//     {
+//         feet_jacobian[leg].setOnes();
+//         dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
+//     }
 
-    for (auto leg : *dummy_quadruped->getLegs())
-    {
-        dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
-        for(int i=0; i<6;i++)
-        {
-            for (int j=0; j<leg->getNJoints(); j++)
-            {
-                EXPECT_EQ(feet_jacobian[leg](i,j), 0.0);
-            }
-        }
-    }
-}
+//     for (auto leg : *dummy_quadruped->getLegs())
+//     {
+//         dummy_quadruped->getFootJacobian(q, leg, feet_jacobian[leg]);
+//         for(int i=0; i<6;i++)
+//         {
+//             for (int j=0; j<leg->getNJoints(); j++)
+//             {
+//                 EXPECT_EQ(feet_jacobian[leg](i,j), 0.0);
+//             }
+//         }
+//     }
+// }
