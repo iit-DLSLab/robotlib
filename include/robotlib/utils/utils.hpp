@@ -99,6 +99,9 @@ namespace utils
         * @return gravity term in base frame
         */ 
         Eigen::Matrix<double, 6,1> computeGravity_B(const Eigen::Matrix3d& b_R_w, const double g);
+
+        std::string toLower(const std::string &s);
+        
     } // namespace utils
 } // namespace robotlib
 
