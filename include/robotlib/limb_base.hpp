@@ -121,11 +121,17 @@ namespace robotlib
        * @param[in] link Link object for which you get the name of the child.
        * @return name of the link's child.
        */
-      virtual std::string linkToChildName(const std::shared_ptr<Link> link) const = 0; 
+      virtual std::string linkToChildName(const std::shared_ptr<Link> link) const = 0;
+
+      void setID(int id);
+
+      int getID() const;
 
    private:
       //! Name of the limb.
       const std::string name_;
+
+      int id;
    };
 } // namespace robotlib
 
