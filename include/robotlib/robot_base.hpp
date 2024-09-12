@@ -587,7 +587,7 @@ namespace robotlib
         virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
                                        JointState &joint_position) = 0;
         /*!
-        * @brief Inverse kinematics. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame.
+        * @brief Inverse kinematics. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
         * @param[in] frame_name name of the frame.
         * @param[in] q_init_guess initial guess for the joint angles.
         * @param[in] position_des desired position of the frame expressed in base frame.
@@ -597,6 +597,17 @@ namespace robotlib
                                                 const robotlib::JointState &q_init_guess,
                                                 const Eigen::Vector3d &position_des,
                                                 robotlib::JointState &q_des) = 0;
+        /*!
+        * @brief Inverse differential kinematics. Does not consider the floating base joint. It computes the joint velocities from the desired frame linear velocity expressed in base frame. Redundancy is not handled yet.
+        * @param[in] frame_name name of the frame
+        * @param[in] q joint angles
+        * @param[in] velocity_des desired frame linear velocity expressed in base frame
+        * @param[out] qd_des desired joint velocities
+        */
+        virtual void fixedBaseInverseDiffKinematics(const std::string &frame_name,
+                                                            const robotlib::JointState &q,
+                                                            const Eigen::Vector3d &velocity_des,
+                                                            robotlib::JointState &qd_des) = 0;
         /*!
          * @brief Inverse dynamics.
          * @details
