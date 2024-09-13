@@ -320,6 +320,13 @@ namespace robotlib
         virtual double getTrunkMass() const = 0;
 
         /*!
+         * @brief Get link mass.
+         * @param[in] name name of the link.
+         * @return link mass.
+         */
+        virtual double getLinkMass(const std::string name) const = 0;
+
+        /*!
          * @brief Get total legs' mass.
          * @return total legs' mass.
          */
@@ -334,23 +341,24 @@ namespace robotlib
         /*!
          * @brief Compute whole body CoM in base frame.
          * @param[in] joint_position angles of the joints.
+         * @param[in] q angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getRobotCoM() const = 0;
+        virtual Eigen::Vector3d getRobotCoM(const robotlib::JointState q) = 0;
 
         /*!
          * @brief Compute whole body CoM in base frame.
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) const = 0;
+        virtual Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) = 0;
 
         /*!
          * @brief Compute CoM legs contribution in base frame.
          * @param[in] q angles of the joints.
          * @return CoM legs contribution in base frame.
          */
-        virtual Eigen::Vector3d getLegContribution(const JointState &q) const = 0;
+        virtual Eigen::Vector3d getLegContribution(const JointState &q) = 0;
 
 
         /*!
@@ -362,7 +370,7 @@ namespace robotlib
          */
         virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
                                                const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &base_pos) const = 0;
+                                               const Eigen::Vector3d &base_pos) = 0;
 
         /*!
           * @brief Compute robot base position in world frame, from CoM position in world frame.
@@ -373,7 +381,7 @@ namespace robotlib
          */
         virtual Eigen::Vector3d getBaseFromCoM(const JointState &q,
                                                const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &CoM) const = 0;
+                                               const Eigen::Vector3d &CoM) = 0;
 
         /*!
          * @brief Compute whole body CoM velocity in world frame.
@@ -383,7 +391,7 @@ namespace robotlib
          * @return CoM velocity in world frame.
 		 */
         virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState &q,
-                                                               const JointState &qd) const = 0;
+                                                               const JointState &qd) = 0;
 
         /*!
          * @brief Compute whole body CoM velocity in world frame.
@@ -394,7 +402,7 @@ namespace robotlib
 		 */
         virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                 const Eigen::Matrix3d &R,
-                                                                const JointState &q) const = 0;
+                                                                const JointState &q) = 0;
 
         /*!
          * @brief Compute whole body com velocity in world frame, without recomputing the CoM offset.
@@ -405,7 +413,7 @@ namespace robotlib
          */
         virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
                                                                  const Eigen::Matrix3d &R,
-                                                                 const Eigen::Vector3d offset_com) const = 0;
+                                                                 const Eigen::Vector3d offset_com) = 0;
 
         /*!
         *@brief Get the IMU pose in base frame.
