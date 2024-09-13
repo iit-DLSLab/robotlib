@@ -544,48 +544,7 @@ namespace robotlib
                                        const JointState &joint_velocity,
                                        LegDataMap<Eigen::Vector3d> &end_effector_position,
                                        LegDataMap<Eigen::Vector3d> &end_effector_velocity) = 0;
-        /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle, velocity and acceleration of each joint from the position, velocity and acceleration of each end effector expressed in base frame.
-        *
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * @param[in] end_effector_acceleration acceleration of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         * @param[out] joint_velocity velocity of each joint.
-         * @param[out] joint_acceleration acceleration of each joint.
-         */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_acceleration,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity,
-                                       JointState &joint_acceleration) = 0;
-        /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle and velocity of each joint from the position and velocity of each end effector expressed in base frame.
-        *
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         * @param[out] joint_velocity velocity of each joint.
-         */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LegDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity) = 0;
 
-        /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle of each joint from the position of each end effector expressed in base frame.
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         */
-        virtual void inverseKinematics(const LegDataMap<Eigen::Vector3d> &end_effector_position,
-                                       JointState &joint_position) = 0;
         /*!
         * @brief Inverse kinematics. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
         * @param[in] frame_name name of the frame.
