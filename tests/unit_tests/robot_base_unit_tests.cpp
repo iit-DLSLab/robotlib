@@ -368,7 +368,7 @@ TEST(RobotBaseUnitTests, limb_getEndEffector)
 }
 
 // TODO
-// TEST(RobotBaseUnitTests, LegDataMapCopyOperators)
+// TEST(RobotBaseUnitTests, LimbDataMapCopyOperators)
 // {
 //     /// Dummy quadruped
 //     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);

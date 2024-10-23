@@ -231,8 +231,8 @@ namespace robotlib
 robotlib::JointState operator*(const double& data, const robotlib::JointState& joint_state);
 robotlib::JointState operator*(const Eigen::VectorXd &vec, const robotlib::JointState& joint_state);
 
-Eigen::Quaterniond operator+=(const Eigen::Quaterniond &q1, const Eigen::Quaterniond &q2);
-Eigen::Quaterniond operator-=(const Eigen::Quaterniond &q1, const Eigen::Quaterniond &q2);
+// Eigen::Quaterniond operator+=(const Eigen::Quaterniond &q1, const Eigen::Quaterniond &q2);
+// Eigen::Quaterniond operator-=(const Eigen::Quaterniond &q1, const Eigen::Quaterniond &q2);
 
 
 
