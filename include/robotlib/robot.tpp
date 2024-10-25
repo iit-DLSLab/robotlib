@@ -215,10 +215,4 @@ namespace robotlib
                         }
                 }
         }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Eigen::Vector3d Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
-        {
-                return trunk_->getCoM();
-        };
 } // namespace robotlib

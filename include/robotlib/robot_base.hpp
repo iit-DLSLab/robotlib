@@ -312,31 +312,27 @@ namespace robotlib
          * @return total robot mass.
          */
         virtual double getRobotMass() const = 0;
-
-        /*!
-         * @brief Get trunk mass.
-         * @return trunk mass.
-         */
-        virtual double getTrunkMass() const = 0;
-
+        // inertia?
         /*!
          * @brief Get link mass.
          * @param[in] name name of the link.
          * @return link mass.
          */
-        virtual double getLinkMass(const std::string name) const = 0;
+        virtual double getLinkMass(const std::string& name) const = 0;
 
         /*!
-         * @brief Get total legs' mass.
-         * @return total legs' mass.
-         */
-        virtual double getLegsMass() const = 0;
+         * @brief Get link inertia about the CoM.
+         * @param[in] name name of the link.
+         * @return link inertia.
+        */
+        virtual Eigen::Matrix3d getLinkInertia(const std::string& name) const = 0;
 
         /*!
-         * @brief Get the CoM of the trunk.
-         * @return trunk's CoM.
-         */
-        virtual Eigen::Vector3d getTrunkCOM() const = 0;
+         * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
+         * @param[in] name name of the link.
+         * @return link CoM.
+        */
+        virtual Eigen::Vector3d getLinkCOM(const std::string& name) const = 0;
 
         /*!
          * @brief Compute whole body CoM in base frame.
@@ -344,76 +340,27 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getRobotCoM(const robotlib::JointState q) = 0;
-
-        /*!
-         * @brief Compute whole body CoM in base frame.
-         * @param[in] joint_position angles of the joints.
-         * @return whole body CoM in base frame.
-         */
-        virtual Eigen::Vector3d getWholeBodyCOM(const JointState &joint_state) = 0;
-
-        /*!
-         * @brief Compute CoM legs contribution in base frame.
-         * @param[in] q angles of the joints.
-         * @return CoM legs contribution in base frame.
-         */
-        virtual Eigen::Vector3d getLegContribution(const JointState &q) = 0;
-
+        virtual Eigen::Vector3d getWholeBodyCoM(const JointState q) = 0;
 
         /*!
          * @brief Compute robot CoM position in world frame, from base pose in world frame.
          * @param[in] q angles of the joints.
-         * @param[in] base_orient base orientation in world frame.
-         * @param[in] base_pos base position in world frame.
+         * @param[in] robot_pose robot pose (position, quaternion (x,y,z,w)) in world frame.
          * @return CoM position in world frame.
          */
-        virtual Eigen::Vector3d getCoMFromBase(const JointState &q,
-                                               const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &base_pos) = 0;
+        virtual Eigen::Vector3d getCoMFromBase(const robotlib::JointState &q,
+                                const Eigen::Matrix<double, 7, 1> &robot_pose);
 
         /*!
           * @brief Compute robot base position in world frame, from CoM position in world frame.
           * @param[in] q angles of the joints.
-          * @param[in] base_orient base orientation in world frame.
+          * @param[in] base_orient base orientation in world frame (quaternion (x,y,z,w)).
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
          */
-        virtual Eigen::Vector3d getBaseFromCoM(const JointState &q,
-                                               const Eigen::Vector3d &base_orient,
-                                               const Eigen::Vector3d &CoM) = 0;
-
-        /*!
-         * @brief Compute whole body CoM velocity in world frame.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] q angles of the joints.
-         * @return CoM velocity in world frame.
-		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState &q,
-                                                               const JointState &qd) = 0;
-
-        /*!
-         * @brief Compute whole body CoM velocity in world frame.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] q angles of the joints.
-         * @return CoM velocity in world frame.
-		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                const Eigen::Matrix3d &R,
-                                                                const JointState &q) = 0;
-
-        /*!
-         * @brief Compute whole body com velocity in world frame, without recomputing the CoM offset.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] offset_com CoM offset in base frame.
-         * @return CoM velocity in world frame.
-         */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1> &baseVel,
-                                                                 const Eigen::Matrix3d &R,
-                                                                 const Eigen::Vector3d offset_com) = 0;
+        Eigen::Vector3d getBaseFromCoM( const JointState &q,
+                                    const Eigen::Matrix<double, 4, 1> &base_orient,
+                                    const Eigen::Vector3d &CoM);
 
         /*!
         *@brief Get the IMU pose in base frame.
@@ -627,26 +574,6 @@ namespace robotlib
                                 robotlib::JointState &tau_joints) = 0;
 
         // ** SET FUNCTIONS **
-
-        /*!
-         * @brief Set trunk's CoM.
-         * @param[in] trunk_com CoM of trunk to be set.
-         */
-        virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
-
-        /*!
-         * @brief Set trunk's mass.
-         * @param[in] trunk_mass mass of trunk to be set.
-         */
-        virtual void setTrunkMass(const double trunk_mass) = 0;
-
-		/*!
-		 * @brief Set inverse kinematics time period.
-         * @details
-         * This time period is the controller's loop time period. The time period needs to be set before calling the inverse kinematics.
-         * @param[in] period period of the controller.
-		 */
-        virtual void setInvKinTimePeriod(const double period) = 0;
 
 		/*!
 		 * @brief Print robot hierarchy.
