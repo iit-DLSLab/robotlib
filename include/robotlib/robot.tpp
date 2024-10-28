@@ -8,7 +8,12 @@ namespace robotlib
             const std::shared_ptr<Trunk> trunk,
             const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NLEGS>> legs,
             const std::shared_ptr<const Container<std::shared_ptr<LimbBase>, NARMS>> arms)
-            : RobotBase(name), trunk_(trunk), legs_(legs), arms_(arms){};
+            : RobotBase(name), trunk_(trunk), legs_(legs), arms_(arms){
+                int leg_id = 0;
+                for(auto leg : *legs){
+                        leg->setID(leg_id);       
+                }
+            };
 
         template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
         Robot<NJOINTS, NLINKS, NLEGS, NARMS>::~Robot(){};
@@ -210,10 +215,4 @@ namespace robotlib
                         }
                 }
         }
-
-        template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
-        Eigen::Vector3d Robot<NJOINTS, NLINKS, NLEGS, NARMS>::getTrunkCOM() const
-        {
-                return trunk_->getCoM();
-        };
 } // namespace robotlib

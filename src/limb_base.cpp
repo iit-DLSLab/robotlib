@@ -18,9 +18,13 @@
 
 namespace robotlib
 {
-    LimbBase::LimbBase(const std::string &name) : name_(name){}
+    LimbBase::LimbBase(const std::string &name) : name_(name), id(-1){} //-1 means not set
 
     LimbBase::~LimbBase(){}
 
     std::string LimbBase::getName() const { return name_; }
+
+    void LimbBase::setID(int id) { this->id = id; }
+
+    int LimbBase::getID() const { return id; }
 } // namespace robotlib
