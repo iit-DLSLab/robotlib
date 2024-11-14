@@ -212,7 +212,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) override;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const override;
 
         /*!
          * @brief Get orientation of the origin frame expressed in the destination one.
@@ -221,7 +221,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) override;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const override;
 
         /*!
          * @brief Get pose of the origin frame expressed in the destination one.
@@ -233,17 +233,53 @@ namespace robotlib
         virtual Eigen::Matrix4d computeFramePose(const JointState& q, const Frame& origin, const Frame& destination) override;
 
         /*!
+        * @brief Get the geometric jacobian of the frame expressed in base frame, related to the limbs only (so considering the actuated joints). The order is linear_jacobian, angular_jacobian. For a complete jacobian, see computeWholeBodyJacobian.
+        * @param[in] q angles of the joints.
+        * @param[in] frame frame used to compute the jacobian.
+        * @param[out] jacobian jacobian to be filled.
+        */
+        virtual void computeLimbsJacobian(const JointState& q,
+                                          const Frame& frame,
+                                          Eigen::MatrixXd& jacobian) override;
+
+        /*!
+        * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
+        * @param[in] robot_pose pose of the robot base in world frame.
+        * @param[in] q angles of the joints.
+        * @param[in] frame frame used to compute the jacobian.
+        * @param[out] jacobian jacobian to be filled.
+        */
+        virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                        const robotlib::JointState &q,
+                                        const Frame& frame,
+                                        Eigen::MatrixXd &jacobian) override;
+
+        /*!
         * @brief Get total robot mass.
         * @return total robot mass.
         */
         virtual double getRobotMass() const override;
 
         /*!
-         * @brief Compute whole body CoM in base frame.
-         * @param[in] joint_position angles of the joints.
-         * @return whole body CoM in base frame.
+         * @brief Get link mass.
+         * @param[in] link the link
+         * @return link mass.
          */
-        virtual Eigen::Vector3d getWholeBodyCoM(const JointState& q) override;
+        virtual double getLinkMass(const Link& link) const override;
+
+        /*!
+         * @brief Get link inertia about the CoM.
+         * @param[in] link the link
+         * @return link inertia.
+        */
+        virtual Eigen::Matrix3d getLinkInertia(const Link& link) const override;
+
+        /*!
+         * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
+         * @param[in] link the link 
+         * @return link CoM.
+        */
+        virtual Eigen::Vector3d getLinkCoM(const Link& link) const override;
 
         /*!
          * @brief Compute CoM limbs contribution in base frame.
@@ -253,26 +289,11 @@ namespace robotlib
         virtual Eigen::Vector3d getLimbsContribution(const JointState& q) const override;
 
         /*!
-        * @brief Compute robot CoM position in world frame, from base pose in world frame.
-        * @param[in] q angles of the joints.
-        * @param[in] base_orient base orientation in world frame.
-        * @param[in] base_pos base position in world frame.
-        * @return CoM position in world frame.
-        */
-        virtual Eigen::Vector3d getCoMFromBase(const robotlib::JointState& q,
-                                                const Eigen::Vector3d& base_orient,
-                                                const Eigen::Vector3d& base_pos) override;
-
-        /*!
-        * @brief Compute robot base position in world frame, from CoM position in world frame.
-        * @param[in] q angles of the joints.
-        * @param[in] base_orient base orientation in world frame.
-        * @param[in] com robot CoM postion in world frame.
-        * @return base position in world frame.
-        */
-        virtual Eigen::Vector3d getBaseFromCoM(const robotlib::JointState& q,
-                                                const Eigen::Vector3d& base_orient,
-                                                const Eigen::Vector3d& com) override;
+         * @brief Compute whole body CoM in base frame.
+         * @param[in] joint_position angles of the joints.
+         * @return whole body CoM in base frame.
+         */
+        virtual Eigen::Vector3d getWholeBodyCoM(const JointState& q) override;
 
         /*!
          *@brief Get the IMU pose in base frame.

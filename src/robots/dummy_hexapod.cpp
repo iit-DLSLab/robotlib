@@ -63,7 +63,7 @@ namespace dummy_hexapod
 
 		virtual ~DummyHexapod(){}
 
-		virtual Eigen::Vector3d getFramePosition(const JointState& q,
+		virtual Eigen::Vector3d computeFramePosition(const JointState& q,
 										 		 const robotlib::Frame& origin,
 										 		 const robotlib::Frame& destination) const override
 		{
@@ -112,7 +112,7 @@ namespace dummy_hexapod
 			std::cout << "inverseDynamicsHTerm" << std::endl;
 		}
 
-		virtual Eigen::Matrix3d getFrameOrientation(const JointState &q,
+		virtual Eigen::Matrix3d computeFrameOrientation(const JointState &q,
 											const robotlib::Frame& origin,
 											const robotlib::Frame& destination) const override
 		{
@@ -123,58 +123,11 @@ namespace dummy_hexapod
 			return Eigen::Matrix3d().setZero();
 		}
 
-		virtual Eigen::Matrix4d getFramePose(const JointState &q,
-									 const robotlib::Frame& origin,
-									 const robotlib::Frame& destination) const override
-		{
-			Eigen::Matrix4d frame_pose{};
-			frame_pose.setZero();
-
-			frame_pose.block(0, 3, 3, 1) << getFramePosition(q, origin, destination);
-			frame_pose.block(0, 0, 3, 3) << getFrameOrientation(q, origin, destination);
-			frame_pose.row(3) << 0, 0, 0, 1;
-
-			return frame_pose;
-		}
-
-		virtual Eigen::Vector3d getFootPosition(const JointState& q, const robotlib::Frame& foot) const override
-		{
-			return this->getFramePosition(q, this->getLink("TRUNK"), foot);
-		}
-
-		virtual Eigen::Matrix3d getFootOrientation(const JointState &q,
-										   const robotlib::Frame& foot) const override
-		{
-			return this->getFrameOrientation(q, this->getLink("TRUNK"), foot);
-		}
-
-		virtual Eigen::Matrix4d getFootPose(const JointState &q,
-									const robotlib::Frame& foot) const override
-		{
-			Eigen::Matrix4d foot_pose{};
-			foot_pose.setZero();
-
-			foot_pose.block(0, 3, 3, 1) << getFootPosition(q, foot);
-			foot_pose.block(0, 0, 3, 3) << getFootOrientation(q, foot);
-			foot_pose.row(3) << 0, 0, 0, 1;
-
-			return foot_pose;
-		}
-
 		virtual void updateLinearJacobian(const JointState& joints_positions,
 										  LimbDataMap<Jacobian>& robot_jacobian) const override
 		{
 			joints_positions.size();
 			robot_jacobian.size();
-		}
-
-		virtual void getFootJacobian(const JointState& q,
-									 const LimbBase& leg,
-									 Jacobian& footJac) const override
-		{
-			q.size();
-			leg.getName();
-			footJac.setZero();
 		}
 
 		virtual void updateAngularJacobian(const JointState& joints_positions,
@@ -313,30 +266,6 @@ namespace dummy_hexapod
         virtual Eigen::Vector3d getLegContribution(const JointState& q) const override
 		{
 			q.size();
-
-			return Eigen::Vector3d::Zero();
-		}
-
-		virtual Eigen::Vector3d getCoMFromBase(const JointState& q,
-									   		   const Eigen::Vector3d& base_orient,
-									   		   const Eigen::Vector3d& base_pos) const override
-		{
-			q.size();
-			base_orient.size();
-			base_pos.size();
-
-			return Eigen::Vector3d::Zero();
-		}
-
-        virtual Eigen::Vector3d getBaseFromCoM(const JointState & q,
-                                       		   		  const Eigen::Vector3d & base_orient,
-                                       		   		  const Eigen::Vector3d & CoM) const override
-		{
-			q.size();
-			base_orient.size();
-			CoM.size();
-
-			std::cout << "Get the base from COM" << std::endl;
 
 			return Eigen::Vector3d::Zero();
 		}

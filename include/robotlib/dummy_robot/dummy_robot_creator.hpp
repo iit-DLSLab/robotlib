@@ -1,5 +1,5 @@
 /*!
- * @file dummy_robot.hpp
+ * @file dummy_robot_creator.hpp
  *
  * @brief Dummy robot class definition and functions prototypes. Used to create generic types of robots for tests
  *

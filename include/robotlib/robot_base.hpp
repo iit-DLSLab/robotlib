@@ -323,11 +323,13 @@ namespace robotlib
                                         const robotlib::JointState &q,
                                         const Frame& frame,
                                         Eigen::MatrixXd &jacobian) = 0;
+                                        
         /*!
          * @brief Get total robot mass.
          * @return total robot mass.
          */
         virtual double getRobotMass() const = 0;
+        
         // inertia?
         /*!
          * @brief Get link mass.
@@ -370,8 +372,8 @@ namespace robotlib
          * @param[in] robot_pose robot pose (position, quaternion (x,y,z,w)) in world frame.
          * @return CoM position in world frame.
          */        
-        virtual Eigen::Vector3d getCoMFromBase(const robotlib::JointState &q,
-                                                const Eigen::Matrix<double, 7, 1> &robot_pose);
+        Eigen::Vector3d getCoMFromBase(const robotlib::JointState &q,
+                                       const Eigen::Matrix<double, 7, 1> &robot_pose);
 
         /*!
           * @brief Compute robot base position in world frame, from CoM position in world frame.
@@ -380,9 +382,9 @@ namespace robotlib
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
          */
-        Eigen::Vector3d getBaseFromCoM( const JointState &q,
-                                    const Eigen::Matrix<double, 4, 1> &base_orient,
-                                    const Eigen::Vector3d &CoM);
+        Eigen::Vector3d getBaseFromCoM(const JointState &q,
+                                       const Eigen::Matrix<double, 4, 1> &base_orient,
+                                       const Eigen::Vector3d &CoM);
 
         /*!
          *@brief Get the IMU pose in base frame.

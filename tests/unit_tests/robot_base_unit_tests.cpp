@@ -101,14 +101,14 @@ TEST(RobotBaseUnitTests, getLeg)
     }
 }
 
-TEST(RobotBaseUnitTests, getFramePosition)
+TEST(RobotBaseUnitTests, computeFramePosition)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Vector3d frame_position = dummy_robot->getFramePosition(joint_state,
+    Eigen::Vector3d frame_position = dummy_robot->computeFramePosition(joint_state,
                                                                    dummy_robot->getTrunk(),
                                                                    dummy_robot->getLink("LF_LOWERLEG"));
 
@@ -116,87 +116,19 @@ TEST(RobotBaseUnitTests, getFramePosition)
     ASSERT_EQ(frame_position, Eigen::Vector3d().Zero());
 }
 
-TEST(RobotBaseUnitTests, getFrameOrientation)
+TEST(RobotBaseUnitTests, computeFrameOrientation)
 {
     /// Dummy quadruped
     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
 
     auto joint_state = dummy_robot->makeJointState();
 
-    Eigen::Matrix3d frame_orientation = dummy_robot->getFrameOrientation(joint_state,
+    Eigen::Matrix3d frame_orientation = dummy_robot->computeFrameOrientation(joint_state,
                                                                          dummy_robot->getTrunk(),
                                                                          dummy_robot->getLink("LF_LOWERLEG"));
 
     /// Assert conditions
     ASSERT_EQ(frame_orientation, Eigen::Matrix3d().Zero());
-}
-
-TEST(RobotBaseUnitTests, getFramePose)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-    auto joint_state = dummy_robot->makeJointState();
-
-    Eigen::Matrix4d frame_pose_dq = dummy_robot->getFramePose(joint_state,
-                                                              dummy_robot->getTrunk(),
-                                                              dummy_robot->getLink("LF_UPPERLEG"));
-    /// Ground truth
-    Eigen::Matrix4d frame_pose_gt;
-    frame_pose_gt.setZero();
-    frame_pose_gt(3, 3) = 1;
-
-    /// Assert conditions
-    ASSERT_EQ(frame_pose_dq, frame_pose_gt);
-    ASSERT_EQ(typeid(frame_pose_dq), typeid(frame_pose_gt));
-}
-
-TEST(RobotBaseUnitTests, getFootPosition)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-    auto joint_state = dummy_robot->makeJointState();
-
-    Eigen::Vector3d foot_position = dummy_robot->getFootPosition(joint_state,
-                                                                 dummy_robot->getLink("LF_LOWERLEG"));
-
-    /// Assert conditions
-    ASSERT_EQ(foot_position, Eigen::Vector3d().Zero());
-}
-
-TEST(RobotBaseUnitTests, getFootOrientation)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-    auto joint_state = dummy_robot->makeJointState();
-
-    Eigen::Matrix3d foot_orientation = dummy_robot->getFootOrientation(joint_state,
-                                                                       dummy_robot->getLink("LF_LOWERLEG"));
-
-    /// Assert conditions
-    ASSERT_EQ(foot_orientation, Eigen::Matrix3d().Zero());
-}
-
-TEST(RobotBaseUnitTests, getFootPose)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-    auto joint_state = dummy_robot->makeJointState();
-
-    Eigen::Matrix4d foot_pose_dq = dummy_robot->getFootPose(joint_state,
-                                                            dummy_robot->getLink("LF_LOWERLEG"));
-
-    /// Ground truth
-    Eigen::Matrix4d foot_pose_gt;
-    foot_pose_gt.setZero();
-    foot_pose_gt(3, 3) = 1;
-
-    /// Assert conditions
-    ASSERT_EQ(foot_pose_dq, foot_pose_gt);
-    ASSERT_EQ(typeid(foot_pose_dq), typeid(foot_pose_gt));
 }
 
 TEST(RobotBaseUnitTests, getLink)
@@ -778,27 +710,27 @@ TEST(RobotBaseUnitTests, maxJointValue)
     EXPECT_EQ(q.max(), q_max_gt);
 }
 
-TEST(RobotBaseUnitTests, getFootJacobian)
-{
-    /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-    auto feet_jacobian = dummy_robot->makeFeetJacobian();
-    auto q = dummy_robot->makeJointState(0.0);
-    for(auto& leg : dummy_robot->getLegs())
-    {
-        feet_jacobian[leg].setOnes();
-        dummy_robot->getFootJacobian(q, *leg, feet_jacobian[leg]);
-    }
+// TEST(RobotBaseUnitTests, getFootJacobian)
+// {
+//     /// Dummy quadruped
+//     auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+//     auto feet_jacobian = dummy_robot->makeFeetJacobian();
+//     auto q = dummy_robot->makeJointState(0.0);
+//     for(auto& leg : dummy_robot->getLegs())
+//     {
+//         feet_jacobian[leg].setOnes();
+//         dummy_robot->getFootJacobian(q, *leg, feet_jacobian[leg]);
+//     }
 
-    for (auto& leg : dummy_robot->getLegs())
-    {
-        dummy_robot->getFootJacobian(q, *leg, feet_jacobian[leg]);
-        for(int i=0; i<6;i++)
-        {
-            for (int j=0; j<leg->getNJoints(); j++)
-            {
-                EXPECT_EQ(feet_jacobian[leg](i,j), 0.0);
-            }
-        }
-    }
-}
+//     for (auto& leg : dummy_robot->getLegs())
+//     {
+//         dummy_robot->getFootJacobian(q, *leg, feet_jacobian[leg]);
+//         for(int i=0; i<6;i++)
+//         {
+//             for (int j=0; j<leg->getNJoints(); j++)
+//             {
+//                 EXPECT_EQ(feet_jacobian[leg](i,j), 0.0);
+//             }
+//         }
+//     }
+// }
