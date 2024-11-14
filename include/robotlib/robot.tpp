@@ -183,11 +183,4 @@ namespace robotlib
 			tau_max[joint] = joint.getMaxEffort();
 		}
 	}
-
-	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-	Eigen::Vector3d Robot<NLIMBS, NLINKS, NJOINTS>::getTrunkCOM() const
-	{
-		return trunk_.getCoM();
-	};
-
 } // namespace robotlib

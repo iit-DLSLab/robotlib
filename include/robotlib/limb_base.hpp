@@ -130,6 +130,8 @@ namespace robotlib
 
       //! Name of the limb.
       const std::string name_;
+
+      int id;
    };
 } // namespace robotlib
 

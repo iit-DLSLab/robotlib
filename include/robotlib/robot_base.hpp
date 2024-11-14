@@ -11,6 +11,7 @@
 #include "jacobian.hpp"
 #include "link_data_map.hpp"
 
+#include "robotlib/utils/eigen_utils.hpp"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -47,42 +48,59 @@ namespace robotlib
         const std::string getName() const;
 
         /*!
-         * @brief Compute gravity terms.
-         * @details
-         * Instead of using the inverseDynamics function, you can use this function to compute gravity terms. In this way you can define an optimized version of their computation, avoiding unnecessary computational cost provided by the inverse dynamics function.
-         * @param[in] gravity_vector gravity vector in base frame.
-         * @param[in] joint_position angle of each joint.
-         * @param[out] wrench_base wrench applied to the base.
-         * @param[out] tau_joints torque of each joint.
-         */
-        virtual void computeGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                                      const JointState &joint_position,
-                                                      Eigen::Matrix<double, 6, 1> &wrench_base,
-                                                      JointState &tau_joints) const = 0;
+        * @brief Compute gravity terms.
+        * @details
+        * Instead of using the inverseDynamics function, you can use this function to compute gravity terms. In this way you can define an optimized version of their computation, avoiding unnecessary computational cost provided by the inverse dynamics function.
+        * @param[in] robot_pose pose of the robot base in base frame.
+        * @param[in] joint_position angle of each joint.
+        * @param[out] g_base gravity term related to the base.
+        * @param[out] g_joints gravity term related to the joints.
+        */
+        virtual void computeGravityTerm(    const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                            const robotlib::JointState &joint_position,
+                                            Eigen::Matrix<double, 6, 1> &g_base,
+                                            robotlib::JointState &g_joints) = 0;
+        /*!
+        * @brief Compute gravity terms, setting only the one related to the joints.
+        * @details
+        * Instead of using the inverseDynamics function, you can use this function to compute gravity terms. In this way you can define an optimized version of their computation, avoiding unnecessary computational cost provided by the inverse dynamics function.
+        * @param[in] robot_pose pose of the robot base in base frame.
+        * @param[in] joint_position angle of each joint.
+        * @param[out] g_joints gravity term related to the joints.
+        */
+        virtual void computeGravityTerm(  const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                          const robotlib::JointState &joint_position,
+                                          robotlib::JointState &g_joints) = 0;
+        /*!
+          * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
+          * @param[in] robot_pose pose of the robot base in world frame.
+          * @param[in] robot_velocity velocity of the robot base in base frame.
+          * @param[in] joint_position angle of each joint.
+          * @param[in] joint_velocity velocity of each joint.
+          * @param[out] nle_base non linear effects acting on the base.
+          * @param[out] nle_joints non linear effects acting on the joints.
+          */
+        virtual void computeNonLinearEffects( const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                        const Eigen::Matrix<double, 6, 1> &robot_velocity,
+                                        const robotlib::JointState &joint_position,
+                                        const robotlib::JointState &joint_velocity,
+                                        Eigen::Matrix<double, 6, 1> &nle_base,
+                                        robotlib::JointState &nle_joints) = 0;
 
         /*!
-         * @brief Compute gravity terms and return only the wrench applied to the base to compensate for gravity.
-         * @details
-         * Instead of using the full version of the computeGravityCompensation function, you can use this function to only get the desired wrench, without taking care of the gravity compensation torques.
-         * @param[in] gravity_vector gravity vector in base frame.
-         * @param[in] joint_position angle of each joint.
-         * @return wrench applied to the base.
-         */
-        virtual Eigen::Matrix<double, 6, 1> computeWrenchGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                                                             const JointState &joint_position) const = 0;
-
-        /*!
-         * @brief Compute gravity terms and return only the joint torques compensating for gravity.
-         * @details
-         * Instead of using the full version of the computeGravityCompensation function, you can use this function to only get the desired joint torques that compensate for gravity, without taking care of the wrench applied to the base. Notice that this function has the joint state as output parameter, because returning a JointState object leads to dynamic memory allocation.
-         * @param[in] gravity_vector gravity vector in base frame.
-         * @param[in] joint_position angle of each joint.
-         * @param[out] tau_joints torque of each joint.
-         */
-        virtual void computeTorquesGravityCompensation(const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                                      const JointState &joint_position,
-                                                      JointState &tau_joints) const = 0;
-
+        * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
+        * @details
+        * The robot velocity is to zero by default.
+        * @param[in] robot_pose pose of the robot base in world frame.
+        * @param[in] robot_velocity velocity of the robot base in base frame.
+        * @param[in] joint_position angle of each joint.
+        * @param[in] joint_velocity velocity of each joint.
+        * @param[out] nle_joints non linear effects acting on the joints.
+        */
+        virtual void computeNonLinearEffects( const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                        const robotlib::JointState &joint_position,
+                                        const robotlib::JointState &joint_velocity,
+                                        robotlib::JointState &nle_joints) = 0;
         /*!
         * @brief Compute the number of legs in stance
         * @param stance_legs
@@ -101,15 +119,15 @@ namespace robotlib
         void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LimbDataMap<bool>& stance_legs, const LimbDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
 
         /*!
-         * @brief Estimate feet external ground reaction forces
+         * @brief Estimate limbs external ground reaction forces
+        * @param[in] pose robot pose
         * @param[in] q
         * @param[in] qd
         * @param[in] qdd
         * @param[in] tau
-        * @param[in] g_b gravity vector in base frame
-        * @param[out] estimated_feet_grf
+        * @return estimated GRF for each limb
         */
-        robotlib::LimbDataMap<Eigen::Vector3d> estimateFeetGRF(const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, const Eigen::Matrix<double, 6,1>& g_b);
+        robotlib::LimbDataMap<Eigen::Vector3d> estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau);
 
         /*!
          * @brief Get number of robot's legs.
@@ -259,216 +277,119 @@ namespace robotlib
         virtual double getMaxJointEffort(const std::shared_ptr<Joint> joint);
 
         /*!
-         * @brief Get position of the destination frame expressed in the origin one.
+         * @brief Get position of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame position expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d getFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const = 0;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const = 0;
 
         /*!
-         * @brief Get orientation of the destination frame expressed in the origin one.
+         * @brief Get orientation of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame orientation expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d getFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
 
         /*!
-         * @brief Get pose of the destination frame expressed in the origin one.
+         * @brief Get pose of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
          * @param[in] destination destination frame.
-         * @return destination frame pose expressed in origin one.
+         * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix4d getFramePose(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
+        virtual Eigen::Matrix4d computeFramePose(const JointState& q, const Frame& origin, const Frame& destination) = 0;
 
         /*!
-         * @brief Get foot position with respect to the trunk frame, expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot position.
-         * @param[in] q angles of the joints.
-         * @param[in] foot_frame foot frame.
-         * @return foot position expressed in trunk frame.
-         */
-        virtual Eigen::Vector3d getFootPosition(const JointState& q, const Frame& foot_frame) const = 0;
-
+        * @brief Get the geometric jacobian of the frame expressed in base frame, related to the limbs only (so considering the actuated joints). The order is linear_jacobian, angular_jacobian. For a complete jacobian, see computeWholeBodyJacobian.
+        * @param[in] q angles of the joints.
+        * @param[in] frame frame used to compute the jacobian.
+        * @param[out] jacobian jacobian to be filled.
+        */
+        virtual void computeLimbsJacobian( const robotlib::JointState &q,
+                                    const Frame& frame,
+                                    Eigen::MatrixXd &jacobian) = 0;
         /*!
-         * @brief Get foot orientation expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot orientation.
-         * @param[in] q angles of the joints.
-         * @param[in] foot_frame foot frame.
-         * @return foot orientation expressed in trunk frame.
-         */
-        virtual Eigen::Matrix3d getFootOrientation(const JointState& q, const Frame& foot_frame) const = 0;
-
-        /*!
-         * @brief Get foot pose expressed in trunk frame.
-         * @details
-         * This function gets the foot corresponding to the leg in input and then it computes the foot pose.
-         * @param[in] q angles of the joints.
-         * @param[in] foot_frame foot frame.
-         * @return foot pose expressed in trunk frame.
-         */
-        virtual Eigen::Matrix4d getFootPose(const JointState& q, const Frame& foot_frame) const = 0;
-
-        /*!
-         * @brief Update the linear part of the jacobian.
-         * @details
-         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
-         * @param[in] q angles of the joints.
-         * @param[out] robot_jacobian jacobians associated to each foot.
-         */
-        virtual void updateLinearJacobian(const JointState& joints_positions, LimbDataMap<Jacobian>& robot_jacobian) const = 0;
-
-        /*!
-         * @brief Update the angular part of the jacobian.
-         * @details
-         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
-         * @param[in] q angles of the joints.
-         * @param[out] robot_jacobian jacobians associated to each foot.
-         */
-        virtual void updateAngularJacobian(const JointState& q, LimbDataMap<Jacobian>& robot_jacobian) const = 0;
-
-        /*!
-         * @brief Get the foot jacobian.
-         * @details
-         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @param[out] footJac jacobian to be filled.
-         */
-        virtual void getFootJacobian(const JointState& q, const LimbBase& leg, Jacobian &footJac) const = 0;
-
-        /*!
-         * @brief Update the linear part of the foot jacobian.
-         * @details
-         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @param[out] footJac jacobian to be filled.
-         */
-        virtual void updateLinearFootJacobian(const JointState& joints_positions, const LimbBase& leg, Jacobian& footJac) const = 0;
-
-        /*!
-         * @brief Update the angular part of the foot jacobian.
-         * @details
-         * A reference to a Jacobian instance is passed as parameter and it is set to the foot jacobian values. This avoids returning a new Jacobian object that leads to dynamic memory allocation.
-         * @param[in] q angles of the joints.
-         * @param[in] leg leg corresponding to the foot.
-         * @param[out] footJac jacobian to be filled.
-         */
-        virtual void updateAngularFootJacobian(const JointState& q, const LimbBase& leg, Jacobian& footJac) const = 0;
-
+        * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
+        * @param[in] robot_pose pose of the robot base in world frame.
+        * @param[in] q angles of the joints.
+        * @param[in] frame frame used to compute the jacobian.
+        * @param[out] jacobian jacobian to be filled.
+        */
+        virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
+                                        const robotlib::JointState &q,
+                                        const Frame& frame,
+                                        Eigen::MatrixXd &jacobian) = 0;
         /*!
          * @brief Get total robot mass.
          * @return total robot mass.
          */
         virtual double getRobotMass() const = 0;
-
+        // inertia?
         /*!
-         * @brief Get trunk mass.
-         * @return trunk mass.
+         * @brief Get link mass.
+         * @param[in] link the link
+         * @return link mass.
          */
-        virtual double getTrunkMass() const = 0;
+        virtual double getLinkMass(const Link& link) const = 0;
 
         /*!
-         * @brief Get total legs' mass.
-         * @return total legs' mass.
-         */
-        virtual double getLegsMass() const = 0;
+         * @brief Get link inertia about the CoM.
+         * @param[in] link the link
+         * @return link inertia.
+        */
+        virtual Eigen::Matrix3d getLinkInertia(const Link& link) const = 0;
 
         /*!
-         * @brief Get the CoM of the trunk.
-         * @return trunk's CoM.
-         */
-        virtual Eigen::Vector3d getTrunkCOM() const = 0;
+         * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
+         * @param[in] link the link 
+         * @return link CoM.
+        */
+        virtual Eigen::Vector3d getLinkCoM(const Link& link) const = 0;
 
         /*!
-         * @brief Compute whole body CoM in base frame.
-         * @param[in] joint_position angles of the joints.
-         * @return whole body CoM in base frame.
-         */
-        virtual Eigen::Vector3d getRobotCoM() const = 0;
-
-        /*!
-         * @brief Compute whole body CoM in base frame.
-         * @param[in] joint_position angles of the joints.
-         * @return whole body CoM in base frame.
-         */
-        virtual Eigen::Vector3d getWholeBodyCOM(const JointState& joint_state) const = 0;
-
-        /*!
-         * @brief Compute CoM legs contribution in base frame.
+         * @brief Compute CoM limbs contribution in base frame.
          * @param[in] q angles of the joints.
-         * @return CoM legs contribution in base frame.
+         * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getLegContribution(const JointState& q) const = 0;
-
+        virtual Eigen::Vector3d getLimbsContribution(const JointState& q) const = 0;
+ 
+        /*!
+         * @brief Compute whole body CoM in base frame.
+         * @param[in] joint_position angles of the joints.
+         * @return whole body CoM in base frame.
+         */
+        virtual Eigen::Vector3d getWholeBodyCoM(const JointState& q) = 0;
 
         /*!
          * @brief Compute robot CoM position in world frame, from base pose in world frame.
          * @param[in] q angles of the joints.
-         * @param[in] base_orient base orientation in world frame.
-         * @param[in] base_pos base position in world frame.
+         * @param[in] robot_pose robot pose (position, quaternion (x,y,z,w)) in world frame.
          * @return CoM position in world frame.
-         */
-        virtual Eigen::Vector3d getCoMFromBase(const JointState& q,
-                                               const Eigen::Vector3d& base_orient,
-                                               const Eigen::Vector3d& base_pos) const = 0;
+         */        
+        virtual Eigen::Vector3d getCoMFromBase(const robotlib::JointState &q,
+                                                const Eigen::Matrix<double, 7, 1> &robot_pose);
 
         /*!
           * @brief Compute robot base position in world frame, from CoM position in world frame.
           * @param[in] q angles of the joints.
-          * @param[in] base_orient base orientation in world frame.
+          * @param[in] base_orient base orientation in world frame (quaternion (x,y,z,w)).
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
          */
-        virtual Eigen::Vector3d getBaseFromCoM(const JointState& q,
-                                               const Eigen::Vector3d& base_orient,
-                                               const Eigen::Vector3d& CoM) const = 0;
+        Eigen::Vector3d getBaseFromCoM( const JointState &q,
+                                    const Eigen::Matrix<double, 4, 1> &base_orient,
+                                    const Eigen::Vector3d &CoM);
 
         /*!
-         * @brief Compute whole body CoM velocity in world frame.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] q angles of the joints.
-         * @return CoM velocity in world frame.
-		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState& q,
-                                                               const JointState& qd) const = 0;
-
-        /*!
-         * @brief Compute whole body CoM velocity in world frame.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] q angles of the joints.
-         * @return CoM velocity in world frame.
-		 */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
-                                                                const Eigen::Matrix3d& R,
-                                                                const JointState& q) const = 0;
-
-        /*!
-         * @brief Compute whole body com velocity in world frame, without recomputing the CoM offset.
-         * @param[in] baseVel base velocity in base frame.
-         * @param[in] R rotation matrix of base frame expressed in world frame.
-         * @param[in] offset_com CoM offset in base frame.
-         * @return CoM velocity in world frame.
+         *@brief Get the IMU pose in base frame.
+         *@param[in] imu_link_name name of the link to which the IMU sensor is attached.
+         *@param[in] base_link_name name of the base link.
+         *@return IMU pose in base frame.
          */
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
-                                                                const Eigen::Matrix3d& R,
-                                                                const Eigen::Vector3d& offset_com) const = 0;
-
-        /*!
-        *@brief Get the IMU pose in base frame.
-        *@param[in] imu_link_name name of the link to which the IMU sensor is attached.
-        *@param[in] base_link_name name of the base link.
-        *@return IMU pose in base frame.
-        */
         virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu",
                                                  const std::string& base_link_name="base_link") const = 0;
 
@@ -553,130 +474,100 @@ namespace robotlib
         /*!
           * @brief Forward kinematics.
           * @details
-          * It computes the position of each end effector (foot) expressed in base frame.
+          * It computes the position of each end effector expressed in base frame.
           * @param[in] joint_position angle of each joint.
-          * @param[out] end_effector_position position of each end effector (foot) in base frame.
+          * @param[out] end_effector_position position of each end effector in base frame.
           */
         virtual void forwardKinematics(const JointState &joint_position,
-                                       LimbDataMap<Eigen::Vector3d> &end_effector_position) const = 0;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_position) = 0;
         /*!
          * @brief Forward kinematics.
          * @details
-         * It computes the position and velocity of each end effector (foot) expressed in base frame.
+         * It computes the position and velocity of each end effector expressed in base frame.
          * @param[in] joint_position angle of each joint.
          * @param[in] joint_velocity velocity of each joint.
-         * @param[out] end_effector_position position of each end effector (foot) in base frame.
-         * @param[out] end_effector_velocity velocity of each end effector (foot) in base frame.
+         * @param[out] end_effector_position position of each end effector in base frame.
+         * @param[out] end_effector_velocity velocity of each end effector in base frame.
          */
         virtual void forwardKinematics(const JointState &joint_position,
                                        const JointState &joint_velocity,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_position,
-                                       LimbDataMap<Eigen::Vector3d> &end_effector_velocity) const = 0;
-        /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle, velocity and acceleration of each joint from the position, velocity and acceleration of each end effector expressed in base frame.
-        *
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * @param[in] end_effector_acceleration acceleration of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         * @param[out] joint_velocity velocity of each joint.
-         * @param[out] joint_acceleration acceleration of each joint.
-         */
-        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LimbDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                       const LimbDataMap<Eigen::Vector3d> &end_effector_acceleration,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity,
-                                       JointState &joint_acceleration) const = 0;
-        /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle and velocity of each joint from the position and velocity of each end effector expressed in base frame.
-        *
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[in] end_effector_velocity velocity of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         * @param[out] joint_velocity velocity of each joint.
-         */
-        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
-                                       const LimbDataMap<Eigen::Vector3d> &end_effector_velocity,
-                                       JointState &joint_position,
-                                       JointState &joint_velocity) const = 0;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_velocity) = 0;
 
         /*!
-         * @brief Inverse kinematics.
-         * @details
-         * It computes the angle of each joint from the position of each end effector expressed in base frame.
-         * @param[in] end_effector_position position of each end effector (foot) in base frame.
-         * @param[out] joint_position angle of each joint.
-         */
-        virtual void inverseKinematics(const LimbDataMap<Eigen::Vector3d> &end_effector_position,
-                                       JointState &joint_position) const = 0;
-
+        * @brief Inverse kinematics. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
+        * @param[in] frame_name name of the frame.
+        * @param[in] q_init_guess initial guess for the joint angles.
+        * @param[in] position_des desired position of the frame expressed in base frame.
+        * @param[out] q_des desired joint angles.
+        */
+        virtual void fixedBaseInverseKinematics(const std::string &frame_name,
+                                                const robotlib::JointState &q_init_guess,
+                                                const Eigen::Vector3d &position_des,
+                                                robotlib::JointState &q_des) = 0;
+        /*!
+        * @brief Inverse kinematics considering all the legs. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
+        * @param[in] q_init_guess initial guess for the joint angles.
+        * @param[in] positions_des desired positions of all the legs expressed in base frame.
+        * @param[out] q_des desired joint angles.
+        */
+        virtual void fixedBaseInverseKinematics(const robotlib::JointState &q_init_guess,
+                                                const robotlib::LimbDataMap<Eigen::Vector3d> &positions_des,
+                                                robotlib::JointState &q_des) = 0;
+        /*!
+        * @brief Inverse differential kinematics. Does not consider the floating base joint. It computes the joint velocities from the desired frame linear velocity expressed in base frame. Redundancy is not handled yet.
+        * @param[in] frame_name name of the frame
+        * @param[in] q joint angles
+        * @param[in] velocity_des desired frame linear velocity expressed in base frame
+        * @param[out] qd_des desired joint velocities
+        */
+        virtual void fixedBaseInverseDiffKinematics(const std::string &frame_name,
+                                                            const robotlib::JointState &q,
+                                                            const Eigen::Vector3d &velocity_des,
+                                                            robotlib::JointState &qd_des) = 0;
+        /*!
+        * @brief Inverse differential kinematics for all the legs. Does not consider the floating base joint. It computes the joint velocities from the desired frame linear velocity expressed in base frame. Redundancy is not handled yet.
+        * @param[in] q joint angles
+        * @param[in] velocity_des desired linear velocities of all the legs expressed in base frame
+        * @param[out] qd_des desired joint velocities
+        */
+        virtual void fixedBaseInverseDiffKinematics(const robotlib::JointState &q,
+                                                    const robotlib::LimbDataMap<Eigen::Vector3d> &velocities_des,
+                                                    robotlib::JointState &qd_des) = 0;
         /*!
          * @brief Inverse dynamics.
          * @details
-         * It computes the torque of each joint and the wrench at the base.
+         * It computes the torque at each joint. Before calling this function, you need to call forwardKinematics first
+         * Use cases:
+         * - robot gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = forces to substain robot weight.
+         * - leg gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = 0.
+         * - realize desired contact forces and robot accelerations: 
+         *    robot_velocity = actual robot velocity
+         *    robot_acceleration = desired robot acceleration
+         *    joint_position = actual joint position
+         *    joint_velocity = actual joint velocity
+         *    joint_acceleration = desired joint acceleration
+         *    f_contact = desired contact forces. 
+         * @param[in] robot_pose pose of the robot base in base frame.
          * @param[in] robot_velocity velocity of the robot base in base frame.
          * @param[in] robot_acceleration  acceleration of the robot base in base frame.
-         * @param[in] gravity_vector gravity vector in base frame.
          * @param[in] joint_position angle of each joint.
          * @param[in] joint_velocity velocity of each joint.
          * @param[in] joint_acceleration acceleration of each joint.
-         * @param[out] wrench_base wrench applied to the base.
+         * @param[in] f_contact map defined as follows: [contact_frame, contact_force], where contact_force is expressed in base_frame.
          * @param[out] tau_joints torque of each joint.
          */
-        virtual void inverseDynamics(const Eigen::Matrix<double, 6, 1> &robot_velocity,
-                                     const Eigen::Matrix<double, 6, 1> &robot_acceleration,
-                                     const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                     const JointState &joint_position,
-                                     const JointState &joint_velocity,
-                                     const JointState &joint_acceleration,
-                                     Eigen::Matrix<double, 6, 1> &wrench_base,
-                                     JointState &tau_joints) const = 0;
-
-        /*!
-         * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
-         * @details
-         * The robot velocity and acceleration are set to zero by default.
-         * @param[out] tau_joints torque of each joint.
-         * @param[in] gravity_vector gravity vector in base frame.
-         * @param[in] joint_position angle of each joint.
-         * @param[in] joint_velocity velocity of each joint.
-         * @param[in] robot_velocity velocity of the robot base in base frame.
-         * @param[in] robot_acceleration  acceleration of the robot base in base frame.
-         */
-        virtual void inverseDynamicsHTerm(  JointState &tau_joints,
-                                            const Eigen::Matrix<double, 6, 1> &gravity_vector,
-                                            const JointState &joint_position,
-                                            const JointState &joint_velocity,
-                                            const Eigen::Matrix<double, 6, 1> &robot_velocity = Eigen::Matrix<double, 6, 1>::Zero(),
-                                            const Eigen::Matrix<double, 6, 1> &robot_acceleration = Eigen::Matrix<double, 6, 1>::Zero())
-                                            const = 0;
+        virtual void inverseDynamics(
+                                const Eigen::Matrix<double, 7, 1> &robot_pose,    // robot base
+                                const Eigen::Matrix<double, 6, 1> &robot_velocity,
+                                const Eigen::Matrix<double, 6, 1> &robot_acceleration,
+                                const robotlib::JointState &joint_position,
+                                const robotlib::JointState &joint_velocity,
+                                const robotlib::JointState &joint_acceleration,
+                                const robotlib::eigen::aligned_map<std::string, Eigen::Vector3d> &f_contact,
+                                robotlib::JointState &tau_joints) = 0;
 
         // ** SET FUNCTIONS **
-
-        /*!
-         * @brief Set trunk's CoM.
-         * @param[in] trunk_com CoM of trunk to be set.
-         */
-        virtual void setTrunkCom(const Eigen::Vector3d &trunk_com) = 0;
-
-        /*!
-         * @brief Set trunk's mass.
-         * @param[in] trunk_mass mass of trunk to be set.
-         */
-        virtual void setTrunkMass(const double trunk_mass) = 0;
-
-		/*!
-		 * @brief Set inverse kinematics time period.
-         * @details
-         * This time period is the controller's loop time period. The time period needs to be set before calling the inverse kinematics.
-         * @param[in] period period of the controller.
-		 */
-        virtual void setInvKinTimePeriod(const double period) = 0;
 
 		/*!
 		 * @brief Print robot hierarchy.

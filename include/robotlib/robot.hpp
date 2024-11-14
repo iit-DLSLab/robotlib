@@ -168,12 +168,6 @@ namespace robotlib
          */
         virtual void getMaxJointEffort(JointState& tau_max) override;
 
-		/*!
-         * @brief Get the CoM of the trunk.
-         * @return trunk's CoM.
-         */
-        virtual Eigen::Vector3d getTrunkCOM() const override;
-
     protected:
 
 		//! Trunk of the robot

@@ -104,6 +104,14 @@ namespace robotlib
          * @return reference to the JointState object pointed by *this*.
          */
         JointState& operator=(const JointState& state);
+        /*!
+         * @brief Assignment operator using eigen.
+         * @details
+         * This method only assign the data not the keys (the keys couldn't change)
+         * @param[in] data data to be assigned to all the objects pointed by *this*.
+         * @return reference to the JointState object pointed by *this*.
+         */
+        JointState& operator=(const Eigen::VectorXd& data);
 
         /*!
          * @brief Assignment operator for double type.
@@ -196,7 +204,8 @@ namespace robotlib
          * @return reference to the JointDataMap with joint data associated to the limb.
          */
         const JointDataMap<double>& getLimbJointState(const std::shared_ptr<LimbBase> limb) const;
- 
+
+        // TODO: Implement the following operators if needed
         // JointState &operator<< (double data);
         // JointState &operator, (double data);
 

@@ -26,5 +26,12 @@ namespace robotlib
 
             return g_b;
         }
+
+        std::string toLower(const std::string &s)
+        {
+            std::string lower_s = s;
+            std::transform(lower_s.begin(), lower_s.end(), lower_s.begin(), ::tolower);
+            return lower_s;
+        }
     } // namespace utils
 } // namespace robotlib

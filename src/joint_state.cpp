@@ -25,8 +25,19 @@ namespace robotlib
         for (auto& limb_pair : *this)
             this->total_size += limb_pair.getKey().getNJoints();
     }
-    
-    
+
+    JointState &JointState::operator=(const Eigen::VectorXd& data){
+        int i = 0;
+        for (auto &limb_pair : *this)
+        {
+            for(auto &joint_pair: limb_pair.getData())
+            {   
+                joint_pair = data(i++);
+            }
+        }
+        return *this;
+    }
+
     JointState::JointState(const JointState &other)
         : LimbDataMap<JointDataMap<double>>(other)
         // , attribIt(nullptr)
