@@ -8,8 +8,8 @@
 namespace robotlib
 {
     /*!
-     * @brief Container class. This class is a wrapper around a std::array object.
-     * @tparam Data data type of the object to be stored.
+     * @brief Container class. This class is a wrapper around a std::array object. It stores data of type std::shared:ptr<Data>. The iteration on this object does not violate the Liskov Substitution Principle. i.e. you can access to abstract Data type through reference when iterating through iterators (:).
+     * @tparam Data data type of the object to be stored. The data is stored as std::shared_ptr<Data>
      * @tparam Length length of the wrapped std::array variable.
      */
     template <class Data, unsigned int Length>

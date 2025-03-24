@@ -109,7 +109,7 @@ Notice that the constructor of the LimbDataMap class allocates dynamic memory. W
 
 Let's now populate the stance_status variable
 
-    for(std::shared_ptr<robotlib::LimbBase>  leg: *robot->getLegs()) //or for(auto leg : *robot->getLegs())
+    for(std::shared_ptr<robotlib::LimbBase>  leg: *robot->getLegs()) //or for(auto &leg : robot->getLegs())
     {
         stance_status[leg] = true; //or stance_status[leg->getName()] = true;
         std::cout << leg->getName() << " leg, stored data: " << stance_status[leg] << std::endl;
@@ -117,7 +117,7 @@ Let's now populate the stance_status variable
 
 As you can see in the code above, we use iterators to iterate over a set of legs got from the robot object. In Robotlib there is no way to access to data structures by index. You can access to data by either a class instance or by string. For example, if you want to access to the stance status associated to the left front leg you can do it in one of the following ways
 
-    bool stance {stance_status[robotlib->getLeg("LF")]};
+    bool stance {stance_status[robotlib->getLimb("LF")]};
     //or
     stance = stance_status["LF"];
 

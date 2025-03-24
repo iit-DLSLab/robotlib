@@ -17,4 +17,4 @@ add_robotlib_test(TARGET trunk_unit_tests SOURCES unit_tests/trunk_unit_tests.cp
 add_robotlib_test(TARGET utils_unit_tests SOURCES unit_tests/utils_unit_tests.cpp)
 
 get_property(my_list_content GLOBAL PROPERTY ALL_TEST_TARGETS)
-add_custom_target(robtlib_check COMMAND make test GTEST_COLOR=1 CTEST_OUTPUT_ON_FAILURE=1 DEPENDS "${my_list_content}" COMMENT "Running tests...")
+add_custom_target(robotlib_check COMMAND make test GTEST_COLOR=1 CTEST_OUTPUT_ON_FAILURE=1 DEPENDS "${my_list_content}" COMMENT "Running tests...")
