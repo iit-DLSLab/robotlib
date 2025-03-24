@@ -173,7 +173,6 @@ namespace robotlib
 		//! Trunk of the robot
 		Trunk trunk_;
 
-    private:
 		//! Limbs of the robot
 		Container<LimbBase, NLIMBS> limbs_;
 
