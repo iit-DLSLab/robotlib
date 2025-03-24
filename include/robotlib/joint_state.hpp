@@ -212,6 +212,19 @@ namespace robotlib
         // IteratorJointState<DataPair<Joint, double>> begin();
     
         // IteratorJointState<DataPair<Joint, double>> end();
+        /*! 
+        * @brief Set the data of a specific joint.
+        * @param[in] joint_name name of the joint.
+        * @param[in] data data to be assigned to the joint.
+        */
+        void set(const std::string& joint_name, const double& data);
+        
+        /*!
+        * @brief Get the data of a specific joint.
+        * @param[in] joint_name name of the joint.
+        * @return data associated to the joint.
+        */
+        double get (const std::string& joint_name) const;
 
     private:
 

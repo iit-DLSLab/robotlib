@@ -306,6 +306,36 @@ namespace robotlib
         return (*this)[limb]; 
     }
 
+    void JointState::set(const std::string& joint_name, const double& data)
+    {
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                if (joint_pair.getKey().getName() == joint_name)
+                {
+                    joint_pair.getData() = data;
+                    return;
+                }
+            }
+        }
+        throw std::range_error("key not found");
+    }
+
+    double JointState::get(const std::string& joint_name) const
+    {
+        for (auto& limb_pair : *this)
+        {
+            for (auto& joint_pair : limb_pair.getData())
+            {
+                if (joint_pair.getKey().getName() == joint_name)
+                {
+                    return joint_pair.getData();
+                }
+            }
+        }
+        throw std::range_error("key not found");
+    }
 }
 
 robotlib::JointState operator*(const double& esc, const robotlib::JointState& state)
