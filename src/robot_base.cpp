@@ -23,6 +23,14 @@ namespace robotlib
     double RobotBase::getMaxJointVelocity(const std::shared_ptr<Joint> joint) { return joint->getMaxVelocity(); };
 
     double RobotBase::getMaxJointEffort(const std::shared_ptr<Joint> joint) { return joint->getMaxEffort(); };
+    
+    double RobotBase::getMinJointAngle(const Joint* joint) { return joint->getMinAngle(); };
+
+    double RobotBase::getMaxJointAngle(const Joint* joint) { return joint->getMaxAngle(); };
+
+    double RobotBase::getMaxJointVelocity(const Joint* joint) { return joint->getMaxVelocity(); };
+
+    double RobotBase::getMaxJointEffort(const Joint* joint) { return joint->getMaxEffort(); };
 
     robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau)
     {

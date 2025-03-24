@@ -277,6 +277,34 @@ namespace robotlib
         virtual double getMaxJointEffort(const std::shared_ptr<Joint> joint);
 
         /*!
+         * @brief Get lower angle limit of a joint.
+         * @param[in] joint a pointer to the joint.
+         * @return joint's lower angle limit.
+         */
+        virtual double getMinJointAngle(const Joint* joint);
+
+        /*!
+         * @brief Get upper angle limit of a joint.
+         * @param[in] joint a pointer to the joint.
+         * @return joint's upper angle limit.
+         */
+        virtual double getMaxJointAngle(const Joint* joint);
+
+        /*!
+         * @brief Get maximum velocity limit of a joint.
+         * @param[in] joint a pointer to the joint.
+         * @return joint's maximum velocity limit.
+         */
+        virtual double getMaxJointVelocity(const Joint* joint);
+
+        /*!
+         * @brief Get maximum torque limit of a joint.
+         * @param[in] joint a pointer to the joint.
+         * @return joint's maximum torque limit.
+         */
+        virtual double getMaxJointEffort(const Joint* joint); 
+
+        /*!
          * @brief Get position of the origin frame expressed in the destination one.
          * @param[in] q angles of the joints.
          * @param[in] origin origin frame.
