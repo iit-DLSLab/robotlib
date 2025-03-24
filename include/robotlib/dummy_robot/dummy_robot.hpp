@@ -293,7 +293,7 @@ namespace robotlib
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getWholeBodyCoM(const JointState& q) override;
+        virtual Eigen::Vector3d computeWholeBodyCoM(const JointState& q) override;
 
         /*!
          *@brief Get the IMU pose in base frame.

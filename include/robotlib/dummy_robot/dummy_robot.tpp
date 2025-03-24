@@ -123,7 +123,7 @@ namespace robotlib
     }
 
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::getWholeBodyCoM(const robotlib::JointState& joint_position)
+    Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::computeWholeBodyCoM(const robotlib::JointState& joint_position)
     {
         joint_position.size();
 

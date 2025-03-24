@@ -255,7 +255,7 @@ namespace dummy_quadruped
 			return 0.0;
 		}
 
-		virtual Eigen::Vector3d getWholeBodyCOM(const JointState& joint_position) const override
+		virtual Eigen::Vector3d computeWholeBodyCoM(const JointState& joint_position) const override
 		{
 			joint_position.size();
 
@@ -269,7 +269,7 @@ namespace dummy_quadruped
 			return Eigen::Vector3d::Zero();
 		}
 
-        virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVel(const JointState& q,
+        virtual Eigen::Matrix<double, 6,1> computeWholeBodyCoMVel(const JointState& q,
                                                               const JointState& qd) const override
 		{
 			q.size();
@@ -278,7 +278,7 @@ namespace dummy_quadruped
 			return Eigen::Matrix<double, 6,1>::Zero();
 		}
 
-		virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
+		virtual Eigen::Matrix<double, 6,1> computeWholeBodyCoMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
                                                                	const Eigen::Matrix3d& R,
                                                                	const JointState& q) const override
 		{
@@ -291,7 +291,7 @@ namespace dummy_quadruped
 			return Eigen::Matrix<double, 6, 1>::Zero();	
 		};
 
-		virtual Eigen::Matrix<double, 6,1> getWholeBodyCOMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
+		virtual Eigen::Matrix<double, 6,1> computeWholeBodyCoMVelFB(const Eigen::Matrix<double, 6, 1>& baseVel,
                                                                 const Eigen::Matrix3d& R,
                                                                 const Eigen::Vector3d& offset_com) const override
 		{	
