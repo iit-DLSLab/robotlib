@@ -379,13 +379,6 @@ namespace robotlib
          * @return link CoM.
         */
         virtual Eigen::Vector3d getLinkCoM(const Link& link) const = 0;
-
-        /*!
-         * @brief Compute CoM limbs contribution in base frame.
-         * @param[in] q angles of the joints.
-         * @return whole body CoM in base frame.
-         */
-        virtual Eigen::Vector3d getLimbsContribution(const JointState& q) const = 0;
  
         /*!
          * @brief Compute whole body CoM in base frame.
