@@ -364,7 +364,7 @@ namespace robotlib
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d getWholeBodyCoM(const JointState& q) = 0;
+        virtual Eigen::Vector3d computeWholeBodyCoM(const JointState& q) = 0;
 
         /*!
          * @brief Compute robot CoM position in world frame, from base pose in world frame.
@@ -372,7 +372,7 @@ namespace robotlib
          * @param[in] robot_pose robot pose (position, quaternion (x,y,z,w)) in world frame.
          * @return CoM position in world frame.
          */        
-        Eigen::Vector3d getCoMFromBase(const robotlib::JointState &q,
+        Eigen::Vector3d computeCoMFromBase(const robotlib::JointState &q,
                                        const Eigen::Matrix<double, 7, 1> &robot_pose);
 
         /*!
@@ -382,7 +382,7 @@ namespace robotlib
           * @param[in] com robot CoM postion in world frame.
           * @return base position in world frame.
          */
-        Eigen::Vector3d getBaseFromCoM(const JointState &q,
+        Eigen::Vector3d computeBaseFromCoM(const JointState &q,
                                        const Eigen::Matrix<double, 4, 1> &base_orient,
                                        const Eigen::Vector3d &CoM);
 

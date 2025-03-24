@@ -127,20 +127,20 @@ namespace robotlib
         return Jacobian(leg.getNJoints(), data);
     };
 
-    Eigen::Vector3d RobotBase::getCoMFromBase(const robotlib::JointState &q,
+    Eigen::Vector3d RobotBase::computeCoMFromBase(const robotlib::JointState &q,
                                 const Eigen::Matrix<double, 7, 1> &robot_pose)
     {        
         Eigen::Matrix3d w_R_b = robotlib::utils::quatToRotMat(Eigen::Quaterniond(robot_pose.block<4,1>(3,0))).transpose(); // orientation of the world frame expressed in base frame
-        Eigen::Vector3d offCoM = getWholeBodyCoM(q);
+        Eigen::Vector3d offCoM = computeWholeBodyCoM(q);
         return robot_pose.block<3,1>(0,0) + w_R_b * offCoM;         //CoM is in the world frame, off CoM is in base frame
     }
 
-    Eigen::Vector3d RobotBase::getBaseFromCoM( const JointState &q,
+    Eigen::Vector3d RobotBase::computeBaseFromCoM( const JointState &q,
                                     const Eigen::Matrix<double, 4, 1> &base_orient,
                                     const Eigen::Vector3d &CoM){
         Eigen::Matrix3d w_R_b = robotlib::utils::quatToRotMat(Eigen::Quaterniond(base_orient)).transpose(); // orientation of the world frame expressed in base frame
 
-        Eigen::Vector3d offCoM = getWholeBodyCoM(q);
+        Eigen::Vector3d offCoM = computeWholeBodyCoM(q);
         return CoM - w_R_b * offCoM;          //CoM is in the world frame, off CoM is in base frame
     }
 
