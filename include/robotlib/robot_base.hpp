@@ -283,7 +283,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const = 0;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) = 0;
 
         /*!
          * @brief Get orientation of the origin frame expressed in the destination one.
@@ -292,7 +292,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const = 0;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) = 0;
 
         /*!
          * @brief Get pose of the origin frame expressed in the destination one.
