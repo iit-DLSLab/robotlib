@@ -125,7 +125,7 @@ namespace robotlib
 
         for(auto& joint_pair: out)
         {   
-            joint_pair *= other[joint_pair];
+            joint_pair.getData() *= other[joint_pair];
         }
         return out;
     }
@@ -135,7 +135,7 @@ namespace robotlib
     {
         for(auto& joint_pair: *this)
         {   
-            joint_pair *= other[joint_pair];
+            joint_pair.getData() *= other[joint_pair];
         }
         return *this;
     }
