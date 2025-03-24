@@ -39,7 +39,7 @@ namespace robotlib
     }
 
     JointState::JointState(const JointState &other)
-        : LimbDataMap<JointDataMap<double>>(other)
+        : LimbDataMap<JointDataMap<double>>(other), total_size(0)
         // , attribIt(nullptr)
     {
         // for (auto &leg_pair : *this)
@@ -50,6 +50,8 @@ namespace robotlib
         //         joint_pair.data_ = std::shared_ptr<double>(new double(other[joint_pair.key_]));
         //     }
         // }
+        for (auto& limb_pair : *this)
+            this->total_size += limb_pair.getKey().getNJoints();
     }
 
     const std::vector<Joint*> JointState::getJoints() const
