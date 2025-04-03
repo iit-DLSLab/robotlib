@@ -92,7 +92,6 @@ namespace robotlib
         * @details
         * The robot velocity is to zero by default.
         * @param[in] robot_pose pose of the robot base in world frame.
-        * @param[in] robot_velocity velocity of the robot base in base frame.
         * @param[in] joint_position angle of each joint.
         * @param[in] joint_velocity velocity of each joint.
         * @param[out] nle_joints non linear effects acting on the joints.
@@ -101,6 +100,19 @@ namespace robotlib
                                         const robotlib::JointState &joint_position,
                                         const robotlib::JointState &joint_velocity,
                                         robotlib::JointState &nle_joints) = 0;
+
+        /*!
+         * @brief Dynamics calculations to compute Joint Space Inertia Matrix.
+         *
+         * @param[in] robot_pose pose of the robot base in world frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[out] js_inertia Joint Space Inertia Matrix for given joint positions.
+         */
+        virtual void computeJSInertiaMatrix(
+            const Eigen::Matrix<double, 7, 1> &robot_pose,
+            const robotlib::JointState &joint_position,
+            Eigen::MatrixXd &js_inertia) = 0;
+
         /*!
         * @brief Compute the number of legs in stance
         * @param stance_legs
@@ -416,7 +428,7 @@ namespace robotlib
         virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu",
                                                  const std::string& base_link_name="base_link") const = 0;
 
-        // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
+        // ** FUNCTIONS TO MAKE NRT OBJECTS **
 
         /*!
          * @brief Function to create a JointState object.
@@ -492,7 +504,7 @@ namespace robotlib
          */
         LimbDataMap<Jacobian> makeFeetJacobian(const double& data = 0.0) const; // NRT
 
-        // ** FORWARD KINEMATICS ** 
+        // ** FORWARD KINEMATICS **
 
         /*!
           * @brief Forward kinematics.
@@ -564,13 +576,13 @@ namespace robotlib
          * Use cases:
          * - robot gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = forces to substain robot weight.
          * - leg gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = 0.
-         * - realize desired contact forces and robot accelerations: 
+         * - realize desired contact forces and robot accelerations:
          *    robot_velocity = actual robot velocity
          *    robot_acceleration = desired robot acceleration
          *    joint_position = actual joint position
          *    joint_velocity = actual joint velocity
          *    joint_acceleration = desired joint acceleration
-         *    f_contact = desired contact forces. 
+         *    f_contact = desired contact forces.
          * @param[in] robot_pose pose of the robot base in base frame.
          * @param[in] robot_velocity velocity of the robot base in base frame.
          * @param[in] robot_acceleration  acceleration of the robot base in base frame.
