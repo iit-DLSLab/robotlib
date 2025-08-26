@@ -212,7 +212,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const override;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) override;
 
         /*!
          * @brief Get orientation of the origin frame expressed in the destination one.
@@ -221,7 +221,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) const override;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) override;
 
         /*!
          * @brief Get pose of the origin frame expressed in the destination one.
@@ -280,13 +280,6 @@ namespace robotlib
          * @return link CoM.
         */
         virtual Eigen::Vector3d getLinkCoM(const Link& link) const override;
-
-        /*!
-         * @brief Compute CoM limbs contribution in base frame.
-         * @param[in] q angles of the joints.
-         * @return whole body CoM in base frame.
-         */
-        virtual Eigen::Vector3d getLimbsContribution(const JointState& q) const override;
 
         /*!
          * @brief Compute whole body CoM in base frame.

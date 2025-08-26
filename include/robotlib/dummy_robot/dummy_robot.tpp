@@ -37,7 +37,7 @@ namespace robotlib
 	}
     
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) const
+    Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination)
     {
         q.size();
         origin.getName();
@@ -49,7 +49,7 @@ namespace robotlib
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     Eigen::Matrix3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::computeFrameOrientation(const robotlib::JointState& q,
                                                                               const robotlib::Frame& origin,
-                                                                              const robotlib::Frame& destination) const
+                                                                              const robotlib::Frame& destination)
     {
         q.size();
         origin.getName();
@@ -112,12 +112,6 @@ namespace robotlib
 
     template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
     Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::getLinkCoM(const Link& link) const
-    {
-        return Eigen::Vector3d::Zero();
-    }
-
-    template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    Eigen::Vector3d DummyRobot<NLIMBS, NLINKS, NJOINTS>::getLimbsContribution(const JointState& q) const
     {
         return Eigen::Vector3d::Zero();
     }
