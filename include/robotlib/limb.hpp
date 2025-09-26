@@ -17,8 +17,12 @@
 #ifndef _ROBOTLIB_LIMB_HPP_
 #define _ROBOTLIB_LIMB_HPP_
 
-#include "limb_base.hpp"
-#include "utils/container.hpp"
+#include <memory>
+#include "frame.hpp"
+#include "joint.hpp"
+#include "link.hpp"
+#include "limb.hpp"
+#include <vector>
 
 namespace robotlib
 {
@@ -27,11 +31,10 @@ namespace robotlib
 	 * @details
 	 * This class represents a robot limb (leg/arm/other) with a specific number of joints and links.
     */
-   template <unsigned int NLINKS, unsigned int NJOINTS>
-   class Limb : public LimbBase
+   
+   class Limb
    {
       //! Robot is a friend class to let it use the private methods of the Joint class.
-		template <unsigned int NLMBS, unsigned int NLNKS, unsigned int NJONTS>
 		friend class Robot;
 
    public:
@@ -42,8 +45,16 @@ namespace robotlib
       * @param[in] links array of shared pointers pointing to limb's links.
       */
       Limb(const std::string& name,
-           const Container<Link, NLINKS>& links,
-           const Container<Joint, NJOINTS>& joints);
+           const std::vector<LinkPtr>& links,
+           const std::vector<JointPtr>& joints,
+           const std::string type = "generic");
+
+      Limb();
+
+      Limb( const std::string& name,
+            const std::vector<std::string>& link_names,
+            const std::vector<std::string>& joint_names,
+            const std::string type = "generic");
 
       /*!
       * @brief Destructor.
@@ -54,45 +65,45 @@ namespace robotlib
        * @brief Get the number of the joints of the Limb.
        * @return number of the limb's joints.
        */
-      unsigned int getNJoints() const override;
+      unsigned int getNJoints() const;
 
       /*!
        * @brief Get the number of the links of the limb.
        * @return number of the limb's links.
        */
-      unsigned int getNLinks() const override;
+      unsigned int getNLinks() const;
 
       /*!
        * @brief Get the Joint object associated to the joint name.
        * @param[in] name name of the Joint object that is returned
        * @return shared pointer pointing to the joint.
       */
-      const Joint& getJoint(const std::string &name) const override;
+      const JointPtr getJoint(const std::string &name) const;
 
       /*!
        * @brief Get the Link object associated to the name.
        * @param[in] name name of the Link object that is returned.
        * @return shared pointer pointing to the link.
        */
-      const Link& getLink(const std::string &name) const override;
+      const LinkPtr getLink(const std::string &name) const;
 
       /*!
        * @brief Get the limb end-effector.
        * @return shared pointer pointing to the limb end-effector. 
        */
-      const Link& getEndEffector() const override;   
+      const LinkPtr getEndEffector() const;   
 
       /*!
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      const ContainerBase<Joint> getJoints() const override;
+      const std::vector<JointPtr> getJoints() const;
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      const ContainerBase<Link> getLinks() const override;
+      const std::vector<LinkPtr> getLinks() const;
 
    // protected:
 
@@ -100,25 +111,50 @@ namespace robotlib
        * @brief Get the joints of the Limb.
        * @return joints of the limb.
        */
-      ContainerBase<Joint> getJoints() override;
+      std::vector<JointPtr> getJoints();
 
       /*!
        * @brief Get the links of the Limb.
        * @return links of the limb.
        */
-      ContainerBase<Link> getLinks() override;
+      std::vector<LinkPtr> getLinks();
 
+      /*!
+       * @brief Type of the the limb.
+       * @return return a string with the type of the arm e.g, leg, arm, etc.
+       */
+      virtual std::string type() const;
 
+      /*!
+		 * @brief Get the name of the limb.
+		 * @return name of the limb.
+		 */
+      const std::string& getName() const;
+
+      bool operator==(const Limb& rhs) const;
+
+      // Limb &operator=(const Limb &rhs);
+
+      void setType(const std::string& type);
+
+      //! Check if the limb is attached to a robot.
+      bool isAttached() const;
+
+      int id;
    private:
+      //! Name of the limb.
+      std::string name_;
 
       //! Shared pointer pointing to the list of the limb's joints.
-      Container<Joint, NJOINTS> joints_;
+      std::vector<JointPtr> joints_;
 
       //! Shared pointer pointing to the list of the limb's links.
-      Container<Link, NLINKS> links_;
-   };
-} // namespace robotlib
+      std::vector<LinkPtr> links_;
 
-#include "limb.tpp"
+      //! Type of the limb (e.g., leg, arm, etc.).
+      std::string type_;
+   };
+   typedef std::shared_ptr<Limb> LimbPtr;
+} // namespace robotlib
 
 #endif // _ROBOTLIB_LIMB_HPP_

@@ -20,26 +20,39 @@
  * 1 leg
  * 2 joints/links per leg
  */
-robotlib::DummyRobotCreator<4, 3> dummy_robot_creator;
-
-/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 29> components_names{"Dummy Robot",
-                                            "LF", "RF", "LH", "RH",
-                                            //joints
-                                            "LF_HAA", "LF_HFE", "LF_KFE",
-                                            "RF_HAA", "RF_HFE", "RF_KFE",
-                                            "LH_HAA", "LH_HFE", "LH_KFE",
-                                            "RH_HAA", "RH_HFE", "RH_KFE",
-                                            //links
-                                            "LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG",
-                                            "RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG",
-                                            "LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG",
-                                            "RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"};
+robotlib::DummyRobotCreator dummy_robot_creator;
+std::vector<std::map<std::string,std::vector<std::string>>> limbs {
+    {
+        {"name", {"LF"}},
+        {"joints", {"LF_HAA", "LF_HFE", "LF_KFE"}},
+        {"links",  {"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"RF"}},
+        {"joints", {"RF_HAA", "RF_HFE", "RF_KFE"}},
+        {"links",  {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"LH"}},
+        {"joints", {"LH_HAA", "LH_HFE", "LH_KFE"}},
+        {"links",  {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"RH"}},
+        {"joints", {"RH_HAA", "RH_HFE", "RH_KFE"}},
+        {"links",  {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}},
+        {"type", {"leg"}}
+    }
+};
+const std::string robot_name{"Dummy Quadruped"};
 
 TEST(JointStateUnitTests, Zero)
 {
     /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
 
@@ -54,7 +67,7 @@ TEST(JointStateUnitTests, Zero)
 TEST(JointStateUnitTests, NonZero)
 {
     /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     double p(3);
     auto joint_state = dummy_robot->makeJointState(p);
@@ -69,7 +82,7 @@ TEST(JointStateUnitTests, NonZero)
 TEST(JointStateUnitTests, Attribution)
 {
     /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
 
@@ -86,15 +99,27 @@ TEST(JointStateUnitTests, Attribution)
 TEST(JointStateUnitTests, Iteration)
 {
     /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
+
+    // get joints name from definition
+    std::vector<std::string> joints_name;
+    for (auto limb : limbs)
+    {
+        for (auto joint_name : limb["joints"])
+        {
+            joints_name.push_back(joint_name);
+        }
+    }
 
     auto i{0};
     for (auto& limb_pair : joint_state)
     {
-        for (auto& joint_pair : limb_pair.getData())
-       		EXPECT_EQ(joint_pair.getKey().getName(), components_names[5+i++]);
+        for (auto& joint_pair : limb_pair.getData()){
+       		EXPECT_EQ(joint_pair.getKey().getName(), joints_name[i]);
+            i++;
+        }
     }
 }
 
@@ -102,7 +127,7 @@ TEST(JointStateUnitTests, Iteration)
 TEST(JointStateUnitTests, Size)
 {
     /// Dummy quadruped
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
 
@@ -123,7 +148,7 @@ TEST(JointStateUnitTests, Size)
  */
 TEST(JointStateUnitTest, toeig_)
 {
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
 
@@ -179,7 +204,7 @@ TEST(JointStateUnitTest, toeig_)
  */
 TEST(JointStateUnitTest, tovec_)
 {
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     auto joint_state = dummy_robot->makeJointState();
 
@@ -235,7 +260,7 @@ TEST(JointStateUnitTest, tovec_)
  */
 TEST(JointStateUnitTests, makeJointState)
 {
-    auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+    auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
     /**
      * @test Dummy Robot - JointState initialized with all 0.0 values when called makeJointState
@@ -273,7 +298,7 @@ TEST(JointStateUnitTests, operatorSquareBracket)
      * @test Dummy Robot - JointState values set with operator[]
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
         auto joint_state = dummy_robot->makeJointState();
          
         for(auto& joint: dummy_robot->getJoints())
@@ -297,7 +322,7 @@ TEST(JointStateUnitTests, setZero)
      * @test Dummy Robot - JointState values set to 0.0 with setZero function
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
         auto joint_state = dummy_robot->makeJointState(2.0);
         
         joint_state.setZero();
@@ -320,7 +345,7 @@ TEST(JointStateUnitTests, size)
      * @test Dummy Robot - JointState with 12 (4 legs x 3 joints) elements
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
         auto joint_state = dummy_robot->makeJointState();
 
         ASSERT_EQ(joint_state.size(), 12);

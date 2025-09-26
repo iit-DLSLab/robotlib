@@ -2,7 +2,7 @@
 #define _ROBOTLIB_ROBOT_BASE_HPP_
 
 #include "trunk.hpp"
-#include "limb_base.hpp"
+#include "limb.hpp"
 #include "link.hpp"
 #include "joint.hpp"
 #include "dyn_params.hpp"
@@ -33,7 +33,9 @@ namespace robotlib
          * @brief Constructor.
          * @param[in] name name of the robot
          */
-        RobotBase(const std::string &name);
+        RobotBase(const std::string &name,
+                  const DynParams& dynamic_parameters,
+                  const std::vector<LimbPtr>& limbs);
 
         /*!
          * @brief Destructor.
@@ -163,58 +165,60 @@ namespace robotlib
          * @brief Get robot's trunk.
          * @return reference to trunk link.
          */
-        virtual const Trunk& getTrunk() const = 0;
+        virtual const TrunkPtr getTrunk() const = 0;
 
         /*!
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
          * @return reference to link or throw except.
          */
-        virtual const Joint& getJoint(const std::string &name) const = 0;
+        virtual const JointPtr getJoint(const std::string &name) const = 0;
 
         /*!
          * @brief Get robot's joints.
-         * @return robot's joints as a ContainerBase object.
+         * @return robot's joints as a std::vector object.
          */
-        virtual const ContainerBase<Joint> getJoints() const = 0;
+        virtual std::vector<JointPtr>& getJoints() = 0;
+
+        virtual const std::vector<JointPtr> getJoints() const = 0;
 
         /*!
          * @brief Get robot's link from link's name.
          * @param[in] name name of the link.
          * @return reference to link or throw except.
          */
-        virtual const Link& getLink(const std::string &name) const = 0;
+        virtual const LinkPtr getLink(const std::string &name) const = 0;
 
         /*!
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        virtual const ContainerBase<Link> getLinks() const = 0;
+        virtual std::vector<LinkPtr> getLinks() const = 0;
 
         /*!
          * @brief Get robot's limb from limb's name.
          * @param[in] name name of the limb.
          * @return reference to limb or throw except.
          */
-        virtual const LimbBase& getLimb(const std::string &name) const = 0;
+        virtual const LimbPtr getLimb(const std::string &name) const = 0;
 
         /*!
          * @brief Get robot's limbs.
-         * @return robot's limbs as a ContainerBase object.
+         * @return robot's limbs as a std::vector object.
          */
-        virtual const ContainerBase<LimbBase> getLimbs() const = 0;
+        virtual const std::vector<LimbPtr> getLimbs() const = 0;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        virtual const std::vector<LimbBase*> getLegs() const = 0;
+        virtual std::vector<LimbPtr> getLegs() const = 0;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        virtual const std::vector<LimbBase*> getArms() const = 0;
+        virtual std::vector<LimbPtr> getArms() const = 0;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -253,56 +257,28 @@ namespace robotlib
          * @param[in] joint a shared pointer to the joint.
          * @return joint's lower angle limit.
          */
-        virtual double getMinJointAngle(const std::shared_ptr<Joint> joint);
+        virtual double getMinJointAngle(const JointPtr joint);
 
         /*!
          * @brief Get upper angle limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's upper angle limit.
          */
-        virtual double getMaxJointAngle(const std::shared_ptr<Joint> joint);
+        virtual double getMaxJointAngle(const JointPtr joint);
 
         /*!
          * @brief Get maximum velocity limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's maximum velocity limit.
          */
-        virtual double getMaxJointVelocity(const std::shared_ptr<Joint> joint);
+        virtual double getMaxJointVelocity(const JointPtr joint);
 
         /*!
          * @brief Get maximum torque limit of a joint.
          * @param[in] joint a shared pointer to the joint.
          * @return joint's maximum torque limit.
          */
-        virtual double getMaxJointEffort(const std::shared_ptr<Joint> joint);
-
-        /*!
-         * @brief Get lower angle limit of a joint.
-         * @param[in] joint a pointer to the joint.
-         * @return joint's lower angle limit.
-         */
-        virtual double getMinJointAngle(const Joint* joint);
-
-        /*!
-         * @brief Get upper angle limit of a joint.
-         * @param[in] joint a pointer to the joint.
-         * @return joint's upper angle limit.
-         */
-        virtual double getMaxJointAngle(const Joint* joint);
-
-        /*!
-         * @brief Get maximum velocity limit of a joint.
-         * @param[in] joint a pointer to the joint.
-         * @return joint's maximum velocity limit.
-         */
-        virtual double getMaxJointVelocity(const Joint* joint);
-
-        /*!
-         * @brief Get maximum torque limit of a joint.
-         * @param[in] joint a pointer to the joint.
-         * @return joint's maximum torque limit.
-         */
-        virtual double getMaxJointEffort(const Joint* joint); 
+        virtual double getMaxJointEffort(const JointPtr joint);
 
         /*!
          * @brief Get position of the origin frame expressed in the destination one.
@@ -311,7 +287,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) = 0;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const FramePtr origin, const FramePtr destination) = 0;
 
         /*!
          * @brief Get orientation of the origin frame expressed in the destination one.
@@ -320,7 +296,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) = 0;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const FramePtr origin, const FramePtr destination) = 0;
 
         /*!
          * @brief Get pose of the origin frame expressed in the destination one.
@@ -329,7 +305,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix4d computeFramePose(const JointState& q, const Frame& origin, const Frame& destination) = 0;
+        virtual Eigen::Matrix4d computeFramePose(const JointState& q, const FramePtr origin, const FramePtr destination) = 0;
 
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame, related to the limbs only (so considering the actuated joints). The order is linear_jacobian, angular_jacobian. For a complete jacobian, see computeWholeBodyJacobian.
@@ -338,8 +314,12 @@ namespace robotlib
         * @param[out] jacobian jacobian to be filled.
         */
         virtual void computeLimbsJacobian( const robotlib::JointState &q,
-                                    const Frame& frame,
+                                    const FramePtr frame,
                                     Eigen::MatrixXd &jacobian) = 0;
+
+        virtual void computeLimbsJacobian( const robotlib::JointState &q,
+                            const std::string& frame_name,
+                            Eigen::MatrixXd &jacobian) = 0;
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
         * @param[in] robot_pose pose of the robot base in world frame.
@@ -349,7 +329,7 @@ namespace robotlib
         */
         virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
                                         const robotlib::JointState &q,
-                                        const Frame& frame,
+                                        const FramePtr frame,
                                         Eigen::MatrixXd &jacobian) = 0;
                                         
         /*!
@@ -364,21 +344,21 @@ namespace robotlib
          * @param[in] link the link
          * @return link mass.
          */
-        virtual double getLinkMass(const Link& link) const = 0;
+        virtual double getLinkMass(const LinkPtr link) const = 0;
 
         /*!
          * @brief Get link inertia about the CoM.
          * @param[in] link the link
          * @return link inertia.
         */
-        virtual Eigen::Matrix3d getLinkInertia(const Link& link) const = 0;
+        virtual Eigen::Matrix3d getLinkInertia(const LinkPtr link) const = 0;
 
         /*!
          * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
          * @param[in] link the link 
          * @return link CoM.
         */
-        virtual Eigen::Vector3d getLinkCoM(const Link& link) const = 0;
+        virtual Eigen::Vector3d getLinkCoM(const LinkPtr link) const = 0;
  
         /*!
          * @brief Compute whole body CoM in base frame.
@@ -475,12 +455,12 @@ namespace robotlib
         JointDataMap<Data> makeJointDataMap(const Data& data) const;
 
         // // TODO
-        // Jacobian makeJacobian(const Frame& fOrigin, const Frame& fDest); // NRT
+        // Jacobian makeJacobian(const FramePtr fOrigin, const FramePtr fDest); // NRT
 
         // // TODO: it should use makeJacobian
-        // Jacobian makeFootJacobian(const Frame& frame); // NRT
+        // Jacobian makeFootJacobian(const FramePtr frame); // NRT
 
-        Jacobian makeFootJacobian(const LimbBase& leg, const double data = 0.0); // NRT
+        Jacobian makeFootJacobian(const LimbPtr leg, const double data = 0.0); // NRT
 
         /*!
          * @brief Function to create a LimbDataMap object, associating a Jacobian to each leg.
@@ -591,7 +571,16 @@ namespace robotlib
                                 robotlib::JointState &tau_joints) = 0;
 
         // ** SET FUNCTIONS **
+        // template <class T>
+        // T& getLimbData(const LimbPtr limb, Eigen::Matrix<T, Eigen::Dynamic, 1>& data_vector);
+        // template <class T>
+        // T& getJointData(const JointPtr joint, Eigen::Matrix<T, Eigen::Dynamic, 1>& data_vector);
+        // template <class T>
+        // T& getLinkData(const LinkPtr link, Eigen::Matrix<T, Eigen::Dynamic, 1>& data_vector);
 
+        JointState getLimbJointState(const LimbPtr limb,  JointState& data_vector);
+
+        void assignIDs();
 		/*!
 		 * @brief Print robot hierarchy.
 		 */
@@ -614,11 +603,24 @@ namespace robotlib
          * @brief Factory function to destroy the robot object.
 		 */
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
+        
+        std::string name_{};
 
     protected:
-        //! Robot name
-        const std::string name_{};
+
+        //! Trunk of the robot
+        TrunkPtr trunk_;
+
+        //! Limbs of the robot
+        std::vector<LimbPtr> limbs_;
+
+        //! List of pointers to the joints of the robot
+        std::vector<JointPtr> joints_;
+
+        //! Joints of the robot
+        std::vector<LinkPtr> links_;
     };
+    typedef std::shared_ptr<RobotBase> RobotBasePtr;
 } // namespace robotlib
 
 #include "robot_base.tpp"

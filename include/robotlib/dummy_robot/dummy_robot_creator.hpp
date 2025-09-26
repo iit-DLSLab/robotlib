@@ -17,7 +17,7 @@
 #ifndef _ROBOTLIB_DUMMY_ROBOT_CREATOR_HPP_
 #define _ROBOTLIB_DUMMY_ROBOT_CREATOR_HPP_
 
-#include "dummy_robot.hpp"
+#include "robot_base.hpp"
 
 namespace robotlib
 {
@@ -26,7 +26,6 @@ namespace robotlib
      * @details
      * This class allows to create dummy robots having different morphologies with the only purpose of testing Robotlib structures.
      */
-    template <unsigned int NLEGS, unsigned int NLJLEG, unsigned int NARMS = 0, unsigned int NLJARM = 0>
     class DummyRobotCreator
     {
     public:
@@ -49,10 +48,8 @@ namespace robotlib
          * @param[in] components_names names of the items defining the robot.
          * @return shared pointer pointing to the RobotBase object.
          */
-        std::shared_ptr<RobotBase> createDummyRobot(const std::array<std::string, (1 + NLEGS + 2*NLEGS*NLJLEG + NARMS + 2*NARMS*NLJARM)>& components_names);
+        std::shared_ptr<RobotBase> createDummyRobot(const std::string& name, const std::vector<std::map<std::string,std::vector<std::string>>>& limbs_string_type);
     };
 } // namespace robotlib
-
-#include "dummy_robot_creator.tpp"
 
 #endif // _ROBOTLIB_DUMMY_ROBOT_CREATOR_HPP_

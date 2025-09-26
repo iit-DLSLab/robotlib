@@ -2,17 +2,15 @@
 #define _ROBOTLIB_JOINT_STATE_CPP_
 
 #include "joint_state.hpp"
-#include "utils/container.hpp"
 
 namespace robotlib
 {
-    JointState::JointState(const ContainerBase<LimbBase>& limbs, const double& val) 
+    JointState::JointState(const std::vector<robotlib::Limb>& limbs, const double& val) 
         : total_size(0)
         , LimbDataMap<JointDataMap<double>>(limbs, 
             [&]() -> std::vector<JointDataMap<double>>
             {
                 std::vector<JointDataMap<double>> out;
-
                 for (auto& limb : limbs)
                 {
                     out.push_back(JointDataMap<double>(limb.getJoints(), val));
@@ -54,13 +52,13 @@ namespace robotlib
             this->total_size += limb_pair.getKey().getNJoints();
     }
 
-    const std::vector<Joint*> JointState::getJoints() const
+    const std::vector<const Joint*> JointState::getJoints() const
     {
-        std::vector<Joint*> out;
+        std::vector<const Joint*> out;
 
-         for (auto& limb_pair : *this)
+         for (auto limb_pair : *this)
         {
-            for (auto& joint : limb_pair.getKey().getJoints())
+            for (auto joint : limb_pair.getKey().getJoints())
             {
                 out.push_back(&joint);
             }
@@ -217,7 +215,7 @@ namespace robotlib
         return out;
     }
 
-    Eigen::VectorXd JointState::toeig_(const std::shared_ptr<LimbBase>& limb) const
+    Eigen::VectorXd JointState::toeig_(const std::shared_ptr<Limb>& limb) const
     {
         Eigen::VectorXd out(limb->getNJoints());
 
@@ -298,12 +296,12 @@ namespace robotlib
         return true;
     }
 
-    JointDataMap<double>& JointState::getLimbJointState(const std::shared_ptr<LimbBase> limb) 
+    JointDataMap<double>& JointState::getLimbJointState(const std::shared_ptr<Limb> limb) 
     { 
         return (*this)[limb]; 
     }
 
-    const JointDataMap<double>& JointState::getLimbJointState(const std::shared_ptr<LimbBase> limb) const 
+    const JointDataMap<double>& JointState::getLimbJointState(const std::shared_ptr<Limb> limb) const 
     { 
         return (*this)[limb]; 
     }

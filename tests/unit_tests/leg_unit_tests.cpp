@@ -52,7 +52,7 @@ TEST(LegUnitTests, getName)
      * @test Get the leg name (case with a complete string)
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -82,7 +82,7 @@ TEST(LegUnitTests, getNJoints)
  * @test Get the number of joints for a leg (case with two joints)
  */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -112,7 +112,7 @@ TEST(LegUnitTests, getNLinks)
  * @test Get the number of links for a leg (case with two links)
  */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -142,7 +142,7 @@ TEST(LegUnitTests, getJoint)
      * @test Get the two leg joints and check their names
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -161,7 +161,7 @@ TEST(LegUnitTests, getLink)
      * @test Get the two leg links and check their names
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -180,7 +180,7 @@ TEST(LegUnitTests, getEndEffector)
      * @test Get the leg end-effector (last link) and check its name
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         for (auto& leg : dummy_robot->getLegs())
         {
@@ -198,7 +198,7 @@ TEST(LegUnitTests, getJoints)
      * @test Iterate over the two leg joints and check their names
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         unsigned int i{0};
         for (auto& joint : dummy_robot->getJoints())
@@ -218,7 +218,7 @@ TEST(LegUnitTests, getLinks)
      * @test Iterate over the two leg links and check their names
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         unsigned int i{0};
         for (auto& link : dummy_robot->getLinks())

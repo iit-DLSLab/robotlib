@@ -19,37 +19,21 @@
 
 namespace robotlib
 {
-	// Joint::Joint(const std::string &name) 
-	// 	: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
-	// 	, parent_(NULL)
-	// 	, child_(NULL)
-	// {}
-
-	Joint::Joint(const std::string &name, Link* parent) 
-		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+	Joint::Joint(const std::string &name)
+		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0), sub_id(-1), id(-1)
 	{
-		this->setParent(parent);
 	}
 
-	const Link* Joint::getParent() const
-	{ 
-		return parent_;
-	}
-	
-	const Link* Joint::getChild() const 
-	{ 
-		return child_;
-	}
+	Joint::Joint() 
+		: Frame(""), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0) 
+	{}
 
-	void Joint::setParent(Link* parent) {
-		parent_ = parent;
-		if(parent_)
-			parent_->addChild(this);
-	}
-
-	void Joint::setChild(Link* child) 
-	{ 
-		child_ = child; 
+	bool Joint::isAttached() const
+	{
+		if (sub_id == -1 || id == -1)
+			return false;
+		else
+			return true;
 	}
 
 	double Joint::getMinAngle() const {return q_min_;}
@@ -68,6 +52,31 @@ namespace robotlib
 		this->setMaxAngle(q_max);
 		this->setMaxVelocity(qd_max);
 		this->setMaxEffort(tau_max);
+	}
+
+	bool Joint::operator==(const Joint& rhs) const
+	{
+		if(this->getName() != rhs.getName() || 
+		   this->getMinAngle() != rhs.getMinAngle() ||
+		   this->getMaxAngle() != rhs.getMaxAngle() ||
+		   this->getMaxVelocity() != rhs.getMaxVelocity() ||
+		   this->getMaxEffort() != rhs.getMaxEffort())
+			return false;
+
+		return true;
+	}
+
+	Joint &Joint::operator=(const Joint &rhs)
+	{
+		if (this != &rhs) // self-assignment check
+		{
+			this->name_ = rhs.name_;
+			this->q_min_ = rhs.q_min_;
+			this->q_max_ = rhs.q_max_;
+			this->qd_max_ = rhs.qd_max_;
+			this->tau_max_ = rhs.tau_max_;
+		}
+		return *this;
 	}
 
 } // namespace robotlib

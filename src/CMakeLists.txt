@@ -1,30 +1,29 @@
 add_library(robotlib
 	SHARED
-	robot_info.cpp
-	robot_factory.cpp
-	limb_base.cpp
 	joint.cpp
 	link.cpp
 	trunk.cpp
 	frame.cpp
 	dyn_params.cpp
+	limb.cpp
     robot_base.cpp
-    joint_state.cpp
+	robot.cpp
     jacobian.cpp
     utils/utils.cpp
+	dummy_robot/dummy_robot_creator.cpp
 )
 
 target_link_libraries(robotlib PRIVATE urdf)
 
-add_executable(robot_info
-	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
-)
+# add_executable(robot_info
+# 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
+# )
 
-target_link_libraries(robot_info
-	PRIVATE
-		${PROJECT_NAME}
-		${CMAKE_DL_LIBS}
-)
+# target_link_libraries(robot_info
+# 	PRIVATE
+# 		${PROJECT_NAME}
+# 		${CMAKE_DL_LIBS}
+# )
 
 target_include_directories(robotlib 
 	PUBLIC

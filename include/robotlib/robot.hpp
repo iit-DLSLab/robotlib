@@ -18,7 +18,6 @@
 #define _ROBOTLIB_ROBOT_HPP_
 
 #include "robot_base.hpp"
-#include "utils/container.hpp"
 
 namespace robotlib
 {
@@ -30,7 +29,7 @@ namespace robotlib
      * @tparam NLINKS number of links of the robot.
      * @tparam NLIMBS number of limbs of the robot.
      */
-	template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
+    
 	class Robot : public RobotBase
 	{
 	public:
@@ -42,7 +41,7 @@ namespace robotlib
          */
 		Robot(const std::string& name,
 			  const DynParams& dynamic_parameters,
-			  Container<LimbBase, NLIMBS>& limbs);
+			  const std::vector<LimbPtr>& limbs);
 
 		/*!
          * @brief Destructor.
@@ -83,58 +82,59 @@ namespace robotlib
          * @brief Get robot's trunk.
          * @return reference to trunk link.
          */
-        virtual const Trunk& getTrunk() const override;
+        virtual const TrunkPtr getTrunk() const override;
 
         /*!
          * @brief Get robot's joint from joint's name.
          * @param[in] name name of the joint.
          * @return reference to link or throw except.
          */
-        const Joint& getJoint(const std::string &name) const override;
+        const JointPtr getJoint(const std::string &name) const override;
 
         /*!
          * @brief Get robot's joints.
-         * @return robot's joints as a ContainerBase object.
+         * @return robot's joints as a std::vector object.
          */
-        const ContainerBase<Joint> getJoints() const override;
+        std::vector<JointPtr>& getJoints() override;
+        const std::vector<JointPtr> getJoints() const override;
 
         /*!
          * @brief Get robot's link from link's name.
          * @param[in] name name of the link.
          * @return reference to link or throw except.
          */
-        const Link& getLink(const std::string &name) const override;
+        const LinkPtr getLink(const std::string &name) const override;
 
         /*!
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        const ContainerBase<Link> getLinks() const override;
+        std::vector<LinkPtr> getLinks() const override;
 
         /*!
          * @brief Get robot's limb from limb's name.
          * @param[in] name name of the limb.
          * @return reference to limb or throw except.
          */
-        const LimbBase& getLimb(const std::string &name) const override;
+        const LimbPtr getLimb(const std::string &name) const override;
 
 		/*!
          * @brief Get robot's limbs.
-         * @return robot's limbs as a ContainerBase object.
+         * @return robot's limbs as a std::vector object.
          */
-        const ContainerBase<LimbBase> getLimbs() const override;
+        const std::vector<LimbPtr> getLimbs() const override;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        const std::vector<LimbBase*> getLegs() const override;
+        std::vector<LimbPtr> getLegs() const override;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        const std::vector<LimbBase*> getArms() const override;
+        std::vector<LimbPtr> getArms() const override;
 
 		/*!
          * @brief Get lower angle limit of each joint.
@@ -167,24 +167,7 @@ namespace robotlib
          * @param[out] tau_max a joint state object to be filled with the maximum torque limits of the joints.
          */
         virtual void getMaxJointEffort(JointState& tau_max) override;
-
-    protected:
-
-		//! Trunk of the robot
-		Trunk trunk_;
-
-		//! Limbs of the robot
-		Container<LimbBase, NLIMBS> limbs_;
-
-        //! List of pointes to the joints of the robot
-		Container<Joint, NJOINTS> joints_;
-
-        //! Joints of the robot
-		Container<Link, NLINKS> links_;
-
 	};
 } // namespace robotlib
-
-#include "robot.tpp"
 
 #endif // _ROBOTLIB_ROBOT_HPP_

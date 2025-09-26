@@ -19,7 +19,6 @@
 
 #include "frame.hpp"
 #include "joint.hpp"
-#include "utils/container_base.hpp"
 
 #include <memory>
 
@@ -34,7 +33,6 @@ namespace robotlib
 	 */
 	class Link : public Frame
 	{
-		template <unsigned int NLMBS, unsigned int NLNKS, unsigned int NJONTS>
 		friend class Robot;
 		friend class Joint;
 		
@@ -51,7 +49,9 @@ namespace robotlib
          * @param[in] name name of the link.
 		 * @param[in] parent parent joint.
          */
-		Link(const std::string &name, Joint* parent);
+		// Link(const std::string &name, Joint* parent);
+
+		Link();
 
 
 		/*!
@@ -60,46 +60,20 @@ namespace robotlib
 		~Link() = default;
 		
 		//! Robot is a friend class to let it use the private methods of the Link class.
-		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 		friend class Robot;
 
-		/*!
-		 * @brief Get the parent object of the link, that is a Joint object.
-		 * @return parent joint of the link.
-		 */
-		const Joint* getParent() const;
+		// operator==
+		bool operator==(const Link& rhs) const;
+		
+		Link &operator=(const Link &rhs);
 
-		/*!
-		 * @brief Get the children of the link, that are Joint objects.
-		 * @return joints that are children of the link.
-		 */
-		const std::vector<Joint*>& getChildren() const;
+		bool isAttached() const;
 
-	protected:
+		int sub_id;
+		int id;
 
-		/*!
-		 * @brief Set the parent of the link, that is a Joint object.
-		 * @param[in] parent the parent of the link to be set.
-		 */
-		void setParent(Joint* parent);
-	
-
-	private:
-
-		/*!
-		 * @brief Set the child of the link, that is a Joint object.
-		 * @details This method is private and can only be used by the friend class Joint
-		 * This restriction garantee the coerence in the definition of the kinematic chain
-		 * @param[in] child the child of the link to be set.
-		 */
-		void addChild(Joint* child);
-
-		//! Children of the link.
-		std::vector<Joint*> children_;
-
-		//! Parent of the link.
-		Joint* parent_;
 	};
+	typedef std::shared_ptr<Link> LinkPtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_LINK_HPP_

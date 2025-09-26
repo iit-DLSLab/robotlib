@@ -1,25 +1,7 @@
-/*!
- * @file dummy_robot.hpp
- *
- * @brief Dummy robot class definition and functions prototypes. Used to create generic types of robots for tests
- *
- * @authors Authors in alphabetical order:
- *
- *     Gianluca Cerilli (IIT DLS Lab) - Contact: gianluca.cerilli@iit.it
- *
- *     Geoff Fink (IIT DLS Lab) - Contact: geoff.fink@iit.it
- *
- *     Marco Marchitto (IIT DLS Lab) - Contact: marco.marchitto@iit.it
- *
- * @bug No known bugs.
- */
-
 #ifndef _ROBOTLIB_DUMMY_ROBOT_HPP_
 #define _ROBOTLIB_DUMMY_ROBOT_HPP_
 
 #include "robot.hpp"
-#include "dummy_leg.hpp"
-#include "dummy_arm.hpp"
 
 #include <iostream>
 
@@ -30,8 +12,7 @@ namespace robotlib
     * @details
     * This class allows to create dummy robots having a specific morphology with the only purpose of testing Robotlib structures.
     */
-    template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
-    class DummyRobot : public Robot<NLIMBS, NLINKS, NJOINTS>
+    class DummyRobot : public Robot
     {
     public:
         /*!
@@ -43,7 +24,8 @@ namespace robotlib
         */
         DummyRobot(const std::string& name,
                    const DynParams& dynamic_parameters,
-                   Container<LimbBase, NLIMBS>& limbs);
+                   const std::vector<LimbPtr>& limbs) 
+        : Robot( name, dynamic_parameters,limbs){}
 
         /*!
         * @brief Destructor.
@@ -59,7 +41,7 @@ namespace robotlib
           * @param[out] end_effector_position position of each end effector in base frame.
           */
         virtual void forwardKinematics(const JointState &joint_position,
-                                       LimbDataMap<Eigen::Vector3d> &end_effector_position) override;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_position) override {}
 
         /*!
          * @brief Forward kinematics.
@@ -73,7 +55,7 @@ namespace robotlib
         virtual void forwardKinematics(const JointState &joint_position,
                                        const JointState &joint_velocity,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_position,
-                                       LimbDataMap<Eigen::Vector3d> &end_effector_velocity) override;
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_velocity) override {}
 
 
         /*!
@@ -86,7 +68,7 @@ namespace robotlib
         virtual void fixedBaseInverseKinematics(const std::string &frame_name,
                                                 const robotlib::JointState &q_init_guess,
                                                 const Eigen::Vector3d &position_des,
-                                                robotlib::JointState &q_des) override;
+                                                robotlib::JointState &q_des) override {}
         /*!
         * @brief Inverse kinematics considering all the legs. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
         * @param[in] q_init_guess initial guess for the joint angles.
@@ -95,7 +77,7 @@ namespace robotlib
         */
         virtual void fixedBaseInverseKinematics(const robotlib::JointState &q_init_guess,
                                                 const robotlib::LimbDataMap<Eigen::Vector3d> &positions_des,
-                                                robotlib::JointState &q_des) override;
+                                                robotlib::JointState &q_des) override {}
         /*!
         * @brief Inverse differential kinematics. Does not consider the floating base joint. It computes the joint velocities from the desired frame linear velocity expressed in base frame. Redundancy is not handled yet.
         * @param[in] frame_name name of the frame
@@ -106,7 +88,7 @@ namespace robotlib
         virtual void fixedBaseInverseDiffKinematics(const std::string &frame_name,
                                                             const robotlib::JointState &q,
                                                             const Eigen::Vector3d &velocity_des,
-                                                            robotlib::JointState &qd_des) override;
+                                                            robotlib::JointState &qd_des) override {}
         /*!
         * @brief Inverse differential kinematics for all the legs. Does not consider the floating base joint. It computes the joint velocities from the desired frame linear velocity expressed in base frame. Redundancy is not handled yet.
         * @param[in] q joint angles
@@ -115,7 +97,7 @@ namespace robotlib
         */
         virtual void fixedBaseInverseDiffKinematics(const robotlib::JointState &q,
                                                     const robotlib::LimbDataMap<Eigen::Vector3d> &velocities_des,
-                                                    robotlib::JointState &qd_des) override;
+                                                    robotlib::JointState &qd_des) override {}
 
         /*!
          * @brief Inverse dynamics.
@@ -148,7 +130,7 @@ namespace robotlib
                                 const robotlib::JointState &joint_velocity,
                                 const robotlib::JointState &joint_acceleration,
                                 const robotlib::eigen::aligned_map<std::string, Eigen::Vector3d> &f_contact,
-                                robotlib::JointState &tau_joints) override;
+                                robotlib::JointState &tau_joints) override {}
 
         /*!
         * @brief Compute gravity terms.
@@ -162,7 +144,7 @@ namespace robotlib
         virtual void computeGravityTerm(    const Eigen::Matrix<double, 7, 1> &robot_pose,
                                             const robotlib::JointState &joint_position,
                                             Eigen::Matrix<double, 6, 1> &g_base,
-                                            robotlib::JointState &g_joints) override;
+                                            robotlib::JointState &g_joints) override {}
         /*!
         * @brief Compute gravity terms, setting only the one related to the joints.
         * @details
@@ -173,7 +155,7 @@ namespace robotlib
         */
         virtual void computeGravityTerm(  const Eigen::Matrix<double, 7, 1> &robot_pose,
                                           const robotlib::JointState &joint_position,
-                                          robotlib::JointState &g_joints) override;
+                                          robotlib::JointState &g_joints) override {}
         /*!
           * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
           * @param[in] robot_pose pose of the robot base in world frame.
@@ -188,7 +170,7 @@ namespace robotlib
                                         const robotlib::JointState &joint_position,
                                         const robotlib::JointState &joint_velocity,
                                         Eigen::Matrix<double, 6, 1> &nle_base,
-                                        robotlib::JointState &nle_joints) override;
+                                        robotlib::JointState &nle_joints) override {}
 
         /*!
         * @brief Inverse dynamics to compute the Centrifugal, Coriolis and Gravity terms.
@@ -203,7 +185,7 @@ namespace robotlib
         virtual void computeNonLinearEffects( const Eigen::Matrix<double, 7, 1> &robot_pose,
                                         const robotlib::JointState &joint_position,
                                         const robotlib::JointState &joint_velocity,
-                                        robotlib::JointState &nle_joints) override;
+                                        robotlib::JointState &nle_joints) override {}
 
         /*!
          * @brief Get position of the origin frame expressed in the destination one.
@@ -212,7 +194,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const Frame& origin, const Frame& destination) override;
+        virtual Eigen::Vector3d computeFramePosition(const JointState &q, const FramePtr origin, const FramePtr destination) override {return Eigen::Vector3d::Zero();}
 
         /*!
          * @brief Get orientation of the origin frame expressed in the destination one.
@@ -221,7 +203,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const Frame& origin, const Frame& destination) override;
+        virtual Eigen::Matrix3d computeFrameOrientation(const JointState& q, const FramePtr origin, const FramePtr destination) override { return Eigen::Matrix3d::Identity();}
 
         /*!
          * @brief Get pose of the origin frame expressed in the destination one.
@@ -230,7 +212,7 @@ namespace robotlib
          * @param[in] destination destination frame.
          * @return origin frame orientation expressed in destination one.
          */
-        virtual Eigen::Matrix4d computeFramePose(const JointState& q, const Frame& origin, const Frame& destination) override;
+        virtual Eigen::Matrix4d computeFramePose(const JointState& q, const FramePtr origin, const FramePtr destination) override { return Eigen::Matrix4d::Identity();}
 
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame, related to the limbs only (so considering the actuated joints). The order is linear_jacobian, angular_jacobian. For a complete jacobian, see computeWholeBodyJacobian.
@@ -239,8 +221,14 @@ namespace robotlib
         * @param[out] jacobian jacobian to be filled.
         */
         virtual void computeLimbsJacobian(const JointState& q,
-                                          const Frame& frame,
-                                          Eigen::MatrixXd& jacobian) override;
+                                          const FramePtr frame,
+                                          Eigen::MatrixXd& jacobian) override {
+            computeLimbsJacobian(q, frame->getName(), jacobian);
+        }
+
+        virtual void computeLimbsJacobian(const JointState& q,
+                            const std::string& frame_name,
+                            Eigen::MatrixXd& jacobian) override {}
 
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
@@ -251,42 +239,42 @@ namespace robotlib
         */
         virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
                                         const robotlib::JointState &q,
-                                        const Frame& frame,
-                                        Eigen::MatrixXd &jacobian) override;
+                                        const FramePtr frame,
+                                        Eigen::MatrixXd &jacobian) override {}
 
         /*!
         * @brief Get total robot mass.
         * @return total robot mass.
         */
-        virtual double getRobotMass() const override;
+        virtual double getRobotMass() const override { return 0.0; }
 
         /*!
          * @brief Get link mass.
          * @param[in] link the link
          * @return link mass.
          */
-        virtual double getLinkMass(const Link& link) const override;
+        virtual double getLinkMass(const LinkPtr link) const override { return 0.0; }
 
         /*!
          * @brief Get link inertia about the CoM.
          * @param[in] link the link
          * @return link inertia.
         */
-        virtual Eigen::Matrix3d getLinkInertia(const Link& link) const override;
+        virtual Eigen::Matrix3d getLinkInertia(const LinkPtr link) const override { return Eigen::Matrix3d::Zero(); }
 
         /*!
          * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
          * @param[in] link the link 
          * @return link CoM.
         */
-        virtual Eigen::Vector3d getLinkCoM(const Link& link) const override;
+        virtual Eigen::Vector3d getLinkCoM(const LinkPtr link) const override { return Eigen::Vector3d::Zero(); }
 
         /*!
          * @brief Compute whole body CoM in base frame.
          * @param[in] joint_position angles of the joints.
          * @return whole body CoM in base frame.
          */
-        virtual Eigen::Vector3d computeWholeBodyCoM(const JointState& q) override;
+        virtual Eigen::Vector3d computeWholeBodyCoM(const JointState& q) override { return Eigen::Vector3d::Zero(); }
 
         /*!
          *@brief Get the IMU pose in base frame.
@@ -295,11 +283,9 @@ namespace robotlib
          *@return IMU pose in base frame.
          */
         virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu",
-                                                 const std::string& base_link_name="base_link") const override;
+                                                 const std::string& base_link_name="base_link") const override { return Eigen::Matrix4d::Identity(); }
     };
 
 } // namespace robotlib
-
-#include "dummy_robot.tpp"
 
 #endif // _ROBOTLIB_DUMMY_ROBOT_HPP_

@@ -18,6 +18,7 @@
 #define _ROBOTLIB_FRAME_HPP_
 
 #include <string>
+#include <memory>
 
 namespace robotlib
 {
@@ -53,11 +54,13 @@ namespace robotlib
 		 */
 		bool operator==(const Frame& rhs) const;
 
-    private:
+    protected:
 
         //! Name of the frame.
-        const std::string name_;
+        std::string name_;
     };
+
+    typedef std::shared_ptr<Frame> FramePtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_FRAME_HPP_

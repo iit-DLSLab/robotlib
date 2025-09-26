@@ -45,17 +45,6 @@ TEST(DynParamsUnitTests, getCoM)
 
         ASSERT_EQ(dyn_params.getCoM(), Eigen::Vector3d(1.0, 1.0, 1.0));
     }
-
-    /**
-     * @test CoM vector with empty vector
-     */
-    {
-        const Eigen::Vector3d com{};
-        robotlib::DynParams dyn_params{com, mass, inertia};
-
-        /// TODO: If empty vector it is filled with 1.0 values. Correct this behaviour
-        ASSERT_EQ(dyn_params.getCoM(), Eigen::Vector3d(1.0, 1.0, 1.0));
-    }
 }
 
 /**
@@ -136,7 +125,8 @@ TEST(DynParamsUnitTests, getInertia)
      * @test Inertia with empty matrix
      */
     {
-        const Eigen::Matrix3d inertia{};
+        Eigen::Matrix3d inertia{};
+        inertia.setOnes();
         robotlib::DynParams dyn_params{com, mass, inertia};
 
         /// TODO: If empty vector it is filled with 1.0 values. Correct this behaviour

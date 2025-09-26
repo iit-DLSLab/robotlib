@@ -16,37 +16,37 @@
 #include "dummy_robot/dummy_robot_creator.hpp"
 
 /**
- * @test Dummy robot created with the following structure:
- * 1 leg
- * 1 joints/link per leg
+ * @test Dummy robot
  */
-robotlib::DummyRobotCreator<1, 1> dummy_robot_creator;
+robotlib::DummyRobotCreator dummy_robot_creator;
+std::vector<std::map<std::string,std::vector<std::string>>> limbs {
+    {
+        {"name", {"LF"}},
+        {"joints", {"LF_HAA", "LF_HFE", "LF_KFE"}},
+        {"links",  {"LF_ASSEMBLY", "LF_UPPERLEG", "LF_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"RF"}},
+        {"joints", {"RF_HAA", "RF_HFE", "RF_KFE"}},
+        {"links",  {"RF_ASSEMBLY", "RF_UPPERLEG", "RF_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"LH"}},
+        {"joints", {"LH_HAA", "LH_HFE", "LH_KFE"}},
+        {"links",  {"LH_ASSEMBLY", "LH_UPPERLEG", "LH_LOWERLEG"}},
+        {"type", {"leg"}}
+    },
+    {
+        {"name", {"RH"}},
+        {"joints", {"RH_HAA", "RH_HFE", "RH_KFE"}},
+        {"links",  {"RH_ASSEMBLY", "RH_UPPERLEG", "RH_LOWERLEG"}},
+        {"type", {"leg"}}
+    }
+};
+const std::string robot_name{"Dummy Quadruped"};
 
-/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 4> components_names{"Dummy Robot",
-                                            "Leg",
-                                            "Leg_joint_1",
-                                            "Leg_link_1",};
-
-/**
- * @test Dummy robot created with the following structure:
- * 2 legs
- * 2 joints/link per leg
- */
-robotlib::DummyRobotCreator<2, 2> dummy_robot_creator_2;
-
-/* Component names = [Robot name | Trunk name |  Leg names | Leg joint names | Leg link names | Arms names | Arm joint names | Arm link names] */
-std::array<std::string, 11> components_names_2{"Dummy Robot",
-                                              "Leg_1",
-                                              "Leg_2",
-                                              "Leg_1_joint_1",
-                                              "Leg_1_joint_2",
-                                              "Leg_2_joint_1",
-                                              "Leg_2_joint_2",
-                                              "Leg_1_link_1",
-                                              "Leg_1_link_2",
-                                              "Leg_2_link_1",
-                                              "Leg_2_link_2"};
 
 /**
  * @brief Set of unit tests for Trunk::getName function
@@ -57,101 +57,13 @@ TEST(TrunkUnitTests, getName)
      * @test Dummy robot trunk name
      */
     {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
+        auto dummy_robot = dummy_robot_creator.createDummyRobot(robot_name, limbs);
 
         auto trunk_link{dummy_robot->getTrunk()};
 
-        EXPECT_EQ(trunk_link.getName(), "TRUNK");
+        EXPECT_EQ(trunk_link->getName(), "TRUNK");
     }
 }
-
-/**
- * @brief Set of unit tests for Trunk::getParent function (inherited from Link)
- */
-TEST(LinkUnitTests, getParent)
-{
-    /**
-     * @test Get the trunk parent (trunk has generally no parent links)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-        auto trunk_link{dummy_robot->getTrunk()};
-
-        EXPECT_EQ(trunk_link.getParent(), nullptr);
-    }
-}
-
-/**
- * @brief Set of unit tests for Trunk::getChild function (inherited from Link)
- */
-TEST(LinkUnitTests, getChild)
-{
-    /**
-     * @test Get the trunk child (case with one child)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-        auto trunk_link{dummy_robot->getTrunk()};
-
-        EXPECT_EQ(trunk_link.getChildren()[0]->getName(), components_names[2]);
-    }
-
-    /**
-     * @test Get the trunk child (case with two children. Child is not univoque and is set as null pointer)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
-
-        auto trunk_link{dummy_robot->getTrunk()};
-
-        EXPECT_EQ(trunk_link.getChildren().size(), 2);
-    }
-}
-
-/**
- * @brief Set of unit tests for Trunk::getChildren function (inherited from Link)
- */
-TEST(LinkUnitTests, getChildren)
-{
-    /**
-     * @test Iterate over trunk children (case with one child)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator.createDummyRobot(components_names);
-
-        auto trunk_link{dummy_robot->getTrunk()};
-
-        EXPECT_EQ((trunk_link.getChildren().size()), 1);
-
-        for (auto& trunk_child : trunk_link.getChildren())
-        {
-            EXPECT_EQ(trunk_child->getName(), components_names[2]);
-        }
-    }
-
-    /**
-     * @test Iterate over the trunk children (case with two children)
-     */
-    {
-        auto dummy_robot = dummy_robot_creator_2.createDummyRobot(components_names_2);
-
-        auto trunk_link{dummy_robot->getTrunk()};
-
-        EXPECT_EQ(trunk_link.getChildren().size(), 2);
-
-        unsigned int i{0};
-        for (auto& trunk_child : trunk_link.getChildren())
-        {
-            EXPECT_EQ(trunk_child->getName(), components_names_2[3 + 2*i]);
-            i++;
-        }
-    }
-}
-
-/// TODO: The following tests on getCoM, getMass, getInertia and getDynParams should be substitued using the set functions
-/// implemented in Robotlib (and so, using a dummy robot) instead of in the Glue.
 
 /**
  * @brief Set of unit tests for Trunk::getCoM function

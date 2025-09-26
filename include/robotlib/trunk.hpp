@@ -31,12 +31,6 @@ namespace robotlib
 	class Trunk : public Link
 	{
 	public:
-		// /*!
-        //  * @brief Constructor.
-        //  * @param[in] name name of the trunk.
-        //  */
-		// Trunk(const std::string& name);
-
 		/*!
          * @brief Constructor.
          * @param[in] name name of the trunk.
@@ -77,6 +71,7 @@ namespace robotlib
 		//!Dynamic parameters of the Trunk
 		const DynParams dynamic_parameters_;
 	};
+	typedef std::shared_ptr<Trunk> TrunkPtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_TRUNK_HPP_

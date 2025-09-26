@@ -7,7 +7,8 @@
 namespace robotlib
 {
     //! Alias for Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>.
-    using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
+    // using Map = Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>;
+    using Matrix = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
     /*!
      * @brief Jacobian class. This class allows the definition of jacobian matrices, divided in linear and angular parts, for a robot having an 
@@ -21,10 +22,9 @@ namespace robotlib
      * This class provides also functions to access only to linear and angular part of the jacobian plus of course all the eigen functions
      * inherited from the Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> class.
      */
-    class Jacobian : public Map
+    class Jacobian : public Matrix
     {
         //! Robot is a friend class to let it use the private methods of the Joint class.
-		template <unsigned int NLIMBS, unsigned int NLINKS, unsigned int NJOINTS>
 		friend class Robot;
         friend class RobotBase;
 
@@ -34,16 +34,12 @@ namespace robotlib
 		*/
         Jacobian(const Jacobian& jacobian);
 
+        Jacobian();
+
         /*!
 		 * @brief Destructor.
 		*/
         ~Jacobian();
-
-        // Jacobian(Map& map)
-        //     : Map(map)
-        // {
-        //     std::cout << "TESTING" << std::endl;
-        // }
 
         /*!
 		 * @brief Get function. It gets the linear part of the jacobian.
@@ -55,7 +51,7 @@ namespace robotlib
          * linear part of the jacobian object accordingly.
          * @return linear part of the jacobian.
 		 */
-        Map getLinearJacobian();
+        Matrix getLinearJacobian();
 
         /*!
 		 * @brief Get function. It gets the angular part of the jacobian.
@@ -67,21 +63,10 @@ namespace robotlib
          * the angular part of the jacobian object accordingly.
          * @return angular part of the jacobian.
 		 */
-        Map getAngularJacobian();
+        Matrix getAngularJacobian();
 
-        /*!
-		 * @brief Equal operator.
-         * @details
-         * The equality is performed over the data structure stored internally.
-         * @param[in] jacobian Jacobian object whose values are set to the object pointed by *this*.
-         * @return reference to the object pointed by *this*.
-		 */
-        Jacobian &operator=(const Jacobian &other);
+        using Matrix::operator=;
 
-
-        // Jacobian operator*(std::vector<double>& vec);
-
-        // using Map::operator*;
 
     private:
         /*!
@@ -93,20 +78,6 @@ namespace robotlib
          * @param [in] data value used to initialize the jacobian.
 		 */
         Jacobian(const int nJoints, const double& data = 0.0);
-
-        /*!
-		 * @brief Empy constructor.
-         * @details
-         * This constructor is used to create a LimbDataMap<Jacobian> object, with "empty" jacobians. 
-         * Each jacobian may have different sizes, and the init function is used to initialize each of them.
-         */
-        Jacobian(const std::vector<double>& data);
-
-        //! Number of joints.
-        int nJoints_;
-
-        // Squashed matrix
-        double *data_;
 
     };
 }

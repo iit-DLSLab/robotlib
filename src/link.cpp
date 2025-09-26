@@ -22,40 +22,37 @@ namespace robotlib
 {
 	Link::Link(const std::string& name) 
 		: Frame(name)
-		, parent_(NULL)
+		, sub_id(-1)
+		, id(-1)
 	{}
 
-	Link::Link(const std::string& name, Joint* parent) 
-		: Frame(name)
+	Link::Link() 
+		: Frame("")
+		, sub_id(-1)
+		, id(-1)
+	{}
+
+	bool Link::isAttached() const
 	{
-		this->setParent(parent);
+		if (sub_id == -1 || id == -1)
+			return false;
+		else
+			return true;
 	}
 
-	/// TODO:
-	// 0 children - restituisci messaggio + nullptr + gestisci il segfault
-	// 1 children - restituisci children con 1 elemento (quando si fa setChild bisogna anche aggiornare i children)
-	//				bisogna poi rimuovere la funzione setChildrenForTrunk (deve essere quindi generica per tutti i link)
-	// segnalare i possibili segmentation fault da gestire
-
-	const Joint* Link::getParent() const 
-	{ 
-		return parent_; 
+	bool Link::operator==(const Link& rhs) const
+	{
+		if (this->getName() != rhs.getName())
+			return false;
+		return true;
 	}
 
-	const std::vector<Joint*>& Link::getChildren() const 
-	{ 
-		return children_;
-	}
-	
-	void Link::setParent(Joint* parent) 
-	{ 
-		parent_ = parent;
-		if(parent_) 
-			parent_->setChild(this);
-	}
-
-	void Link::addChild(Joint* child) 
-	{ 
-		children_.push_back(child);
+	Link &Link::operator=(const Link &rhs)
+	{
+		if (this != &rhs) // self-assignment check
+		{
+			this->name_ = rhs.name_;
+		}
+		return *this;
 	}
 } // namespace robotlib
