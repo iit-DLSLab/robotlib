@@ -109,7 +109,7 @@ Notice that the constructor of the LimbDataMap class allocates dynamic memory. W
 
 Let's now populate the stance_status variable
 
-    for(std::shared_ptr<robotlib::LimbBase>  leg: *robot->getLegs()) //or for(auto &leg : robot->getLegs())
+    for(LimbPtr  leg: *robot->getLegs()) //or for(auto &leg : robot->getLegs())
     {
         stance_status[leg] = true; //or stance_status[leg->getName()] = true;
         std::cout << leg->getName() << " leg, stored data: " << stance_status[leg] << std::endl;
