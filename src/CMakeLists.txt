@@ -9,6 +9,7 @@ add_library(robotlib
     robot_base.cpp
 	robot.cpp
     jacobian.cpp
+	robot_factory.cpp
     utils/utils.cpp
 	dummy_robot/dummy_robot_creator.cpp
 )
