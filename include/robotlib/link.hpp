@@ -71,6 +71,7 @@ namespace robotlib
 
 		int sub_id;
 		int id;
+		int limb_id;
 
 	};
 	typedef std::shared_ptr<Link> LinkPtr;

@@ -20,7 +20,7 @@
 namespace robotlib
 {
 	Joint::Joint(const std::string &name)
-		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0), sub_id(-1), id(-1)
+		: Frame(name), q_min_(0), q_max_(0), qd_max_(0), tau_max_(0), sub_id(-1), id(-1), limb_id(-1)
 	{
 	}
 
@@ -30,7 +30,7 @@ namespace robotlib
 
 	bool Joint::isAttached() const
 	{
-		if (sub_id == -1 || id == -1)
+		if (sub_id == -1 || id == -1 || limb_id == -1)
 			return false;
 		else
 			return true;

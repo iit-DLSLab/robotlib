@@ -94,6 +94,8 @@ namespace robotlib
 		int sub_id;
 		// order at robot level
 		int id;
+		// limb id
+		int limb_id;
 	protected:
 
 

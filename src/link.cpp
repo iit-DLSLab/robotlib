@@ -24,17 +24,19 @@ namespace robotlib
 		: Frame(name)
 		, sub_id(-1)
 		, id(-1)
+		, limb_id(-1)
 	{}
 
 	Link::Link() 
 		: Frame("")
 		, sub_id(-1)
 		, id(-1)
+		, limb_id(-1)
 	{}
 
 	bool Link::isAttached() const
 	{
-		if (sub_id == -1 || id == -1)
+		if (sub_id == -1 || id == -1 || limb_id == -1)
 			return false;
 		else
 			return true;

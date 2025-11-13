@@ -44,6 +44,7 @@ namespace robotlib
 			for(auto joint : limb->getJoints())
 			{
 				joint->id = limb->id*prev_limb_joints + joint->sub_id;
+                joint->limb_id = limb->id;
 				this->joints_.push_back(joint);
 			}
             prev_limb_joints = limb->getNJoints();
@@ -51,6 +52,7 @@ namespace robotlib
 			for(auto link : limb->getLinks())
 			{
 				link->id = limb->id*prev_limb_links + link->sub_id;
+                link->limb_id = limb->id;
 				this->links_.push_back(link);
 			}
             prev_limb_links = limb->getNLinks();
