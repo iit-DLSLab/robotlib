@@ -24,7 +24,7 @@ namespace robotlib
         */
         DummyRobot(const std::string& name,
                    const DynParams& dynamic_parameters,
-                   const std::vector<LimbPtr>& limbs) 
+                   const std::vector<LimbPtr>& limbs)
         : Robot( name, dynamic_parameters,limbs){}
 
         /*!
@@ -56,6 +56,26 @@ namespace robotlib
                                        const JointState &joint_velocity,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_position,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_velocity) override {}
+
+        /*!
+         * @brief Forward kinematics.
+         * @details
+         * It computes position, velocity, and acceleration of each end effector (foot) expressed in base frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[in] joint_velocity velocity of each joint.
+         * @param[in] joint_acceleration acceleration of each joint.
+         * @param[out] end_effector_position position of each end effector (foot) in base frame.
+         * @param[out] end_effector_velocity velocity of each end effector (foot) in base frame.
+         * @param[out] end_effector_acceleration acceleration of each end effector (foot) in base frame.
+         */
+        virtual void forwardKinematics(
+            const JointState &joint_position,
+            const JointState &joint_velocity,
+            const JointState &joint_acceleration,
+            LimbDataMap<Eigen::Vector3d> &end_effector_position,
+            LimbDataMap<Eigen::Matrix3d> &end_effector_orientation,
+            LimbDataMap<Vec6d> &end_effector_velocity,
+            LimbDataMap<Vec6d> &end_effector_acceleration) override {}
 
 
         /*!
@@ -106,13 +126,13 @@ namespace robotlib
          * Use cases:
          * - robot gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = forces to substain robot weight.
          * - leg gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = 0.
-         * - realize desired contact forces and robot accelerations: 
+         * - realize desired contact forces and robot accelerations:
          *    robot_velocity = actual robot velocity
          *    robot_acceleration = desired robot acceleration
          *    joint_position = actual joint position
          *    joint_velocity = actual joint velocity
          *    joint_acceleration = desired joint acceleration
-         *    f_contact = desired contact forces. 
+         *    f_contact = desired contact forces.
          * @param[in] robot_pose pose of the robot base in base frame.
          * @param[in] robot_velocity velocity of the robot base in base frame.
          * @param[in] robot_acceleration  acceleration of the robot base in base frame.
@@ -186,6 +206,18 @@ namespace robotlib
                                         const robotlib::JointState &joint_position,
                                         const robotlib::JointState &joint_velocity,
                                         robotlib::JointState &nle_joints) override {}
+
+        /*!
+         * @brief Dynamics calculations to compute Joint Space Inertia Matrix.
+         *
+         * @param[in] robot_pose pose of the robot base in world frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[out] js_inertia Joint Space Inertia Matrix for given joint positions.
+         */
+        virtual void computeJSInertiaMatrix(
+            const Eigen::Matrix<double, 7, 1> &robot_pose,
+            const robotlib::JointState &joint_position,
+            Eigen::MatrixXd &js_inertia) override {}
 
         /*!
          * @brief Get position of the origin frame expressed in the destination one.
@@ -264,7 +296,7 @@ namespace robotlib
 
         /*!
          * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
-         * @param[in] link the link 
+         * @param[in] link the link
          * @return link CoM.
         */
         virtual Eigen::Vector3d getLinkCoM(const LinkPtr link) const override { return Eigen::Vector3d::Zero(); }

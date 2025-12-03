@@ -20,6 +20,9 @@
 
 namespace robotlib
 {
+
+    typedef Eigen::Matrix<double, 6, 1> Vec6d;
+
     /*!
      * @class RobotBase
      * @brief RobotBase class.
@@ -94,7 +97,6 @@ namespace robotlib
         * @details
         * The robot velocity is to zero by default.
         * @param[in] robot_pose pose of the robot base in world frame.
-        * @param[in] robot_velocity velocity of the robot base in base frame.
         * @param[in] joint_position angle of each joint.
         * @param[in] joint_velocity velocity of each joint.
         * @param[out] nle_joints non linear effects acting on the joints.
@@ -103,6 +105,19 @@ namespace robotlib
                                         const robotlib::JointState &joint_position,
                                         const robotlib::JointState &joint_velocity,
                                         robotlib::JointState &nle_joints) = 0;
+
+        /*!
+         * @brief Dynamics calculations to compute Joint Space Inertia Matrix.
+         *
+         * @param[in] robot_pose pose of the robot base in world frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[out] js_inertia Joint Space Inertia Matrix for given joint positions.
+         */
+        virtual void computeJSInertiaMatrix(
+            const Eigen::Matrix<double, 7, 1> &robot_pose,
+            const robotlib::JointState &joint_position,
+            Eigen::MatrixXd &js_inertia) = 0;
+
         /*!
         * @brief Compute the number of legs in stance
         * @param stance_legs
@@ -331,13 +346,13 @@ namespace robotlib
                                         const robotlib::JointState &q,
                                         const FramePtr frame,
                                         Eigen::MatrixXd &jacobian) = 0;
-                                        
+
         /*!
          * @brief Get total robot mass.
          * @return total robot mass.
          */
         virtual double getRobotMass() const = 0;
-        
+
         // inertia?
         /*!
          * @brief Get link mass.
@@ -355,11 +370,11 @@ namespace robotlib
 
         /*!
          * @brief Get link CoM in the joint frame(see https://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file).
-         * @param[in] link the link 
+         * @param[in] link the link
          * @return link CoM.
         */
         virtual Eigen::Vector3d getLinkCoM(const LinkPtr link) const = 0;
- 
+
         /*!
          * @brief Compute whole body CoM in base frame.
          * @param[in] joint_position angles of the joints.
@@ -372,7 +387,7 @@ namespace robotlib
          * @param[in] q angles of the joints.
          * @param[in] robot_pose robot pose (position, quaternion (x,y,z,w)) in world frame.
          * @return CoM position in world frame.
-         */        
+         */
         Eigen::Vector3d computeCoMFromBase(const robotlib::JointState &q,
                                        const Eigen::Matrix<double, 7, 1> &robot_pose);
 
@@ -396,7 +411,7 @@ namespace robotlib
         virtual Eigen::Matrix4d getImuBaseOffset(const std::string& imu_link_name="trunk_imu",
                                                  const std::string& base_link_name="base_link") const = 0;
 
-        // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
+        // ** FUNCTIONS TO MAKE NRT OBJECTS **
 
         /*!
          * @brief Function to create a JointState object.
@@ -465,14 +480,14 @@ namespace robotlib
         /*!
          * @brief Function to create a LimbDataMap object, associating a Jacobian to each leg.
          * @details
-         * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian; 
+         * Each Jacobian has dimention 6xn_joints_leg. The rows are 6 to have both linear and angular parts of the jacobian;
          * n_joints_leg is the  number of joints of the leg to which the Jacobian is associated to.
          * @param[in] data data used to initialize the JointDataMap object.
          * @return LimbDataMap<Jacobian> object.
          */
         LimbDataMap<Jacobian> makeFeetJacobian(const double& data = 0.0) const; // NRT
 
-        // ** FORWARD KINEMATICS ** 
+        // ** FORWARD KINEMATICS **
 
         /*!
           * @brief Forward kinematics.
@@ -483,6 +498,7 @@ namespace robotlib
           */
         virtual void forwardKinematics(const JointState &joint_position,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_position) = 0;
+
         /*!
          * @brief Forward kinematics.
          * @details
@@ -496,6 +512,25 @@ namespace robotlib
                                        const JointState &joint_velocity,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_position,
                                        LimbDataMap<Eigen::Vector3d> &end_effector_velocity) = 0;
+
+        /*!
+         * @brief Forward kinematics.
+         * @details
+         * It computes position, velocity, and acceleration of each end effector (foot) expressed in base frame.
+         * @param[in] joint_position angle of each joint.
+         * @param[in] joint_velocity velocity of each joint.
+         * @param[in] joint_acceleration acceleration of each joint.
+         * @param[out] end_effector_position position of each end effector (foot) in base frame.
+         * @param[out] end_effector_velocity velocity of each end effector (foot) in base frame.
+         * @param[out] end_effector_acceleration acceleration of each end effector (foot) in base frame.
+         */
+        virtual void forwardKinematics(const JointState &joint_position,
+                                       const JointState &joint_velocity,
+                                       const JointState &joint_acceleration,
+                                       LimbDataMap<Eigen::Vector3d> &end_effector_position,
+                                       LimbDataMap<Eigen::Matrix3d> &end_effector_orientation,
+                                       LimbDataMap<Vec6d> &end_effector_velocity,
+                                       LimbDataMap<Vec6d> &end_effector_acceleration) = 0;
 
         /*!
         * @brief Inverse kinematics. Does not consider the floating base joint. It computes the joint angles from the desired frame position expressed in base frame. Redundancy is not handled yet.
@@ -544,13 +579,13 @@ namespace robotlib
          * Use cases:
          * - robot gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = forces to substain robot weight.
          * - leg gravity compensation: robot_velocity = 0, robot_acceleration = 0, joint_velocity = 0, joint_acceleration = 0, f_contact = 0.
-         * - realize desired contact forces and robot accelerations: 
+         * - realize desired contact forces and robot accelerations:
          *    robot_velocity = actual robot velocity
          *    robot_acceleration = desired robot acceleration
          *    joint_position = actual joint position
          *    joint_velocity = actual joint velocity
          *    joint_acceleration = desired joint acceleration
-         *    f_contact = desired contact forces. 
+         *    f_contact = desired contact forces.
          * @param[in] robot_pose pose of the robot base in base frame.
          * @param[in] robot_velocity velocity of the robot base in base frame.
          * @param[in] robot_acceleration  acceleration of the robot base in base frame.
@@ -603,7 +638,7 @@ namespace robotlib
          * @brief Factory function to destroy the robot object.
 		 */
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
-        
+
         std::string name_{};
 
     protected:
