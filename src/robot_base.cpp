@@ -9,19 +9,30 @@ namespace robotlib
     RobotBase::RobotBase(const std::string &name, 
                          const DynParams& dynamic_parameters,
                          const std::vector<LimbPtr>& limbs)
-        : name_(name)
-        , trunk_(std::make_shared<Trunk>(dynamic_parameters))
-        , limbs_(limbs)
     {
+        init(name, dynamic_parameters, limbs);
+    };
+    
+    RobotBase::RobotBase(){};
+
+    RobotBase::~RobotBase(){};
+
+    void RobotBase::init(const std::string &name,
+                         const DynParams& dynamic_parameters,
+                         const std::vector<LimbPtr>& limbs)
+    {
+        name_ = name;
+        trunk_ = std::make_shared<Trunk>(dynamic_parameters);
+        limbs_ = limbs;
+
         if(limbs.size() == 0)
         {
-            throw std::runtime_error("Error in RobotBase constructor: the robot must have at least one limb");
+            throw std::runtime_error("Error in RobotBase init: the robot must have at least one limb");
         }
 
 		// collect joints and links and assign order ids
         assignIDs();
-    };
-    RobotBase::~RobotBase(){};
+    }
 
     // ** GET FUNCTIONS **
     const std::string RobotBase::getName() const

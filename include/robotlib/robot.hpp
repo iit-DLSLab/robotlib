@@ -43,6 +43,8 @@ namespace robotlib
 			  const DynParams& dynamic_parameters,
 			  const std::vector<LimbPtr>& limbs);
 
+        Robot();
+
 		/*!
          * @brief Destructor.
          */

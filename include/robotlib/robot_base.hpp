@@ -40,10 +40,16 @@ namespace robotlib
                   const DynParams& dynamic_parameters,
                   const std::vector<LimbPtr>& limbs);
 
+        RobotBase();
+
         /*!
          * @brief Destructor.
          */
         virtual ~RobotBase();
+
+        void init(const std::string &name,
+                  const DynParams& dynamic_parameters,
+                  const std::vector<LimbPtr>& limbs);
 
         // ** GET FUNCTIONS **
         /*!

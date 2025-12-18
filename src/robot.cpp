@@ -7,9 +7,9 @@ namespace robotlib
 		const DynParams& dynamic_parameters,
 		const std::vector<LimbPtr>& limbs)
 		: RobotBase(name, dynamic_parameters, limbs)
-	{
+	{};
 
-	};
+	Robot::Robot() : RobotBase() {};
 
 	
 	unsigned int Robot::getNLIMBS() const { return limbs_.size(); };
