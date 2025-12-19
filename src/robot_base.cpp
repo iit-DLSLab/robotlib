@@ -32,6 +32,19 @@ namespace robotlib
 
 		// collect joints and links and assign order ids
         assignIDs();
+
+        // initialize name map
+        for(auto limb : limbs_)
+        {
+            for(auto joint : limb->getJoints())
+            {
+                name_map_[joint->getName()] = joint->getName();
+            }
+            for(auto link : limb->getLinks())
+            {
+                name_map_[link->getName()] = link->getName();
+            }
+        }
     }
 
     // ** GET FUNCTIONS **
@@ -201,6 +214,10 @@ namespace robotlib
 
     JointState RobotBase::getLimbJointState(const LimbPtr limb,  JointState& joint_state){    
         return joint_state.block(limb->getJoints()[0]->id, 0, limb->getNJoints(), 1);
+    }
+
+    std::map<std::string, std::string> RobotBase::getNameMap(){
+        return name_map_;
     }
 
 } // namespace robotlib

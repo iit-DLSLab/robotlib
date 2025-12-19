@@ -621,6 +621,11 @@ namespace robotlib
 
         JointState getLimbJointState(const LimbPtr limb,  JointState& data_vector);
 
+        /*
+          * @brief Get name map mapping dls convetion names to robot file descriptor (e.g. urdf, xml, etc.) ones
+        */
+        std::map<std::string, std::string> getNameMap();
+
         void assignIDs();
 		/*!
 		 * @brief Print robot hierarchy.
@@ -632,7 +637,7 @@ namespace robotlib
         /*!
          * @brief Factory function to load at run-time the glue code, creating a robot object.
 		 */
-        typedef std::shared_ptr<RobotBase> createRobot_t();
+        typedef std::shared_ptr<RobotBase> createRobot_t(); // add robot name here
 
         /*!
          * @brief Factory function to load at run-time the glue code, with external urdf in input.
@@ -660,6 +665,10 @@ namespace robotlib
 
         //! Joints of the robot
         std::vector<LinkPtr> links_;
+
+        //! Name map mapping dls convetion names to robot file descriptor (e.g. urdf, xml, etc.) ones
+        // Link and joint names are mapped
+        std::map<std::string, std::string> name_map_;
     };
     typedef std::shared_ptr<RobotBase> RobotBasePtr;
 } // namespace robotlib
