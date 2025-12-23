@@ -86,58 +86,6 @@ namespace robotlib
          */
         virtual const TrunkPtr getTrunk() const override;
 
-        /*!
-         * @brief Get robot's joint from joint's name.
-         * @param[in] name name of the joint.
-         * @return reference to link or throw except.
-         */
-        const JointPtr getJoint(const std::string &name) const override;
-
-        /*!
-         * @brief Get robot's joints.
-         * @return robot's joints as a std::vector object.
-         */
-        std::vector<JointPtr>& getJoints() override;
-        const std::vector<JointPtr> getJoints() const override;
-
-        /*!
-         * @brief Get robot's link from link's name.
-         * @param[in] name name of the link.
-         * @return reference to link or throw except.
-         */
-        const LinkPtr getLink(const std::string &name) const override;
-
-        /*!
-         * @brief Get a list of all links of the robot.
-         * @return a list of links of the robot.
-         */
-        std::vector<LinkPtr> getLinks() const override;
-
-        /*!
-         * @brief Get robot's limb from limb's name.
-         * @param[in] name name of the limb.
-         * @return reference to limb or throw except.
-         */
-        const LimbPtr getLimb(const std::string &name) const override;
-
-		/*!
-         * @brief Get robot's limbs.
-         * @return robot's limbs as a std::vector object.
-         */
-        const std::vector<LimbPtr> getLimbs() const override;
-
-        /*!
-         * @brief Get robot's legs.
-         * @return robot's legs as a vector object.
-         */
-        std::vector<LimbPtr> getLegs() const override;
-
-        /*!
-         * @brief Get robot's arms.
-         * @return robot's arms as a vector object.
-         */
-        std::vector<LimbPtr> getArms() const override;
-
 		/*!
          * @brief Get lower angle limit of each joint.
          * @details

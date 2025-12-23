@@ -193,53 +193,65 @@ namespace robotlib
          * @param[in] name name of the joint.
          * @return reference to link or throw except.
          */
-        virtual const JointPtr getJoint(const std::string &name) const = 0;
+        const JointPtr getJoint(const std::string &name) const;
 
         /*!
          * @brief Get robot's joints.
          * @return robot's joints as a std::vector object.
          */
-        virtual std::vector<JointPtr>& getJoints() = 0;
+        std::vector<JointPtr>& getJoints();
 
-        virtual const std::vector<JointPtr> getJoints() const = 0;
+        const std::vector<JointPtr> getJoints() const;
 
         /*!
          * @brief Get robot's link from link's name.
          * @param[in] name name of the link.
          * @return reference to link or throw except.
          */
-        virtual const LinkPtr getLink(const std::string &name) const = 0;
+        const LinkPtr getLink(const std::string &name) const;
 
         /*!
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        virtual std::vector<LinkPtr> getLinks() const = 0;
+        std::vector<LinkPtr> getLinks() const;
 
         /*!
          * @brief Get robot's limb from limb's name.
          * @param[in] name name of the limb.
          * @return reference to limb or throw except.
          */
-        virtual const LimbPtr getLimb(const std::string &name) const = 0;
+        const LimbPtr getLimb(const std::string &name) const;
 
         /*!
          * @brief Get robot's limbs.
          * @return robot's limbs as a std::vector object.
          */
-        virtual const std::vector<LimbPtr> getLimbs() const = 0;
+        const std::vector<LimbPtr> getLimbs() const;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        virtual std::vector<LimbPtr> getLegs() const = 0;
+        std::vector<LimbPtr> getLegs() const;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        virtual std::vector<LimbPtr> getArms() const = 0;
+        std::vector<LimbPtr> getArms() const;
+
+        /*!
+        * @brief Get robot's joints associated to legs.
+        * @return robot's joints associated to legs as a vector object.
+        */
+        std::vector<JointPtr> getLegJoints() const;
+
+        /*!
+        * @brief Get robot's joints associated to arms.
+        * @return robot's joints associated to arms as a vector object.
+        */
+        std::vector<JointPtr> getArmJoints() const;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -659,6 +671,17 @@ namespace robotlib
 
         //! Joints of the robot
         std::vector<LinkPtr> links_;
+
+        //! Set of variables used to quickly access specific limbs and limbs' joints at runtime
+        //! Legs
+        std::vector<LimbPtr> legs_;
+        //! Arms
+        std::vector<LimbPtr> arms_;
+        //! Legs' joints
+        std::vector<JointPtr> legs_joints_;
+        //! Arms' joints
+        std::vector<JointPtr> arms_joints_;
+
 
         //! Name map mapping dls convetion names to robot file descriptor (e.g. urdf, xml, etc.) ones
         // Link and joint names are mapped
