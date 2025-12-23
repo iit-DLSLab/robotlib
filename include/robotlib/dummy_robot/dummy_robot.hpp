@@ -23,9 +23,9 @@ namespace robotlib
         * @param[in] arms shared pointer pointing to the robot's arms.
         */
         DummyRobot(const std::string& name,
-                   const DynParams& dynamic_parameters,
+                    const TrunkPtr& trunk,
                    const std::vector<LimbPtr>& limbs)
-        : Robot( name, dynamic_parameters,limbs){}
+        : Robot( name, trunk,limbs){}
 
         /*!
         * @brief Destructor.

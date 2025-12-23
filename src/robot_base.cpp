@@ -7,10 +7,10 @@
 namespace robotlib
 {
     RobotBase::RobotBase(const std::string &name, 
-                         const DynParams& dynamic_parameters,
+                         const TrunkPtr& trunk,
                          const std::vector<LimbPtr>& limbs)
     {
-        init(name, dynamic_parameters, limbs);
+        init(name, trunk, limbs);
     };
     
     RobotBase::RobotBase(){};
@@ -18,11 +18,11 @@ namespace robotlib
     RobotBase::~RobotBase(){};
 
     void RobotBase::init(const std::string &name,
-                         const DynParams& dynamic_parameters,
+                         const TrunkPtr& trunk,
                          const std::vector<LimbPtr>& limbs)
     {
         name_ = name;
-        trunk_ = std::make_shared<Trunk>(dynamic_parameters);
+        trunk_ = trunk;
         limbs_ = limbs;
 
         if(limbs.size() == 0)
@@ -84,6 +84,8 @@ namespace robotlib
     
         int prev_limb_joints{0};
         int prev_limb_links{0};
+        trunk_->id = 0;
+        this->links_.push_back(trunk_);
 		for(auto limb : limbs_)
 		{
 			for(auto joint : limb->getJoints())
@@ -96,7 +98,7 @@ namespace robotlib
 
 			for(auto link : limb->getLinks())
 			{
-				link->id = limb->id*prev_limb_links + link->sub_id;
+				link->id = limb->id*prev_limb_links + link->sub_id + 1; // +1 because trunk is link 0
                 link->limb_id = limb->id;
 				this->links_.push_back(link);
 			}

@@ -9,7 +9,8 @@ namespace robotlib
     {
         const std::string robot_name{name};
 
-        const DynParams trunk_dyn_params{Eigen::Vector3d::Zero(), 5, Eigen::Matrix3d::Zero()}; //dummy com, mass, inertia
+        // create trunk with default dynamic parameters
+        TrunkPtr trunk = std::make_shared<Trunk>("trunk");
 
         std::vector<LimbPtr> limbs;
         for (auto const& limb : limbs_string_type)
@@ -17,6 +18,6 @@ namespace robotlib
             limbs.push_back(std::make_shared<Limb>(limb.at("name")[0], limb.at("links"), limb.at("joints"), limb.at("type")[0]));
         }      
 
-        return std::make_shared<DummyRobot>(robot_name, trunk_dyn_params, limbs);
+        return std::make_shared<DummyRobot>(robot_name, trunk, limbs);
     }
 } // namespace robotlib

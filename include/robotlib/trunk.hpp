@@ -36,7 +36,7 @@ namespace robotlib
          * @param[in] name name of the trunk.
 		 * @param[in] dynamic_parameters dynamic parameters of the trunk.
          */
-		Trunk(const DynParams& dynamic_parameters = DynParams());
+		Trunk(const std::string& name, const DynParams& dynamic_parameters = DynParams());
 
 		/*!
          * @brief Destructor.

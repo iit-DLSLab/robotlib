@@ -4,9 +4,9 @@ namespace robotlib
 {
 	Robot::Robot(
 		const std::string& name,
-		const DynParams& dynamic_parameters,
+		const TrunkPtr& trunk,
 		const std::vector<LimbPtr>& limbs)
-		: RobotBase(name, dynamic_parameters, limbs)
+		: RobotBase(name, trunk, limbs)
 	{};
 
 	Robot::Robot() : RobotBase() {};

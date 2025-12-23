@@ -37,7 +37,7 @@ namespace robotlib
          * @param[in] name name of the robot
          */
         RobotBase(const std::string &name,
-                  const DynParams& dynamic_parameters,
+                  const TrunkPtr& trunk,
                   const std::vector<LimbPtr>& limbs);
 
         RobotBase();
@@ -48,7 +48,7 @@ namespace robotlib
         virtual ~RobotBase();
 
         void init(const std::string &name,
-                  const DynParams& dynamic_parameters,
+                  const TrunkPtr& trunk,
                   const std::vector<LimbPtr>& limbs);
 
         // ** GET FUNCTIONS **

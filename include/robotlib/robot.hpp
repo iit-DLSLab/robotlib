@@ -40,7 +40,7 @@ namespace robotlib
          * @param[in] limbs robot's limbs.
          */
 		Robot(const std::string& name,
-			  const DynParams& dynamic_parameters,
+              const TrunkPtr& trunk,
 			  const std::vector<LimbPtr>& limbs);
 
         Robot();
