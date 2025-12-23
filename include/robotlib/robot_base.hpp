@@ -637,13 +637,7 @@ namespace robotlib
         /*!
          * @brief Factory function to load at run-time the glue code, creating a robot object.
 		 */
-        typedef std::shared_ptr<RobotBase> createRobot_t(); // add robot name here
-
-        /*!
-         * @brief Factory function to load at run-time the glue code, with external urdf in input.
-         * @param[in] robot_urdf the urdf of the robot in string format.
-		 */
-        typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string& robot_urdf);
+        typedef std::shared_ptr<RobotBase> createRobot_t(const std::string& robot_type);
 
          /*!
          * @brief Factory function to destroy the robot object.
