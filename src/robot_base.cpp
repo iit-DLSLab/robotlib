@@ -250,7 +250,7 @@ namespace robotlib
             if(joint->getName().compare(name) == 0)
                 return joint;
         }
-        throw std::range_error("joint name not found");
+        throw std::range_error("joint name "+name+" not found");
 	}
 
 	
@@ -272,7 +272,7 @@ namespace robotlib
             if(link->getName().compare(name) == 0)
                 return link;
         }
-        throw std::range_error("link name not found");
+        throw std::range_error("link name "+name+" not found");
 	};
 
 	
@@ -289,7 +289,7 @@ namespace robotlib
 			if (limb->getName().compare(name) == 0)
 				return limb;
 		}
-		throw std::range_error("limb name not found");
+		throw std::range_error("limb name "+name+" not found");
 	}
 
 	
