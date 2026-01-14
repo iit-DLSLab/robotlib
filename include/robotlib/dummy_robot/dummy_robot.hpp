@@ -264,13 +264,11 @@ namespace robotlib
 
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
-        * @param[in] robot_pose pose of the robot base in world frame.
         * @param[in] q angles of the joints.
         * @param[in] frame frame used to compute the jacobian.
         * @param[out] jacobian jacobian to be filled.
         */
-        virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
-                                        const robotlib::JointState &q,
+        virtual void computeWholeBodyJacobian(const robotlib::JointState &q,
                                         const FramePtr frame,
                                         Eigen::MatrixXd &jacobian) override {}
 
