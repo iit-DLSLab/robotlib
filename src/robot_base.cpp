@@ -7,21 +7,66 @@
 namespace robotlib
 {
     RobotBase::RobotBase(const std::string &name, 
-                         const DynParams& dynamic_parameters,
+                         const TrunkPtr& trunk,
                          const std::vector<LimbPtr>& limbs)
-        : name_(name)
-        , trunk_(std::make_shared<Trunk>(dynamic_parameters))
-        , limbs_(limbs)
     {
+        init(name, trunk, limbs);
+    };
+    
+    RobotBase::RobotBase(){};
+
+    RobotBase::~RobotBase(){};
+
+    void RobotBase::init(const std::string &name,
+                         const TrunkPtr& trunk,
+                         const std::vector<LimbPtr>& limbs)
+    {
+        name_ = name;
+        trunk_ = trunk;
+        limbs_ = limbs;
+
         if(limbs.size() == 0)
         {
-            throw std::runtime_error("Error in RobotBase constructor: the robot must have at least one limb");
+            throw std::runtime_error("Error in RobotBase init: the robot must have at least one limb");
         }
 
 		// collect joints and links and assign order ids
         assignIDs();
-    };
-    RobotBase::~RobotBase(){};
+
+        // initialize name map
+        for(auto limb : limbs_)
+        {
+            for(auto joint : limb->getJoints())
+            {
+                name_map_[joint->getName()] = joint->getName();
+            }
+            for(auto link : limb->getLinks())
+            {
+                name_map_[link->getName()] = link->getName();
+            }
+        }
+
+        // Detect legs, arms and related joints
+        for(auto limb : limbs_)
+        {
+            if(limb->type().compare("leg") == 0)
+            {
+                legs_.push_back(limb);
+                for(auto joint : limb->getJoints())
+                {
+                    legs_joints_.push_back(joint);
+                }
+            }
+            else if(limb->type().compare("arm") == 0)
+            {
+                arms_.push_back(limb);
+                for(auto joint : limb->getJoints())
+                {
+                    arms_joints_.push_back(joint);
+                }
+            }
+        }
+    }
 
     // ** GET FUNCTIONS **
     const std::string RobotBase::getName() const
@@ -39,6 +84,8 @@ namespace robotlib
     
         int prev_limb_joints{0};
         int prev_limb_links{0};
+        trunk_->id = 0;
+        this->links_.push_back(trunk_);
 		for(auto limb : limbs_)
 		{
 			for(auto joint : limb->getJoints())
@@ -51,7 +98,7 @@ namespace robotlib
 
 			for(auto link : limb->getLinks())
 			{
-				link->id = limb->id*prev_limb_links + link->sub_id;
+				link->id = limb->id*prev_limb_links + link->sub_id + 1; // +1 because trunk is link 0
                 link->limb_id = limb->id;
 				this->links_.push_back(link);
 			}
@@ -191,6 +238,87 @@ namespace robotlib
     JointState RobotBase::getLimbJointState(const LimbPtr limb,  JointState& joint_state){    
         return joint_state.block(limb->getJoints()[0]->id, 0, limb->getNJoints(), 1);
     }
+
+    std::map<std::string, std::string> RobotBase::getNameMap(){
+        return name_map_;
+    }
+
+	const JointPtr RobotBase::getJoint(const std::string &name) const
+	{
+		for(auto joint : joints_)
+        {
+            if(joint->getName().compare(name) == 0)
+                return joint;
+        }
+        throw std::range_error("joint name "+name+" not found");
+	}
+
+	
+	std::vector<JointPtr>& RobotBase::getJoints()
+	{
+		return joints_;
+	}
+
+	const std::vector<JointPtr> RobotBase::getJoints() const
+	{
+		return joints_;
+	}
+
+	
+	const LinkPtr RobotBase::getLink(const std::string& name) const
+	{
+		for(auto link : links_)
+        {
+            if(link->getName().compare(name) == 0)
+                return link;
+        }
+        throw std::range_error("link name "+name+" not found");
+	};
+
+	
+    std::vector<LinkPtr> RobotBase::getLinks() const
+    {
+		return links_; 
+    }
+
+	
+	const LimbPtr RobotBase::getLimb(const std::string &name) const
+	{
+		for (auto limb : limbs_)
+		{
+			if (limb->getName().compare(name) == 0)
+				return limb;
+		}
+		throw std::range_error("limb name "+name+" not found");
+	}
+
+	
+	const std::vector<LimbPtr> RobotBase::getLimbs() const
+	{
+		return limbs_; 
+	};
+
+	
+	std::vector<LimbPtr> RobotBase::getLegs() const
+	{
+        return legs_;
+	};
+
+	
+	std::vector<LimbPtr> RobotBase::getArms() const
+	{
+        return arms_;
+	};
+
+    std::vector<JointPtr> RobotBase::getLegJoints() const
+    {
+        return legs_joints_;
+    };
+
+    std::vector<JointPtr> RobotBase::getArmJoints() const
+    {
+        return arms_joints_;
+    };
 
 } // namespace robotlib
 

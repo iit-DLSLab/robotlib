@@ -18,8 +18,8 @@
 
 namespace robotlib
 {
-	Trunk::Trunk(const DynParams &dynamic_parameters) 
-		: Link("TRUNK")
+	Trunk::Trunk(const std::string& name, const DynParams &dynamic_parameters) 
+		: Link(name)
 		, dynamic_parameters_(dynamic_parameters)
 	{}
 

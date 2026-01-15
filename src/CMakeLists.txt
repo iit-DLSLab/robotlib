@@ -45,5 +45,3 @@ install(
 	DESTINATION	/usr/lib
 	COMPONENT	"robotlib"
 )
-
-# add_subdirectory(robots)

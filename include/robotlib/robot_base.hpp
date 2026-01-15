@@ -37,13 +37,19 @@ namespace robotlib
          * @param[in] name name of the robot
          */
         RobotBase(const std::string &name,
-                  const DynParams& dynamic_parameters,
+                  const TrunkPtr& trunk,
                   const std::vector<LimbPtr>& limbs);
+
+        RobotBase();
 
         /*!
          * @brief Destructor.
          */
         virtual ~RobotBase();
+
+        void init(const std::string &name,
+                  const TrunkPtr& trunk,
+                  const std::vector<LimbPtr>& limbs);
 
         // ** GET FUNCTIONS **
         /*!
@@ -187,53 +193,65 @@ namespace robotlib
          * @param[in] name name of the joint.
          * @return reference to link or throw except.
          */
-        virtual const JointPtr getJoint(const std::string &name) const = 0;
+        const JointPtr getJoint(const std::string &name) const;
 
         /*!
          * @brief Get robot's joints.
          * @return robot's joints as a std::vector object.
          */
-        virtual std::vector<JointPtr>& getJoints() = 0;
+        std::vector<JointPtr>& getJoints();
 
-        virtual const std::vector<JointPtr> getJoints() const = 0;
+        const std::vector<JointPtr> getJoints() const;
 
         /*!
          * @brief Get robot's link from link's name.
          * @param[in] name name of the link.
          * @return reference to link or throw except.
          */
-        virtual const LinkPtr getLink(const std::string &name) const = 0;
+        const LinkPtr getLink(const std::string &name) const;
 
         /*!
          * @brief Get a list of all links of the robot.
          * @return a list of links of the robot.
          */
-        virtual std::vector<LinkPtr> getLinks() const = 0;
+        std::vector<LinkPtr> getLinks() const;
 
         /*!
          * @brief Get robot's limb from limb's name.
          * @param[in] name name of the limb.
          * @return reference to limb or throw except.
          */
-        virtual const LimbPtr getLimb(const std::string &name) const = 0;
+        const LimbPtr getLimb(const std::string &name) const;
 
         /*!
          * @brief Get robot's limbs.
          * @return robot's limbs as a std::vector object.
          */
-        virtual const std::vector<LimbPtr> getLimbs() const = 0;
+        const std::vector<LimbPtr> getLimbs() const;
 
         /*!
          * @brief Get robot's legs.
          * @return robot's legs as a vector object.
          */
-        virtual std::vector<LimbPtr> getLegs() const = 0;
+        std::vector<LimbPtr> getLegs() const;
 
         /*!
          * @brief Get robot's arms.
          * @return robot's arms as a vector object.
          */
-        virtual std::vector<LimbPtr> getArms() const = 0;
+        std::vector<LimbPtr> getArms() const;
+
+        /*!
+        * @brief Get robot's joints associated to legs.
+        * @return robot's joints associated to legs as a vector object.
+        */
+        std::vector<JointPtr> getLegJoints() const;
+
+        /*!
+        * @brief Get robot's joints associated to arms.
+        * @return robot's joints associated to arms as a vector object.
+        */
+        std::vector<JointPtr> getArmJoints() const;
 
         /*!
          * @brief Get lower angle limit of each joint.
@@ -337,13 +355,11 @@ namespace robotlib
                             Eigen::MatrixXd &jacobian) = 0;
         /*!
         * @brief Get the geometric jacobian of the frame expressed in base frame. The order is linear_jacobian, angular_jacobian. For a jacobian considering only the joints, see getLimbsJacobian.
-        * @param[in] robot_pose pose of the robot base in world frame.
         * @param[in] q angles of the joints.
         * @param[in] frame frame used to compute the jacobian.
         * @param[out] jacobian jacobian to be filled.
         */
-        virtual void computeWholeBodyJacobian(  const Eigen::Matrix<double, 7, 1> &robot_pose,
-                                        const robotlib::JointState &q,
+        virtual void computeWholeBodyJacobian(const robotlib::JointState &q,
                                         const FramePtr frame,
                                         Eigen::MatrixXd &jacobian) = 0;
 
@@ -615,6 +631,11 @@ namespace robotlib
 
         JointState getLimbJointState(const LimbPtr limb,  JointState& data_vector);
 
+        /*
+          * @brief Get name map mapping dls convetion names to robot file descriptor (e.g. urdf, xml, etc.) ones
+        */
+        std::map<std::string, std::string> getNameMap();
+
         void assignIDs();
 		/*!
 		 * @brief Print robot hierarchy.
@@ -626,13 +647,7 @@ namespace robotlib
         /*!
          * @brief Factory function to load at run-time the glue code, creating a robot object.
 		 */
-        typedef std::shared_ptr<RobotBase> createRobot_t();
-
-        /*!
-         * @brief Factory function to load at run-time the glue code, with external urdf in input.
-         * @param[in] robot_urdf the urdf of the robot in string format.
-		 */
-        typedef std::shared_ptr<RobotBase> createRobotWithUrdf_t(const std::string& robot_urdf);
+        typedef std::shared_ptr<RobotBase> createRobot_t(const std::string& robot_type);
 
          /*!
          * @brief Factory function to destroy the robot object.
@@ -654,6 +669,21 @@ namespace robotlib
 
         //! Joints of the robot
         std::vector<LinkPtr> links_;
+
+        //! Set of variables used to quickly access specific limbs and limbs' joints at runtime
+        //! Legs
+        std::vector<LimbPtr> legs_;
+        //! Arms
+        std::vector<LimbPtr> arms_;
+        //! Legs' joints
+        std::vector<JointPtr> legs_joints_;
+        //! Arms' joints
+        std::vector<JointPtr> arms_joints_;
+
+
+        //! Name map mapping dls convetion names to robot file descriptor (e.g. urdf, xml, etc.) ones
+        // Link and joint names are mapped
+        std::map<std::string, std::string> name_map_;
     };
     typedef std::shared_ptr<RobotBase> RobotBasePtr;
 } // namespace robotlib

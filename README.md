@@ -164,7 +164,7 @@ or in case of Aliengo robot
 
 where *aliengolib* is the name of the installed glue code library for Aliengo.
 
-A final remark about the *openRobot* funtion. When it takes only one argument, this function calls the *createRobot_t* factory function defined in the glue code to create the robot object. This function may or may not use an urdf as source of kinematic and dynamic robot information. But the *openRobot* function can also take a second argument identyfing the robot urdf in string format. In this case, the *createRobotWithUrdf_t* factory function (which need to be defined in the glue code too) is called instead. In this way the user can provide also a custom urdf as source of robot information.
+A final remark about the *openRobot* funtion. When it takes only one argument, this function calls the *createRobot_t* factory function defined in the glue code to create the robot object. This function may or may not use an urdf as source of kinematic and dynamic robot information. But the *openRobot* function can also take a second argument identyfing the robot urdf in string format.
 
 ### Writing a glue code
 The implementation of the glue code is quite arbitrary. You can use whatever tool you want to compute the kinematics and the dynamics of the robot (like for example [RobCoGen](https://robcogenteam.bitbucket.io/)). But, there are some main guidelines you need to follow to agree with the Robotlib interface. The main steps are:
