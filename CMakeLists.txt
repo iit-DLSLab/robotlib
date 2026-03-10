@@ -7,7 +7,7 @@ option(BUILD_TESTING "" OFF)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CTest)
 
-find_package(Eigen3 REQUIRED NO_MODULE)
+find_package(Eigen3 REQUIRED)
 
 add_compile_options(
 	-std=c++23
