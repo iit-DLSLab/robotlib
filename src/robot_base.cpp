@@ -116,27 +116,54 @@ namespace robotlib
 
     robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau)
     {
-        robotlib::JointState inv_dyn_tau = this->makeJointState();	// remove this NRT instatiation!
-        this->inverseDynamics(pose,
-								Eigen::Matrix<double, 6, 1>::Zero(),
+        return estimateLimbsGRF(pose,
+                                Eigen::Matrix<double, 6, 1>::Zero(),
                                 Eigen::Matrix<double, 6, 1>::Zero(),
                                 q,
                                 qd,
                                 qdd,
-                                {},
-                                inv_dyn_tau);
+                                tau);
+    }
+
+    robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose,
+                                                                        const Eigen::Matrix<double,6,1>& base_velocity,
+                                                                        const Eigen::Matrix<double,6,1>& base_acceleration,
+                                                                        const robotlib::JointState& q,
+                                                                        const robotlib::JointState& qd,
+                                                                        const robotlib::JointState& qdd,
+                                                                        const robotlib::JointState& tau)
+    {
+        robotlib::JointState modeled_tau = this->makeJointState();
+        robotlib::JointState nle_tau = this->makeJointState();
+        Eigen::Matrix<double, 6, 1> nle_base = Eigen::Matrix<double, 6, 1>::Zero();
+        this->computeNonLinearEffects(pose,
+                                      base_velocity,
+                                      q,
+                                      qd,
+                                      nle_base,
+                                      nle_tau);
+
+        Eigen::MatrixXd js_inertia = Eigen::MatrixXd::Zero(6 + this->getNJOINTS(), 6 + this->getNJOINTS());
+        this->computeJSInertiaMatrix(pose, q, js_inertia);
+
+        Eigen::VectorXd generalized_acceleration(6 + this->getNJOINTS());
+        generalized_acceleration << base_acceleration, qdd;
+        modeled_tau = nle_tau + js_inertia.block(6, 0, this->getNJOINTS(), 6 + this->getNJOINTS()) * generalized_acceleration;
 
         auto estimated_feet_grf = this->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
         for(auto limb: this->getLimbs())
         {
             Eigen::MatrixXd J = Eigen::MatrixXd::Zero(6, this->getNJOINTS());
-            this->computeLimbsJacobian(q, limb->getEndEffector(), J);            
-            const int njoints_limb = limb->getNJoints();
-            Eigen::MatrixXd J_limb = J.block(0,limb->id*njoints_limb,3,njoints_limb);
+            this->computeLimbsJacobian(q, limb->getEndEffector(), J);
 
-            estimated_feet_grf.at(limb) = J_limb.transpose().completeOrthogonalDecomposition().pseudoInverse() * (inv_dyn_tau - tau);
-            //extForces[limb] = jacobians_[limb].transpose().inverse() * (-tau_.segment(3*limb, 3));
+            const int njoints_limb = limb->getNJoints();
+            const int joint_offset = limb->getJoints().front()->id;
+            Eigen::MatrixXd J_limb = J.block(0, joint_offset, 3, njoints_limb);
+            const Eigen::VectorXd limb_torque_residual = modeled_tau.segment(joint_offset, njoints_limb) - tau.segment(joint_offset, njoints_limb);
+
+            // Project the limb torque residual after removing nonlinear and inertial contributions.
+            estimated_feet_grf.at(limb) = J_limb.transpose().completeOrthogonalDecomposition().solve(limb_torque_residual);
         }
         return estimated_feet_grf;
     }
