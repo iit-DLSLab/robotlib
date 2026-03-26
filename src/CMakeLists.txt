@@ -14,7 +14,12 @@ add_library(robotlib
 	dummy_robot/dummy_robot_creator.cpp
 )
 
-target_link_libraries(robotlib PRIVATE urdf)
+target_link_libraries(robotlib 
+		PRIVATE 
+		urdfdom_model
+        urdfdom_model_state
+        urdfdom_world
+        urdfdom_sensor)
 
 # add_executable(robot_info
 # 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
