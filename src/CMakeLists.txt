@@ -15,6 +15,8 @@ add_library(robotlib
 )
 
 target_link_libraries(robotlib 
+		PUBLIC
+		Eigen3::Eigen
 		PRIVATE 
 		urdfdom_model
         urdfdom_model_state
@@ -37,6 +39,8 @@ target_include_directories(robotlib
 		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
 		$<INSTALL_INTERFACE:lib>
+	PRIVATE
+		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/robotlib>
 )
 
 install(
