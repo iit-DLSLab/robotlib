@@ -621,6 +621,32 @@ namespace robotlib
                                 const robotlib::eigen::aligned_map<std::string, Eigen::Vector3d> &f_contact,
                                 robotlib::JointState &tau_joints) = 0;
 
+        /**
+         * @brief Get base acceleration.
+         */
+        virtual void getBaseAcceleration(const robotlib::JointState &,
+                                         const robotlib::JointState &,
+                                         const robotlib::JointState &,
+                                         Eigen::Matrix<double, 6, 1> &) {
+          throw std::runtime_error("getBaseAcceleration not implemented");
+        }
+
+        /**
+         * @brief Get Joint Jacobian Time Variation.
+         */
+        virtual void getJointJacobianTimeVariation(const Eigen::Matrix<double, 6, 1> &,
+                                                   const robotlib::JointState &,
+                                                   const robotlib::JointState &,
+                                                   const std::string &,
+                                                   Eigen::MatrixXd &) {
+          throw std::runtime_error("getJointJacobianTimeVariation not implemented");
+        }
+
+        virtual void computeBaseJacobian(const robotlib::JointState &, Eigen::MatrixXd &)
+        {
+          throw std::runtime_error("computeBaseJacobian not implemented");
+        }
+
         // ** SET FUNCTIONS **
         // template <class T>
         // T& getLimbData(const LimbPtr limb, Eigen::Matrix<T, Eigen::Dynamic, 1>& data_vector);
