@@ -7,7 +7,7 @@ option(BUILD_TESTING "" OFF)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CTest)
 
-find_package(Eigen3 REQUIRED NO_MODULE)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_compile_options(
 	-std=c++23
@@ -70,13 +70,6 @@ execute_process(
 if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
 endif()
-
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
-	/usr/include/eigen3
-	include
-	SYSTEM
-)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 

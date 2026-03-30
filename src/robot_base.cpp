@@ -128,31 +128,14 @@ namespace robotlib
 
         auto estimated_feet_grf = this->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
 
-        int limb_id = 0;
         for(auto limb: this->getLimbs())
         {
-            int num_joints{0};
-            Eigen::VectorXd tau_block = Eigen::VectorXd::Zero(limb->getNJoints());
-            Eigen::VectorXd inv_dyn_tau_block = Eigen::VectorXd::Zero(limb->getNJoints());
-
-            for(auto joint: limb->getJoints())
-            {
-                tau_block(num_joints) = tau[joint->id];
-                //remove friction torques
-                //inv_dyn_tau[joint] -= torque_offset[joint] + sign_func(des_qd[joint])*stiction_positive
-                                                             //+ (1-sign_func(des_qd[joint]))*stiction_negative
-                inv_dyn_tau_block(num_joints) = inv_dyn_tau[joint->id];
-                num_joints++;
-            }
-
             Eigen::MatrixXd J = Eigen::MatrixXd::Zero(6, this->getNJOINTS());
-            const std::string foot_name = utils::toLower(limb->getName())+"_foot";
-            this->computeLimbsJacobian(q, foot_name, J);            
+            this->computeLimbsJacobian(q, limb->getEndEffector(), J);            
             const int njoints_limb = limb->getNJoints();
-            Eigen::MatrixXd J_limb = J.block(0,limb_id,3,njoints_limb);
-            limb_id+=njoints_limb;
+            Eigen::MatrixXd J_limb = J.block(0,limb->id*njoints_limb,3,njoints_limb);
 
-            estimated_feet_grf[limb] = J_limb.transpose().inverse() * (inv_dyn_tau_block - tau_block);
+            estimated_feet_grf.at(limb) = J_limb.transpose().completeOrthogonalDecomposition().pseudoInverse() * (inv_dyn_tau - tau);
             //extForces[limb] = jacobians_[limb].transpose().inverse() * (-tau_.segment(3*limb, 3));
         }
         return estimated_feet_grf;

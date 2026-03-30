@@ -14,7 +14,14 @@ add_library(robotlib
 	dummy_robot/dummy_robot_creator.cpp
 )
 
-target_link_libraries(robotlib PRIVATE urdf)
+target_link_libraries(robotlib 
+		PUBLIC
+		Eigen3::Eigen
+		PRIVATE 
+		urdfdom_model
+        urdfdom_model_state
+        urdfdom_world
+        urdfdom_sensor)
 
 # add_executable(robot_info
 # 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
@@ -32,6 +39,8 @@ target_include_directories(robotlib
 		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
 		$<INSTALL_INTERFACE:lib>
+	PRIVATE
+		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/robotlib>
 )
 
 install(
