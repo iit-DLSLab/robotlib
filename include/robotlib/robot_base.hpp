@@ -142,7 +142,7 @@ namespace robotlib
         void computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LimbDataMap<bool>& stance_legs, const LimbDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const;
 
         /*!
-         * @brief Estimate limbs external ground reaction forces
+         * @brief Estimate limbs external ground reaction forces with zero floating-base velocity and acceleration.
         * @param[in] pose robot pose
         * @param[in] q
         * @param[in] qd
@@ -151,6 +151,25 @@ namespace robotlib
         * @return estimated GRF for each limb
         */
         robotlib::LimbDataMap<Eigen::Vector3d> estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau);
+
+        /*!
+         * @brief Estimate limbs external ground reaction forces compensating nonlinear and inertial effects.
+        * @param[in] pose robot pose
+        * @param[in] base_velocity floating-base spatial velocity expressed in base frame
+        * @param[in] base_acceleration floating-base spatial acceleration expressed in base frame
+        * @param[in] q
+        * @param[in] qd
+        * @param[in] qdd
+        * @param[in] tau
+        * @return estimated GRF for each limb
+        */
+        robotlib::LimbDataMap<Eigen::Vector3d> estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose,
+                                                                const Eigen::Matrix<double,6,1>& base_velocity,
+                                                                const Eigen::Matrix<double,6,1>& base_acceleration,
+                                                                const robotlib::JointState& q,
+                                                                const robotlib::JointState& qd,
+                                                                const robotlib::JointState& qdd,
+                                                                const robotlib::JointState& tau);
 
         /*!
          * @brief Get number of robot's legs.
