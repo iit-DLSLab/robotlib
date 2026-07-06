@@ -36,26 +36,27 @@ Robotlib is written in C++17 to be fast and portable. It is compatible with the 
 **Authors in alphabetical order**: Gianluca Cerilli, Geoff Fink and Marco Marchitto
 
 ## Installation
-### Dependencies
-Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
-
-**CMake** (3.14.0 is the minimum version for using GoogleTest) - You can download the chosen version and install it through
-
-    wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
-    tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
-    export PATH="$PATH:<path where you extracted cmake>/cmake-3.<X>.<X>-Linux-x86_64/bin"
-
-You just need to substitue \<X> with the chosen CMake version.
-
-**Eigen3**
-
-    sudo apt install libeigen3-dev
-
-**GTest**
-
-    sudo apt install libgtest-dev
+### Pull image
+Pull the docker image `ghcr.io/iit-dlslab/dls2-dev:latest`.
 
 ### Building
+### Open docker image
+```bash
+docker run -it --rm \
+  --name dls_container \
+  --hostname docker \
+  --gpus all \
+  --privileged \
+  --network host \
+  -e DISPLAY="$DISPLAY" \
+  -e DLS=2 \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  -v "$PWD:$PWD" \
+  -w "$PWD" \
+  ghcr.io/iit-dlslab/dls2-dev:latest \
+  /bin/bash
+```
+### Build
 To build Robotlib, clone the latest version of this repository and compile the package using
 
     git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git
@@ -69,10 +70,6 @@ To build Robotlib, clone the latest version of this repository and compile the p
     cmake .. -DCMAKE_BUILD_TYPE=Release
 
     make install
-
-If you get the error *CMAKE_MAKE_PROGRAM is not set.* when executing the `cmake` command, you might need to do
-
-    sudo apt install build-essential
 
 ## Usage
 Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here](https://gitlab.advr.iit.it/dls-lab/aliengo-commons/-/tree/develop_aliengolib/aliengolib#installation) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
@@ -180,7 +177,4 @@ To access to the html documentation, just double click on the file *index.html* 
 
 To view the inheritance graph, once the html file is opended in your browser, go in the Classes section and click on the Class Hierarchy tab.
 
-For other examples, you can have look at the tests provided in the *tests* folder. 
-
-## Issues
-You can look for known issues, report bugs and ask for features implementation at the [issue tracker](https://gitlab.advr.iit.it/dls-lab/robotlib/-/issues).
+For other examples, you can have look at the tests provided in the *tests* folder.
