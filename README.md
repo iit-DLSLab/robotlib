@@ -36,26 +36,27 @@ Robotlib is written in C++17 to be fast and portable. It is compatible with the 
 **Authors in alphabetical order**: Gianluca Cerilli, Geoff Fink and Marco Marchitto
 
 ## Installation
-### Dependencies
-Robotlib has been developed and tested on a x86_64 version of Ubuntu 20.04 (Focal Fossa). The dependencies for building and installing the library are the following:
-
-**CMake** (3.14.0 is the minimum version for using GoogleTest) - You can download the chosen version and install it through
-
-    wget https://cmake.org/files/v3.X/cmake-3.<X>.<X>-Linux-x86_64.tar.gz
-    tar xf cmake-3.<X>.<X>-Linux-x86_64.tar.gz
-    export PATH="$PATH:<path where you extracted cmake>/cmake-3.<X>.<X>-Linux-x86_64/bin"
-
-You just need to substitue \<X> with the chosen CMake version.
-
-**Eigen3**
-
-    sudo apt install libeigen3-dev
-
-**GTest**
-
-    sudo apt install libgtest-dev
+### Pull image
+Pull the docker image `ghcr.io/iit-dlslab/dls2-dev:latest`.
 
 ### Building
+### Open docker image
+```bash
+docker run -it --rm \
+  --name dls_container \
+  --hostname docker \
+  --gpus all \
+  --privileged \
+  --network host \
+  -e DISPLAY="$DISPLAY" \
+  -e DLS=2 \
+  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+  -v "$PWD:$PWD" \
+  -w "$PWD" \
+  ghcr.io/iit-dlslab/dls2-dev:latest \
+  /bin/bash
+```
+### Build
 To build Robotlib, clone the latest version of this repository and compile the package using
 
     git clone git@gitlab.advr.iit.it:dls-lab/robotlib.git
@@ -69,10 +70,6 @@ To build Robotlib, clone the latest version of this repository and compile the p
     cmake .. -DCMAKE_BUILD_TYPE=Release
 
     make install
-
-If you get the error *CMAKE_MAKE_PROGRAM is not set.* when executing the `cmake` command, you might need to do
-
-    sudo apt install build-essential
 
 ## Usage
 Before using Robotlib, you need to install the glue code associated to the robot you want to control. For example, if you want to control the Aliengo quadruped robot you can follow the instructions [here](https://gitlab.advr.iit.it/dls-lab/aliengo-commons/-/tree/develop_aliengolib/aliengolib#installation) to install its glue code. Essentially, to install a glue code you just need to compile it with `make install`. 
@@ -96,38 +93,36 @@ Some robot information can be accessed through the robot object, for example
     // Print some robot information
     std::cout << robot->getName() << std::endl;
     std::cout << robot->getNLEGS() << std::endl;
+    std::cout << robot->getNARMS() << std::endl;
+    std::cout << robot->getNLIMBS() << std::endl;
     std::cout << robot->getNJOINTS() << std::endl;
 
 Suppose now that you want a variable storing the stance status of each leg. You can define a leg data map object in this way
 
     // Define and populate a leg data map object
-    robotlib::RobotBase::LimbDataMap<bool> stance_status {robot->makeLimbDataMap<bool>(false)}; // or auto stance_status {robot->makeLimbDataMap<bool>(0.0)};
+    robotlib::LimbDataMap<bool> stance_status {robot->makeLimbDataMap<bool>(false)}; // or auto stance_status {robot->makeLimbDataMap<bool>(false)};
 
-The LimbDataMap object is a list of pairs. Each pair associates the shared pointer of a leg to a data.
-
-Notice that the constructor of the LimbDataMap class allocates dynamic memory. With the aim of letting the user managing more carefully dynamic memory allocation, the LimbDataMap constructor is made private, such that the user is forced to use a RobotBase object to create a LimbDataMap one. Each time you see the word *make* inside a Robotlib function name, it means that the function is instantiating a data structure with dynamic memory allocation.
+`LimbDataMap<Data>` is a type alias for `std::map<LimbPtr, Data>`. Each entry associates a shared pointer to a limb with a value of type `Data`. You can construct one directly or use the `makeLimbDataMap` helper on a `RobotBase` object, which initialises all limb entries for you.
 
 Let's now populate the stance_status variable
 
-    for(LimbPtr  leg: *robot->getLegs()) //or for(auto &leg : robot->getLegs())
+    for (auto& leg : robot->getLegs())
     {
-        stance_status[leg] = true; //or stance_status[leg->getName()] = true;
+        stance_status[leg] = true;
         std::cout << leg->getName() << " leg, stored data: " << stance_status[leg] << std::endl;
     }
 
-As you can see in the code above, we use iterators to iterate over a set of legs got from the robot object. In Robotlib there is no way to access to data structures by index. You can access to data by either a class instance or by string. For example, if you want to access to the stance status associated to the left front leg you can do it in one of the following ways
+As you can see in the code above, we use iterators to iterate over a set of legs got from the robot object. In Robotlib you can access to data by a shared pointer to the limb. For example, if you want to access to the stance status associated to the left front leg you can do it as follows
 
-    bool stance {stance_status[robotlib->getLimb("LF")]};
-    //or
-    stance = stance_status["LF"];
+    bool stance {stance_status[robot->getLimb("LF")]};
 
-where "LF" is the name associated to the left front leg. The getLeg function returns a std::shared_ptr\<LimbBase> object, that is used to access to the associated data stored in the variable stance_status.
+where "LF" is the name associated to the left front leg. The `getLimb` function returns a `std::shared_ptr<LimbBase>` object that is used as the key to access the associated data stored in `stance_status`.
 
 As another example of data type that can be associated to legs consider the following example
 
     // Define and populate a leg data map object of jacobians; each jacobian is associated to a leg
-    robotlib::RobotBase::LimbDataMap<robotlib::RobotBase::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{dummy_quadruped->makeFootJacobian(foot)};
-    for (auto leg : *(robot->getLegs()))
+    robotlib::LimbDataMap<robotlib::Jacobian> feet_jacobian{robot->makeFeetJacobian()}; // or auto jacobian{robot->makeFootJacobian(leg)};
+    for (auto& leg : robot->getLegs())
     {
         std::cout << "Foot jacobian per " << leg->getName() << " leg: " << std::endl;
         feet_jacobian[leg] << 1, 0, 0,
@@ -139,13 +134,13 @@ As another example of data type that can be associated to legs consider the foll
         std::cout << feet_jacobian[leg] << std::endl;
     }
 
-In this example we have used the function makeFeetJacobian to create a jacobian object for each leg.
+In this example we have used the function `makeFeetJacobian` to create a `Jacobian` object (6 × n_joints_leg) for each leg. To create a jacobian for a single leg you can use `makeFootJacobian(leg)`, where `leg` is a `LimbPtr`.
 
 Consider now the following example to compute the forward kinematics for each leg
 
     // Forward kinematics
-    robotlib::RobotBase::JointState q_input{robot->makeJointState(0)};
-    robotlib::RobotBase::LimbDataMap<Eigen::Vector3d> foot_position{robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero())};
+    robotlib::JointState q_input{robot->makeJointState(0.0)};
+    robotlib::LimbDataMap<Eigen::Vector3d> foot_position{robot->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero())};
     robot->forwardKinematics(q_input, foot_position);
 
 The forwardKinematic function takes as input a joint configuration and overwrite the foot_position variable after having computed the forward kinematics. This is an example of virtual function declared in the RobotBase class, whose implementation is defined in the glue code. Thanks to opendl API and polymorphisms, it is possible to access to its implementation through the Robotlib interface.
@@ -167,26 +162,9 @@ where *aliengolib* is the name of the installed glue code library for Aliengo.
 A final remark about the *openRobot* funtion. When it takes only one argument, this function calls the *createRobot_t* factory function defined in the glue code to create the robot object. This function may or may not use an urdf as source of kinematic and dynamic robot information. But the *openRobot* function can also take a second argument identyfing the robot urdf in string format.
 
 ### Writing a glue code
-The implementation of the glue code is quite arbitrary. You can use whatever tool you want to compute the kinematics and the dynamics of the robot (like for example [RobCoGen](https://robcogenteam.bitbucket.io/)). But, there are some main guidelines you need to follow to agree with the Robotlib interface. The main steps are:
-
-* Define a \<RobotLeg> class extending robotlib::Leg. In this class you need to:
-    * set the number of joints and links of the leg
-    * define a way to associate parent and child links to each joint: for example you could define a std::map data structure associating to each joint name the anems of its child and parent links
-    * define a way to associate parent and child joints to each link: for example you could define a std::map data structure associating to each link name the names of its child and parent joints
-* Define a \<RobotName> class extending robotlib::Robot. In this class you need to:
-    * define the total number of joints, links, legs and arms 
-    * define the robot hierarchical structure in the class constructor. Here you may also define joint limits or instantiate utility variables
-    * implement all the virtual functions defined in the templated Robot class
-    * implement the factory functions in order to create and destroy a robot object. In the factory function that creates the object you need to:
-        * create a trunk link
-        * create the legs (and/or arms too) with associated joints and links
-        * call the \<RobotName> class constructor
-
-The implementation of each inherited function is arbitrary.
+The implementation of the glue code is quite arbitrary. You can use whatever tool you want to compute the kinematics and the dynamics of the robot (like for example [RobCoGen](https://robcogenteam.bitbucket.io/) or [Pinocchio](https://github.com/stack-of-tasks/pinocchio)). As an example, see [pinocchio-gluecode](https://github.com/iit-DLSLab/pinocchio-gluecode).
 
 Remember that you access to glue code functions through Robotlib. So if you define a new function in the glue code that it is not in Robotlib, it cannot be called by a RobotBase (or LimbBase) object. You would need then to make it visible also in Robotlib.
-
-Examples of simple glue codes are provided in the src/robots folder, where a dummy-quadruped and a dummy-hexapod robots are defined. [Aliengolib](https://gitlab.advr.iit.it/dls-lab/aliengo-commons/-/tree/develop_aliengolib) and [Crexlib](https://gitlab.advr.iit.it/dls-lab/crex-commons/-/tree/develop_crexlib) are instead more complex implementations of glue codes.
 
 ## Documentation
 The Robotlib documentation is written using Doxygen. To generate the documentation go in the folder *doc* and execute the following command
@@ -199,37 +177,4 @@ To access to the html documentation, just double click on the file *index.html* 
 
 To view the inheritance graph, once the html file is opended in your browser, go in the Classes section and click on the Class Hierarchy tab.
 
-For other examples, you can have look at the tests provided in the *tests* folder. 
-## Tests
-The tests are based on GoogleTests: the Google's C++ test framework. The tests relies on glue codes associated to dummy robots generated with the only purpose of testing.
-
-To run tests
-
-    mkdir build
-
-    cd build
-
-    cmake .. -DBUILD_TESTING=On
-
-    make install
-
-    make check
-
-## Pipeline status
-
-### Develop
-
-|  **Ubuntu OS**  |  **Build status**  |   **Test coverage - Lines**  |   **Test coverage - Functions**  |
-| :-------------: | :----------------: | :--------------------------: | :------------------------------: |
-| Focal Fossa | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/focal-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/focal-develop) |
-| Bionic Beaver | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/bionic-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/bionic-develop) |
-| Xenial Xerus | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/xenial-develop/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/xenial-develop) |
-
-### Release
-
-|  **Stable branch**  |  **Build status**  |   **Test coverage - Lines**  |   **Test coverage - Functions**  |
-| :------------------: | :----------------: | :--------------------------: | :------------------------------: |
-| master | [![pipeline status](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/pipeline.svg)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-lines)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) | [![coverage report](https://gitlab.advr.iit.it/dls-lab/robotlib/badges/master/coverage.svg?job=coverage-functions)](https://gitlab.advr.iit.it/dls-lab/robotlib/-/commits/master) |
-
-## Issues
-You can look for known issues, report bugs and ask for features implementation at the [issue tracker](https://gitlab.advr.iit.it/dls-lab/robotlib/-/issues).
+For other examples, you can have look at the tests provided in the *tests* folder.
