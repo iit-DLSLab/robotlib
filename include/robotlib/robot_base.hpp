@@ -673,6 +673,12 @@ namespace robotlib
 		 */
         typedef void destroyRobot_t(std::shared_ptr<RobotBase>);
 
+        // Returns [viscous damping, Coulomb friction] for the given joint.
+        virtual Eigen::Vector2d getJointDampingAndFriction(const JointPtr joint) const
+        {
+            throw std::logic_error("Joint damping/friction unavailable for " + joint->getName());
+        }
+
         std::string name_{};
 
     protected:
