@@ -83,7 +83,7 @@ TEST(TrunkUnitTests, getCoM)
      * @test Trunk com with dummy values
      */
     {
-        robotlib::Trunk trunk{trunk_dyn_params};
+        robotlib::Trunk trunk{"TRUNK", trunk_dyn_params};
         EXPECT_EQ(trunk.getCoM(), com);
     }
 }
@@ -107,7 +107,7 @@ TEST(TrunkUnitTests, getMass)
      * @test Trunk mass with dummy values
      */
     {
-        robotlib::Trunk trunk{trunk_dyn_params};
+        robotlib::Trunk trunk{"TRUNK", trunk_dyn_params};
         EXPECT_EQ(trunk.getMass(), mass);
     }
 }
@@ -131,7 +131,7 @@ TEST(TrunkUnitTests, getInertia)
      * @test Trunk inertia with dummy values
      */
     {
-        robotlib::Trunk trunk{trunk_dyn_params};
+        robotlib::Trunk trunk{"TRUNK", trunk_dyn_params};
         EXPECT_EQ(trunk.getInertia(), inertia);
     }
 }
@@ -154,7 +154,7 @@ TEST(TrunkUnitTests, getDynParams)
      * @test Trunk inertia with dummy values
      */
     {
-        robotlib::Trunk trunk{trunk_dyn_params};
+        robotlib::Trunk trunk{"TRUNK", trunk_dyn_params};
         EXPECT_EQ(trunk.getDynParams().getCoM(), com);
         EXPECT_EQ(trunk.getDynParams().getMass(), mass);
         EXPECT_EQ(trunk.getDynParams().getInertia(), inertia);

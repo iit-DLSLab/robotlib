@@ -23,6 +23,14 @@ function(add_robotlib_test)
 		robotlib
 	)
 
+	# Tests use flat includes (e.g. "dummy_robot/dummy_robot_creator.hpp"), which
+	# require include/robotlib; robotlib only exposes it as PRIVATE.
+	target_include_directories(
+		${TEST_TARGET}
+		PRIVATE
+		${PROJECT_SOURCE_DIR}/include/robotlib
+	)
+
     add_test(${TEST_TARGET} ${TEST_TARGET})
     set_property(GLOBAL APPEND PROPERTY ALL_TEST_TARGETS "${TEST_TARGET}")
 endfunction()
