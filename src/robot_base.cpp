@@ -6,8 +6,67 @@
 
 namespace robotlib
 {
-    RobotBase::RobotBase(const std::string &name) : name_(name){};
+    RobotBase::RobotBase(const std::string &name, 
+                         const TrunkPtr& trunk,
+                         const std::vector<LimbPtr>& limbs)
+    {
+        init(name, trunk, limbs);
+    };
+    
+    RobotBase::RobotBase(){};
+
     RobotBase::~RobotBase(){};
+
+    void RobotBase::init(const std::string &name,
+                         const TrunkPtr& trunk,
+                         const std::vector<LimbPtr>& limbs)
+    {
+        name_ = name;
+        trunk_ = trunk;
+        limbs_ = limbs;
+
+        if(limbs.size() == 0)
+        {
+            throw std::runtime_error("Error in RobotBase init: the robot must have at least one limb");
+        }
+
+		// collect joints and links and assign order ids
+        assignIDs();
+
+        // initialize name map
+        for(auto limb : limbs_)
+        {
+            for(auto joint : limb->getJoints())
+            {
+                name_map_[joint->getName()] = joint->getName();
+            }
+            for(auto link : limb->getLinks())
+            {
+                name_map_[link->getName()] = link->getName();
+            }
+        }
+
+        // Detect legs, arms and related joints
+        for(auto limb : limbs_)
+        {
+            if(limb->type().compare("leg") == 0)
+            {
+                legs_.push_back(limb);
+                for(auto joint : limb->getJoints())
+                {
+                    legs_joints_.push_back(joint);
+                }
+            }
+            else if(limb->type().compare("arm") == 0)
+            {
+                arms_.push_back(limb);
+                for(auto joint : limb->getJoints())
+                {
+                    arms_joints_.push_back(joint);
+                }
+            }
+        }
+    }
 
     // ** GET FUNCTIONS **
     const std::string RobotBase::getName() const
@@ -15,67 +74,113 @@ namespace robotlib
         return name_;
     }; 
 
-    double RobotBase::getMinJointAngle(const std::shared_ptr<Joint> joint) { return joint->getMinAngle(); };
+    void RobotBase::assignIDs()
+    {   
+        // assign id to limbs
+		for(unsigned int i=0; i<limbs_.size(); i++)
+		{
+			limbs_[i]->id = i;
+		}
+    
+        int prev_limb_joints{0};
+        int prev_limb_links{0};
+        trunk_->id = 0;
+        this->links_.push_back(trunk_);
+		for(auto limb : limbs_)
+		{
+			for(auto joint : limb->getJoints())
+			{
+				joint->id = limb->id*prev_limb_joints + joint->sub_id;
+                joint->limb_id = limb->id;
+				this->joints_.push_back(joint);
+			}
+            prev_limb_joints = limb->getNJoints();
 
-    double RobotBase::getMaxJointAngle(const std::shared_ptr<Joint> joint) { return joint->getMaxAngle(); };
+			for(auto link : limb->getLinks())
+			{
+				link->id = limb->id*prev_limb_links + link->sub_id + 1; // +1 because trunk is link 0
+                link->limb_id = limb->id;
+				this->links_.push_back(link);
+			}
+            prev_limb_links = limb->getNLinks();
+		}
+    }
 
-    double RobotBase::getMaxJointVelocity(const std::shared_ptr<Joint> joint) { return joint->getMaxVelocity(); };
+    double RobotBase::getMinJointAngle(const JointPtr joint) { return joint->getMinAngle(); };
 
-    double RobotBase::getMaxJointEffort(const std::shared_ptr<Joint> joint) { return joint->getMaxEffort(); };
+    double RobotBase::getMaxJointAngle(const JointPtr joint) { return joint->getMaxAngle(); };
 
-    void RobotBase::estimateFeetGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau, robotlib::LegDataMap<Eigen::Vector3d>& estimated_feet_grf)
+    double RobotBase::getMaxJointVelocity(const JointPtr joint) { return joint->getMaxVelocity(); };
+
+    double RobotBase::getMaxJointEffort(const JointPtr joint) { return joint->getMaxEffort(); };
+
+    robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose, const robotlib::JointState& q, const robotlib::JointState& qd, const robotlib::JointState& qdd, const robotlib::JointState& tau)
     {
-        robotlib::JointState inv_dyn_tau = this->makeJointState();	// remove this NRT instatiation!
-        this->inverseDynamics(pose,
-								Eigen::Matrix<double, 6, 1>::Zero(),
+        return estimateLimbsGRF(pose,
+                                Eigen::Matrix<double, 6, 1>::Zero(),
                                 Eigen::Matrix<double, 6, 1>::Zero(),
                                 q,
                                 qd,
                                 qdd,
-                                {},
-                                inv_dyn_tau);
-
-        int leg_id = 0;
-        for(auto leg: *this->getLegs())
-        {
-            int num_joints{0};
-            Eigen::VectorXd tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
-            Eigen::VectorXd inv_dyn_tau_block = Eigen::VectorXd::Zero(leg->getNJoints());
-
-            for(auto joint: *leg->getJoints())
-            {
-                tau_block(num_joints) = tau[joint];
-                //remove friction torques
-                //inv_dyn_tau[joint] -= torque_offset[joint] + sign_func(des_qd[joint])*stiction_positive
-                                                             //+ (1-sign_func(des_qd[joint]))*stiction_negative
-                inv_dyn_tau_block(num_joints) = inv_dyn_tau[joint];
-                num_joints++;
-            }
-
-            Eigen::MatrixXd J = Eigen::MatrixXd::Zero(6, this->getNJOINTS());
-            const std::string foot_name = utils::toLower(leg->getName())+"_foot";
-            this->computeLimbsJacobian(q, foot_name, J);            
-            const int njoints_leg = leg->getNJoints();
-            Eigen::MatrixXd J_leg = J.block(0,leg_id,3,njoints_leg);
-            leg_id+=njoints_leg;
-
-            estimated_feet_grf[leg] = J_leg.transpose().inverse() * (inv_dyn_tau_block - tau_block);
-            //extForces[leg] = jacobians_[leg].transpose().inverse() * (-tau_.segment(3*leg, 3));
-        }
+                                tau);
     }
 
-    int RobotBase::computeNumStanceLegs(const LegDataMap<bool>& stance_legs) const
+    robotlib::LimbDataMap<Eigen::Vector3d> RobotBase::estimateLimbsGRF(const Eigen::Matrix<double,7,1>& pose,
+                                                                        const Eigen::Matrix<double,6,1>& base_velocity,
+                                                                        const Eigen::Matrix<double,6,1>& base_acceleration,
+                                                                        const robotlib::JointState& q,
+                                                                        const robotlib::JointState& qd,
+                                                                        const robotlib::JointState& qdd,
+                                                                        const robotlib::JointState& tau)
     {
-        int leg_count{0};
-        for(auto &leg_pair: stance_legs)
+        robotlib::JointState modeled_tau = this->makeJointState();
+        robotlib::JointState nle_tau = this->makeJointState();
+        Eigen::Matrix<double, 6, 1> nle_base = Eigen::Matrix<double, 6, 1>::Zero();
+        this->computeNonLinearEffects(pose,
+                                      base_velocity,
+                                      q,
+                                      qd,
+                                      nle_base,
+                                      nle_tau);
+
+        Eigen::MatrixXd js_inertia = Eigen::MatrixXd::Zero(6 + this->getNJOINTS(), 6 + this->getNJOINTS());
+        this->computeJSInertiaMatrix(pose, q, js_inertia);
+
+        Eigen::VectorXd generalized_acceleration(6 + this->getNJOINTS());
+        generalized_acceleration << base_acceleration, qdd;
+        modeled_tau = nle_tau + js_inertia.block(6, 0, this->getNJOINTS(), 6 + this->getNJOINTS()) * generalized_acceleration;
+
+        auto estimated_feet_grf = this->makeLimbDataMap<Eigen::Vector3d>(Eigen::Vector3d::Zero());
+
+        for(auto limb: this->getLimbs())
         {
-            if (stance_legs[leg_pair.key_])
-                leg_count++;
+            Eigen::MatrixXd J = Eigen::MatrixXd::Zero(6, this->getNJOINTS());
+            this->computeLimbsJacobian(q, limb->getEndEffector(), J);
+
+            const int njoints_limb = limb->getNJoints();
+            const int joint_offset = limb->getJoints().front()->id;
+            Eigen::MatrixXd J_limb = J.block(0, joint_offset, 3, njoints_limb);
+            const Eigen::VectorXd limb_torque_residual = modeled_tau.segment(joint_offset, njoints_limb) - tau.segment(joint_offset, njoints_limb);
+
+            // Project the limb torque residual after removing nonlinear and inertial contributions.
+            estimated_feet_grf.at(limb) = J_limb.transpose().completeOrthogonalDecomposition().solve(limb_torque_residual);
         }
-        return leg_count;
+        return estimated_feet_grf;
     }
 
-    void RobotBase::computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LegDataMap<bool>& stance_legs, const robotlib::LegDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const
+    int RobotBase::computeNumStanceLegs(const LimbDataMap<bool>& stance_legs) const
+    {
+        int limb_count{0};
+
+        for(auto limb_pair: stance_legs)
+        {
+            if (stance_legs.at(limb_pair.first))
+                limb_count++;
+        }
+        return limb_count;
+    }
+
+    void RobotBase::computeProprioHeight(const Eigen::Vector3d& w_rpy_b, const LimbDataMap<bool>& stance_legs, const robotlib::LimbDataMap<Eigen::Vector3d>& actual_foot_position, double& proprio_height) const
     {
         int num_stance_legs{computeNumStanceLegs(stance_legs)};
         if(num_stance_legs>0)
@@ -84,119 +189,146 @@ namespace robotlib
             //Compute foot position in horizontal frame
             Eigen::Matrix3d HF_R_b = utils::rpyToRot(Eigen::Vector3d(w_rpy_b[0], w_rpy_b[1], 0.0)).transpose();
             auto actual_foot_position_HF(actual_foot_position); //dynamic memory allocation is tacking place! - DMA
-            for(auto &leg_pair : actual_foot_position_HF)
+
+            for(auto limb_pair : actual_foot_position_HF)
             {
-                actual_foot_position_HF[leg_pair.key_] = HF_R_b*actual_foot_position[leg_pair.key_];
+                actual_foot_position_HF.at(limb_pair.first) = HF_R_b*actual_foot_position.at(limb_pair.first);
             }
+
             // Compute proprio height considering actual foot position in horizontal frame
-            for(auto &leg_pair : stance_legs)
+            for(const auto &[key, value] : stance_legs)
             {
-                proprio_height += (-actual_foot_position_HF[leg_pair.key_](2) * (stance_legs[leg_pair.key_]))/num_stance_legs;
+                proprio_height += (-actual_foot_position_HF[key](2) * (value))/num_stance_legs;
             }
         }
     }
 
-        // ** FUNCTIONS TO MAKE NRT OBJECTS ** 
-
-    // Create a joint state
-    robotlib::JointState RobotBase::makeJointState(const double value) const
+    JointState RobotBase::makeJointState(const double& value) const
     {
-        robotlib::JointState joint_state(this->getLegs(), value);
-        
-        return joint_state;
-    } // NRT
-
-    // TODO
-    Jacobian RobotBase::makeJacobian(const std::shared_ptr<Frame> fOrigin, const std::shared_ptr<Frame> fDest) // NRT
-    {
-        fOrigin->getName();
-        fDest->getName();
-
-        std::cout << "makeJacobian function: TODO\n";
-        return Jacobian(1);
-    };
-
-    // TODO: it should use makeJacobian
-    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<Frame> frame) // NRT
-    {
-        // Link foot = static_cast<const Link &>(frame); //TODO: try without static_cast
-
-        // const LimbBase *l = foot.getParentLimb();
-        // const int nJoints = l->getNJoints();
-
-        // return Jacobian(nJoints);
-        frame->getName();
-
-        std::cout << "makeFootJacobian-Input: foot function: TODO\n";
-        return Jacobian(1);
-    };
-
-    // TODO: it should use makeJacobian
-    Jacobian RobotBase::makeFootJacobian(const std::shared_ptr<LimbBase> leg, const double data) // NRT
-    {
-        return Jacobian(leg->getNJoints(), data);
-    };
-
-    LegDataMap<Jacobian> RobotBase::makeFeetJacobian(const double data) const // NRT
-    {
-        auto feetJac = this->makeLegDataMap<Jacobian>();
-
-        for (auto &leg_pair : feetJac)
-        {
-            leg_pair.data_ = std::shared_ptr<Jacobian>(new Jacobian(leg_pair.key_->getNJoints(), data));
-        }
-        return feetJac;
-    };
-
-    void RobotBase::printRobotHierarchy()
-    {
-        for(auto leg: *this->getLegs())
-        {
-            std::cout << "\nLeg: " << leg->getName() << std::endl;
-
-            for(auto joint : *leg->getJoints())
-            {
-                std::cout << leg->jointToParentName(joint) << " --> " << joint->getName() << " --> " << leg->jointToChildName(joint) << std::endl;
-            }
-
-            for(auto link : *leg->getLinks())
-            {
-                std::cout << leg->linkToParentName(link) << " --> " << link->getName() << " --> " << leg->linkToChildName(link) << std::endl;
-            }
-        }
-
-        for(auto arm: *this->getArms())
-        {
-            std::cout << "\nArm: " << arm->getName() << std::endl;
-
-            for(auto joint : *arm->getJoints())
-            {
-                std::cout << arm->jointToParentName(joint) << " --> " << joint->getName() << " --> " << arm->jointToChildName(joint) << std::endl;
-            }
-
-            for(auto link : *arm->getLinks())
-            {
-                std::cout << arm->linkToParentName(link) << " --> " << link->getName() << " --> " << arm->linkToChildName(link) << std::endl;
-            }
-        }
+        JointState out(this->getNJOINTS());
+        out.setConstant(value);
+        return out;
     }
 
-    Eigen::Vector3d RobotBase::getCoMFromBase(const robotlib::JointState &q,
+    LimbDataMap<Jacobian> RobotBase::makeFeetJacobian(const double& data) const
+    {
+        std::vector<Jacobian> container;
+
+        int j{0};
+		for(auto limb : this->getLimbs())
+		{
+            container.push_back(Jacobian(limb->getNJoints(), data));
+        }
+
+        return this->makeLimbDataMap<Jacobian>(container);
+    };
+
+    Jacobian RobotBase::makeFootJacobian(const LimbPtr leg, const double data) // NRT
+    {
+       return Jacobian(leg->getNJoints(), data);
+    };
+
+    Eigen::Vector3d RobotBase::computeCoMFromBase(const robotlib::JointState &q,
                                 const Eigen::Matrix<double, 7, 1> &robot_pose)
     {        
         Eigen::Matrix3d w_R_b = robotlib::utils::quatToRotMat(Eigen::Quaterniond(robot_pose.block<4,1>(3,0))).transpose(); // orientation of the world frame expressed in base frame
-        Eigen::Vector3d offCoM = getWholeBodyCoM(q);
+        Eigen::Vector3d offCoM = computeWholeBodyCoM(q);
         return robot_pose.block<3,1>(0,0) + w_R_b * offCoM;         //CoM is in the world frame, off CoM is in base frame
     }
 
-    Eigen::Vector3d RobotBase::getBaseFromCoM( const JointState &q,
+    Eigen::Vector3d RobotBase::computeBaseFromCoM( const JointState &q,
                                     const Eigen::Matrix<double, 4, 1> &base_orient,
                                     const Eigen::Vector3d &CoM){
         Eigen::Matrix3d w_R_b = robotlib::utils::quatToRotMat(Eigen::Quaterniond(base_orient)).transpose(); // orientation of the world frame expressed in base frame
 
-        Eigen::Vector3d offCoM = getWholeBodyCoM(q);
+        Eigen::Vector3d offCoM = computeWholeBodyCoM(q);
         return CoM - w_R_b * offCoM;          //CoM is in the world frame, off CoM is in base frame
     }
+
+    JointState RobotBase::getLimbJointState(const LimbPtr limb,  JointState& joint_state){    
+        return joint_state.block(limb->getJoints()[0]->id, 0, limb->getNJoints(), 1);
+    }
+
+    std::map<std::string, std::string> RobotBase::getNameMap(){
+        return name_map_;
+    }
+
+	const JointPtr RobotBase::getJoint(const std::string &name) const
+	{
+		for(auto joint : joints_)
+        {
+            if(joint->getName().compare(name) == 0)
+                return joint;
+        }
+        throw std::range_error("joint name "+name+" not found");
+	}
+
+	
+	std::vector<JointPtr>& RobotBase::getJoints()
+	{
+		return joints_;
+	}
+
+	const std::vector<JointPtr> RobotBase::getJoints() const
+	{
+		return joints_;
+	}
+
+	
+	const LinkPtr RobotBase::getLink(const std::string& name) const
+	{
+		for(auto link : links_)
+        {
+            if(link->getName().compare(name) == 0)
+                return link;
+        }
+        throw std::range_error("link name "+name+" not found");
+	};
+
+	
+    std::vector<LinkPtr> RobotBase::getLinks() const
+    {
+		return links_; 
+    }
+
+	
+	const LimbPtr RobotBase::getLimb(const std::string &name) const
+	{
+		for (auto limb : limbs_)
+		{
+			if (limb->getName().compare(name) == 0)
+				return limb;
+		}
+		throw std::range_error("limb name "+name+" not found");
+	}
+
+	
+	const std::vector<LimbPtr> RobotBase::getLimbs() const
+	{
+		return limbs_; 
+	};
+
+	
+	std::vector<LimbPtr> RobotBase::getLegs() const
+	{
+        return legs_;
+	};
+
+	
+	std::vector<LimbPtr> RobotBase::getArms() const
+	{
+        return arms_;
+	};
+
+    std::vector<JointPtr> RobotBase::getLegJoints() const
+    {
+        return legs_joints_;
+    };
+
+    std::vector<JointPtr> RobotBase::getArmJoints() const
+    {
+        return arms_joints_;
+    };
 
 } // namespace robotlib
 

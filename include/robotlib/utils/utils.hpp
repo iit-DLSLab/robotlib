@@ -1,7 +1,7 @@
 #ifndef _ROBOTLIB_UTILS_HPP_
 #define _ROBOTLIB_UTILS_HPP_
 
-#include "robotlib/leg_data_map.hpp"
+#include "robotlib/limb_data_map.hpp"
 
 #include <memory>
 #include <urdf_model/pose.h>

@@ -18,17 +18,14 @@
 #define _ROBOTLIB_LINK_HPP_
 
 #include "frame.hpp"
-#include "utils/container_base.hpp"
-#include <memory>
+#include "joint.hpp"
 
-#include <iostream>
+#include <memory>
 
 namespace robotlib
 {
 	class Joint;
-	template <unsigned int NJOINTS, unsigned int NLINKS>
-	class Limb;
-
+	
 	/*!
 	 * @brief Link class.
 	 * @details
@@ -36,7 +33,11 @@ namespace robotlib
 	 */
 	class Link : public Frame
 	{
+		friend class Robot;
+		friend class Joint;
+		
 	public:
+
 		/*!
          * @brief Constructor.
          * @param[in] name name of the link.
@@ -44,66 +45,36 @@ namespace robotlib
 		Link(const std::string &name);
 
 		/*!
+         * @brief Constructor.
+         * @param[in] name name of the link.
+		 * @param[in] parent parent joint.
+         */
+		// Link(const std::string &name, Joint* parent);
+
+		Link();
+
+
+		/*!
          * @brief Destructor.
          */
-		virtual ~Link();
+		~Link() = default;
 		
 		//! Robot is a friend class to let it use the private methods of the Link class.
-		template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
 		friend class Robot;
 
-        /*!
-		 * @brief Get the name of the link.
-		 * @return name of the link.
-		 */
-		virtual const std::string& getName() const override;
+		// operator==
+		bool operator==(const Link& rhs) const;
+		
+		Link &operator=(const Link &rhs);
 
-		/*!
-		 * @brief Get the parent object of the link, that is a Joint object.
-		 * @return parent joint of the link.
-		 */
-		virtual std::shared_ptr<Joint> getParent() const;
+		bool isAttached() const;
 
-		/*!
-		 * @brief Get the child object of the link, that is a Joint object.
-		 * @return child joint of the link.
-		 */
-		virtual std::shared_ptr<Joint> getChild() const;
+		int sub_id;
+		int id;
+		int limb_id;
 
-		/*!
-		 * @brief Get the children of the link, that are Joint objects.
-		 * @return joints that are children of the link.
-		 */
-		virtual std::shared_ptr<const ContainerBase<std::shared_ptr<Joint>>> getChildren() const;
-
-	protected:
-		/*!
-		 * @brief Set the children of the link, that are Joint objects.
-		 * @param[in] children the Link children to be set.
-		 */
-		virtual void setChildren(const std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children);
-
-		/*!
-		 * @brief Set the parent of the link, that is a Joint object.
-		 * @param[in] parent the parent of the link to be set.
-		 */
-		virtual void setParent(const std::shared_ptr<Joint> parent);
-
-		/*!
-		 * @brief Set the child of the link, that is a Joint object.
-		 * @param[in] child the child of the link to be set.
-		 */
-		virtual void setChild(const std::shared_ptr<Joint> child);
-
-		//! Children of the link.
-		std::shared_ptr<ContainerBase<std::shared_ptr<Joint>>> children_;
-
-		//! Parent of the link.
-		std::shared_ptr<Joint> parent_;
-
-		//! Child of the link.
-		std::shared_ptr<Joint> child_;
 	};
+	typedef std::shared_ptr<Link> LinkPtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_LINK_HPP_

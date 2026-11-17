@@ -7,16 +7,21 @@ option(BUILD_TESTING "" OFF)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(CTest)
 
-find_package(Eigen3 REQUIRED NO_MODULE)
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_compile_options(
-	-std=c++17
-	-fPIC
-	$<$<CONFIG:Debug>:-g>
-	$<$<CONFIG:Release>:-O3>
-	-Wall -Wextra -pedantic # Enable warnings
-	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
+	-std=c++23
+	# -fsanitize=address -g
 )
+
+# add_compile_options(
+# 	-std=c++20
+# 	-fPIC
+# 	$<$<CONFIG:Debug>:-g>
+# 	$<$<CONFIG:Release>:-O3>
+# 	-Wall -Wextra -pedantic # Enable warnings
+# 	#-fsanitize=undefined -g -O3	# UBSAN - Undefined Behaviour Sanitizer
+# )
 
 #add_link_options(-fsanitize=undefined) # UBSAN - Undefined Behaviour Sanitizer
 
@@ -66,12 +71,6 @@ if(NOT CODE_TO_COMPILE)
     set(CODE_TO_COMPILE "ALL")
 endif()
 
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}
-	/usr/include/eigen3
-	SYSTEM
-)
-
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(robotlib_paths)
@@ -79,12 +78,12 @@ include(robotlib_paths)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if (BUILD_TESTING)
-	enable_testing()
+	include(CTest)
+	find_package(GTest REQUIRED)
+	include(GoogleTest)
 	include(RobotlibGoogleTest)
-	# add_compile_options( # Uncomment these compile options to have more robust tests
-	# 	-fsanitize=leak,address,undefined #Enable LeakSanitizer, AddressSanitizer, UndefinedBehaviorSanitizer 
-	# )
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)	
+
+	add_subdirectory(tests)	
 endif()
 
 set(CPACK_PACKAGE_VERSION_MAJOR         ${PROJECT_VERSION_MAJOR})

@@ -18,6 +18,7 @@
 #define _ROBOTLIB_FRAME_HPP_
 
 #include <string>
+#include <memory>
 
 namespace robotlib
 {
@@ -29,27 +30,37 @@ namespace robotlib
     class Frame
     {
     public:
+
         /*!
          * @brief Constructor.
          * @param[in] name name of the frame.
          */
-        Frame(const std::string &name) : name_(name){};
+        Frame(const std::string &name);
 
         /*!
          * @brief Destructor.
          */
-        virtual ~Frame(){};
+        virtual ~Frame() = default;
 
         /*!
 		 * @brief Get the name of the Frame.
 		 * @return name of the frame.
 		 */
-        virtual const std::string& getName() const = 0;
+        const std::string& getName() const;
+
+        /*!
+		 * @brief Equal comparator for Frame.
+		 * @return true if the frames are equal.
+		 */
+		bool operator==(const Frame& rhs) const;
 
     protected:
+
         //! Name of the frame.
-        const std::string name_{};
+        std::string name_;
     };
+
+    typedef std::shared_ptr<Frame> FramePtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_FRAME_HPP_

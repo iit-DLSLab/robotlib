@@ -1,36 +1,46 @@
 add_library(robotlib
 	SHARED
-	robot_info.cpp
-	robot_factory.cpp
 	joint.cpp
 	link.cpp
-	limb_base.cpp
 	trunk.cpp
+	frame.cpp
 	dyn_params.cpp
+	limb.cpp
     robot_base.cpp
-    joint_state.cpp
+	robot.cpp
     jacobian.cpp
-    data_map.cpp
+	robot_factory.cpp
     utils/utils.cpp
+	dummy_robot/dummy_robot_creator.cpp
 )
 
-target_link_libraries(robotlib PRIVATE urdf)
+target_link_libraries(robotlib 
+		PUBLIC
+		Eigen3::Eigen
+		PRIVATE 
+		urdfdom_model
+        urdfdom_model_state
+        urdfdom_world
+        urdfdom_sensor)
 
-add_executable(robot_info
-	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
-)
+# add_executable(robot_info
+# 	${CMAKE_CURRENT_SOURCE_DIR}/robot_info.cpp
+# )
 
-target_link_libraries(robot_info
-	PRIVATE
-		${PROJECT_NAME}
-		${CMAKE_DL_LIBS}
-)
+# target_link_libraries(robot_info
+# 	PRIVATE
+# 		${PROJECT_NAME}
+# 		${CMAKE_DL_LIBS}
+# )
 
 target_include_directories(robotlib 
 	PUBLIC
+		include
 		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 		$<INSTALL_INTERFACE:include/${CMAKE_PROJECT_NAME}>
 		$<INSTALL_INTERFACE:lib>
+	PRIVATE
+		$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/robotlib>
 )
 
 install(
@@ -44,5 +54,3 @@ install(
 	DESTINATION	/usr/lib
 	COMPONENT	"robotlib"
 )
-
-# add_subdirectory(robots)

@@ -5,58 +5,57 @@
 
 namespace robotlib
 {
+    // Create a llimb data map pair
     template <class Data>
-    LegDataMap<Data> RobotBase::makeLegDataMap() const
+    LimbDataMap<Data> RobotBase::makeLimbDataMap(const Data& data) const
     { 
-        return LegDataMap<Data>(this->getLegs()); 
-    } // NRT
-
-    // Create a leg data map pair
-    template <class Data>
-    LegDataMap<Data> RobotBase::makeLegDataMap(const Data &data) const
-    { 
-        return LegDataMap<Data>(this->getLegs(), data); 
+        LimbDataMap<Data> data_map;
+        for(auto limb : this->getLimbs()){
+            data_map[limb] = data;
+        }
+        return data_map;
     }
 
-    // Create a link data map pair
     template <class Data>
-    LinkDataMap<Data> RobotBase::makeLinkDataMap() 
-    { 
-        return LinkDataMap<Data>(this); 
-    } // NRT
-
-    template <class Data>
-    LinkDataMap<Data> RobotBase::makeLinkDataMap(const Data &data) 
-    { 
-        return LinkDataMap<Data>(this, data); 
+    LimbDataMap<Data> RobotBase::makeLimbDataMap(const std::vector<Data>& data_vector) const
+    {        
+        LimbDataMap<Data> data_map;
+        for(auto limb : this->getLimbs()){
+            data_map[limb] = data_vector[limb->id];
+        }
+        return data_map;
     }
 
-    // Create a joint data map pair
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMap() 
+    LinkDataMap<Data> RobotBase::makeLinkDataMap(const Data& data) const
     { 
-        return JointDataMap<Data>(this); 
-    } // NRT
+        LinkDataMap<Data> data_map;
+        for(auto link : this->getLinks()){
+            data_map[link] = data;
+        }
+        return data_map;
+    }
 
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMap(const Data &data) 
-    { 
-        return JointDataMap<Data>(this, data); 
-    } // NRT
+    JointDataMap<Data> RobotBase::makeJointDataMap(const std::vector<Data>& data) const
+    {
+        JointDataMap<Data> data_map;
+        for(auto joint : this->getJoints()){
+            data_map[joint] = data[joint->id];
+        }
+        return data_map;
+    }
 
-    // Create a joint data map pair
     template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg) 
+    JointDataMap<Data> RobotBase::makeJointDataMap(const Data& data) const
     { 
-        return JointDataMap<Data>(leg); 
-    } // NRT
-
-    // Create a joint data map pair
-    template <class Data>
-    JointDataMap<Data> RobotBase::makeJointDataMapPerLeg(const std::shared_ptr<LimbBase> leg, const Data &data) 
-    { 
-        return JointDataMap<Data>(leg, data); 
-    } // NRT
+        JointDataMap<Data> data_map;
+        for(auto joint : this->getJoints()){
+            data_map[joint] = data;
+        }
+        return data_map;
+    }
 } // namespace robotlib
 
+#include "robot_base.tpp"
 #endif // _ROBOTLIB_ROBOT_BASE_TPP_

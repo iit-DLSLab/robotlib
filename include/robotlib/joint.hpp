@@ -18,13 +18,14 @@
 #define _ROBOTLIB_JOINT_HPP_
 
 #include "frame.hpp"
+#include "link.hpp"
+
+
 #include <memory>
 
 namespace robotlib
 {
 	class Link;
-	template <unsigned int NJOINTS, unsigned int NLINKS>
-	class Limb;
 
 	/*!
      * @brief Joint class.
@@ -33,33 +34,25 @@ namespace robotlib
      */
 	class Joint : public Frame
 	{
+		friend class Link;
+
 	public:
 		/*!
          * @brief Constructor.
-         * @param[in] name name of the joint.
+		 * @param[in] name name of the joint.
+         * @param[in] parent parent link.
          */
-		Joint(const std::string &name);
+		Joint(const std::string& name);//, Link* parent = NULL);
+
+		Joint();
 
 		/*!
          * @brief Destructor.
          */
-		virtual ~Joint();
+		virtual ~Joint() = default;
 
 		//! Robot is a friend class to let it use the private methods of the Joint class.
-		template <int NJOINTS, int NLINKS, unsigned int NLEGS, unsigned int NARMS>
 		friend class Robot;
-
-		/*!
-		 * @brief Get the name of the Joint.
-		 * @return name of the joint.
-		 */
-		virtual const std::string& getName() const override;
-
-		/*!
-		 * @brief Get the Joint parent object, that is a Link object.
-		 * @return shared pointer pointing to a Link object.
-		 */
-		std::shared_ptr<Link> getParent() const;
 
 		/*!
 		 * @brief Get the Joint minimum angle.
@@ -83,23 +76,28 @@ namespace robotlib
 		double getMaxEffort() const;
 
 		/*!
-		 * @brief Get the Joint child object, that is a Link object.
-		 * @return shared pointer pointing to a Link object.
-		 */
-		std::shared_ptr<Link> getChild() const;
+         * @brief Set the limits to the joint in input
+         * @details
+         * @param[in] q_min minimum joint angle.
+		 * @param[in] q_max maximum joint angle.
+		 * @param[in] qd_max joint velocity limit.
+		 * @param[in] tau_max joint torque limit.
+         */
+		virtual void setJointLimits(const double& q_min, const double& q_max, const double& qd_max, const double& tau_max);
 
-	private:
-		/*!
-		 * @brief Set the Joint parent object, that is a Link object.
-		 * @param[in] parent the Link parent object to be set.
-		 */
-		void setParent(const std::shared_ptr<Link> parent);
+		// operator==
+		bool operator==(const Joint& rhs) const;
 
-		/*!
-		 * @brief Set the Joint child object, that is a Link object.
-		 * @param[in] child the Link child object to be set.
-		 */
-		void setChild(const std::shared_ptr<Link> child);
+        Joint &operator=(const Joint &rhs);
+		
+		// order in the limb
+		int sub_id;
+		// order at robot level
+		int id;
+		// limb id
+		int limb_id;
+	protected:
+
 
 		/*!
 		 * @brief Set the Joint minimum angle.
@@ -124,6 +122,19 @@ namespace robotlib
 		 * @param[in] tau_max joint torque limit.
 		 */
 		void setMaxEffort(const double tau_max);
+      
+	  	//! Check if the joint is attached to a robot.
+      	bool isAttached() const;
+
+	private:
+
+		/*!
+		 * @brief Set the Joint child object, that is a Link object.
+		 * @details This method is private and can only be used by the friend class Link 
+		 * This restriction garantee the coerence in the definition of the kinematic chain
+		 * @param[in] child the Link child object to be set.
+		 */
+		void setChild(Link* child);
 
 		//! Minimum joint angle.
 		double q_min_;
@@ -133,13 +144,8 @@ namespace robotlib
 		double qd_max_;
 		//! Joint torque limit.
 		double tau_max_;
-
-	protected:
-		//! Parent of the joint.
-		std::shared_ptr<Link> parent_;
-		//! Child of the joint.
-		std::shared_ptr<Link> child_;
 	};
+	typedef std::shared_ptr<Joint> JointPtr;
 } // namespace robotlib
 
 #endif // _ROBOTLIB_JOINT_HPP_

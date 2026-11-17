@@ -10,13 +10,28 @@ set_property(GLOBAL PROPERTY ALL_TEST_TARGETS "")
 function(add_robotlib_test)
     include(CMakeParseArguments)
     cmake_parse_arguments(PARSE_ARGV 0 "TEST" "" "TARGET" "SOURCES;LIBRARIES")
-    message("Adding Test: ${TEST_TARGET}...")
-		add_executable(${TEST_TARGET} ${TEST_SOURCES})
-		install(TARGETS ${TEST_TARGET} DESTINATION ${CMAKE_INSTALL_BINDIR})
-		target_link_libraries(${TEST_TARGET} ${TEST_LIBRARIES} robotlib GTest::GTest GTest::Main ${CMAKE_DL_LIBS})
-        # if you want to consider also sanitizers during testing uncomment the next line
-		# target_link_libraries(${TEST_TARGET} -fsanitize=leak,address,undefined)
-		gtest_discover_tests(${TEST_TARGET})
-		set_property(GLOBAL APPEND PROPERTY ALL_TEST_TARGETS "${TEST_TARGET}")
+    message(STATUS "Adding Test: ${TEST_TARGET}...")
+
+	add_executable(
+		${TEST_TARGET} 
+		${TEST_SOURCES}
+	)
+
+	target_link_libraries(
+		${TEST_TARGET}
+		GTest::gtest_main
+		robotlib
+	)
+
+	# Tests use flat includes (e.g. "dummy_robot/dummy_robot_creator.hpp"), which
+	# require include/robotlib; robotlib only exposes it as PRIVATE.
+	target_include_directories(
+		${TEST_TARGET}
+		PRIVATE
+		${PROJECT_SOURCE_DIR}/include/robotlib
+	)
+
+    add_test(${TEST_TARGET} ${TEST_TARGET})
+    set_property(GLOBAL APPEND PROPERTY ALL_TEST_TARGETS "${TEST_TARGET}")
 endfunction()
 
